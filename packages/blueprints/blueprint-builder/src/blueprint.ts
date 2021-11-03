@@ -124,9 +124,9 @@ export class Blueprint extends ParentBlueprint {
         '@caws-blueprint-util/blueprint-projen',
         '@caws-blueprint-tool/blueprint-cli'
       ],
-      keywords: this.options.tags,
+      keywords: this.options.tags || ['no-tag'],
       homepage: '',
-      mediaUrls: [],
+      mediaUrls: ['https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png'],
     };
     console.log('New blueprint options:', JSON.stringify(this.newBlueprintOptions, null, 2));
 

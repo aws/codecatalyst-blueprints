@@ -19,7 +19,7 @@ const blueprint = new ProjenBlueprint({
   },
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
-  deps: ['projen@0.31.0'],
+  deps: ['projen'],
   peerDeps: [],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description:
@@ -30,7 +30,7 @@ const blueprint = new ProjenBlueprint({
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',
-    '@caws-blueprint-tool/blueprint-cli', 
+    '@caws-blueprint-tool/blueprint-cli',
     '@caws-blueprint-util/blueprint-projen'
   ],
   /* Add release management to this project. */

@@ -78,10 +78,12 @@
   dependencies:
     typescript "^4.0.3"
 
-"@caws-blueprint/caws.blueprint@0.0.105":
-  version "0.0.106"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@caws-blueprint/caws.blueprint/-/caws.blueprint-0.0.106.tgz#a26d15cfeeb7e50d13c7904450af186f5e99471b"
-  integrity sha512-n2nMdlgOG+Ign+d8mwQ77hjQTpOSvmLMoIs1svCcAkUmnz8RB8XFVt95sbYW9Zz9zcm/b582uuCUB1IElV3zZg==
+"@caws-blueprint/caws.blueprint@^0.0.108":
+  version "0.0.108"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@caws-blueprint/caws.blueprint/-/caws.blueprint-0.0.108.tgz#3aa50e4758859ffc5c6705b8c76428377cd25874"
+  integrity sha512-S8VX5TIRN4AmYUJ3yJU4yfvrpyIBr2Lh53/ob0RlzWuPHw7siS8myR7mDh8Vw5PjAwH4DT87hN5UBkh1u3By3Q==
+  dependencies:
+    projen "0.31.0"
 
 "@caws-blueprint/caws.blueprint@^0.0.54":
   version "0.0.54"
@@ -590,6 +592,11 @@ camelcase@^6.2.0:
   version "6.2.0"
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
+
+case@^1.6.3:
+  version "1.6.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/case/-/case-1.6.3.tgz#0a4386e3e9825351ca2e6216c60467ff5f1ea1c9"
+  integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -2590,7 +2597,24 @@ progress@^2.0.3:
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.31.0:
+projen@*:
+  version "0.32.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/projen/-/projen-0.32.3.tgz#cf60e80486d8b8600fe3f0ef3c847901ebe1f650"
+  integrity sha512-3ike2WMoT5GHeR15fzgfF+e6j5AHE1uqoHhieTR30AoRDKakMAA6Xnru4UpFCWp5rwnmqh3tghcB7xzVgS1dfQ==
+  dependencies:
+    "@iarna/toml" "^2.2.5"
+    case "^1.6.3"
+    chalk "^4.1.2"
+    fs-extra "^9.1.0"
+    glob "^7"
+    ini "^2.0.0"
+    semver "^7.3.5"
+    shx "^0.3.3"
+    xmlbuilder2 "^2.4.1"
+    yaml "^1.10.2"
+    yargs "^16.2.0"
+
+projen@0.31.0:
   version "0.31.0"
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/projen/-/projen-0.31.0.tgz#483d390c9d60e576641dcfc1c1c7de08fec175ba"
   integrity sha512-27mgy8Bq2rHxLSAHUavnUSHUSTcxD9tpBCPj/EvjyjWQzHwnQV8Z0K31bFdDuAS2EvxSpzrI1M0vBtSM9dWyDQ==

@@ -29,7 +29,7 @@
     "@caws-blueprint-util/blueprint-projen": "^0.0.29",
     "@types/node": "^14.17.0",
     "npm-check-updates": "^11",
-    "projen": "^0.31.0",
+    "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
     "typescript": "^4.4.4"
@@ -40,7 +40,7 @@
     "@caws-blueprint-component/caws-source-repositories": "1.0.2",
     "@caws-blueprint-component/caws-workflows": "1.0.2",
     "@caws-blueprint-util/blueprint-utils": "0.0.14",
-    "@caws-blueprint/caws.blueprint": "0.0.105"
+    "@caws-blueprint/caws.blueprint": "^0.0.108"
   },
   "bundledDependencies": [],
   "keywords": [
@@ -52,7 +52,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

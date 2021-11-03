@@ -2,30 +2,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "yarn workspaces run build",
-    "clean": "bash ./build/clean.sh",
-    "update-deps": "bash ./build/update-deps.sh",
-    "update-platform-sdk": "bash ./build/update-platform-sdk.sh"
+    "build": "yarn workspaces run build"
   },
-  "workspaces": [
-    "clients/*",
-    "common/*",
-    "apps/discovery/*",
-    "apps/deploy/*",
-    "apps/publishing/*",
-    "apps/synth/*",
-    "stacks"
-  ],
+  "workspaces": {
+
+  },
   "dependencies": {
-    "aws-sdk": "^2.902.0",
-    "code-aws-platform-sdk": "file:code-aws-platform-sdk.tgz",
-    "aws-xray-sdk": "^3.2.0",
-    "pino": "^6.7.0"
   },
   "devDependencies": {
-    "@tsconfig/node12": "^1.0.7",
-    "@types/aws-lambda": "^8.10.63",
-    "@types/pino": "^6.3.2",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "concurrently": "^5.3.0",

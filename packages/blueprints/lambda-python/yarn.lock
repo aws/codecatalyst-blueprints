@@ -3,30 +3,30 @@
 
 
 "@babel/code-frame@^7.0.0":
-  version "7.15.8"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/code-frame/-/code-frame-7.15.8.tgz#45990c47adadb00c03677baa89221f7cc23d2503"
-  integrity sha512-2IAnmn8zbvC/jKYhq5Ki9I+DwjlrtMPUCH/CpHvqI4dNnlwHwsxoIhlc8WcYY5LSYknXQtAlFYuHfqAFCvQ4Wg==
+  version "7.16.0"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/code-frame/-/code-frame-7.16.0.tgz#0dfc80309beec8411e65e706461c408b0bb9b431"
+  integrity sha512-IF4EOMEV+bfYwOmNxGzSnjR2EmQod7f1UXOpZM3l4i4o4QNwzjtJAu/HxdjHq0aYBvdqMuQEY1eg0nqW9ZPORA==
   dependencies:
-    "@babel/highlight" "^7.14.5"
+    "@babel/highlight" "^7.16.0"
 
-"@babel/helper-validator-identifier@^7.14.5":
+"@babel/helper-validator-identifier@^7.15.7":
   version "7.15.7"
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/helper-validator-identifier/-/helper-validator-identifier-7.15.7.tgz#220df993bfe904a4a6b02ab4f3385a5ebf6e2389"
   integrity sha512-K4JvCtQqad9OY2+yTU8w+E82ywk/fe+ELNlt1G8z3bVGlZfn/hOcQQsUhGhW/N+tb3fxK800wLtKOE/aM0m72w==
 
-"@babel/highlight@^7.14.5":
-  version "7.14.5"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/highlight/-/highlight-7.14.5.tgz#6861a52f03966405001f6aa534a01a24d99e8cd9"
-  integrity sha512-qf9u2WFWVV0MppaL877j2dBtQIDgmidgjGk5VIMw3OadXvYaXn66U1BFlH2t4+t3i+8PhedppRv+i40ABzd+gg==
+"@babel/highlight@^7.16.0":
+  version "7.16.0"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/highlight/-/highlight-7.16.0.tgz#6ceb32b2ca4b8f5f361fb7fd821e3fddf4a1725a"
+  integrity sha512-t8MH41kUQylBtu2+4IQA3atqevA2lRgqA2wyVB/YiWmsDSuylZZuXOUy9ric30hfzauEFfdsuk/eXTRrGrfd0g==
   dependencies:
-    "@babel/helper-validator-identifier" "^7.14.5"
+    "@babel/helper-validator-identifier" "^7.15.7"
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
 "@babel/runtime@^7.4.5":
-  version "7.15.4"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
-  integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
+  version "7.16.0"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@babel/runtime/-/runtime-7.16.0.tgz#e27b977f2e2088ba24748bf99b5e1dece64e4f0b"
+  integrity sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -61,12 +61,12 @@
   dependencies:
     typescript "^4.0.3"
 
-"@caws-blueprint/caws.blueprint@^0.0.108":
-  version "0.0.108"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@caws-blueprint/caws.blueprint/-/caws.blueprint-0.0.108.tgz#3aa50e4758859ffc5c6705b8c76428377cd25874"
-  integrity sha512-S8VX5TIRN4AmYUJ3yJU4yfvrpyIBr2Lh53/ob0RlzWuPHw7siS8myR7mDh8Vw5PjAwH4DT87hN5UBkh1u3By3Q==
+"@caws-blueprint/caws.blueprint@^0.0.110":
+  version "0.0.111"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@caws-blueprint/caws.blueprint/-/caws.blueprint-0.0.111.tgz#4fa1220994032aa0951e4bcdae155fcd27849be0"
+  integrity sha512-IZLaBRkCxeSzS+Pv1qyjfKcqErMXozUrML2XffoABJ4wxH9MeTAofB6tbr4c908D8IXALsWCMgwbUbmRwZW6uA==
   dependencies:
-    projen "0.31.0"
+    projen "*"
 
 "@cspotcode/source-map-consumer@0.8.0":
   version "0.8.0"
@@ -253,14 +253,14 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*":
-  version "16.11.1"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@types/node/-/node-16.11.1.tgz#2e50a649a50fc403433a14f829eface1a3443e97"
-  integrity sha512-PYGcJHL9mwl1Ek3PLiYgyEKtwTMmkMw4vbiyz/ps3pfdRYLVv+SN7qHVAImrjdAXxgluDEw6Ph4lyv+m9UpRmA==
+  version "16.11.6"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@types/node/-/node-16.11.6.tgz#6bef7a2a0ad684cf6e90fcfe31cecabd9ce0a3ae"
+  integrity sha512-ua7PgUoeQFjmWPcoo9khiPum3Pd60k4/2ZGXt18sm2Slk0W0xZTqt5Y0Ny1NyBiN1EVQ/+FaF9NcY4Qe6rwk5w==
 
 "@types/node@^14.17.0":
-  version "14.17.27"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@types/node/-/node-14.17.27.tgz#5054610d37bb5f6e21342d0e6d24c494231f3b85"
-  integrity sha512-94+Ahf9IcaDuJTle/2b+wzvjmutxXAEXU6O81JHblYXUg2BDG+dnBy7VxIPHKAyEEDHzCMQydTJuWvrE+Aanzw==
+  version "14.17.32"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/@types/node/-/node-14.17.32.tgz#2ca61c9ef8c77f6fa1733be9e623ceb0d372ad96"
+  integrity sha512-JcII3D5/OapPGx+eJ+Ik1SQGyt6WvuqdRfh9jUwL6/iHGjmyOriBDciBUu7lEIBTL2ijxwrR70WUnw5AEDmFvQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -571,6 +571,11 @@ camelcase@^6.2.0:
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
+case@^1.6.3:
+  version "1.6.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/case/-/case-1.6.3.tgz#0a4386e3e9825351ca2e6216c60467ff5f1ea1c9"
+  integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
+
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -865,9 +870,9 @@ conventional-commits-filter@^2.0.7:
     modify-values "^1.0.0"
 
 conventional-commits-parser@^3.2.0:
-  version "3.2.2"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/conventional-commits-parser/-/conventional-commits-parser-3.2.2.tgz#190fb9900c6e02be0c0bca9b03d57e24982639fd"
-  integrity sha512-Jr9KAKgqAkwXMRHjxDwO/zOCDKod1XdAESHAGuJX38iZ7ZzVti/tvVoysO0suMsdAObp9NQ2rHSsSbnAqZ5f5g==
+  version "3.2.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/conventional-commits-parser/-/conventional-commits-parser-3.2.3.tgz#fc43704698239451e3ef35fd1d8ed644f46bd86e"
+  integrity sha512-YyRDR7On9H07ICFpRm/igcdjIqebXbvf4Cff+Pf0BrBys1i1EOzx9iFXNlAbdrLAR8jf7bkUYkDAr8pEy0q4Pw==
   dependencies:
     JSONStream "^1.0.4"
     is-text-path "^1.0.1"
@@ -951,11 +956,6 @@ decamelize@^1.1.0:
   version "1.2.0"
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
-
-decamelize@^4.0.0:
-  version "4.0.0"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/decamelize/-/decamelize-4.0.0.tgz#aa472d7bf660eb15f3494efd531cab7f2a709837"
-  integrity sha512-9iE1PgSik9HeIIw2JO94IidnE3eBoQrFJ3w7sFuzSX4DpmZ3v5sZpUiV5Swcf6mQEF+Y0ru8Neo+p+nyh2J+hQ==
 
 decompress-response@^3.3.0:
   version "3.3.0"
@@ -1220,9 +1220,9 @@ flatstr@^1.0.12:
   integrity sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==
 
 follow-redirects@^1.14.0:
-  version "1.14.4"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
-  integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
+  version "1.14.5"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/follow-redirects/-/follow-redirects-1.14.5.tgz#f09a5848981d3c772b5392309778523f8d85c381"
+  integrity sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==
 
 forever-agent@~0.6.1:
   version "0.6.1"
@@ -2570,14 +2570,14 @@ progress@^2.0.3:
   resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@0.31.0:
-  version "0.31.0"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/projen/-/projen-0.31.0.tgz#483d390c9d60e576641dcfc1c1c7de08fec175ba"
-  integrity sha512-27mgy8Bq2rHxLSAHUavnUSHUSTcxD9tpBCPj/EvjyjWQzHwnQV8Z0K31bFdDuAS2EvxSpzrI1M0vBtSM9dWyDQ==
+projen@*:
+  version "0.32.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/projen/-/projen-0.32.3.tgz#cf60e80486d8b8600fe3f0ef3c847901ebe1f650"
+  integrity sha512-3ike2WMoT5GHeR15fzgfF+e6j5AHE1uqoHhieTR30AoRDKakMAA6Xnru4UpFCWp5rwnmqh3tghcB7xzVgS1dfQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
+    case "^1.6.3"
     chalk "^4.1.2"
-    decamelize "^4.0.0"
     fs-extra "^9.1.0"
     glob "^7"
     ini "^2.0.0"
@@ -3238,9 +3238,9 @@ trim-newlines@^3.0.0:
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
 ts-node@^10.2.1:
-  version "10.3.0"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/ts-node/-/ts-node-10.3.0.tgz#a797f2ed3ff50c9a5d814ce400437cb0c1c048b4"
-  integrity sha512-RYIy3i8IgpFH45AX4fQHExrT8BxDeKTdC83QFJkNzkvt8uFB6QJ8XMyhynYiKMLxt9a7yuXaDBZNOYS3XjDcYw==
+  version "10.4.0"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/ts-node/-/ts-node-10.4.0.tgz#680f88945885f4e6cf450e7f0d6223dd404895f7"
+  integrity sha512-g0FlPvvCXSIO1JDF6S232P5jPYqBkRL9qly81ZgAOSU7rwI0stphCgd2kLiCrU9DjQCrJMWEqcNSjQL02s6d8A==
   dependencies:
     "@cspotcode/source-map-support" "0.7.0"
     "@tsconfig/node10" "^1.0.7"
@@ -3317,9 +3317,9 @@ typescript@^4.0.3, typescript@^4.4.4:
   integrity sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==
 
 uglify-js@^3.1.4:
-  version "3.14.2"
-  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/uglify-js/-/uglify-js-3.14.2.tgz#d7dd6a46ca57214f54a2d0a43cad0f35db82ac99"
-  integrity sha512-rtPMlmcO4agTUfz10CbgJ1k6UAoXM2gWb3GoMPPZB/+/Ackf8lNWk11K4rYi2D0apgoFRLtQOZhb+/iGNJq26A==
+  version "3.14.3"
+  resolved "https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com:443/npm/global-templates/uglify-js/-/uglify-js-3.14.3.tgz#c0f25dfea1e8e5323eccf59610be08b6043c15cf"
+  integrity sha512-mic3aOdiq01DuSVx0TseaEzMIVqebMZ0Z3vaeDhFEh9bsc24hV1TFvN74reA2vs08D0ZWfNjAcJ3UbVLaBss+g==
 
 unique-filename@^1.1.1:
   version "1.1.1"
