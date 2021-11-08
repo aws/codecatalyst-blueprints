@@ -1,0 +1,9 @@
+Before anything else, make sure to add the following to the .gitignore:
+
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
