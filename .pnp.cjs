@@ -23,20 +23,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
-        "name": "webpack-config",
-        "reference": "workspace:build/webpack-config"
-      },
-      {
         "name": "@caws-blueprint/caws.blueprint",
         "reference": "workspace:packages/blueprints/blueprint"
-      },
-      {
-        "name": "@caws-blueprint-tool/blueprint-cli",
-        "reference": "workspace:packages/tools/blueprint-cli"
-      },
-      {
-        "name": "@caws-blueprint-util/blueprint-utils",
-        "reference": "workspace:packages/utils/blueprint-utils"
       },
       {
         "name": "@caws-blueprint-util/blueprint-projen",
@@ -46,12 +34,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)|$))$)",
     "fallbackExclusionList": [
-      ["@caws-blueprint-tool/blueprint-cli", ["workspace:packages/tools/blueprint-cli"]],
       ["@caws-blueprint-util/blueprint-projen", ["virtual:8c40748152dc48529351c6fd138b08a537ecac9e8001cf78cb64064d6ed6df5c6ab80c803cfbc8b5066816150322a879742cb08f0cb759b39746749cfc608385#workspace:packages/utils/projen-blueprint", "workspace:packages/utils/projen-blueprint"]],
-      ["@caws-blueprint-util/blueprint-utils", ["workspace:packages/utils/blueprint-utils"]],
       ["@caws-blueprint/caws.blueprint", ["workspace:packages/blueprints/blueprint"]],
-      ["root-workspace-0b6124", ["workspace:."]],
-      ["webpack-config", ["workspace:build/webpack-config"]]
+      ["root-workspace-0b6124", ["workspace:."]]
     ],
     "fallbackPool": [
     ],
@@ -249,25 +234,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@caws-blueprint-tool/blueprint-cli", [
-        ["workspace:packages/tools/blueprint-cli", {
-          "packageLocation": "./packages/tools/blueprint-cli/",
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-tool%2Fblueprint-cli%2F-%2Fblueprint-cli-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/@caws-blueprint-tool-blueprint-cli-npm-1.0.4-c729657010-16c6cb02c6.zip/node_modules/@caws-blueprint-tool/blueprint-cli/",
           "packageDependencies": [
-            ["@caws-blueprint-tool/blueprint-cli", "workspace:packages/tools/blueprint-cli"],
-            ["@types/node", "npm:16.11.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.6.tgz"],
-            ["@types/pino", "npm:6.3.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino%2F-%2Fpino-6.3.12.tgz"],
-            ["@types/yargs", "npm:17.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs%2F-%2Fyargs-17.0.2.tgz"],
+            ["@caws-blueprint-tool/blueprint-cli", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-tool%2Fblueprint-cli%2F-%2Fblueprint-cli-1.0.4.tgz"],
             ["axios", "npm:0.21.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxios%2F-%2Faxios-0.21.4.tgz"],
-            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
             ["pino", "npm:6.13.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpino%2F-%2Fpino-6.13.3.tgz"],
             ["pino-pretty", "npm:4.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpino-pretty%2F-%2Fpino-pretty-4.8.0.tgz"],
-            ["ts-loader", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz"],
-            ["ts-node", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz"],
-            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["ts-node", "virtual:c7296570106c4651eda3928116b7ac4ed5aa0263986f0ab57044aa98ef22792b1b6e06a528e8fa6046a703ac347f540cc2e427b259b88be8de9eca9dffe24c70#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz"],
             ["yargs", "npm:17.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-17.1.1.tgz"]
           ],
-          "linkType": "SOFT",
+          "linkType": "HARD",
         }]
       ]],
       ["@caws-blueprint-util/blueprint-projen", [
@@ -303,25 +280,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["@caws-blueprint-util/blueprint-utils", [
-        ["workspace:packages/utils/blueprint-utils", {
-          "packageLocation": "./packages/utils/blueprint-utils/",
-          "packageDependencies": [
-            ["@caws-blueprint-util/blueprint-utils", "workspace:packages/utils/blueprint-utils"],
-            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
-            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
-            ["webpack", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "linkType": "SOFT",
-        }]
-      ]],
       ["@caws-blueprint/caws.blueprint", [
         ["workspace:packages/blueprints/blueprint", {
           "packageLocation": "./packages/blueprints/blueprint/",
           "packageDependencies": [
             ["@caws-blueprint/caws.blueprint", "workspace:packages/blueprints/blueprint"],
-            ["@caws-blueprint-tool/blueprint-cli", "workspace:packages/tools/blueprint-cli"],
+            ["@caws-blueprint-tool/blueprint-cli", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-tool%2Fblueprint-cli%2F-%2Fblueprint-cli-1.0.4.tgz"],
             ["@caws-blueprint-util/blueprint-projen", "virtual:8c40748152dc48529351c6fd138b08a537ecac9e8001cf78cb64064d6ed6df5c6ab80c803cfbc8b5066816150322a879742cb08f0cb759b39746749cfc608385#workspace:packages/utils/projen-blueprint"],
             ["@types/node", "npm:14.17.32::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.32.tgz"],
             ["npm-check-updates", "npm:11.8.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-check-updates%2F-%2Fnpm-check-updates-11.8.5.tgz"],
@@ -757,39 +721,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@types/pino", [
-        ["npm:6.3.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino%2F-%2Fpino-6.3.12.tgz", {
-          "packageLocation": "./.yarn/cache/@types-pino-npm-6.3.12-20f8e7127d-8017351466.zip/node_modules/@types/pino/",
-          "packageDependencies": [
-            ["@types/pino", "npm:6.3.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino%2F-%2Fpino-6.3.12.tgz"],
-            ["@types/node", "npm:16.11.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.6.tgz"],
-            ["@types/pino-pretty", "npm:4.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-pretty%2F-%2Fpino-pretty-4.7.1.tgz"],
-            ["@types/pino-std-serializers", "npm:2.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-std-serializers%2F-%2Fpino-std-serializers-2.4.1.tgz"],
-            ["sonic-boom", "npm:2.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsonic-boom%2F-%2Fsonic-boom-2.3.1.tgz"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/pino-pretty", [
-        ["npm:4.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-pretty%2F-%2Fpino-pretty-4.7.1.tgz", {
-          "packageLocation": "./.yarn/cache/@types-pino-pretty-npm-4.7.1-44e96b5dfa-5a8a80bd42.zip/node_modules/@types/pino-pretty/",
-          "packageDependencies": [
-            ["@types/pino-pretty", "npm:4.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-pretty%2F-%2Fpino-pretty-4.7.1.tgz"],
-            ["@types/pino", "npm:6.3.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino%2F-%2Fpino-6.3.12.tgz"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/pino-std-serializers", [
-        ["npm:2.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-std-serializers%2F-%2Fpino-std-serializers-2.4.1.tgz", {
-          "packageLocation": "./.yarn/cache/@types-pino-std-serializers-npm-2.4.1-a41484214d-a156e25882.zip/node_modules/@types/pino-std-serializers/",
-          "packageDependencies": [
-            ["@types/pino-std-serializers", "npm:2.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino-std-serializers%2F-%2Fpino-std-serializers-2.4.1.tgz"],
-            ["@types/node", "npm:16.11.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.6.tgz"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["@types/responselike", [
         ["npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fresponselike%2F-%2Fresponselike-1.0.0.tgz", {
           "packageLocation": "./.yarn/cache/@types-responselike-npm-1.0.0-00c1030087-e99fc7cc62.zip/node_modules/@types/responselike/",
@@ -814,25 +745,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-strip-json-comments-npm-0.0.30-b2931cf9ba-829ddd3896.zip/node_modules/@types/strip-json-comments/",
           "packageDependencies": [
             ["@types/strip-json-comments", "npm:0.0.30::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fstrip-json-comments%2F-%2Fstrip-json-comments-0.0.30.tgz"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/yargs", [
-        ["npm:17.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs%2F-%2Fyargs-17.0.2.tgz", {
-          "packageLocation": "./.yarn/cache/@types-yargs-npm-17.0.2-704379348d-6f4600d3b7.zip/node_modules/@types/yargs/",
-          "packageDependencies": [
-            ["@types/yargs", "npm:17.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs%2F-%2Fyargs-17.0.2.tgz"],
-            ["@types/yargs-parser", "npm:20.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs-parser%2F-%2Fyargs-parser-20.2.1.tgz"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/yargs-parser", [
-        ["npm:20.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs-parser%2F-%2Fyargs-parser-20.2.1.tgz", {
-          "packageLocation": "./.yarn/cache/@types-yargs-parser-npm-20.2.1-a7a4388a48-1d039e6449.zip/node_modules/@types/yargs-parser/",
-          "packageDependencies": [
-            ["@types/yargs-parser", "npm:20.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs-parser%2F-%2Fyargs-parser-20.2.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -1192,40 +1104,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-539a01b36f/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
-          "packageDependencies": [
-            ["@webpack-cli/configtest", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-cli", null],
-            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack",
-            "webpack-cli",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-05b747dd35/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
-          "packageDependencies": [
-            ["@webpack-cli/configtest", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-cli", null],
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack",
-            "webpack-cli",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-cf46a85f96/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
           "packageDependencies": [
@@ -1234,23 +1112,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
             ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack",
-            "webpack-cli",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-26bce350ea/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
-          "packageDependencies": [
-            ["@webpack-cli/configtest", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-cli", null],
-            ["webpack", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
           ],
           "packagePeers": [
             "@types/webpack-cli",
@@ -1269,34 +1130,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-cba4ffd53a/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
-          "packageDependencies": [
-            ["@webpack-cli/info", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-bbbc91bfda/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
-          "packageDependencies": [
-            ["@webpack-cli/info", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-bb1127e1a7/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
           "packageDependencies": [
@@ -1304,20 +1137,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
             ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-f36fa10e73/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
-          "packageDependencies": [
-            ["@webpack-cli/info", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
           ],
           "packagePeers": [
             "@types/webpack-cli",
@@ -1334,40 +1153,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-e99d3c3bcc/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
-          "packageDependencies": [
-            ["@webpack-cli/serve", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["@types/webpack-dev-server", null],
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-dev-server", null]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack-dev-server",
-            "webpack-cli",
-            "webpack-dev-server"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-ff3a29eb0a/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
-          "packageDependencies": [
-            ["@webpack-cli/serve", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["@types/webpack-dev-server", null],
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-dev-server", null]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack-dev-server",
-            "webpack-cli",
-            "webpack-dev-server"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-ef243383d3/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
           "packageDependencies": [
@@ -1375,23 +1160,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["@types/webpack-dev-server", null],
             ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-dev-server", null]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "@types/webpack-dev-server",
-            "webpack-cli",
-            "webpack-dev-server"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-612d9b2138/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
-          "packageDependencies": [
-            ["@webpack-cli/serve", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["@types/webpack-cli", null],
-            ["@types/webpack-dev-server", null],
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
             ["webpack-dev-server", null]
           ],
           "packagePeers": [
@@ -7718,14 +7486,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["flatstr", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fflatstr%2F-%2Fflatstr-1.0.12.tgz"]
           ],
           "linkType": "HARD",
-        }],
-        ["npm:2.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsonic-boom%2F-%2Fsonic-boom-2.3.1.tgz", {
-          "packageLocation": "./.yarn/cache/sonic-boom-npm-2.3.1-56fb79faba-4f5022de97.zip/node_modules/sonic-boom/",
-          "packageDependencies": [
-            ["sonic-boom", "npm:2.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsonic-boom%2F-%2Fsonic-boom-2.3.1.tgz"],
-            ["atomic-sleep", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fatomic-sleep%2F-%2Fatomic-sleep-1.0.0.tgz"]
-          ],
-          "linkType": "HARD",
         }]
       ]],
       ["source-map", [
@@ -8133,66 +7893,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:144a1847efed1036d3773be4b88817fe1010b12ea5adf7bfe987c4ef41f510bbc61e3a141a53ee85796ada192047874423a8d9b8595685606a8e780082c4ef3c#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
-          "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-b8bdf4743d/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
-          "packageDependencies": [
-            ["terser-webpack-plugin", "virtual:144a1847efed1036d3773be4b88817fe1010b12ea5adf7bfe987c4ef41f510bbc61e3a141a53ee85796ada192047874423a8d9b8595685606a8e780082c4ef3c#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["@swc/core", null],
-            ["@types/esbuild", null],
-            ["@types/swc__core", null],
-            ["@types/uglify-js", null],
-            ["@types/webpack", null],
-            ["esbuild", null],
-            ["jest-worker", "npm:27.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjest-worker%2F-%2Fjest-worker-27.3.1.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["serialize-javascript", "npm:6.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fserialize-javascript%2F-%2Fserialize-javascript-6.0.0.tgz"],
-            ["source-map", "npm:0.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.6.1.tgz"],
-            ["terser", "npm:5.9.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser%2F-%2Fterser-5.9.0.tgz"],
-            ["uglify-js", null],
-            ["webpack", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
-          ],
-          "packagePeers": [
-            "@swc/core",
-            "@types/esbuild",
-            "@types/swc__core",
-            "@types/uglify-js",
-            "@types/webpack",
-            "esbuild",
-            "uglify-js",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
-          "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-41569e28e5/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
-          "packageDependencies": [
-            ["terser-webpack-plugin", "virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["@swc/core", null],
-            ["@types/esbuild", null],
-            ["@types/swc__core", null],
-            ["@types/uglify-js", null],
-            ["@types/webpack", null],
-            ["esbuild", null],
-            ["jest-worker", "npm:27.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjest-worker%2F-%2Fjest-worker-27.3.1.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["serialize-javascript", "npm:6.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fserialize-javascript%2F-%2Fserialize-javascript-6.0.0.tgz"],
-            ["source-map", "npm:0.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.6.1.tgz"],
-            ["terser", "npm:5.9.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser%2F-%2Fterser-5.9.0.tgz"],
-            ["uglify-js", null],
-            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
-          ],
-          "packagePeers": [
-            "@swc/core",
-            "@types/esbuild",
-            "@types/swc__core",
-            "@types/uglify-js",
-            "@types/webpack",
-            "esbuild",
-            "uglify-js",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
           "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-83b53d37ed/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
           "packageDependencies": [
@@ -8210,36 +7910,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["terser", "npm:5.9.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser%2F-%2Fterser-5.9.0.tgz"],
             ["uglify-js", null],
             ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
-          ],
-          "packagePeers": [
-            "@swc/core",
-            "@types/esbuild",
-            "@types/swc__core",
-            "@types/uglify-js",
-            "@types/webpack",
-            "esbuild",
-            "uglify-js",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:cf5ac8608615096c6f71d6941d12173d53813d2e680bba4f2667bfe7a72be4910a282d088fa4439f9917d34e011e08ed3906a10ec025db0aa47bff4e6eef0d90#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
-          "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-071532ed91/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
-          "packageDependencies": [
-            ["terser-webpack-plugin", "virtual:cf5ac8608615096c6f71d6941d12173d53813d2e680bba4f2667bfe7a72be4910a282d088fa4439f9917d34e011e08ed3906a10ec025db0aa47bff4e6eef0d90#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["@swc/core", null],
-            ["@types/esbuild", null],
-            ["@types/swc__core", null],
-            ["@types/uglify-js", null],
-            ["@types/webpack", null],
-            ["esbuild", null],
-            ["jest-worker", "npm:27.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjest-worker%2F-%2Fjest-worker-27.3.1.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["serialize-javascript", "npm:6.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fserialize-javascript%2F-%2Fserialize-javascript-6.0.0.tgz"],
-            ["source-map", "npm:0.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.6.1.tgz"],
-            ["terser", "npm:5.9.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser%2F-%2Fterser-5.9.0.tgz"],
-            ["uglify-js", null],
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
           ],
           "packagePeers": [
             "@swc/core",
@@ -8365,28 +8035,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/ts-loader-virtual-1aa62d3a75/0/cache/ts-loader-npm-8.3.0-f7444d5b12-93dd15b553.zip/node_modules/ts-loader/",
-          "packageDependencies": [
-            ["ts-loader", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz"],
-            ["@types/typescript", null],
-            ["@types/webpack", null],
-            ["chalk", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchalk%2F-%2Fchalk-4.1.2.tgz"],
-            ["enhanced-resolve", "npm:4.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenhanced-resolve%2F-%2Fenhanced-resolve-4.5.0.tgz"],
-            ["loader-utils", "npm:2.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floader-utils%2F-%2Floader-utils-2.0.2.tgz"],
-            ["micromatch", "npm:4.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmicromatch%2F-%2Fmicromatch-4.0.4.tgz"],
-            ["semver", "npm:7.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-7.3.5.tgz"],
-            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/typescript",
-            "@types/webpack",
-            "typescript",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/ts-loader-virtual-193081a021/0/cache/ts-loader-npm-8.3.0-f7444d5b12-93dd15b553.zip/node_modules/ts-loader/",
           "packageDependencies": [
@@ -8444,10 +8092,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz", {
-          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-d32de944fb/0/cache/ts-node-npm-10.4.0-a7700a1c66-3933ac0a93.zip/node_modules/ts-node/",
+        ["virtual:c7296570106c4651eda3928116b7ac4ed5aa0263986f0ab57044aa98ef22792b1b6e06a528e8fa6046a703ac347f540cc2e427b259b88be8de9eca9dffe24c70#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-0fa3040d70/0/cache/ts-node-npm-10.4.0-a7700a1c66-3933ac0a93.zip/node_modules/ts-node/",
           "packageDependencies": [
-            ["ts-node", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz"],
+            ["ts-node", "virtual:c7296570106c4651eda3928116b7ac4ed5aa0263986f0ab57044aa98ef22792b1b6e06a528e8fa6046a703ac347f540cc2e427b259b88be8de9eca9dffe24c70#npm:10.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node%2F-%2Fts-node-10.4.0.tgz"],
             ["@cspotcode/source-map-support", "npm:0.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40cspotcode%2Fsource-map-support%2F-%2Fsource-map-support-0.7.0.tgz"],
             ["@swc/core", null],
             ["@swc/wasm", null],
@@ -8455,7 +8103,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node12", "npm:1.0.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40tsconfig%2Fnode12%2F-%2Fnode12-1.0.9.tgz"],
             ["@tsconfig/node14", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40tsconfig%2Fnode14%2F-%2Fnode14-1.0.1.tgz"],
             ["@tsconfig/node16", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40tsconfig%2Fnode16%2F-%2Fnode16-1.0.2.tgz"],
-            ["@types/node", "npm:16.11.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.6.tgz"],
+            ["@types/node", null],
             ["@types/swc__core", null],
             ["@types/swc__wasm", null],
             ["@types/typescript", null],
@@ -8465,7 +8113,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["create-require", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcreate-require%2F-%2Fcreate-require-1.1.1.tgz"],
             ["diff", "npm:4.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdiff%2F-%2Fdiff-4.0.2.tgz"],
             ["make-error", "npm:1.3.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmake-error%2F-%2Fmake-error-1.3.6.tgz"],
-            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
+            ["typescript", null],
             ["yn", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyn%2F-%2Fyn-3.1.1.tgz"]
           ],
           "packagePeers": [
@@ -8858,117 +8506,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-virtual-5091e94c5f/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
-          "packageDependencies": [
-            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["@types/eslint-scope", "npm:3.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Feslint-scope%2F-%2Feslint-scope-3.7.1.tgz"],
-            ["@types/estree", "npm:0.0.50::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Festree%2F-%2Festree-0.0.50.tgz"],
-            ["@types/webpack-cli", null],
-            ["@webassemblyjs/ast", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fast%2F-%2Fast-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-edit", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-edit%2F-%2Fwasm-edit-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-parser", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-parser%2F-%2Fwasm-parser-1.11.1.tgz"],
-            ["acorn", "npm:8.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn%2F-%2Facorn-8.5.0.tgz"],
-            ["acorn-import-assertions", "virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:1.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn-import-assertions%2F-%2Facorn-import-assertions-1.8.0.tgz"],
-            ["browserslist", "npm:4.17.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbrowserslist%2F-%2Fbrowserslist-4.17.6.tgz"],
-            ["chrome-trace-event", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchrome-trace-event%2F-%2Fchrome-trace-event-1.0.3.tgz"],
-            ["enhanced-resolve", "npm:5.8.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenhanced-resolve%2F-%2Fenhanced-resolve-5.8.3.tgz"],
-            ["es-module-lexer", "npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz"],
-            ["eslint-scope", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz"],
-            ["events", "npm:3.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fevents%2F-%2Fevents-3.3.0.tgz"],
-            ["glob-to-regexp", "npm:0.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglob-to-regexp%2F-%2Fglob-to-regexp-0.4.1.tgz"],
-            ["graceful-fs", "npm:4.2.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fgraceful-fs%2F-%2Fgraceful-fs-4.2.8.tgz"],
-            ["json-parse-better-errors", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-parse-better-errors%2F-%2Fjson-parse-better-errors-1.0.2.tgz"],
-            ["loader-runner", "npm:4.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floader-runner%2F-%2Floader-runner-4.2.0.tgz"],
-            ["mime-types", "npm:2.1.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmime-types%2F-%2Fmime-types-2.1.33.tgz"],
-            ["neo-async", "npm:2.6.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fneo-async%2F-%2Fneo-async-2.6.2.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["tapable", "npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftapable%2F-%2Ftapable-2.2.1.tgz"],
-            ["terser-webpack-plugin", "virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["watchpack", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.2.0.tgz"],
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-sources", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-sources%2F-%2Fwebpack-sources-3.2.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-virtual-144a1847ef/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
-          "packageDependencies": [
-            ["webpack", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["@types/eslint-scope", "npm:3.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Feslint-scope%2F-%2Feslint-scope-3.7.1.tgz"],
-            ["@types/estree", "npm:0.0.50::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Festree%2F-%2Festree-0.0.50.tgz"],
-            ["@types/webpack-cli", null],
-            ["@webassemblyjs/ast", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fast%2F-%2Fast-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-edit", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-edit%2F-%2Fwasm-edit-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-parser", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-parser%2F-%2Fwasm-parser-1.11.1.tgz"],
-            ["acorn", "npm:8.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn%2F-%2Facorn-8.5.0.tgz"],
-            ["acorn-import-assertions", "virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:1.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn-import-assertions%2F-%2Facorn-import-assertions-1.8.0.tgz"],
-            ["browserslist", "npm:4.17.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbrowserslist%2F-%2Fbrowserslist-4.17.6.tgz"],
-            ["chrome-trace-event", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchrome-trace-event%2F-%2Fchrome-trace-event-1.0.3.tgz"],
-            ["enhanced-resolve", "npm:5.8.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenhanced-resolve%2F-%2Fenhanced-resolve-5.8.3.tgz"],
-            ["es-module-lexer", "npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz"],
-            ["eslint-scope", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz"],
-            ["events", "npm:3.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fevents%2F-%2Fevents-3.3.0.tgz"],
-            ["glob-to-regexp", "npm:0.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglob-to-regexp%2F-%2Fglob-to-regexp-0.4.1.tgz"],
-            ["graceful-fs", "npm:4.2.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fgraceful-fs%2F-%2Fgraceful-fs-4.2.8.tgz"],
-            ["json-parse-better-errors", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-parse-better-errors%2F-%2Fjson-parse-better-errors-1.0.2.tgz"],
-            ["loader-runner", "npm:4.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floader-runner%2F-%2Floader-runner-4.2.0.tgz"],
-            ["mime-types", "npm:2.1.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmime-types%2F-%2Fmime-types-2.1.33.tgz"],
-            ["neo-async", "npm:2.6.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fneo-async%2F-%2Fneo-async-2.6.2.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["tapable", "npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftapable%2F-%2Ftapable-2.2.1.tgz"],
-            ["terser-webpack-plugin", "virtual:144a1847efed1036d3773be4b88817fe1010b12ea5adf7bfe987c4ef41f510bbc61e3a141a53ee85796ada192047874423a8d9b8595685606a8e780082c4ef3c#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["watchpack", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.2.0.tgz"],
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-sources", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-sources%2F-%2Fwebpack-sources-3.2.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-virtual-cf5ac86086/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
-          "packageDependencies": [
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["@types/eslint-scope", "npm:3.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Feslint-scope%2F-%2Feslint-scope-3.7.1.tgz"],
-            ["@types/estree", "npm:0.0.50::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Festree%2F-%2Festree-0.0.50.tgz"],
-            ["@types/webpack-cli", null],
-            ["@webassemblyjs/ast", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fast%2F-%2Fast-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-edit", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-edit%2F-%2Fwasm-edit-1.11.1.tgz"],
-            ["@webassemblyjs/wasm-parser", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-parser%2F-%2Fwasm-parser-1.11.1.tgz"],
-            ["acorn", "npm:8.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn%2F-%2Facorn-8.5.0.tgz"],
-            ["acorn-import-assertions", "virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:1.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn-import-assertions%2F-%2Facorn-import-assertions-1.8.0.tgz"],
-            ["browserslist", "npm:4.17.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbrowserslist%2F-%2Fbrowserslist-4.17.6.tgz"],
-            ["chrome-trace-event", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchrome-trace-event%2F-%2Fchrome-trace-event-1.0.3.tgz"],
-            ["enhanced-resolve", "npm:5.8.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenhanced-resolve%2F-%2Fenhanced-resolve-5.8.3.tgz"],
-            ["es-module-lexer", "npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz"],
-            ["eslint-scope", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz"],
-            ["events", "npm:3.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fevents%2F-%2Fevents-3.3.0.tgz"],
-            ["glob-to-regexp", "npm:0.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglob-to-regexp%2F-%2Fglob-to-regexp-0.4.1.tgz"],
-            ["graceful-fs", "npm:4.2.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fgraceful-fs%2F-%2Fgraceful-fs-4.2.8.tgz"],
-            ["json-parse-better-errors", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-parse-better-errors%2F-%2Fjson-parse-better-errors-1.0.2.tgz"],
-            ["loader-runner", "npm:4.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floader-runner%2F-%2Floader-runner-4.2.0.tgz"],
-            ["mime-types", "npm:2.1.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmime-types%2F-%2Fmime-types-2.1.33.tgz"],
-            ["neo-async", "npm:2.6.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fneo-async%2F-%2Fneo-async-2.6.2.tgz"],
-            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
-            ["tapable", "npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftapable%2F-%2Ftapable-2.2.1.tgz"],
-            ["terser-webpack-plugin", "virtual:cf5ac8608615096c6f71d6941d12173d53813d2e680bba4f2667bfe7a72be4910a282d088fa4439f9917d34e011e08ed3906a10ec025db0aa47bff4e6eef0d90#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
-            ["watchpack", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.2.0.tgz"],
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["webpack-sources", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-sources%2F-%2Fwebpack-sources-3.2.1.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-cli",
-            "webpack-cli"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
           "packageLocation": "./.yarn/__virtual__/webpack-virtual-991315bf8f/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
           "packageDependencies": [
@@ -9015,129 +8552,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-10984a7802/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
-          "packageDependencies": [
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["@discoveryjs/json-ext", "npm:0.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40discoveryjs%2Fjson-ext%2F-%2Fjson-ext-0.5.5.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-bundle-analyzer", null],
-            ["@types/webpack-cli__generators", null],
-            ["@types/webpack-cli__migrate", null],
-            ["@types/webpack-dev-server", null],
-            ["@webpack-cli/configtest", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@webpack-cli/generators", null],
-            ["@webpack-cli/info", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@webpack-cli/migrate", null],
-            ["@webpack-cli/serve", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["colorette", "npm:2.0.16::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcolorette%2F-%2Fcolorette-2.0.16.tgz"],
-            ["commander", "npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-7.2.0.tgz"],
-            ["execa", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fexeca%2F-%2Fexeca-5.1.1.tgz"],
-            ["fastest-levenshtein", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastest-levenshtein%2F-%2Ffastest-levenshtein-1.0.12.tgz"],
-            ["import-local", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fimport-local%2F-%2Fimport-local-3.0.3.tgz"],
-            ["interpret", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-2.2.0.tgz"],
-            ["rechoir", "npm:0.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frechoir%2F-%2Frechoir-0.7.1.tgz"],
-            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-bundle-analyzer", null],
-            ["webpack-dev-server", null],
-            ["webpack-merge", "npm:5.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-merge%2F-%2Fwebpack-merge-5.8.0.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-bundle-analyzer",
-            "@types/webpack-cli__generators",
-            "@types/webpack-cli__migrate",
-            "@types/webpack-dev-server",
-            "@types/webpack",
-            "@webpack-cli/generators",
-            "@webpack-cli/migrate",
-            "webpack-bundle-analyzer",
-            "webpack-dev-server",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-e1d82db93c/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
-          "packageDependencies": [
-            ["webpack-cli", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["@discoveryjs/json-ext", "npm:0.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40discoveryjs%2Fjson-ext%2F-%2Fjson-ext-0.5.5.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-bundle-analyzer", null],
-            ["@types/webpack-cli__generators", null],
-            ["@types/webpack-cli__migrate", null],
-            ["@types/webpack-dev-server", null],
-            ["@webpack-cli/configtest", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@webpack-cli/generators", null],
-            ["@webpack-cli/info", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@webpack-cli/migrate", null],
-            ["@webpack-cli/serve", "virtual:e1d82db93c8887a79eea542039b2aa43f0071bc2d2974e022c3faa8bb79875461f020cf8bcba170a980742086930dd637d0335f7aae6e4d2d29cca0caa9216fc#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["colorette", "npm:2.0.16::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcolorette%2F-%2Fcolorette-2.0.16.tgz"],
-            ["commander", "npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-7.2.0.tgz"],
-            ["execa", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fexeca%2F-%2Fexeca-5.1.1.tgz"],
-            ["fastest-levenshtein", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastest-levenshtein%2F-%2Ffastest-levenshtein-1.0.12.tgz"],
-            ["import-local", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fimport-local%2F-%2Fimport-local-3.0.3.tgz"],
-            ["interpret", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-2.2.0.tgz"],
-            ["rechoir", "npm:0.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frechoir%2F-%2Frechoir-0.7.1.tgz"],
-            ["webpack", "virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-bundle-analyzer", null],
-            ["webpack-dev-server", null],
-            ["webpack-merge", "npm:5.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-merge%2F-%2Fwebpack-merge-5.8.0.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-bundle-analyzer",
-            "@types/webpack-cli__generators",
-            "@types/webpack-cli__migrate",
-            "@types/webpack-dev-server",
-            "@types/webpack",
-            "@webpack-cli/generators",
-            "@webpack-cli/migrate",
-            "webpack-bundle-analyzer",
-            "webpack-dev-server",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
-          "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-b2fe8975b3/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
-          "packageDependencies": [
-            ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
-            ["@discoveryjs/json-ext", "npm:0.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40discoveryjs%2Fjson-ext%2F-%2Fjson-ext-0.5.5.tgz"],
-            ["@types/webpack", null],
-            ["@types/webpack-bundle-analyzer", null],
-            ["@types/webpack-cli__generators", null],
-            ["@types/webpack-cli__migrate", null],
-            ["@types/webpack-dev-server", null],
-            ["@webpack-cli/configtest", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
-            ["@webpack-cli/generators", null],
-            ["@webpack-cli/info", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
-            ["@webpack-cli/migrate", null],
-            ["@webpack-cli/serve", "virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
-            ["colorette", "npm:2.0.16::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcolorette%2F-%2Fcolorette-2.0.16.tgz"],
-            ["commander", "npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-7.2.0.tgz"],
-            ["execa", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fexeca%2F-%2Fexeca-5.1.1.tgz"],
-            ["fastest-levenshtein", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastest-levenshtein%2F-%2Ffastest-levenshtein-1.0.12.tgz"],
-            ["import-local", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fimport-local%2F-%2Fimport-local-3.0.3.tgz"],
-            ["interpret", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-2.2.0.tgz"],
-            ["rechoir", "npm:0.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frechoir%2F-%2Frechoir-0.7.1.tgz"],
-            ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-bundle-analyzer", null],
-            ["webpack-dev-server", null],
-            ["webpack-merge", "npm:5.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-merge%2F-%2Fwebpack-merge-5.8.0.tgz"]
-          ],
-          "packagePeers": [
-            "@types/webpack-bundle-analyzer",
-            "@types/webpack-cli__generators",
-            "@types/webpack-cli__migrate",
-            "@types/webpack-dev-server",
-            "@types/webpack",
-            "@webpack-cli/generators",
-            "@webpack-cli/migrate",
-            "webpack-bundle-analyzer",
-            "webpack-dev-server",
-            "webpack"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
           "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-e0ba3e8b19/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
           "packageDependencies": [
@@ -9178,17 +8592,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "webpack"
           ],
           "linkType": "HARD",
-        }]
-      ]],
-      ["webpack-config", [
-        ["workspace:build/webpack-config", {
-          "packageLocation": "./build/webpack-config/",
-          "packageDependencies": [
-            ["webpack-config", "workspace:build/webpack-config"],
-            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
-            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
-          ],
-          "linkType": "SOFT",
         }]
       ]],
       ["webpack-merge", [
