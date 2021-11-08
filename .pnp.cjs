@@ -23,6 +23,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
+        "name": "webpack-config",
+        "reference": "workspace:build/webpack-config"
+      },
+      {
         "name": "@caws-blueprint/caws.blueprint",
         "reference": "workspace:packages/blueprints/blueprint"
       },
@@ -46,7 +50,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@caws-blueprint-util/blueprint-projen", ["virtual:8c40748152dc48529351c6fd138b08a537ecac9e8001cf78cb64064d6ed6df5c6ab80c803cfbc8b5066816150322a879742cb08f0cb759b39746749cfc608385#workspace:packages/utils/projen-blueprint", "workspace:packages/utils/projen-blueprint"]],
       ["@caws-blueprint-util/blueprint-utils", ["workspace:packages/utils/blueprint-utils"]],
       ["@caws-blueprint/caws.blueprint", ["workspace:packages/blueprints/blueprint"]],
-      ["root-workspace-0b6124", ["workspace:."]]
+      ["root-workspace-0b6124", ["workspace:."]],
+      ["webpack-config", ["workspace:build/webpack-config"]]
     ],
     "fallbackPool": [
     ],
@@ -55,11 +60,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@typescript-eslint/eslint-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz"],
+            ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-config-airbnb", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz"],
+            ["eslint-config-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz"],
+            ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz"],
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"],
+            ["eslint-plugin-jsx-a11y", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz"],
+            ["eslint-plugin-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz"],
+            ["eslint-plugin-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz"],
+            ["eslint-plugin-react", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz"],
+            ["eslint-plugin-react-hooks", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz"],
             ["husky", "npm:4.3.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhusky%2F-%2Fhusky-4.3.8.tgz"],
             ["ts-loader", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz"],
             ["ts-node-dev", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.1.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node-dev%2F-%2Fts-node-dev-1.1.8.tgz"],
             ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
             ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
             ["yargs", "npm:16.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-16.2.0.tgz"]
           ],
           "linkType": "SOFT",
@@ -83,6 +101,60 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@babel/generator", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fgenerator%2F-%2Fgenerator-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-generator-npm-7.16.0-fb29f13722-9ff53e0db7.zip/node_modules/@babel/generator/",
+          "packageDependencies": [
+            ["@babel/generator", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fgenerator%2F-%2Fgenerator-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"],
+            ["jsesc", "npm:2.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsesc%2F-%2Fjsesc-2.5.2.tgz"],
+            ["source-map", "npm:0.5.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.5.7.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/helper-function-name", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-function-name%2F-%2Fhelper-function-name-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-helper-function-name-npm-7.16.0-97954dfd2d-8c02371d28.zip/node_modules/@babel/helper-function-name/",
+          "packageDependencies": [
+            ["@babel/helper-function-name", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-function-name%2F-%2Fhelper-function-name-7.16.0.tgz"],
+            ["@babel/helper-get-function-arity", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-get-function-arity%2F-%2Fhelper-get-function-arity-7.16.0.tgz"],
+            ["@babel/template", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftemplate%2F-%2Ftemplate-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/helper-get-function-arity", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-get-function-arity%2F-%2Fhelper-get-function-arity-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-helper-get-function-arity-npm-7.16.0-fb64e9c88e-1a68322c7b.zip/node_modules/@babel/helper-get-function-arity/",
+          "packageDependencies": [
+            ["@babel/helper-get-function-arity", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-get-function-arity%2F-%2Fhelper-get-function-arity-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/helper-hoist-variables", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-hoist-variables%2F-%2Fhelper-hoist-variables-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-helper-hoist-variables-npm-7.16.0-b7e2f2f5af-2ee5b400c2.zip/node_modules/@babel/helper-hoist-variables/",
+          "packageDependencies": [
+            ["@babel/helper-hoist-variables", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-hoist-variables%2F-%2Fhelper-hoist-variables-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/helper-split-export-declaration", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-split-export-declaration%2F-%2Fhelper-split-export-declaration-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-helper-split-export-declaration-npm-7.16.0-64678396a5-8bd87b5ea2.zip/node_modules/@babel/helper-split-export-declaration/",
+          "packageDependencies": [
+            ["@babel/helper-split-export-declaration", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-split-export-declaration%2F-%2Fhelper-split-export-declaration-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@babel/helper-validator-identifier", [
         ["npm:7.15.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-validator-identifier%2F-%2Fhelper-validator-identifier-7.15.7.tgz", {
           "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-7.15.7-bb74b64361-f041c28c53.zip/node_modules/@babel/helper-validator-identifier/",
@@ -100,6 +172,78 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/helper-validator-identifier", "npm:7.15.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-validator-identifier%2F-%2Fhelper-validator-identifier-7.15.7.tgz"],
             ["chalk", "npm:2.4.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchalk%2F-%2Fchalk-2.4.2.tgz"],
             ["js-tokens", "npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjs-tokens%2F-%2Fjs-tokens-4.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/parser", [
+        ["npm:7.16.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fparser%2F-%2Fparser-7.16.2.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-parser-npm-7.16.2-3842bc8c72-e8ceef8214.zip/node_modules/@babel/parser/",
+          "packageDependencies": [
+            ["@babel/parser", "npm:7.16.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fparser%2F-%2Fparser-7.16.2.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/runtime", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime%2F-%2Fruntime-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-runtime-npm-7.16.0-406ffbccbb-bfbca3ec52.zip/node_modules/@babel/runtime/",
+          "packageDependencies": [
+            ["@babel/runtime", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime%2F-%2Fruntime-7.16.0.tgz"],
+            ["regenerator-runtime", "npm:0.13.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregenerator-runtime%2F-%2Fregenerator-runtime-0.13.9.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/runtime-corejs3", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime-corejs3%2F-%2Fruntime-corejs3-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-runtime-corejs3-npm-7.16.0-f63fbb9ff2-f850f77b18.zip/node_modules/@babel/runtime-corejs3/",
+          "packageDependencies": [
+            ["@babel/runtime-corejs3", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime-corejs3%2F-%2Fruntime-corejs3-7.16.0.tgz"],
+            ["core-js-pure", "npm:3.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcore-js-pure%2F-%2Fcore-js-pure-3.19.1.tgz"],
+            ["regenerator-runtime", "npm:0.13.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregenerator-runtime%2F-%2Fregenerator-runtime-0.13.9.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/template", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftemplate%2F-%2Ftemplate-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-template-npm-7.16.0-530dd3a024-940f105cc6.zip/node_modules/@babel/template/",
+          "packageDependencies": [
+            ["@babel/template", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftemplate%2F-%2Ftemplate-7.16.0.tgz"],
+            ["@babel/code-frame", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fcode-frame%2F-%2Fcode-frame-7.16.0.tgz"],
+            ["@babel/parser", "npm:7.16.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fparser%2F-%2Fparser-7.16.2.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/traverse", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftraverse%2F-%2Ftraverse-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-traverse-npm-7.16.0-dc7bd19fed-83f634019a.zip/node_modules/@babel/traverse/",
+          "packageDependencies": [
+            ["@babel/traverse", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftraverse%2F-%2Ftraverse-7.16.0.tgz"],
+            ["@babel/code-frame", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fcode-frame%2F-%2Fcode-frame-7.16.0.tgz"],
+            ["@babel/generator", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fgenerator%2F-%2Fgenerator-7.16.0.tgz"],
+            ["@babel/helper-function-name", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-function-name%2F-%2Fhelper-function-name-7.16.0.tgz"],
+            ["@babel/helper-hoist-variables", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-hoist-variables%2F-%2Fhelper-hoist-variables-7.16.0.tgz"],
+            ["@babel/helper-split-export-declaration", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-split-export-declaration%2F-%2Fhelper-split-export-declaration-7.16.0.tgz"],
+            ["@babel/parser", "npm:7.16.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fparser%2F-%2Fparser-7.16.2.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["globals", "npm:11.12.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobals%2F-%2Fglobals-11.12.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/types", [
+        ["npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz", {
+          "packageLocation": "./.yarn/cache/@babel-types-npm-7.16.0-b1d849603f-5b483da5c6.zip/node_modules/@babel/types/",
+          "packageDependencies": [
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"],
+            ["@babel/helper-validator-identifier", "npm:7.15.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fhelper-validator-identifier%2F-%2Fhelper-validator-identifier-7.15.7.tgz"],
+            ["to-fast-properties", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fto-fast-properties%2F-%2Fto-fast-properties-2.0.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -223,7 +367,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@eslint/eslintrc", "npm:0.4.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40eslint%2Feslintrc%2F-%2Feslintrc-0.4.3.tgz"],
             ["ajv", "npm:6.12.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fajv%2F-%2Fajv-6.12.6.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["espree", "npm:7.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fespree%2F-%2Fespree-7.3.1.tgz"],
             ["globals", "npm:13.12.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobals%2F-%2Fglobals-13.12.0.tgz"],
             ["ignore", "npm:4.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fignore%2F-%2Fignore-4.0.6.tgz"],
@@ -259,7 +403,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@humanwhocodes/config-array", "npm:0.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40humanwhocodes%2Fconfig-array%2F-%2Fconfig-array-0.5.0.tgz"],
             ["@humanwhocodes/object-schema", "npm:1.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40humanwhocodes%2Fobject-schema%2F-%2Fobject-schema-1.2.1.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["minimatch", "npm:3.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-3.0.4.tgz"]
           ],
           "linkType": "HARD",
@@ -551,6 +695,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/json5", [
+        ["npm:0.0.29::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjson5%2F-%2Fjson5-0.0.29.tgz", {
+          "packageLocation": "./.yarn/cache/@types-json5-npm-0.0.29-8c520c9cf8-e60b153664.zip/node_modules/@types/json5/",
+          "packageDependencies": [
+            ["@types/json5", "npm:0.0.29::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjson5%2F-%2Fjson5-0.0.29.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/keyv", [
         ["npm:3.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fkeyv%2F-%2Fkeyv-3.1.3.tgz", {
           "packageLocation": "./.yarn/cache/@types-keyv-npm-3.1.3-18a8432027-b5f8aa592c.zip/node_modules/@types/keyv/",
@@ -680,6 +833,182 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-yargs-parser-npm-20.2.1-a7a4388a48-1d039e6449.zip/node_modules/@types/yargs-parser/",
           "packageDependencies": [
             ["@types/yargs-parser", "npm:20.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs-parser%2F-%2Fyargs-parser-20.2.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/eslint-plugin", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-eslint-plugin-npm-5.3.1-b5262db9ab-084cac897b.zip/node_modules/@typescript-eslint/eslint-plugin/",
+          "packageDependencies": [
+            ["@typescript-eslint/eslint-plugin", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@typescript-eslint-eslint-plugin-virtual-1d8c6689bb/0/cache/@typescript-eslint-eslint-plugin-npm-5.3.1-b5262db9ab-084cac897b.zip/node_modules/@typescript-eslint/eslint-plugin/",
+          "packageDependencies": [
+            ["@typescript-eslint/eslint-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/typescript", null],
+            ["@types/typescript-eslint__parser", null],
+            ["@typescript-eslint/experimental-utils", "virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fexperimental-utils%2F-%2Fexperimental-utils-5.3.1.tgz"],
+            ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz"],
+            ["@typescript-eslint/scope-manager", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.3.1.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["functional-red-black-tree", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffunctional-red-black-tree%2F-%2Ffunctional-red-black-tree-1.0.1.tgz"],
+            ["ignore", "npm:5.1.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fignore%2F-%2Fignore-5.1.9.tgz"],
+            ["regexpp", "npm:3.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexpp%2F-%2Fregexpp-3.2.0.tgz"],
+            ["semver", "npm:7.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-7.3.5.tgz"],
+            ["tsutils", "virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"],
+            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "@types/typescript-eslint__parser",
+            "@types/typescript",
+            "@typescript-eslint/parser",
+            "eslint",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/experimental-utils", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fexperimental-utils%2F-%2Fexperimental-utils-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-experimental-utils-npm-5.3.1-4644aae546-6388297314.zip/node_modules/@typescript-eslint/experimental-utils/",
+          "packageDependencies": [
+            ["@typescript-eslint/experimental-utils", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fexperimental-utils%2F-%2Fexperimental-utils-5.3.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fexperimental-utils%2F-%2Fexperimental-utils-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@typescript-eslint-experimental-utils-virtual-b98f6d45e0/0/cache/@typescript-eslint-experimental-utils-npm-5.3.1-4644aae546-6388297314.zip/node_modules/@typescript-eslint/experimental-utils/",
+          "packageDependencies": [
+            ["@typescript-eslint/experimental-utils", "virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fexperimental-utils%2F-%2Fexperimental-utils-5.3.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/json-schema", "npm:7.0.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjson-schema%2F-%2Fjson-schema-7.0.9.tgz"],
+            ["@typescript-eslint/scope-manager", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.3.1.tgz"],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["@typescript-eslint/typescript-estree", "virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-scope", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz"],
+            ["eslint-utils", "virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-3.0.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/parser", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-parser-npm-5.3.1-0b5751d5f0-9ca2928ca3.zip/node_modules/@typescript-eslint/parser/",
+          "packageDependencies": [
+            ["@typescript-eslint/parser", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@typescript-eslint-parser-virtual-817ee69000/0/cache/@typescript-eslint-parser-npm-5.3.1-0b5751d5f0-9ca2928ca3.zip/node_modules/@typescript-eslint/parser/",
+          "packageDependencies": [
+            ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/typescript", null],
+            ["@typescript-eslint/scope-manager", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.3.1.tgz"],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["@typescript-eslint/typescript-estree", "virtual:817ee6900056f883186fdfa0d1fbb8146d2fe6387ee46113f5820c3306b39c227ab79929b3fbbc6512d4a126cb03455e9d4555eddef799b4dd5fa99f04270be3#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "@types/typescript",
+            "eslint",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/scope-manager", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-scope-manager-npm-5.3.1-f1aeb07b49-336bb99351.zip/node_modules/@typescript-eslint/scope-manager/",
+          "packageDependencies": [
+            ["@typescript-eslint/scope-manager", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.3.1.tgz"],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["@typescript-eslint/visitor-keys", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.3.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/types", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-types-npm-5.3.1-7a1697e356-ccba0a505b.zip/node_modules/@typescript-eslint/types/",
+          "packageDependencies": [
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/typescript-estree", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-typescript-estree-npm-5.3.1-803366f865-cc29aabda0.zip/node_modules/@typescript-eslint/typescript-estree/",
+          "packageDependencies": [
+            ["@typescript-eslint/typescript-estree", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:817ee6900056f883186fdfa0d1fbb8146d2fe6387ee46113f5820c3306b39c227ab79929b3fbbc6512d4a126cb03455e9d4555eddef799b4dd5fa99f04270be3#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@typescript-eslint-typescript-estree-virtual-4a3cfd0677/0/cache/@typescript-eslint-typescript-estree-npm-5.3.1-803366f865-cc29aabda0.zip/node_modules/@typescript-eslint/typescript-estree/",
+          "packageDependencies": [
+            ["@typescript-eslint/typescript-estree", "virtual:817ee6900056f883186fdfa0d1fbb8146d2fe6387ee46113f5820c3306b39c227ab79929b3fbbc6512d4a126cb03455e9d4555eddef799b4dd5fa99f04270be3#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz"],
+            ["@types/typescript", null],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["@typescript-eslint/visitor-keys", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.3.1.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["globby", "npm:11.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobby%2F-%2Fglobby-11.0.4.tgz"],
+            ["is-glob", "npm:4.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-glob%2F-%2Fis-glob-4.0.3.tgz"],
+            ["semver", "npm:7.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-7.3.5.tgz"],
+            ["tsutils", "virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"],
+            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@typescript-eslint-typescript-estree-virtual-5a1a47d9e7/0/cache/@typescript-eslint-typescript-estree-npm-5.3.1-803366f865-cc29aabda0.zip/node_modules/@typescript-eslint/typescript-estree/",
+          "packageDependencies": [
+            ["@typescript-eslint/typescript-estree", "virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.3.1.tgz"],
+            ["@types/typescript", null],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["@typescript-eslint/visitor-keys", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.3.1.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["globby", "npm:11.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobby%2F-%2Fglobby-11.0.4.tgz"],
+            ["is-glob", "npm:4.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-glob%2F-%2Fis-glob-4.0.3.tgz"],
+            ["semver", "npm:7.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-7.3.5.tgz"],
+            ["tsutils", "virtual:5a1a47d9e7fab2a7aadb17dbee0565eb42931f129da38bf9722940841c0cc36a685d77b02527dbdf9970f33920c14ccffc4fd81022f51d07f51b03cdf36a4002#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"],
+            ["typescript", null]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@typescript-eslint/visitor-keys", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/@typescript-eslint-visitor-keys-npm-5.3.1-27433b0db2-e2a2fb9dfa.zip/node_modules/@typescript-eslint/visitor-keys/",
+          "packageDependencies": [
+            ["@typescript-eslint/visitor-keys", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.3.1.tgz"],
+            ["@typescript-eslint/types", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.3.1.tgz"],
+            ["eslint-visitor-keys", "npm:3.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-3.1.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -863,6 +1192,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-539a01b36f/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
+          "packageDependencies": [
+            ["@webpack-cli/configtest", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
+            ["@types/webpack", null],
+            ["@types/webpack-cli", null],
+            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "@types/webpack",
+            "webpack-cli",
+            "webpack"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-05b747dd35/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
           "packageDependencies": [
@@ -871,6 +1217,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["webpack", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
             ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "@types/webpack",
+            "webpack-cli",
+            "webpack"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-configtest-virtual-cf46a85f96/0/cache/@webpack-cli-configtest-npm-1.1.0-c67ccc7513-69e7816b5b.zip/node_modules/@webpack-cli/configtest/",
+          "packageDependencies": [
+            ["@webpack-cli/configtest", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
+            ["@types/webpack", null],
+            ["@types/webpack-cli", null],
+            ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
           ],
           "packagePeers": [
             "@types/webpack-cli",
@@ -906,6 +1269,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-cba4ffd53a/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
+          "packageDependencies": [
+            ["@webpack-cli/info", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
+            ["@types/webpack-cli", null],
+            ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "webpack-cli"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-bbbc91bfda/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
           "packageDependencies": [
@@ -913,6 +1290,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
             ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "webpack-cli"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-info-virtual-bb1127e1a7/0/cache/@webpack-cli-info-npm-1.4.0-a6068e0f55-6385b1e2c5.zip/node_modules/@webpack-cli/info/",
+          "packageDependencies": [
+            ["@webpack-cli/info", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
+            ["@types/webpack-cli", null],
+            ["envinfo", "npm:7.8.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenvinfo%2F-%2Fenvinfo-7.8.1.tgz"],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
           ],
           "packagePeers": [
             "@types/webpack-cli",
@@ -943,6 +1334,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-e99d3c3bcc/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
+          "packageDependencies": [
+            ["@webpack-cli/serve", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
+            ["@types/webpack-cli", null],
+            ["@types/webpack-dev-server", null],
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["webpack-dev-server", null]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "@types/webpack-dev-server",
+            "webpack-cli",
+            "webpack-dev-server"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:b2fe8975b3c68915b51b654472cdc781f908736a0e8b2d507c093b3f0861ab18bb3bb621ff67daf01d7dcd082c33f16059db7afce3f5273793b2b952abce64f6#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
           "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-ff3a29eb0a/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
           "packageDependencies": [
@@ -950,6 +1358,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/webpack-cli", null],
             ["@types/webpack-dev-server", null],
             ["webpack-cli", "virtual:6092158e2042c45c3731a1236ad99a29d893877cec0333b5541c6f887cabe2be1aa78ea68b6f9a50c3bc03ffc7a00b14090527dfb659c671a172140fd2445859#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["webpack-dev-server", null]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "@types/webpack-dev-server",
+            "webpack-cli",
+            "webpack-dev-server"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/@webpack-cli-serve-virtual-ef243383d3/0/cache/@webpack-cli-serve-npm-1.6.0-04ddcadb94-050a930b63.zip/node_modules/@webpack-cli/serve/",
+          "packageDependencies": [
+            ["@webpack-cli/serve", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
+            ["@types/webpack-cli", null],
+            ["@types/webpack-dev-server", null],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
             ["webpack-dev-server", null]
           ],
           "packagePeers": [
@@ -1099,7 +1524,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/agent-base-npm-6.0.2-c40c25b739-f52b6872cc.zip/node_modules/agent-base/",
           "packageDependencies": [
             ["agent-base", "npm:6.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fagent-base%2F-%2Fagent-base-6.0.2.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -1109,7 +1534,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/agentkeepalive-npm-4.1.4-0bd0a6feaf-d49c24d4b3.zip/node_modules/agentkeepalive/",
           "packageDependencies": [
             ["agentkeepalive", "npm:4.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fagentkeepalive%2F-%2Fagentkeepalive-4.1.4.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["depd", "npm:1.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdepd%2F-%2Fdepd-1.1.2.tgz"],
             ["humanize-ms", "npm:1.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhumanize-ms%2F-%2Fhumanize-ms-1.2.1.tgz"]
           ],
@@ -1296,6 +1721,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["aria-query", [
+        ["npm:4.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faria-query%2F-%2Faria-query-4.2.2.tgz", {
+          "packageLocation": "./.yarn/cache/aria-query-npm-4.2.2-1e1e205237-38401a9a40.zip/node_modules/aria-query/",
+          "packageDependencies": [
+            ["aria-query", "npm:4.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faria-query%2F-%2Faria-query-4.2.2.tgz"],
+            ["@babel/runtime", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime%2F-%2Fruntime-7.16.0.tgz"],
+            ["@babel/runtime-corejs3", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime-corejs3%2F-%2Fruntime-corejs3-7.16.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["array-ify", [
         ["npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-ify%2F-%2Farray-ify-1.0.0.tgz", {
           "packageLocation": "./.yarn/cache/array-ify-npm-1.0.0-a699205853-c0502015b3.zip/node_modules/array-ify/",
@@ -1305,11 +1741,49 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["array-includes", [
+        ["npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz", {
+          "packageLocation": "./.yarn/cache/array-includes-npm-3.1.4-2a8174ab2d-69967c38c5.zip/node_modules/array-includes/",
+          "packageDependencies": [
+            ["array-includes", "npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["is-string", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-string%2F-%2Fis-string-1.0.7.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["array-union", [
         ["npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-union%2F-%2Farray-union-2.1.0.tgz", {
           "packageLocation": "./.yarn/cache/array-union-npm-2.1.0-e2102a6af5-5bee12395c.zip/node_modules/array-union/",
           "packageDependencies": [
             ["array-union", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-union%2F-%2Farray-union-2.1.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["array.prototype.flat", [
+        ["npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flat%2F-%2Farray.prototype.flat-1.2.5.tgz", {
+          "packageLocation": "./.yarn/cache/array.prototype.flat-npm-1.2.5-33592b6016-9cc6414b11.zip/node_modules/array.prototype.flat/",
+          "packageDependencies": [
+            ["array.prototype.flat", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flat%2F-%2Farray.prototype.flat-1.2.5.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["array.prototype.flatmap", [
+        ["npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flatmap%2F-%2Farray.prototype.flatmap-1.2.5.tgz", {
+          "packageLocation": "./.yarn/cache/array.prototype.flatmap-npm-1.2.5-0623e35b60-a14119a28e.zip/node_modules/array.prototype.flatmap/",
+          "packageDependencies": [
+            ["array.prototype.flatmap", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flatmap%2F-%2Farray.prototype.flatmap-1.2.5.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -1338,6 +1812,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/assert-plus-npm-1.0.0-f40849ba07-19b4340cb8.zip/node_modules/assert-plus/",
           "packageDependencies": [
             ["assert-plus", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fassert-plus%2F-%2Fassert-plus-1.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ast-types-flow", [
+        ["npm:0.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fast-types-flow%2F-%2Fast-types-flow-0.0.7.tgz", {
+          "packageLocation": "./.yarn/cache/ast-types-flow-npm-0.0.7-d928cf69ac-a26dcc2182.zip/node_modules/ast-types-flow/",
+          "packageDependencies": [
+            ["ast-types-flow", "npm:0.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fast-types-flow%2F-%2Fast-types-flow-0.0.7.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -1396,12 +1879,58 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["axe-core", [
+        ["npm:4.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxe-core%2F-%2Faxe-core-4.3.5.tgz", {
+          "packageLocation": "./.yarn/cache/axe-core-npm-4.3.5-44e718b19b-973c6a80f0.zip/node_modules/axe-core/",
+          "packageDependencies": [
+            ["axe-core", "npm:4.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxe-core%2F-%2Faxe-core-4.3.5.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["axios", [
         ["npm:0.21.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxios%2F-%2Faxios-0.21.4.tgz", {
           "packageLocation": "./.yarn/cache/axios-npm-0.21.4-495a7ea7c1-44245f24ac.zip/node_modules/axios/",
           "packageDependencies": [
             ["axios", "npm:0.21.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxios%2F-%2Faxios-0.21.4.tgz"],
             ["follow-redirects", "virtual:495a7ea7c198eb894a1f5d67e1e280599bcc74d29b8b1cdf4d806365230ff9257cfac1de0b4fb25e081288e1ccb3c89eafbf033241b7adac30a68a3cbc6e29b0#npm:1.14.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffollow-redirects%2F-%2Ffollow-redirects-1.14.5.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["axobject-query", [
+        ["npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxobject-query%2F-%2Faxobject-query-2.2.0.tgz", {
+          "packageLocation": "./.yarn/cache/axobject-query-npm-2.2.0-571a7cded7-96b8c7d807.zip/node_modules/axobject-query/",
+          "packageDependencies": [
+            ["axobject-query", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxobject-query%2F-%2Faxobject-query-2.2.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["babel-eslint", [
+        ["npm:10.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbabel-eslint%2F-%2Fbabel-eslint-10.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/babel-eslint-npm-10.1.0-6e8d14fc63-bdc1f62b6b.zip/node_modules/babel-eslint/",
+          "packageDependencies": [
+            ["babel-eslint", "npm:10.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbabel-eslint%2F-%2Fbabel-eslint-10.1.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:10.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbabel-eslint%2F-%2Fbabel-eslint-10.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/babel-eslint-virtual-742d8e38bd/0/cache/babel-eslint-npm-10.1.0-6e8d14fc63-bdc1f62b6b.zip/node_modules/babel-eslint/",
+          "packageDependencies": [
+            ["babel-eslint", "virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:10.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbabel-eslint%2F-%2Fbabel-eslint-10.1.0.tgz"],
+            ["@babel/code-frame", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fcode-frame%2F-%2Fcode-frame-7.16.0.tgz"],
+            ["@babel/parser", "npm:7.16.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fparser%2F-%2Fparser-7.16.2.tgz"],
+            ["@babel/traverse", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftraverse%2F-%2Ftraverse-7.16.0.tgz"],
+            ["@babel/types", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Ftypes%2F-%2Ftypes-7.16.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-visitor-keys", "npm:1.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-1.3.0.tgz"],
+            ["resolve", "patch:resolve@npm%3A1.20.0%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-1.20.0.tgz#~builtin<compat/resolve>::version=1.20.0&hash=07638b"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
           ],
           "linkType": "HARD",
         }]
@@ -1552,6 +2081,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lowercase-keys", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flowercase-keys%2F-%2Flowercase-keys-2.0.0.tgz"],
             ["normalize-url", "npm:4.5.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnormalize-url%2F-%2Fnormalize-url-4.5.1.tgz"],
             ["responselike", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fresponselike%2F-%2Fresponselike-1.0.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["call-bind", [
+        ["npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz", {
+          "packageLocation": "./.yarn/cache/call-bind-npm-1.0.2-96756daf55-f8e31de9d1.zip/node_modules/call-bind/",
+          "packageDependencies": [
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["function-bind", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffunction-bind%2F-%2Ffunction-bind-1.1.1.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -1914,6 +2454,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["confusing-browser-globals", [
+        ["npm:1.0.10::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fconfusing-browser-globals%2F-%2Fconfusing-browser-globals-1.0.10.tgz", {
+          "packageLocation": "./.yarn/cache/confusing-browser-globals-npm-1.0.10-f0c6f96fa1-7ccdc44c2c.zip/node_modules/confusing-browser-globals/",
+          "packageDependencies": [
+            ["confusing-browser-globals", "npm:1.0.10::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fconfusing-browser-globals%2F-%2Fconfusing-browser-globals-1.0.10.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["console-control-strings", [
         ["npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fconsole-control-strings%2F-%2Fconsole-control-strings-1.1.0.tgz", {
           "packageLocation": "./.yarn/cache/console-control-strings-npm-1.1.0-17bf00fa70-8755d76787.zip/node_modules/console-control-strings/",
@@ -2139,6 +2688,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["core-js-pure", [
+        ["npm:3.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcore-js-pure%2F-%2Fcore-js-pure-3.19.1.tgz", {
+          "packageLocation": "./.yarn/unplugged/core-js-pure-npm-3.19.1-4c74ef1ae8/node_modules/core-js-pure/",
+          "packageDependencies": [
+            ["core-js-pure", "npm:3.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcore-js-pure%2F-%2Fcore-js-pure-3.19.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["core-util-is", [
         ["npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcore-util-is%2F-%2Fcore-util-is-1.0.2.tgz", {
           "packageLocation": "./.yarn/cache/core-util-is-npm-1.0.2-f84485c21f-7a4c925b49.zip/node_modules/core-util-is/",
@@ -2199,6 +2757,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["damerau-levenshtein", [
+        ["npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdamerau-levenshtein%2F-%2Fdamerau-levenshtein-1.0.7.tgz", {
+          "packageLocation": "./.yarn/cache/damerau-levenshtein-npm-1.0.7-7b3fb64f01-ec8161cb38.zip/node_modules/damerau-levenshtein/",
+          "packageDependencies": [
+            ["damerau-levenshtein", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdamerau-levenshtein%2F-%2Fdamerau-levenshtein-1.0.7.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["dargs", [
         ["npm:7.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdargs%2F-%2Fdargs-7.0.0.tgz", {
           "packageLocation": "./.yarn/cache/dargs-npm-7.0.0-7c6bd06047-b8f1e3cba5.zip/node_modules/dargs/",
@@ -2235,6 +2802,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["debug", [
+        ["npm:2.6.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-2.6.9.tgz", {
+          "packageLocation": "./.yarn/cache/debug-npm-2.6.9-4bdd644e6f-d2f51589ca.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "npm:2.6.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-2.6.9.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz", {
+          "packageLocation": "./.yarn/cache/debug-npm-3.2.7-15f44c207e-b3d8c59407.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz", {
           "packageLocation": "./.yarn/cache/debug-npm-4.3.2-84917cfbc3-820ea160e2.zip/node_modules/debug/",
           "packageDependencies": [
@@ -2242,12 +2823,40 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz", {
-          "packageLocation": "./.yarn/__virtual__/debug-virtual-a6974a635f/0/cache/debug-npm-4.3.2-84917cfbc3-820ea160e2.zip/node_modules/debug/",
+        ["virtual:2cfcc3e840350e4c89b267114866c6da25c813577626469dd8bb9680464cb546290b12986e41a1979e138836ea85facbb431371f8c4ea0967d0c1dfc74f8a6fc#npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-481f6c56bc/0/cache/debug-npm-3.2.7-15f44c207e-b3d8c59407.zip/node_modules/debug/",
           "packageDependencies": [
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:2cfcc3e840350e4c89b267114866c6da25c813577626469dd8bb9680464cb546290b12986e41a1979e138836ea85facbb431371f8c4ea0967d0c1dfc74f8a6fc#npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz"],
+            ["@types/supports-color", null],
+            ["ms", "npm:2.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.1.3.tgz"],
+            ["supports-color", null]
+          ],
+          "packagePeers": [
+            "@types/supports-color",
+            "supports-color"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-47cc84d757/0/cache/debug-npm-4.3.2-84917cfbc3-820ea160e2.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["@types/supports-color", null],
             ["ms", "npm:2.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.1.2.tgz"],
+            ["supports-color", null]
+          ],
+          "packagePeers": [
+            "@types/supports-color",
+            "supports-color"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:dccf6868abed6b87b13e01728a64761fa4d252d613636fb0c5cd5c07226d58f8c5733753ebb38ed693cc1bf3bac4a0651ff6d11b2545b2945bf4b472ec062484#npm:2.6.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-2.6.9.tgz", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-f31f68202a/0/cache/debug-npm-2.6.9-4bdd644e6f-d2f51589ca.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "virtual:dccf6868abed6b87b13e01728a64761fa4d252d613636fb0c5cd5c07226d58f8c5733753ebb38ed693cc1bf3bac4a0651ff6d11b2545b2945bf4b472ec062484#npm:2.6.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-2.6.9.tgz"],
+            ["@types/supports-color", null],
+            ["ms", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.0.0.tgz"],
             ["supports-color", null]
           ],
           "packagePeers": [
@@ -2310,6 +2919,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/defer-to-connect-npm-1.1.3-61a2835f42-9491b301dc.zip/node_modules/defer-to-connect/",
           "packageDependencies": [
             ["defer-to-connect", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefer-to-connect%2F-%2Fdefer-to-connect-1.1.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["define-properties", [
+        ["npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz", {
+          "packageLocation": "./.yarn/cache/define-properties-npm-1.1.3-4781dbc154-da80dba55d.zip/node_modules/define-properties/",
+          "packageDependencies": [
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["object-keys", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-keys%2F-%2Fobject-keys-1.1.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -2379,6 +2998,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["doctrine", [
+        ["npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-2.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/doctrine-npm-2.1.0-d7008e9e20-a45e277f7f.zip/node_modules/doctrine/",
+          "packageDependencies": [
+            ["doctrine", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-2.1.0.tgz"],
+            ["esutils", "npm:2.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fesutils%2F-%2Fesutils-2.0.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-3.0.0.tgz", {
           "packageLocation": "./.yarn/cache/doctrine-npm-3.0.0-fb2fc882b0-fd7673ca77.zip/node_modules/doctrine/",
           "packageDependencies": [
@@ -2453,6 +3080,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/emoji-regex-npm-8.0.0-4015610667-d4c5c39d5a.zip/node_modules/emoji-regex/",
           "packageDependencies": [
             ["emoji-regex", "npm:8.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Femoji-regex%2F-%2Femoji-regex-8.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:9.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Femoji-regex%2F-%2Femoji-regex-9.2.2.tgz", {
+          "packageLocation": "./.yarn/cache/emoji-regex-npm-9.2.2-67c568a51f-8487182da7.zip/node_modules/emoji-regex/",
+          "packageDependencies": [
+            ["emoji-regex", "npm:9.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Femoji-regex%2F-%2Femoji-regex-9.2.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -2564,11 +3198,52 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["es-abstract", [
+        ["npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz", {
+          "packageLocation": "./.yarn/cache/es-abstract-npm-1.19.1-8a28dc5d18-b6be841067.zip/node_modules/es-abstract/",
+          "packageDependencies": [
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["es-to-primitive", "npm:1.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-to-primitive%2F-%2Fes-to-primitive-1.2.1.tgz"],
+            ["function-bind", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffunction-bind%2F-%2Ffunction-bind-1.1.1.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["get-symbol-description", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-symbol-description%2F-%2Fget-symbol-description-1.0.0.tgz"],
+            ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"],
+            ["internal-slot", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finternal-slot%2F-%2Finternal-slot-1.0.3.tgz"],
+            ["is-callable", "npm:1.2.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-callable%2F-%2Fis-callable-1.2.4.tgz"],
+            ["is-negative-zero", "npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-negative-zero%2F-%2Fis-negative-zero-2.0.1.tgz"],
+            ["is-regex", "npm:1.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-regex%2F-%2Fis-regex-1.1.4.tgz"],
+            ["is-shared-array-buffer", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-shared-array-buffer%2F-%2Fis-shared-array-buffer-1.0.1.tgz"],
+            ["is-string", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-string%2F-%2Fis-string-1.0.7.tgz"],
+            ["is-weakref", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-weakref%2F-%2Fis-weakref-1.0.1.tgz"],
+            ["object-inspect", "npm:1.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-inspect%2F-%2Fobject-inspect-1.11.0.tgz"],
+            ["object-keys", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-keys%2F-%2Fobject-keys-1.1.1.tgz"],
+            ["object.assign", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz"],
+            ["string.prototype.trimend", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimend%2F-%2Fstring.prototype.trimend-1.0.4.tgz"],
+            ["string.prototype.trimstart", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimstart%2F-%2Fstring.prototype.trimstart-1.0.4.tgz"],
+            ["unbox-primitive", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Funbox-primitive%2F-%2Funbox-primitive-1.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["es-module-lexer", [
         ["npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz", {
           "packageLocation": "./.yarn/cache/es-module-lexer-npm-0.9.3-bdc6e14292-84bbab23c3.zip/node_modules/es-module-lexer/",
           "packageDependencies": [
             ["es-module-lexer", "npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["es-to-primitive", [
+        ["npm:1.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-to-primitive%2F-%2Fes-to-primitive-1.2.1.tgz", {
+          "packageLocation": "./.yarn/cache/es-to-primitive-npm-1.2.1-e607fe95c6-4ead6671a2.zip/node_modules/es-to-primitive/",
+          "packageDependencies": [
+            ["es-to-primitive", "npm:1.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-to-primitive%2F-%2Fes-to-primitive-1.2.1.tgz"],
+            ["is-callable", "npm:1.2.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-callable%2F-%2Fis-callable-1.2.4.tgz"],
+            ["is-date-object", "npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-date-object%2F-%2Fis-date-object-1.0.5.tgz"],
+            ["is-symbol", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-symbol%2F-%2Fis-symbol-1.0.4.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -2618,7 +3293,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ajv", "npm:6.12.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fajv%2F-%2Fajv-6.12.6.tgz"],
             ["chalk", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchalk%2F-%2Fchalk-4.1.2.tgz"],
             ["cross-spawn", "npm:7.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcross-spawn%2F-%2Fcross-spawn-7.0.3.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["doctrine", "npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-3.0.0.tgz"],
             ["enquirer", "npm:2.3.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenquirer%2F-%2Fenquirer-2.3.6.tgz"],
             ["escape-string-regexp", "npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fescape-string-regexp%2F-%2Fescape-string-regexp-4.0.0.tgz"],
@@ -2656,6 +3331,410 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["eslint-config-airbnb", [
+        ["npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-config-airbnb-npm-18.2.1-adc2bbd665-ea11cd0006.zip/node_modules/eslint-config-airbnb/",
+          "packageDependencies": [
+            ["eslint-config-airbnb", "npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-config-airbnb-virtual-394c0d2a3c/0/cache/eslint-config-airbnb-npm-18.2.1-adc2bbd665-ea11cd0006.zip/node_modules/eslint-config-airbnb/",
+          "packageDependencies": [
+            ["eslint-config-airbnb", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/eslint-plugin-import", null],
+            ["@types/eslint-plugin-jsx-a11y", null],
+            ["@types/eslint-plugin-react", null],
+            ["@types/eslint-plugin-react-hooks", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-config-airbnb-base", "virtual:394c0d2a3c3ae6c2470034e9842d690f26a0f9b869894448f7cca3bab3859c8dfd3ab33ed60ac4580d956c160255d6fc0f2b9ce9db5f1a84b6aa1d46ae9ad100#npm:14.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb-base%2F-%2Feslint-config-airbnb-base-14.2.1.tgz"],
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"],
+            ["eslint-plugin-jsx-a11y", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz"],
+            ["eslint-plugin-react", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz"],
+            ["eslint-plugin-react-hooks", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz"],
+            ["object.assign", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz"],
+            ["object.entries", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.entries%2F-%2Fobject.entries-1.1.5.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint-plugin-import",
+            "@types/eslint-plugin-jsx-a11y",
+            "@types/eslint-plugin-react-hooks",
+            "@types/eslint-plugin-react",
+            "@types/eslint",
+            "eslint-plugin-import",
+            "eslint-plugin-jsx-a11y",
+            "eslint-plugin-react-hooks",
+            "eslint-plugin-react",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-config-airbnb-base", [
+        ["npm:14.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb-base%2F-%2Feslint-config-airbnb-base-14.2.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-config-airbnb-base-npm-14.2.1-34c0742d8d-858bea748a.zip/node_modules/eslint-config-airbnb-base/",
+          "packageDependencies": [
+            ["eslint-config-airbnb-base", "npm:14.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb-base%2F-%2Feslint-config-airbnb-base-14.2.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:394c0d2a3c3ae6c2470034e9842d690f26a0f9b869894448f7cca3bab3859c8dfd3ab33ed60ac4580d956c160255d6fc0f2b9ce9db5f1a84b6aa1d46ae9ad100#npm:14.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb-base%2F-%2Feslint-config-airbnb-base-14.2.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-config-airbnb-base-virtual-300ea65582/0/cache/eslint-config-airbnb-base-npm-14.2.1-34c0742d8d-858bea748a.zip/node_modules/eslint-config-airbnb-base/",
+          "packageDependencies": [
+            ["eslint-config-airbnb-base", "virtual:394c0d2a3c3ae6c2470034e9842d690f26a0f9b869894448f7cca3bab3859c8dfd3ab33ed60ac4580d956c160255d6fc0f2b9ce9db5f1a84b6aa1d46ae9ad100#npm:14.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb-base%2F-%2Feslint-config-airbnb-base-14.2.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/eslint-plugin-import", null],
+            ["confusing-browser-globals", "npm:1.0.10::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fconfusing-browser-globals%2F-%2Fconfusing-browser-globals-1.0.10.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"],
+            ["object.assign", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz"],
+            ["object.entries", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.entries%2F-%2Fobject.entries-1.1.5.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint-plugin-import",
+            "@types/eslint",
+            "eslint-plugin-import",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-config-esnext", [
+        ["npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-esnext%2F-%2Feslint-config-esnext-4.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-config-esnext-npm-4.1.0-8bd3547eab-85a6b0e84b.zip/node_modules/eslint-config-esnext/",
+          "packageDependencies": [
+            ["eslint-config-esnext", "npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-esnext%2F-%2Feslint-config-esnext-4.1.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:22fe546653e28a434912ac7cd8018a1e1260a35eca843c7fd37187bd02ea2f1811063c6b5f929f91cb24ed41aa3dab6d0a10970b37dbf2b7733637b6328a553a#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-esnext%2F-%2Feslint-config-esnext-4.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-config-esnext-virtual-941ed26e22/0/cache/eslint-config-esnext-npm-4.1.0-8bd3547eab-85a6b0e84b.zip/node_modules/eslint-config-esnext/",
+          "packageDependencies": [
+            ["eslint-config-esnext", "virtual:22fe546653e28a434912ac7cd8018a1e1260a35eca843c7fd37187bd02ea2f1811063c6b5f929f91cb24ed41aa3dab6d0a10970b37dbf2b7733637b6328a553a#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-esnext%2F-%2Feslint-config-esnext-4.1.0.tgz"],
+            ["@types/eslint", null],
+            ["babel-eslint", "virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:10.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbabel-eslint%2F-%2Fbabel-eslint-10.1.0.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-plugin-babel", "virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-babel%2F-%2Feslint-plugin-babel-5.3.1.tgz"],
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-config-node", [
+        ["npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-config-node-npm-4.1.0-1b3cf89be3-271541d78d.zip/node_modules/eslint-config-node/",
+          "packageDependencies": [
+            ["eslint-config-node", "npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-config-node-virtual-22fe546653/0/cache/eslint-config-node-npm-4.1.0-1b3cf89be3-271541d78d.zip/node_modules/eslint-config-node/",
+          "packageDependencies": [
+            ["eslint-config-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-config-esnext", "virtual:22fe546653e28a434912ac7cd8018a1e1260a35eca843c7fd37187bd02ea2f1811063c6b5f929f91cb24ed41aa3dab6d0a10970b37dbf2b7733637b6328a553a#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-esnext%2F-%2Feslint-config-esnext-4.1.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-config-prettier", [
+        ["npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-config-prettier-npm-8.3.0-c5bd498b15-df4cea3032.zip/node_modules/eslint-config-prettier/",
+          "packageDependencies": [
+            ["eslint-config-prettier", "npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-config-prettier-virtual-d7bde8ddd6/0/cache/eslint-config-prettier-npm-8.3.0-c5bd498b15-df4cea3032.zip/node_modules/eslint-config-prettier/",
+          "packageDependencies": [
+            ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-import-resolver-node", [
+        ["npm:0.3.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-import-resolver-node%2F-%2Feslint-import-resolver-node-0.3.6.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-import-resolver-node-npm-0.3.6-2cfcc3e840-6266733af1.zip/node_modules/eslint-import-resolver-node/",
+          "packageDependencies": [
+            ["eslint-import-resolver-node", "npm:0.3.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-import-resolver-node%2F-%2Feslint-import-resolver-node-0.3.6.tgz"],
+            ["debug", "virtual:2cfcc3e840350e4c89b267114866c6da25c813577626469dd8bb9680464cb546290b12986e41a1979e138836ea85facbb431371f8c4ea0967d0c1dfc74f8a6fc#npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz"],
+            ["resolve", "patch:resolve@npm%3A1.20.0%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-1.20.0.tgz#~builtin<compat/resolve>::version=1.20.0&hash=07638b"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-module-utils", [
+        ["npm:2.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-module-utils%2F-%2Feslint-module-utils-2.7.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-module-utils-npm-2.7.1-adbda479cc-c30dfa125a.zip/node_modules/eslint-module-utils/",
+          "packageDependencies": [
+            ["eslint-module-utils", "npm:2.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-module-utils%2F-%2Feslint-module-utils-2.7.1.tgz"],
+            ["debug", "virtual:2cfcc3e840350e4c89b267114866c6da25c813577626469dd8bb9680464cb546290b12986e41a1979e138836ea85facbb431371f8c4ea0967d0c1dfc74f8a6fc#npm:3.2.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-3.2.7.tgz"],
+            ["find-up", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffind-up%2F-%2Ffind-up-2.1.0.tgz"],
+            ["pkg-dir", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpkg-dir%2F-%2Fpkg-dir-2.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-babel", [
+        ["npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-babel%2F-%2Feslint-plugin-babel-5.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-babel-npm-5.3.1-78d56187b5-18b0bfda53.zip/node_modules/eslint-plugin-babel/",
+          "packageDependencies": [
+            ["eslint-plugin-babel", "npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-babel%2F-%2Feslint-plugin-babel-5.3.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-babel%2F-%2Feslint-plugin-babel-5.3.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-babel-virtual-62cca972f8/0/cache/eslint-plugin-babel-npm-5.3.1-78d56187b5-18b0bfda53.zip/node_modules/eslint-plugin-babel/",
+          "packageDependencies": [
+            ["eslint-plugin-babel", "virtual:941ed26e22b8ba6588b35e386459bd3dfe09f4bab3f8e58a056128df61ced6a33618da39258d188ca7021a623e6ab694ee3dd82c23eb95dee939df4be66627b7#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-babel%2F-%2Feslint-plugin-babel-5.3.1.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-rule-composer", "npm:0.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-rule-composer%2F-%2Feslint-rule-composer-0.3.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-es", [
+        ["npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-es%2F-%2Feslint-plugin-es-3.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-es-npm-3.0.1-102c11f917-e57592c523.zip/node_modules/eslint-plugin-es/",
+          "packageDependencies": [
+            ["eslint-plugin-es", "npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-es%2F-%2Feslint-plugin-es-3.0.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:a136e6753f333aecb9b623760a093eba777ef52df2091d6e7025a6b3e216acdd8a8234f14a7aa44c883d6aaf2ff64eb87c8f4de883f2aafa6f7e198639859d25#npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-es%2F-%2Feslint-plugin-es-3.0.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-es-virtual-52c4ffd63e/0/cache/eslint-plugin-es-npm-3.0.1-102c11f917-e57592c523.zip/node_modules/eslint-plugin-es/",
+          "packageDependencies": [
+            ["eslint-plugin-es", "virtual:a136e6753f333aecb9b623760a093eba777ef52df2091d6e7025a6b3e216acdd8a8234f14a7aa44c883d6aaf2ff64eb87c8f4de883f2aafa6f7e198639859d25#npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-es%2F-%2Feslint-plugin-es-3.0.1.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-utils", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-2.1.0.tgz"],
+            ["regexpp", "npm:3.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexpp%2F-%2Fregexpp-3.2.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-import", [
+        ["npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-import-npm-2.25.2-3a7a93a422-4ca36e37fa.zip/node_modules/eslint-plugin-import/",
+          "packageDependencies": [
+            ["eslint-plugin-import", "npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-import-virtual-dccf6868ab/0/cache/eslint-plugin-import-npm-2.25.2-3a7a93a422-4ca36e37fa.zip/node_modules/eslint-plugin-import/",
+          "packageDependencies": [
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"],
+            ["@types/eslint", null],
+            ["array-includes", "npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz"],
+            ["array.prototype.flat", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flat%2F-%2Farray.prototype.flat-1.2.5.tgz"],
+            ["debug", "virtual:dccf6868abed6b87b13e01728a64761fa4d252d613636fb0c5cd5c07226d58f8c5733753ebb38ed693cc1bf3bac4a0651ff6d11b2545b2945bf4b472ec062484#npm:2.6.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-2.6.9.tgz"],
+            ["doctrine", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-2.1.0.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-import-resolver-node", "npm:0.3.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-import-resolver-node%2F-%2Feslint-import-resolver-node-0.3.6.tgz"],
+            ["eslint-module-utils", "npm:2.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-module-utils%2F-%2Feslint-module-utils-2.7.1.tgz"],
+            ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"],
+            ["is-core-module", "npm:2.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-core-module%2F-%2Fis-core-module-2.8.0.tgz"],
+            ["is-glob", "npm:4.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-glob%2F-%2Fis-glob-4.0.3.tgz"],
+            ["minimatch", "npm:3.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-3.0.4.tgz"],
+            ["object.values", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.values%2F-%2Fobject.values-1.1.5.tgz"],
+            ["resolve", "patch:resolve@npm%3A1.20.0%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-1.20.0.tgz#~builtin<compat/resolve>::version=1.20.0&hash=07638b"],
+            ["tsconfig-paths", "npm:3.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsconfig-paths%2F-%2Ftsconfig-paths-3.11.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-jsx-a11y", [
+        ["npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-jsx-a11y-npm-6.4.1-ffc12202a1-3032627638.zip/node_modules/eslint-plugin-jsx-a11y/",
+          "packageDependencies": [
+            ["eslint-plugin-jsx-a11y", "npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-jsx-a11y-virtual-b2a34a0497/0/cache/eslint-plugin-jsx-a11y-npm-6.4.1-ffc12202a1-3032627638.zip/node_modules/eslint-plugin-jsx-a11y/",
+          "packageDependencies": [
+            ["eslint-plugin-jsx-a11y", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz"],
+            ["@babel/runtime", "npm:7.16.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40babel%2Fruntime%2F-%2Fruntime-7.16.0.tgz"],
+            ["@types/eslint", null],
+            ["aria-query", "npm:4.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faria-query%2F-%2Faria-query-4.2.2.tgz"],
+            ["array-includes", "npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz"],
+            ["ast-types-flow", "npm:0.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fast-types-flow%2F-%2Fast-types-flow-0.0.7.tgz"],
+            ["axe-core", "npm:4.3.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxe-core%2F-%2Faxe-core-4.3.5.tgz"],
+            ["axobject-query", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxobject-query%2F-%2Faxobject-query-2.2.0.tgz"],
+            ["damerau-levenshtein", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdamerau-levenshtein%2F-%2Fdamerau-levenshtein-1.0.7.tgz"],
+            ["emoji-regex", "npm:9.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Femoji-regex%2F-%2Femoji-regex-9.2.2.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"],
+            ["jsx-ast-utils", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsx-ast-utils%2F-%2Fjsx-ast-utils-3.2.1.tgz"],
+            ["language-tags", "npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-tags%2F-%2Flanguage-tags-1.0.5.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-node", [
+        ["npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-node-npm-11.1.0-87301a3d43-5804c4f8a6.zip/node_modules/eslint-plugin-node/",
+          "packageDependencies": [
+            ["eslint-plugin-node", "npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-node-virtual-a136e6753f/0/cache/eslint-plugin-node-npm-11.1.0-87301a3d43-5804c4f8a6.zip/node_modules/eslint-plugin-node/",
+          "packageDependencies": [
+            ["eslint-plugin-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-plugin-es", "virtual:a136e6753f333aecb9b623760a093eba777ef52df2091d6e7025a6b3e216acdd8a8234f14a7aa44c883d6aaf2ff64eb87c8f4de883f2aafa6f7e198639859d25#npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-es%2F-%2Feslint-plugin-es-3.0.1.tgz"],
+            ["eslint-utils", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-2.1.0.tgz"],
+            ["ignore", "npm:5.1.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fignore%2F-%2Fignore-5.1.9.tgz"],
+            ["minimatch", "npm:3.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-3.0.4.tgz"],
+            ["resolve", "patch:resolve@npm%3A1.20.0%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-1.20.0.tgz#~builtin<compat/resolve>::version=1.20.0&hash=07638b"],
+            ["semver", "npm:6.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-6.3.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-prettier", [
+        ["npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-prettier-npm-3.4.1-184cb5e09b-fa6a89f0d7.zip/node_modules/eslint-plugin-prettier/",
+          "packageDependencies": [
+            ["eslint-plugin-prettier", "npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-prettier-virtual-6d7aa6d439/0/cache/eslint-plugin-prettier-npm-3.4.1-184cb5e09b-fa6a89f0d7.zip/node_modules/eslint-plugin-prettier/",
+          "packageDependencies": [
+            ["eslint-plugin-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz"],
+            ["@types/eslint", null],
+            ["@types/eslint-config-prettier", null],
+            ["@types/prettier", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz"],
+            ["prettier", null],
+            ["prettier-linter-helpers", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprettier-linter-helpers%2F-%2Fprettier-linter-helpers-1.0.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint-config-prettier",
+            "@types/eslint",
+            "@types/prettier",
+            "eslint-config-prettier",
+            "eslint",
+            "prettier"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-react", [
+        ["npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-react-npm-7.26.1-c9e3a1dab8-856eec868f.zip/node_modules/eslint-plugin-react/",
+          "packageDependencies": [
+            ["eslint-plugin-react", "npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-react-virtual-c8067d5bd3/0/cache/eslint-plugin-react-npm-7.26.1-c9e3a1dab8-856eec868f.zip/node_modules/eslint-plugin-react/",
+          "packageDependencies": [
+            ["eslint-plugin-react", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz"],
+            ["@types/eslint", null],
+            ["array-includes", "npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz"],
+            ["array.prototype.flatmap", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray.prototype.flatmap%2F-%2Farray.prototype.flatmap-1.2.5.tgz"],
+            ["doctrine", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdoctrine%2F-%2Fdoctrine-2.1.0.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["estraverse", "npm:5.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Festraverse%2F-%2Festraverse-5.3.0.tgz"],
+            ["jsx-ast-utils", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsx-ast-utils%2F-%2Fjsx-ast-utils-3.2.1.tgz"],
+            ["minimatch", "npm:3.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-3.0.4.tgz"],
+            ["object.entries", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.entries%2F-%2Fobject.entries-1.1.5.tgz"],
+            ["object.fromentries", "npm:2.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.fromentries%2F-%2Fobject.fromentries-2.0.5.tgz"],
+            ["object.hasown", "npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.hasown%2F-%2Fobject.hasown-1.1.0.tgz"],
+            ["object.values", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.values%2F-%2Fobject.values-1.1.5.tgz"],
+            ["prop-types", "npm:15.7.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprop-types%2F-%2Fprop-types-15.7.2.tgz"],
+            ["resolve", "patch:resolve@npm%3A2.0.0-next.3%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-2.0.0-next.3.tgz#~builtin<compat/resolve>::version=2.0.0-next.3&hash=07638b"],
+            ["semver", "npm:6.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsemver%2F-%2Fsemver-6.3.0.tgz"],
+            ["string.prototype.matchall", "npm:4.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.matchall%2F-%2Fstring.prototype.matchall-4.0.6.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-react-hooks", [
+        ["npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-react-hooks-npm-1.7.0-0b292be15d-ea16d0cf4a.zip/node_modules/eslint-plugin-react-hooks/",
+          "packageDependencies": [
+            ["eslint-plugin-react-hooks", "npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-plugin-react-hooks-virtual-0ff1547ace/0/cache/eslint-plugin-react-hooks-npm-1.7.0-0b292be15d-ea16d0cf4a.zip/node_modules/eslint-plugin-react-hooks/",
+          "packageDependencies": [
+            ["eslint-plugin-react-hooks", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-rule-composer", [
+        ["npm:0.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-rule-composer%2F-%2Feslint-rule-composer-0.3.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-rule-composer-npm-0.3.0-e638319815-c2f57cded8.zip/node_modules/eslint-rule-composer/",
+          "packageDependencies": [
+            ["eslint-rule-composer", "npm:0.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-rule-composer%2F-%2Feslint-rule-composer-0.3.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["eslint-scope", [
         ["npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz", {
           "packageLocation": "./.yarn/cache/eslint-scope-npm-5.1.1-28a640d9f8-47e4b6a3f0.zip/node_modules/eslint-scope/",
@@ -2675,6 +3754,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-visitor-keys", "npm:1.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-1.3.0.tgz"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-3.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-utils-npm-3.0.0-a8c1c2e22d-0668fe02f5.zip/node_modules/eslint-utils/",
+          "packageDependencies": [
+            ["eslint-utils", "npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-3.0.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-3.0.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/eslint-utils-virtual-db2e3b201a/0/cache/eslint-utils-npm-3.0.0-a8c1c2e22d-0668fe02f5.zip/node_modules/eslint-utils/",
+          "packageDependencies": [
+            ["eslint-utils", "virtual:b98f6d45e0d7b8737f4d093cf753abc533f7f08ea1662dc3518dce4076bf9ddbe562e89f3bdfd4164ba136ff1b3dddc125c1699dbfc83e5a4405af0288c2a945#npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-utils%2F-%2Feslint-utils-3.0.0.tgz"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-visitor-keys", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-2.1.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["eslint-visitor-keys", [
@@ -2689,6 +3789,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/eslint-visitor-keys-npm-2.1.0-9b90f3ddec-e3081d7dd2.zip/node_modules/eslint-visitor-keys/",
           "packageDependencies": [
             ["eslint-visitor-keys", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-2.1.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:3.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-3.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/eslint-visitor-keys-npm-3.1.0-d755f59747-fd2d613bb3.zip/node_modules/eslint-visitor-keys/",
+          "packageDependencies": [
+            ["eslint-visitor-keys", "npm:3.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-visitor-keys%2F-%2Feslint-visitor-keys-3.1.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -2816,6 +3923,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/fast-deep-equal-npm-3.1.3-0f8c48d85c-e21a9d8d84.zip/node_modules/fast-deep-equal/",
           "packageDependencies": [
             ["fast-deep-equal", "npm:3.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffast-deep-equal%2F-%2Ffast-deep-equal-3.1.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["fast-diff", [
+        ["npm:1.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffast-diff%2F-%2Ffast-diff-1.2.0.tgz", {
+          "packageLocation": "./.yarn/cache/fast-diff-npm-1.2.0-4e12cc5fa2-1b5306eaa9.zip/node_modules/fast-diff/",
+          "packageDependencies": [
+            ["fast-diff", "npm:1.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffast-diff%2F-%2Ffast-diff-1.2.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3169,6 +4285,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["get-intrinsic", [
+        ["npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz", {
+          "packageLocation": "./.yarn/cache/get-intrinsic-npm-1.1.1-5e20d36782-a9fe2ca8fa.zip/node_modules/get-intrinsic/",
+          "packageDependencies": [
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["function-bind", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffunction-bind%2F-%2Ffunction-bind-1.1.1.tgz"],
+            ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["get-pkg-repo", [
         ["npm:4.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-pkg-repo%2F-%2Fget-pkg-repo-4.2.1.tgz", {
           "packageLocation": "./.yarn/cache/get-pkg-repo-npm-4.2.1-e5ade2d4b0-5abf169137.zip/node_modules/get-pkg-repo/",
@@ -3212,6 +4340,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/get-stream-npm-6.0.1-c1e4679331-e04ecece32.zip/node_modules/get-stream/",
           "packageDependencies": [
             ["get-stream", "npm:6.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-stream%2F-%2Fget-stream-6.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["get-symbol-description", [
+        ["npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-symbol-description%2F-%2Fget-symbol-description-1.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/get-symbol-description-npm-1.0.0-39a578b841-9ceff8fe96.zip/node_modules/get-symbol-description/",
+          "packageDependencies": [
+            ["get-symbol-description", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-symbol-description%2F-%2Fget-symbol-description-1.0.0.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3317,6 +4456,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["globals", [
+        ["npm:11.12.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobals%2F-%2Fglobals-11.12.0.tgz", {
+          "packageLocation": "./.yarn/cache/globals-npm-11.12.0-8dd8cb2469-67051a45ec.zip/node_modules/globals/",
+          "packageDependencies": [
+            ["globals", "npm:11.12.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobals%2F-%2Fglobals-11.12.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:13.12.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglobals%2F-%2Fglobals-13.12.0.tgz", {
           "packageLocation": "./.yarn/cache/globals-npm-13.12.0-8950f01e86-1f959abb11.zip/node_modules/globals/",
           "packageDependencies": [
@@ -3425,6 +4571,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["has-bigints", [
+        ["npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-bigints%2F-%2Fhas-bigints-1.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/has-bigints-npm-1.0.1-093269d4f4-44ab558681.zip/node_modules/has-bigints/",
+          "packageDependencies": [
+            ["has-bigints", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-bigints%2F-%2Fhas-bigints-1.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["has-flag", [
         ["npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-flag%2F-%2Fhas-flag-3.0.0.tgz", {
           "packageLocation": "./.yarn/cache/has-flag-npm-3.0.0-d99a8bcb13-4a15638b45.zip/node_modules/has-flag/",
@@ -3437,6 +4592,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/has-flag-npm-4.0.0-7de7339a3f-261a135703.zip/node_modules/has-flag/",
           "packageDependencies": [
             ["has-flag", "npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-flag%2F-%2Fhas-flag-4.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["has-symbols", [
+        ["npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz", {
+          "packageLocation": "./.yarn/cache/has-symbols-npm-1.0.2-134096fa23-2309c42607.zip/node_modules/has-symbols/",
+          "packageDependencies": [
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["has-tostringtag", [
+        ["npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/has-tostringtag-npm-1.0.0-cfd091349e-cc12eb28cb.zip/node_modules/has-tostringtag/",
+          "packageDependencies": [
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3492,7 +4666,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["http-proxy-agent", "npm:4.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhttp-proxy-agent%2F-%2Fhttp-proxy-agent-4.0.1.tgz"],
             ["@tootallnate/once", "npm:1.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40tootallnate%2Fonce%2F-%2Fonce-1.1.2.tgz"],
             ["agent-base", "npm:6.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fagent-base%2F-%2Fagent-base-6.0.2.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3515,7 +4689,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["https-proxy-agent", "npm:5.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhttps-proxy-agent%2F-%2Fhttps-proxy-agent-5.0.0.tgz"],
             ["agent-base", "npm:6.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fagent-base%2F-%2Fagent-base-6.0.2.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3688,6 +4862,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["internal-slot", [
+        ["npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finternal-slot%2F-%2Finternal-slot-1.0.3.tgz", {
+          "packageLocation": "./.yarn/cache/internal-slot-npm-1.0.3-26d9cc35d6-1944f92e98.zip/node_modules/internal-slot/",
+          "packageDependencies": [
+            ["internal-slot", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finternal-slot%2F-%2Finternal-slot-1.0.3.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"],
+            ["side-channel", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fside-channel%2F-%2Fside-channel-1.0.4.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["interpret", [
         ["npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-1.4.0.tgz", {
           "packageLocation": "./.yarn/cache/interpret-npm-1.4.0-c9a3bdffce-2e5f51268b.zip/node_modules/interpret/",
@@ -3722,12 +4908,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["is-bigint", [
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-bigint%2F-%2Fis-bigint-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/is-bigint-npm-1.0.4-3e24cd54a6-c56edfe09b.zip/node_modules/is-bigint/",
+          "packageDependencies": [
+            ["is-bigint", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-bigint%2F-%2Fis-bigint-1.0.4.tgz"],
+            ["has-bigints", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-bigints%2F-%2Fhas-bigints-1.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["is-binary-path", [
         ["npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-binary-path%2F-%2Fis-binary-path-2.1.0.tgz", {
           "packageLocation": "./.yarn/cache/is-binary-path-npm-2.1.0-d279081081-84192eb88c.zip/node_modules/is-binary-path/",
           "packageDependencies": [
             ["is-binary-path", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-binary-path%2F-%2Fis-binary-path-2.1.0.tgz"],
             ["binary-extensions", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbinary-extensions%2F-%2Fbinary-extensions-2.2.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-boolean-object", [
+        ["npm:1.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-boolean-object%2F-%2Fis-boolean-object-1.1.2.tgz", {
+          "packageLocation": "./.yarn/cache/is-boolean-object-npm-1.1.2-084c9fffe3-c03b23dbaa.zip/node_modules/is-boolean-object/",
+          "packageDependencies": [
+            ["is-boolean-object", "npm:1.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-boolean-object%2F-%2Fis-boolean-object-1.1.2.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-callable", [
+        ["npm:1.2.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-callable%2F-%2Fis-callable-1.2.4.tgz", {
+          "packageLocation": "./.yarn/cache/is-callable-npm-1.2.4-f75acce09c-1a28d57dc4.zip/node_modules/is-callable/",
+          "packageDependencies": [
+            ["is-callable", "npm:1.2.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-callable%2F-%2Fis-callable-1.2.4.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3748,6 +4964,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["is-core-module", "npm:2.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-core-module%2F-%2Fis-core-module-2.8.0.tgz"],
             ["has", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas%2F-%2Fhas-1.0.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-date-object", [
+        ["npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-date-object%2F-%2Fis-date-object-1.0.5.tgz", {
+          "packageLocation": "./.yarn/cache/is-date-object-npm-1.0.5-749e04ec41-baa9077cdf.zip/node_modules/is-date-object/",
+          "packageDependencies": [
+            ["is-date-object", "npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-date-object%2F-%2Fis-date-object-1.0.5.tgz"],
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3808,6 +5034,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["is-negative-zero", [
+        ["npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-negative-zero%2F-%2Fis-negative-zero-2.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/is-negative-zero-npm-2.0.1-63614bc9ad-a46f2e0cb5.zip/node_modules/is-negative-zero/",
+          "packageDependencies": [
+            ["is-negative-zero", "npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-negative-zero%2F-%2Fis-negative-zero-2.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["is-npm", [
         ["npm:5.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-npm%2F-%2Fis-npm-5.0.0.tgz", {
           "packageLocation": "./.yarn/cache/is-npm-npm-5.0.0-d2da9734af-9baff02b0c.zip/node_modules/is-npm/",
@@ -3822,6 +5057,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/is-number-npm-7.0.0-0dd89f5f4b-456ac6f8e0.zip/node_modules/is-number/",
           "packageDependencies": [
             ["is-number", "npm:7.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-number%2F-%2Fis-number-7.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-number-object", [
+        ["npm:1.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-number-object%2F-%2Fis-number-object-1.0.6.tgz", {
+          "packageLocation": "./.yarn/cache/is-number-object-npm-1.0.6-99369a7e94-c697704e8f.zip/node_modules/is-number-object/",
+          "packageDependencies": [
+            ["is-number-object", "npm:1.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-number-object%2F-%2Fis-number-object-1.0.6.tgz"],
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3863,11 +5108,51 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["is-regex", [
+        ["npm:1.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-regex%2F-%2Fis-regex-1.1.4.tgz", {
+          "packageLocation": "./.yarn/cache/is-regex-npm-1.1.4-41ffbe4b92-362399b335.zip/node_modules/is-regex/",
+          "packageDependencies": [
+            ["is-regex", "npm:1.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-regex%2F-%2Fis-regex-1.1.4.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-shared-array-buffer", [
+        ["npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-shared-array-buffer%2F-%2Fis-shared-array-buffer-1.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/is-shared-array-buffer-npm-1.0.1-eae256bf79-2ffb92533e.zip/node_modules/is-shared-array-buffer/",
+          "packageDependencies": [
+            ["is-shared-array-buffer", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-shared-array-buffer%2F-%2Fis-shared-array-buffer-1.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["is-stream", [
         ["npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-stream%2F-%2Fis-stream-2.0.1.tgz", {
           "packageLocation": "./.yarn/cache/is-stream-npm-2.0.1-d9d7b6c2b4-b8e05ccdf9.zip/node_modules/is-stream/",
           "packageDependencies": [
             ["is-stream", "npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-stream%2F-%2Fis-stream-2.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-string", [
+        ["npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-string%2F-%2Fis-string-1.0.7.tgz", {
+          "packageLocation": "./.yarn/cache/is-string-npm-1.0.7-fe0ba7326b-323b3d0462.zip/node_modules/is-string/",
+          "packageDependencies": [
+            ["is-string", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-string%2F-%2Fis-string-1.0.7.tgz"],
+            ["has-tostringtag", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-tostringtag%2F-%2Fhas-tostringtag-1.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-symbol", [
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-symbol%2F-%2Fis-symbol-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/is-symbol-npm-1.0.4-5f584386d6-92805812ef.zip/node_modules/is-symbol/",
+          "packageDependencies": [
+            ["is-symbol", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-symbol%2F-%2Fis-symbol-1.0.4.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -3887,6 +5172,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/is-typedarray-npm-1.0.0-54398dff42-3508c6cd0a.zip/node_modules/is-typedarray/",
           "packageDependencies": [
             ["is-typedarray", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-typedarray%2F-%2Fis-typedarray-1.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["is-weakref", [
+        ["npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-weakref%2F-%2Fis-weakref-1.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/is-weakref-npm-1.0.1-423cc7fd78-fdafb7b955.zip/node_modules/is-weakref/",
+          "packageDependencies": [
+            ["is-weakref", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-weakref%2F-%2Fis-weakref-1.0.1.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -4021,6 +5316,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["jsesc", [
+        ["npm:2.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsesc%2F-%2Fjsesc-2.5.2.tgz", {
+          "packageLocation": "./.yarn/cache/jsesc-npm-2.5.2-39f796831b-4dc1907711.zip/node_modules/jsesc/",
+          "packageDependencies": [
+            ["jsesc", "npm:2.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsesc%2F-%2Fjsesc-2.5.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["json-buffer", [
         ["npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-buffer%2F-%2Fjson-buffer-3.0.0.tgz", {
           "packageLocation": "./.yarn/cache/json-buffer-npm-3.0.0-88719bf6af-0cecacb802.zip/node_modules/json-buffer/",
@@ -4102,6 +5406,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["json5", [
+        ["npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson5%2F-%2Fjson5-1.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/json5-npm-1.0.1-35a91c4492-e76ea23dbb.zip/node_modules/json5/",
+          "packageDependencies": [
+            ["json5", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson5%2F-%2Fjson5-1.0.1.tgz"],
+            ["minimist", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimist%2F-%2Fminimist-1.2.5.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson5%2F-%2Fjson5-2.2.0.tgz", {
           "packageLocation": "./.yarn/cache/json5-npm-2.2.0-dc80eaf9f8-e88fc5274b.zip/node_modules/json5/",
           "packageDependencies": [
@@ -4153,6 +5465,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["jsx-ast-utils", [
+        ["npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsx-ast-utils%2F-%2Fjsx-ast-utils-3.2.1.tgz", {
+          "packageLocation": "./.yarn/cache/jsx-ast-utils-npm-3.2.1-ac55ed6ccd-dcee22e638.zip/node_modules/jsx-ast-utils/",
+          "packageDependencies": [
+            ["jsx-ast-utils", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjsx-ast-utils%2F-%2Fjsx-ast-utils-3.2.1.tgz"],
+            ["array-includes", "npm:3.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Farray-includes%2F-%2Farray-includes-3.1.4.tgz"],
+            ["object.assign", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["keyv", [
         ["npm:3.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fkeyv%2F-%2Fkeyv-3.1.0.tgz", {
           "packageLocation": "./.yarn/cache/keyv-npm-3.1.0-8355f00ebd-bb7e8f3acf.zip/node_modules/keyv/",
@@ -4177,6 +5500,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/kleur-npm-3.0.3-3a8bf33883-df82cd1e17.zip/node_modules/kleur/",
           "packageDependencies": [
             ["kleur", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fkleur%2F-%2Fkleur-3.0.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["language-subtag-registry", [
+        ["npm:0.3.21::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-subtag-registry%2F-%2Flanguage-subtag-registry-0.3.21.tgz", {
+          "packageLocation": "./.yarn/cache/language-subtag-registry-npm-0.3.21-f3ec3287bd-5f794525a5.zip/node_modules/language-subtag-registry/",
+          "packageDependencies": [
+            ["language-subtag-registry", "npm:0.3.21::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-subtag-registry%2F-%2Flanguage-subtag-registry-0.3.21.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["language-tags", [
+        ["npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-tags%2F-%2Flanguage-tags-1.0.5.tgz", {
+          "packageLocation": "./.yarn/cache/language-tags-npm-1.0.5-8e73b0589c-c81b5d8b9f.zip/node_modules/language-tags/",
+          "packageDependencies": [
+            ["language-tags", "npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-tags%2F-%2Flanguage-tags-1.0.5.tgz"],
+            ["language-subtag-registry", "npm:0.3.21::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flanguage-subtag-registry%2F-%2Flanguage-subtag-registry-0.3.21.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -4334,6 +5676,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash.truncate-npm-4.4.2-b73eed4eb0-b463d8a382.zip/node_modules/lodash.truncate/",
           "packageDependencies": [
             ["lodash.truncate", "npm:4.4.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Flodash.truncate%2F-%2Flodash.truncate-4.4.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["loose-envify", [
+        ["npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floose-envify%2F-%2Floose-envify-1.4.0.tgz", {
+          "packageLocation": "./.yarn/cache/loose-envify-npm-1.4.0-650a83a665-6517e24e0c.zip/node_modules/loose-envify/",
+          "packageDependencies": [
+            ["loose-envify", "npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floose-envify%2F-%2Floose-envify-1.4.0.tgz"],
+            ["js-tokens", "npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjs-tokens%2F-%2Fjs-tokens-4.0.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -4674,6 +6026,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["ms", [
+        ["npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/ms-npm-2.0.0-948b1acb17-0e6a22b8b7.zip/node_modules/ms/",
+          "packageDependencies": [
+            ["ms", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:2.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fms%2F-%2Fms-2.1.2.tgz", {
           "packageLocation": "./.yarn/cache/ms-npm-2.1.2-95aceb8320-673cdb2c31.zip/node_modules/ms/",
           "packageDependencies": [
@@ -4986,6 +6345,84 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/object-assign-npm-4.1.1-d0ac66377d-fcc6e4ea8c.zip/node_modules/object-assign/",
           "packageDependencies": [
             ["object-assign", "npm:4.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-assign%2F-%2Fobject-assign-4.1.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object-inspect", [
+        ["npm:1.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-inspect%2F-%2Fobject-inspect-1.11.0.tgz", {
+          "packageLocation": "./.yarn/cache/object-inspect-npm-1.11.0-be39f727f4-8c64f89ce3.zip/node_modules/object-inspect/",
+          "packageDependencies": [
+            ["object-inspect", "npm:1.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-inspect%2F-%2Fobject-inspect-1.11.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object-keys", [
+        ["npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-keys%2F-%2Fobject-keys-1.1.1.tgz", {
+          "packageLocation": "./.yarn/cache/object-keys-npm-1.1.1-51ef843b21-b363c5e764.zip/node_modules/object-keys/",
+          "packageDependencies": [
+            ["object-keys", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-keys%2F-%2Fobject-keys-1.1.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object.assign", [
+        ["npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz", {
+          "packageLocation": "./.yarn/cache/object.assign-npm-4.1.2-1412a14654-d621d832ed.zip/node_modules/object.assign/",
+          "packageDependencies": [
+            ["object.assign", "npm:4.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.assign%2F-%2Fobject.assign-4.1.2.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"],
+            ["object-keys", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-keys%2F-%2Fobject-keys-1.1.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object.entries", [
+        ["npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.entries%2F-%2Fobject.entries-1.1.5.tgz", {
+          "packageLocation": "./.yarn/cache/object.entries-npm-1.1.5-2b7fdc8ef2-d658696f74.zip/node_modules/object.entries/",
+          "packageDependencies": [
+            ["object.entries", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.entries%2F-%2Fobject.entries-1.1.5.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object.fromentries", [
+        ["npm:2.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.fromentries%2F-%2Fobject.fromentries-2.0.5.tgz", {
+          "packageLocation": "./.yarn/cache/object.fromentries-npm-2.0.5-54c3955612-61a0b565de.zip/node_modules/object.fromentries/",
+          "packageDependencies": [
+            ["object.fromentries", "npm:2.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.fromentries%2F-%2Fobject.fromentries-2.0.5.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object.hasown", [
+        ["npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.hasown%2F-%2Fobject.hasown-1.1.0.tgz", {
+          "packageLocation": "./.yarn/cache/object.hasown-npm-1.1.0-74f1001ff0-5c5d0b1b79.zip/node_modules/object.hasown/",
+          "packageDependencies": [
+            ["object.hasown", "npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.hasown%2F-%2Fobject.hasown-1.1.0.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["object.values", [
+        ["npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.values%2F-%2Fobject.values-1.1.5.tgz", {
+          "packageLocation": "./.yarn/cache/object.values-npm-1.1.5-d159858ca8-0f17e99741.zip/node_modules/object.values/",
+          "packageDependencies": [
+            ["object.values", "npm:1.1.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject.values%2F-%2Fobject.values-1.1.5.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -5361,6 +6798,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["pkg-dir", [
+        ["npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpkg-dir%2F-%2Fpkg-dir-2.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/pkg-dir-npm-2.0.0-f406d6a70a-8c72b71230.zip/node_modules/pkg-dir/",
+          "packageDependencies": [
+            ["pkg-dir", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpkg-dir%2F-%2Fpkg-dir-2.0.0.tgz"],
+            ["find-up", "npm:2.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffind-up%2F-%2Ffind-up-2.1.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:4.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpkg-dir%2F-%2Fpkg-dir-4.2.0.tgz", {
           "packageLocation": "./.yarn/cache/pkg-dir-npm-4.2.0-cdd946bc93-9863e3f351.zip/node_modules/pkg-dir/",
           "packageDependencies": [
@@ -5402,6 +6847,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prepend-http-npm-2.0.0-7a2d299c70-7694a95254.zip/node_modules/prepend-http/",
           "packageDependencies": [
             ["prepend-http", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprepend-http%2F-%2Fprepend-http-2.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["prettier-linter-helpers", [
+        ["npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprettier-linter-helpers%2F-%2Fprettier-linter-helpers-1.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/prettier-linter-helpers-npm-1.0.0-d99681cdcd-00ce8011cf.zip/node_modules/prettier-linter-helpers/",
+          "packageDependencies": [
+            ["prettier-linter-helpers", "npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprettier-linter-helpers%2F-%2Fprettier-linter-helpers-1.0.0.tgz"],
+            ["fast-diff", "npm:1.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffast-diff%2F-%2Ffast-diff-1.2.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -5484,6 +6939,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prompts", "npm:2.4.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprompts%2F-%2Fprompts-2.4.2.tgz"],
             ["kleur", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fkleur%2F-%2Fkleur-3.0.3.tgz"],
             ["sisteransi", "npm:1.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsisteransi%2F-%2Fsisteransi-1.0.5.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["prop-types", [
+        ["npm:15.7.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprop-types%2F-%2Fprop-types-15.7.2.tgz", {
+          "packageLocation": "./.yarn/cache/prop-types-npm-15.7.2-1cbbf8e49b-5eef82fdda.zip/node_modules/prop-types/",
+          "packageDependencies": [
+            ["prop-types", "npm:15.7.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprop-types%2F-%2Fprop-types-15.7.2.tgz"],
+            ["loose-envify", "npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floose-envify%2F-%2Floose-envify-1.4.0.tgz"],
+            ["object-assign", "npm:4.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-assign%2F-%2Fobject-assign-4.1.1.tgz"],
+            ["react-is", "npm:16.13.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Freact-is%2F-%2Freact-is-16.13.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -5609,10 +7076,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/rc-config-loader-npm-4.0.0-ca9b0ec1c5-3543867a12.zip/node_modules/rc-config-loader/",
           "packageDependencies": [
             ["rc-config-loader", "npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frc-config-loader%2F-%2Frc-config-loader-4.0.0.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["js-yaml", "npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjs-yaml%2F-%2Fjs-yaml-4.1.0.tgz"],
             ["json5", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson5%2F-%2Fjson5-2.2.0.tgz"],
             ["require-from-string", "npm:2.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frequire-from-string%2F-%2Frequire-from-string-2.0.2.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["react-is", [
+        ["npm:16.13.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Freact-is%2F-%2Freact-is-16.13.1.tgz", {
+          "packageLocation": "./.yarn/cache/react-is-npm-16.13.1-68b25ea872-f7a19ac349.zip/node_modules/react-is/",
+          "packageDependencies": [
+            ["react-is", "npm:16.13.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Freact-is%2F-%2Freact-is-16.13.1.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -5737,6 +7213,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["regenerator-runtime", [
+        ["npm:0.13.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregenerator-runtime%2F-%2Fregenerator-runtime-0.13.9.tgz", {
+          "packageLocation": "./.yarn/cache/regenerator-runtime-npm-0.13.9-8827bf59bc-65ed455fe5.zip/node_modules/regenerator-runtime/",
+          "packageDependencies": [
+            ["regenerator-runtime", "npm:0.13.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregenerator-runtime%2F-%2Fregenerator-runtime-0.13.9.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["regexp.prototype.flags", [
+        ["npm:1.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexp.prototype.flags%2F-%2Fregexp.prototype.flags-1.3.1.tgz", {
+          "packageLocation": "./.yarn/cache/regexp.prototype.flags-npm-1.3.1-f75e00c525-343595db5a.zip/node_modules/regexp.prototype.flags/",
+          "packageDependencies": [
+            ["regexp.prototype.flags", "npm:1.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexp.prototype.flags%2F-%2Fregexp.prototype.flags-1.3.1.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["regexpp", [
         ["npm:3.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexpp%2F-%2Fregexpp-3.2.0.tgz", {
           "packageLocation": "./.yarn/cache/regexpp-npm-3.2.0-eab9252bdd-a78dc5c715.zip/node_modules/regexpp/",
@@ -5831,6 +7327,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["path-parse", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpath-parse%2F-%2Fpath-parse-1.0.7.tgz"]
           ],
           "linkType": "HARD",
+        }],
+        ["patch:resolve@npm%3A2.0.0-next.3%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-2.0.0-next.3.tgz#~builtin<compat/resolve>::version=2.0.0-next.3&hash=07638b", {
+          "packageLocation": "./.yarn/cache/resolve-patch-1f87bd01b4-21684b4d99.zip/node_modules/resolve/",
+          "packageDependencies": [
+            ["resolve", "patch:resolve@npm%3A2.0.0-next.3%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-2.0.0-next.3.tgz#~builtin<compat/resolve>::version=2.0.0-next.3&hash=07638b"],
+            ["is-core-module", "npm:2.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-core-module%2F-%2Fis-core-module-2.8.0.tgz"],
+            ["path-parse", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpath-parse%2F-%2Fpath-parse-1.0.7.tgz"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["resolve-cwd", [
@@ -5919,11 +7424,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["root-workspace-0b6124", "workspace:."],
+            ["@typescript-eslint/eslint-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.3.1.tgz"],
+            ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.3.1.tgz"],
+            ["eslint", "npm:7.32.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint%2F-%2Feslint-7.32.0.tgz"],
+            ["eslint-config-airbnb", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-airbnb%2F-%2Feslint-config-airbnb-18.2.1.tgz"],
+            ["eslint-config-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-node%2F-%2Feslint-config-node-4.1.0.tgz"],
+            ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.3.0.tgz"],
+            ["eslint-plugin-import", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.25.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.2.tgz"],
+            ["eslint-plugin-jsx-a11y", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-jsx-a11y%2F-%2Feslint-plugin-jsx-a11y-6.4.1.tgz"],
+            ["eslint-plugin-node", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:11.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-node%2F-%2Feslint-plugin-node-11.1.0.tgz"],
+            ["eslint-plugin-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-prettier%2F-%2Feslint-plugin-prettier-3.4.1.tgz"],
+            ["eslint-plugin-react", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:7.26.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react%2F-%2Feslint-plugin-react-7.26.1.tgz"],
+            ["eslint-plugin-react-hooks", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-react-hooks%2F-%2Feslint-plugin-react-hooks-1.7.0.tgz"],
             ["husky", "npm:4.3.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhusky%2F-%2Fhusky-4.3.8.tgz"],
             ["ts-loader", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-loader%2F-%2Fts-loader-8.3.0.tgz"],
             ["ts-node-dev", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:1.1.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-node-dev%2F-%2Fts-node-dev-1.1.8.tgz"],
             ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"],
             ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
             ["yargs", "npm:16.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-16.2.0.tgz"]
           ],
           "linkType": "SOFT",
@@ -6108,6 +7626,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["side-channel", [
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fside-channel%2F-%2Fside-channel-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/side-channel-npm-1.0.4-bb98a16d1c-351e41b947.zip/node_modules/side-channel/",
+          "packageDependencies": [
+            ["side-channel", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fside-channel%2F-%2Fside-channel-1.0.4.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["object-inspect", "npm:1.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fobject-inspect%2F-%2Fobject-inspect-1.11.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["signal-exit", [
         ["npm:3.0.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsignal-exit%2F-%2Fsignal-exit-3.0.5.tgz", {
           "packageLocation": "./.yarn/cache/signal-exit-npm-3.0.5-c244f58aa8-a1d3d0d63f.zip/node_modules/signal-exit/",
@@ -6173,7 +7703,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["socks-proxy-agent", "npm:6.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsocks-proxy-agent%2F-%2Fsocks-proxy-agent-6.1.0.tgz"],
             ["agent-base", "npm:6.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fagent-base%2F-%2Fagent-base-6.0.2.tgz"],
-            ["debug", "virtual:0bd0a6feafd7a8d54758fe19823d8acbf10636c286fbf7679f642a00b83ade7aaa0164c133b57dc7d1a8c17b6d3e0cbc7a449bb0ae6837ac83b4b68dc93fc88e#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
+            ["debug", "virtual:9918391bfcec06f03d438798a5293e9d084d7258457f18b82c5884d41c6f35b1e9fdb6c1366e211a4c9bdee69aa7cfdcb8a707190efeccf78295cc93d81cb076#npm:4.3.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.2.tgz"],
             ["socks", "npm:2.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsocks%2F-%2Fsocks-2.6.1.tgz"]
           ],
           "linkType": "HARD",
@@ -6199,6 +7729,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["source-map", [
+        ["npm:0.5.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.5.7.tgz", {
+          "packageLocation": "./.yarn/cache/source-map-npm-0.5.7-d4b45fbec2-5dc2043b93.zip/node_modules/source-map/",
+          "packageDependencies": [
+            ["source-map", "npm:0.5.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.5.7.tgz"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:0.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.6.1.tgz", {
           "packageLocation": "./.yarn/cache/source-map-npm-0.6.1-e67fa89c31-59ce8640cf.zip/node_modules/source-map/",
           "packageDependencies": [
@@ -6373,6 +7910,45 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["emoji-regex", "npm:8.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Femoji-regex%2F-%2Femoji-regex-8.0.0.tgz"],
             ["is-fullwidth-code-point", "npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-fullwidth-code-point%2F-%2Fis-fullwidth-code-point-3.0.0.tgz"],
             ["strip-ansi", "npm:6.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstrip-ansi%2F-%2Fstrip-ansi-6.0.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["string.prototype.matchall", [
+        ["npm:4.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.matchall%2F-%2Fstring.prototype.matchall-4.0.6.tgz", {
+          "packageLocation": "./.yarn/cache/string.prototype.matchall-npm-4.0.6-3149a650ef-07aca53ddd.zip/node_modules/string.prototype.matchall/",
+          "packageDependencies": [
+            ["string.prototype.matchall", "npm:4.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.matchall%2F-%2Fstring.prototype.matchall-4.0.6.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"],
+            ["es-abstract", "npm:1.19.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-abstract%2F-%2Fes-abstract-1.19.1.tgz"],
+            ["get-intrinsic", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fget-intrinsic%2F-%2Fget-intrinsic-1.1.1.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"],
+            ["internal-slot", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finternal-slot%2F-%2Finternal-slot-1.0.3.tgz"],
+            ["regexp.prototype.flags", "npm:1.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fregexp.prototype.flags%2F-%2Fregexp.prototype.flags-1.3.1.tgz"],
+            ["side-channel", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fside-channel%2F-%2Fside-channel-1.0.4.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["string.prototype.trimend", [
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimend%2F-%2Fstring.prototype.trimend-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/string.prototype.trimend-npm-1.0.4-3ccc2747ed-17e5aa45c3.zip/node_modules/string.prototype.trimend/",
+          "packageDependencies": [
+            ["string.prototype.trimend", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimend%2F-%2Fstring.prototype.trimend-1.0.4.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["string.prototype.trimstart", [
+        ["npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimstart%2F-%2Fstring.prototype.trimstart-1.0.4.tgz", {
+          "packageLocation": "./.yarn/cache/string.prototype.trimstart-npm-1.0.4-5ae7542e7e-3fb06818d3.zip/node_modules/string.prototype.trimstart/",
+          "packageDependencies": [
+            ["string.prototype.trimstart", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstring.prototype.trimstart%2F-%2Fstring.prototype.trimstart-1.0.4.tgz"],
+            ["call-bind", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcall-bind%2F-%2Fcall-bind-1.0.2.tgz"],
+            ["define-properties", "npm:1.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -6587,6 +8163,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
+        ["virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
+          "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-41569e28e5/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
+          "packageDependencies": [
+            ["terser-webpack-plugin", "virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
+            ["@swc/core", null],
+            ["@types/esbuild", null],
+            ["@types/swc__core", null],
+            ["@types/uglify-js", null],
+            ["@types/webpack", null],
+            ["esbuild", null],
+            ["jest-worker", "npm:27.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjest-worker%2F-%2Fjest-worker-27.3.1.tgz"],
+            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
+            ["serialize-javascript", "npm:6.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fserialize-javascript%2F-%2Fserialize-javascript-6.0.0.tgz"],
+            ["source-map", "npm:0.6.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.6.1.tgz"],
+            ["terser", "npm:5.9.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser%2F-%2Fterser-5.9.0.tgz"],
+            ["uglify-js", null],
+            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"]
+          ],
+          "packagePeers": [
+            "@swc/core",
+            "@types/esbuild",
+            "@types/swc__core",
+            "@types/uglify-js",
+            "@types/webpack",
+            "esbuild",
+            "uglify-js",
+            "webpack"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz", {
           "packageLocation": "./.yarn/__virtual__/terser-webpack-plugin-virtual-83b53d37ed/0/cache/terser-webpack-plugin-npm-5.2.5-d4ed1d2074-2a9616466b.zip/node_modules/terser-webpack-plugin/",
           "packageDependencies": [
@@ -6690,6 +8296,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["through2", "npm:4.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fthrough2%2F-%2Fthrough2-4.0.2.tgz"],
             ["readable-stream", "npm:3.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Freadable-stream%2F-%2Freadable-stream-3.6.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["to-fast-properties", [
+        ["npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fto-fast-properties%2F-%2Fto-fast-properties-2.0.0.tgz", {
+          "packageLocation": "./.yarn/cache/to-fast-properties-npm-2.0.0-ae28db4320-be2de62fe5.zip/node_modules/to-fast-properties/",
+          "packageDependencies": [
+            ["to-fast-properties", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fto-fast-properties%2F-%2Fto-fast-properties-2.0.0.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -6914,6 +8529,65 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["tsconfig-paths", [
+        ["npm:3.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsconfig-paths%2F-%2Ftsconfig-paths-3.11.0.tgz", {
+          "packageLocation": "./.yarn/cache/tsconfig-paths-npm-3.11.0-965623ce66-e14aaa6883.zip/node_modules/tsconfig-paths/",
+          "packageDependencies": [
+            ["tsconfig-paths", "npm:3.11.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsconfig-paths%2F-%2Ftsconfig-paths-3.11.0.tgz"],
+            ["@types/json5", "npm:0.0.29::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjson5%2F-%2Fjson5-0.0.29.tgz"],
+            ["json5", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson5%2F-%2Fjson5-1.0.1.tgz"],
+            ["minimist", "npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimist%2F-%2Fminimist-1.2.5.tgz"],
+            ["strip-bom", "npm:3.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fstrip-bom%2F-%2Fstrip-bom-3.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["tslib", [
+        ["npm:1.14.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftslib%2F-%2Ftslib-1.14.1.tgz", {
+          "packageLocation": "./.yarn/cache/tslib-npm-1.14.1-adeade4b12-dbe628ef87.zip/node_modules/tslib/",
+          "packageDependencies": [
+            ["tslib", "npm:1.14.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftslib%2F-%2Ftslib-1.14.1.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["tsutils", [
+        ["npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz", {
+          "packageLocation": "./.yarn/cache/tsutils-npm-3.21.0-b9a66ae5f4-1843f4c1b2.zip/node_modules/tsutils/",
+          "packageDependencies": [
+            ["tsutils", "npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/tsutils-virtual-66778906bd/0/cache/tsutils-npm-3.21.0-b9a66ae5f4-1843f4c1b2.zip/node_modules/tsutils/",
+          "packageDependencies": [
+            ["tsutils", "virtual:1d8c6689bb73b65b57cb39cecc687d2a9be39f72d9b60c15a52b223ce054c171f9e66d086504979c42f7e431a479fc450550bb3fc3d8dcb447720ac8e0755f42#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"],
+            ["@types/typescript", null],
+            ["tslib", "npm:1.14.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftslib%2F-%2Ftslib-1.14.1.tgz"],
+            ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:5a1a47d9e7fab2a7aadb17dbee0565eb42931f129da38bf9722940841c0cc36a685d77b02527dbdf9970f33920c14ccffc4fd81022f51d07f51b03cdf36a4002#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz", {
+          "packageLocation": "./.yarn/__virtual__/tsutils-virtual-648aa7031d/0/cache/tsutils-npm-3.21.0-b9a66ae5f4-1843f4c1b2.zip/node_modules/tsutils/",
+          "packageDependencies": [
+            ["tsutils", "virtual:5a1a47d9e7fab2a7aadb17dbee0565eb42931f129da38bf9722940841c0cc36a685d77b02527dbdf9970f33920c14ccffc4fd81022f51d07f51b03cdf36a4002#npm:3.21.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsutils%2F-%2Ftsutils-3.21.0.tgz"],
+            ["@types/typescript", null],
+            ["tslib", "npm:1.14.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftslib%2F-%2Ftslib-1.14.1.tgz"],
+            ["typescript", null]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["tunnel-agent", [
         ["npm:0.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftunnel-agent%2F-%2Ftunnel-agent-0.6.0.tgz", {
           "packageLocation": "./.yarn/cache/tunnel-agent-npm-0.6.0-f7c3a8e2c7-05f6510358.zip/node_modules/tunnel-agent/",
@@ -7006,6 +8680,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/uglify-js-npm-3.14.3-0b51523797-eef57b4fec.zip/node_modules/uglify-js/",
           "packageDependencies": [
             ["uglify-js", "npm:3.14.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fuglify-js%2F-%2Fuglify-js-3.14.3.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["unbox-primitive", [
+        ["npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Funbox-primitive%2F-%2Funbox-primitive-1.0.1.tgz", {
+          "packageLocation": "./.yarn/cache/unbox-primitive-npm-1.0.1-b2b130d0f8-89d950e18f.zip/node_modules/unbox-primitive/",
+          "packageDependencies": [
+            ["unbox-primitive", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Funbox-primitive%2F-%2Funbox-primitive-1.0.1.tgz"],
+            ["function-bind", "npm:1.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffunction-bind%2F-%2Ffunction-bind-1.1.1.tgz"],
+            ["has-bigints", "npm:1.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-bigints%2F-%2Fhas-bigints-1.0.1.tgz"],
+            ["has-symbols", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fhas-symbols%2F-%2Fhas-symbols-1.0.2.tgz"],
+            ["which-boxed-primitive", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwhich-boxed-primitive%2F-%2Fwhich-boxed-primitive-1.0.2.tgz"]
           ],
           "linkType": "HARD",
         }]
@@ -7171,6 +8858,43 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/webpack-virtual-5091e94c5f/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
+          "packageDependencies": [
+            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["@types/eslint-scope", "npm:3.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Feslint-scope%2F-%2Feslint-scope-3.7.1.tgz"],
+            ["@types/estree", "npm:0.0.50::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Festree%2F-%2Festree-0.0.50.tgz"],
+            ["@types/webpack-cli", null],
+            ["@webassemblyjs/ast", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fast%2F-%2Fast-1.11.1.tgz"],
+            ["@webassemblyjs/wasm-edit", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-edit%2F-%2Fwasm-edit-1.11.1.tgz"],
+            ["@webassemblyjs/wasm-parser", "npm:1.11.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webassemblyjs%2Fwasm-parser%2F-%2Fwasm-parser-1.11.1.tgz"],
+            ["acorn", "npm:8.5.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn%2F-%2Facorn-8.5.0.tgz"],
+            ["acorn-import-assertions", "virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:1.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Facorn-import-assertions%2F-%2Facorn-import-assertions-1.8.0.tgz"],
+            ["browserslist", "npm:4.17.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fbrowserslist%2F-%2Fbrowserslist-4.17.6.tgz"],
+            ["chrome-trace-event", "npm:1.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fchrome-trace-event%2F-%2Fchrome-trace-event-1.0.3.tgz"],
+            ["enhanced-resolve", "npm:5.8.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fenhanced-resolve%2F-%2Fenhanced-resolve-5.8.3.tgz"],
+            ["es-module-lexer", "npm:0.9.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fes-module-lexer%2F-%2Fes-module-lexer-0.9.3.tgz"],
+            ["eslint-scope", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-scope%2F-%2Feslint-scope-5.1.1.tgz"],
+            ["events", "npm:3.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fevents%2F-%2Fevents-3.3.0.tgz"],
+            ["glob-to-regexp", "npm:0.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglob-to-regexp%2F-%2Fglob-to-regexp-0.4.1.tgz"],
+            ["graceful-fs", "npm:4.2.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fgraceful-fs%2F-%2Fgraceful-fs-4.2.8.tgz"],
+            ["json-parse-better-errors", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-parse-better-errors%2F-%2Fjson-parse-better-errors-1.0.2.tgz"],
+            ["loader-runner", "npm:4.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Floader-runner%2F-%2Floader-runner-4.2.0.tgz"],
+            ["mime-types", "npm:2.1.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fmime-types%2F-%2Fmime-types-2.1.33.tgz"],
+            ["neo-async", "npm:2.6.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fneo-async%2F-%2Fneo-async-2.6.2.tgz"],
+            ["schema-utils", "npm:3.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fschema-utils%2F-%2Fschema-utils-3.1.1.tgz"],
+            ["tapable", "npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftapable%2F-%2Ftapable-2.2.1.tgz"],
+            ["terser-webpack-plugin", "virtual:5091e94c5fb8acc801df309186df8177419afb5cf0e35a034ed2b2a6109622b13c1eb3451b213d3f38459f24908eb67fba41f218ae0b4467fdde0bd6ef9e72de#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
+            ["watchpack", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.2.0.tgz"],
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["webpack-sources", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-sources%2F-%2Fwebpack-sources-3.2.1.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-cli",
+            "webpack-cli"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz", {
           "packageLocation": "./.yarn/__virtual__/webpack-virtual-144a1847ef/0/cache/webpack-npm-5.62.1-384aaadd1e-85d9bc7e9b.zip/node_modules/webpack/",
           "packageDependencies": [
@@ -7273,7 +8997,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tapable", "npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftapable%2F-%2Ftapable-2.2.1.tgz"],
             ["terser-webpack-plugin", "virtual:991315bf8fec876cf3d36d11e57856a5e9b41fa34e2cf73f30c8965c4b297187d15ab169d127d80e0b52a696881f1ffffc536a60c5f661d1158b112bb76bdef4#npm:5.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fterser-webpack-plugin%2F-%2Fterser-webpack-plugin-5.2.5.tgz"],
             ["watchpack", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.2.0.tgz"],
-            ["webpack-cli", null],
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
             ["webpack-sources", "npm:3.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-sources%2F-%2Fwebpack-sources-3.2.1.tgz"]
           ],
           "packagePeers": [
@@ -7290,6 +9014,47 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack-cli", "npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
           ],
           "linkType": "SOFT",
+        }],
+        ["virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-10984a7802/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
+          "packageDependencies": [
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["@discoveryjs/json-ext", "npm:0.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40discoveryjs%2Fjson-ext%2F-%2Fjson-ext-0.5.5.tgz"],
+            ["@types/webpack", null],
+            ["@types/webpack-bundle-analyzer", null],
+            ["@types/webpack-cli__generators", null],
+            ["@types/webpack-cli__migrate", null],
+            ["@types/webpack-dev-server", null],
+            ["@webpack-cli/configtest", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
+            ["@webpack-cli/generators", null],
+            ["@webpack-cli/info", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
+            ["@webpack-cli/migrate", null],
+            ["@webpack-cli/serve", "virtual:10984a780202b0c3ca2d766e7d72e68b226dc615c93ac12be4fd404387b7b10a0d13126526f939257e520f8353b0d0bc393e2a8488e05c65d6712be5ea686c9f#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
+            ["colorette", "npm:2.0.16::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcolorette%2F-%2Fcolorette-2.0.16.tgz"],
+            ["commander", "npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-7.2.0.tgz"],
+            ["execa", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fexeca%2F-%2Fexeca-5.1.1.tgz"],
+            ["fastest-levenshtein", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastest-levenshtein%2F-%2Ffastest-levenshtein-1.0.12.tgz"],
+            ["import-local", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fimport-local%2F-%2Fimport-local-3.0.3.tgz"],
+            ["interpret", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-2.2.0.tgz"],
+            ["rechoir", "npm:0.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frechoir%2F-%2Frechoir-0.7.1.tgz"],
+            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-bundle-analyzer", null],
+            ["webpack-dev-server", null],
+            ["webpack-merge", "npm:5.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-merge%2F-%2Fwebpack-merge-5.8.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-bundle-analyzer",
+            "@types/webpack-cli__generators",
+            "@types/webpack-cli__migrate",
+            "@types/webpack-dev-server",
+            "@types/webpack",
+            "@webpack-cli/generators",
+            "@webpack-cli/migrate",
+            "webpack-bundle-analyzer",
+            "webpack-dev-server",
+            "webpack"
+          ],
+          "linkType": "HARD",
         }],
         ["virtual:5eebc55f5ec14b9f5dab7f7281b334b5fd1c213197e9810ad2b731ad81843d978f9935f53d3070b5fa3d65f4ed148de196ae6559706061ef242f10a176f3228d#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
           "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-e1d82db93c/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
@@ -7372,6 +9137,58 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "webpack"
           ],
           "linkType": "HARD",
+        }],
+        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz", {
+          "packageLocation": "./.yarn/__virtual__/webpack-cli-virtual-e0ba3e8b19/0/cache/webpack-cli-npm-4.9.1-825cb1c9fe-2aff0349c1.zip/node_modules/webpack-cli/",
+          "packageDependencies": [
+            ["webpack-cli", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"],
+            ["@discoveryjs/json-ext", "npm:0.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40discoveryjs%2Fjson-ext%2F-%2Fjson-ext-0.5.5.tgz"],
+            ["@types/webpack", null],
+            ["@types/webpack-bundle-analyzer", null],
+            ["@types/webpack-cli__generators", null],
+            ["@types/webpack-cli__migrate", null],
+            ["@types/webpack-dev-server", null],
+            ["@webpack-cli/configtest", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fconfigtest%2F-%2Fconfigtest-1.1.0.tgz"],
+            ["@webpack-cli/generators", null],
+            ["@webpack-cli/info", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Finfo%2F-%2Finfo-1.4.0.tgz"],
+            ["@webpack-cli/migrate", null],
+            ["@webpack-cli/serve", "virtual:e0ba3e8b19c67ac35c1e4064fa9703de3d2e961365e4731c976fa7d5f88501aa713d064ad888affec8e3a9a569f482c75f195c1357a07eb86b9ba54e02285928#npm:1.6.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40webpack-cli%2Fserve%2F-%2Fserve-1.6.0.tgz"],
+            ["colorette", "npm:2.0.16::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcolorette%2F-%2Fcolorette-2.0.16.tgz"],
+            ["commander", "npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-7.2.0.tgz"],
+            ["execa", "npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fexeca%2F-%2Fexeca-5.1.1.tgz"],
+            ["fastest-levenshtein", "npm:1.0.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastest-levenshtein%2F-%2Ffastest-levenshtein-1.0.12.tgz"],
+            ["import-local", "npm:3.0.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fimport-local%2F-%2Fimport-local-3.0.3.tgz"],
+            ["interpret", "npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Finterpret%2F-%2Finterpret-2.2.0.tgz"],
+            ["rechoir", "npm:0.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frechoir%2F-%2Frechoir-0.7.1.tgz"],
+            ["webpack", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-bundle-analyzer", null],
+            ["webpack-dev-server", null],
+            ["webpack-merge", "npm:5.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-merge%2F-%2Fwebpack-merge-5.8.0.tgz"]
+          ],
+          "packagePeers": [
+            "@types/webpack-bundle-analyzer",
+            "@types/webpack-cli__generators",
+            "@types/webpack-cli__migrate",
+            "@types/webpack-dev-server",
+            "@types/webpack",
+            "@webpack-cli/generators",
+            "@webpack-cli/migrate",
+            "webpack-bundle-analyzer",
+            "webpack-dev-server",
+            "webpack"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["webpack-config", [
+        ["workspace:build/webpack-config", {
+          "packageLocation": "./build/webpack-config/",
+          "packageDependencies": [
+            ["webpack-config", "workspace:build/webpack-config"],
+            ["webpack", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:5.62.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.62.1.tgz"],
+            ["webpack-cli", "virtual:54f27d31d1b6923a9b5772cfc9ab46fd537845c6623db7c10b78874c8b121a74e753c6582a2144ff5d32cb4411c768c807657d3e1b451a0bf76338c228d41c5a#npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"]
+          ],
+          "linkType": "SOFT",
         }]
       ]],
       ["webpack-merge", [
@@ -7400,6 +9217,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["which", "npm:2.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwhich%2F-%2Fwhich-2.0.2.tgz"],
             ["isexe", "npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fisexe%2F-%2Fisexe-2.0.0.tgz"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["which-boxed-primitive", [
+        ["npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwhich-boxed-primitive%2F-%2Fwhich-boxed-primitive-1.0.2.tgz", {
+          "packageLocation": "./.yarn/cache/which-boxed-primitive-npm-1.0.2-1d838f44ba-53ce774c73.zip/node_modules/which-boxed-primitive/",
+          "packageDependencies": [
+            ["which-boxed-primitive", "npm:1.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwhich-boxed-primitive%2F-%2Fwhich-boxed-primitive-1.0.2.tgz"],
+            ["is-bigint", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-bigint%2F-%2Fis-bigint-1.0.4.tgz"],
+            ["is-boolean-object", "npm:1.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-boolean-object%2F-%2Fis-boolean-object-1.1.2.tgz"],
+            ["is-number-object", "npm:1.0.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-number-object%2F-%2Fis-number-object-1.0.6.tgz"],
+            ["is-string", "npm:1.0.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-string%2F-%2Fis-string-1.0.7.tgz"],
+            ["is-symbol", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fis-symbol%2F-%2Fis-symbol-1.0.4.tgz"]
           ],
           "linkType": "HARD",
         }]

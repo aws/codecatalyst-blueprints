@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+      // "airbnb",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+      "dist"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {
+      "quotes": ["warn", "single"],
+      "@typescript-eslint/no-floating-promises": ["error"]
+    }
+}
