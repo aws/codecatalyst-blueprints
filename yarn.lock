@@ -161,7 +161,40 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-issue@workspace:packages/components/caws-issues"
   dependencies:
     "@caws-blueprint/caws.blueprint": "*"
-    "@types/node": ^14.17.33
+    "@types/node": ^14.17.0
+    npm-check-updates: ^11
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^9
+    typescript: ^4.4.4
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@caws-blueprint-component/caws-source-repositories@*, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
+  dependencies:
+    "@caws-blueprint/caws.blueprint": "*"
+    "@types/node": ^14.17.0
+    npm-check-updates: ^11
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^9
+    typescript: ^4.4.4
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
+  dependencies:
+    "@caws-blueprint-component/caws-source-repositories": "*"
+    "@caws-blueprint/caws.blueprint": "*"
+    "@types/node": ^14.17.0
     npm-check-updates: ^11
     projen: "*"
     standard-version: ^9
@@ -192,7 +225,7 @@ __metadata:
   resolution: "@caws-blueprint-util/blueprint-projen@workspace:packages/utils/projen-blueprint"
   dependencies:
     "@caws-blueprint-tool/blueprint-cli": "*"
-    "@types/node": ^14.17.33
+    "@types/node": ^14.17.0
     npm-check-updates: ^11
     projen: "*"
     standard-version: ^9
@@ -210,7 +243,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-tool/blueprint-cli": ^1.0.4
     "@caws-blueprint-util/blueprint-projen": ^0.0.29
-    "@types/node": ^14.17.33
+    "@types/node": ^14.17.0
     npm-check-updates: ^11
     projen: "*"
     standard-version: ^9
@@ -560,7 +593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.17.33":
+"@types/node@npm:^14.17.0":
   version: 14.17.33
   resolution: "@types/node@npm:14.17.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.33.tgz"
   checksum: 47ee8d5a398f84b376023f03b83e43a71f1bf617d1014d34c0af24b0332b42e7b392c967c20bfb907fb37971993035e3b25c47a1678c745c5d122d8205ba5a19

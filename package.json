@@ -2,14 +2,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -t -p run build",
-    "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run projen",
+    "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run build",
+    "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t -p run projen",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
-    "components:publish": "yarn workspaces foreach --include './packages/components/*', run npm:publish",
-    "tools:publish": "yarn workspaces foreach --include './packages/tools/*' run npm:publish",
-    "utils:publish": "yarn workspaces foreach --include './packages/utils/*' run npm:publish",
-    "blueprints:publish": "yarn workspaces foreach --include './packages/utils/*' run blueprint:publish",
-    "blueprints:synth": "yarn workspaces foreach --include './packages/utils/*' run blueprint:publish"
+    "components:publish": "yarn workspaces foreach -v --include './packages/components/*', run npm:publish",
+    "tools:publish": "yarn workspaces foreach -v --include './packages/tools/*' run npm:publish",
+    "utils:publish": "yarn workspaces foreach -v --include './packages/utils/*' run npm:publish",
+    "blueprints:publish": "yarn workspaces foreach -v --include './packages/utils/*' run blueprint:publish",
+    "blueprints:synth": "yarn workspaces foreach -v --include './packages/utils/*' run blueprint:publish"
   },
   "packageManager": "yarn@3.1.0",
   "workspaces": {
