@@ -6,7 +6,7 @@ const project = new TypeScriptProject({
   name: 'projen-blueprint',
   projenrcTs: true,
   sampleCode: false,
-  eslint: false,
+  eslint: true,
   github: false,
   jest: false,
   npmignoreEnabled: true,
@@ -20,7 +20,7 @@ const project = new TypeScriptProject({
   copyrightOwner: 'Amazon.com',
   peerDeps: [
     'projen',
-    "@caws-blueprint-tool/blueprint-cli"
+    "@caws-blueprint-util/blueprint-cli"
   ],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
   packageName: '@caws-blueprint-util/blueprint-projen',

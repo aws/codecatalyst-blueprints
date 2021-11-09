@@ -1,0 +1,6 @@
+{
+  "moduleName": "myfirstlambda",
+  "defaultReleaseBranch": "main",
+  "s3BucketName": "codeawsdeploy",
+  "connectionArn": "FAKE_CONNECTION_ARN"
+}

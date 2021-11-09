@@ -7,6 +7,7 @@
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
+    "eslint": "npx projen eslint",
     "package": "npx projen package",
     "post-compile": "npx projen post-compile",
     "pre-compile": "npx projen pre-compile",
@@ -22,8 +23,15 @@
     "npm:push": "yarn publish ./dist/js/*$npm_package_version.tgz"
   },
   "devDependencies": {
-    "@caws-blueprint-tool/blueprint-cli": "*",
+    "@caws-blueprint-util/blueprint-cli": "0.0.x",
     "@types/node": "^14.17.0",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "eslint": "*",
+    "eslint-import-resolver-node": "*",
+    "eslint-import-resolver-typescript": "*",
+    "eslint-plugin-import": "*",
+    "json-schema": "*",
     "npm-check-updates": "^11",
     "projen": "*",
     "standard-version": "^9",
@@ -31,7 +39,7 @@
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
-    "@caws-blueprint-tool/blueprint-cli": "*",
+    "@caws-blueprint-util/blueprint-cli": "0.0.x",
     "projen": "*"
   },
   "dependencies": {},

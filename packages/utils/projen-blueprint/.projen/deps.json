@@ -1,12 +1,40 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-tool/blueprint-cli",
+      "name": "@caws-blueprint-util/blueprint-cli",
       "type": "build"
     },
     {
       "name": "@types/node",
       "version": "^14.17.0",
+      "type": "build"
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "type": "build"
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "type": "build"
+    },
+    {
+      "name": "eslint",
+      "type": "build"
+    },
+    {
+      "name": "eslint-import-resolver-node",
+      "type": "build"
+    },
+    {
+      "name": "eslint-import-resolver-typescript",
+      "type": "build"
+    },
+    {
+      "name": "eslint-plugin-import",
+      "type": "build"
+    },
+    {
+      "name": "json-schema",
       "type": "build"
     },
     {
@@ -33,7 +61,7 @@
       "type": "build"
     },
     {
-      "name": "@caws-blueprint-tool/blueprint-cli",
+      "name": "@caws-blueprint-util/blueprint-cli",
       "type": "peer"
     },
     {
