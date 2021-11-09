@@ -3,21 +3,7 @@ import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'import-from-git',
-  license: 'MIT',
   projenrcTs: true,
-  sampleCode: false,
-  github: false,
-  eslint: false,
-  jest: false,
-  npmignoreEnabled: true,
-  projenDuringBuild: false,
-  tsconfig: {
-    compilerOptions: {
-      esModuleInterop: true,
-      noImplicitAny: false,
-    },
-  },
-
   copyrightOwner: 'Amazon.com',
 
   /* Runtime dependencies of this blueprint. */
@@ -34,8 +20,8 @@ const blueprint = new ProjenBlueprint({
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [
-    'ts-node', 
-    '@caws-blueprint-tool/blueprint-cli',
+    'ts-node',
+    '@caws-blueprint-util/blueprint-cli',
     '@caws-blueprint-util/blueprint-projen'
   ],
   /* Add release management to this project. */
