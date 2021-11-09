@@ -6,7 +6,7 @@ const project = new TypeScriptProject({
   name: 'caws-issues',
   projenrcTs: true,
   sampleCode: false,
-  eslint: false,
+  eslint: true,
   github: false,
   jest: false,
   npmignoreEnabled: true,

@@ -1,6 +1,5 @@
-import { Component, YamlFile } from 'projen';
-
 import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Component, YamlFile } from 'projen';
 
 export interface EnvironmentDefinition {
   /**
@@ -15,7 +14,7 @@ export interface EnvironmentDefinition {
 }
 
 export class Environment extends Component {
-constructor(blueprint: Blueprint, environment: EnvironmentDefinition) {
+  constructor(blueprint: Blueprint, environment: EnvironmentDefinition) {
     super(blueprint);
     new YamlFile(
       blueprint,

@@ -1,10 +1,10 @@
 import * as path from 'path';
 
-import {Component, YamlFile} from 'projen';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Component, YamlFile } from 'projen';
 
-import {Blueprint} from '@caws-blueprint/caws.blueprint';
-import {SourceRepository} from '@caws-blueprint-component/caws-source-repositories';
-import {WorkflowDefinition} from './workflow-definition';
+import { WorkflowDefinition } from './workflow-definition';
 
 export * from './example';
 export * from './workflow-definition';

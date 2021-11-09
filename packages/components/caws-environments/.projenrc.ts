@@ -6,7 +6,7 @@ const project = new TypeScriptProject({
   name: 'caws-environments',
   projenrcTs: true,
   sampleCode: false,
-  eslint: false,
+  eslint: true,
   github: false,
   jest: false,
   npmignoreEnabled: true,
@@ -24,7 +24,7 @@ const project = new TypeScriptProject({
   peerDeps: [
     'projen',
   ],
-  description: 'This is a representation of a caws environment.',
+  description: 'This is a representation of a caws issue.',
   packageName: '@caws-blueprint-component/caws-environments',
   devDeps: [
     'ts-node'

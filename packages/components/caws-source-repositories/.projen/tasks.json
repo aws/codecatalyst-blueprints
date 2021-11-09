@@ -82,6 +82,15 @@
         }
       ]
     },
+    "eslint": {
+      "name": "eslint",
+      "description": "Runs eslint against the codebase",
+      "steps": [
+        {
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+        }
+      ]
+    },
     "package": {
       "name": "package",
       "description": "Creates the distribution package",
@@ -145,7 +154,12 @@
     },
     "test": {
       "name": "test",
-      "description": "Run tests"
+      "description": "Run tests",
+      "steps": [
+        {
+          "spawn": "eslint"
+        }
+      ]
     },
     "unbump": {
       "name": "unbump",
@@ -188,7 +202,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/node npm-check-updates standard-version ts-node typescript @caws-blueprint/caws.blueprint"
+          "exec": "yarn upgrade @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import json-schema npm-check-updates standard-version ts-node typescript @caws-blueprint/caws.blueprint"
         },
         {
           "exec": "npx projen"

@@ -37,3 +37,4 @@ jspm_packages/
 !/src/
 /lib
 /dist/
+!/.eslintrc.json

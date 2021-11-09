@@ -4,6 +4,7 @@
   "scripts": {
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t -p run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t -p run projen",
+    "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -p run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
     "components:publish": "yarn workspaces foreach -v --include './packages/components/*', run npm:publish",
     "tools:publish": "yarn workspaces foreach -v --include './packages/tools/*' run npm:publish",
