@@ -9,3 +9,4 @@ Before anything else, make sure to add the following to the .gitignore:
 !.yarn/versions
 
 dist
+.DS_Store

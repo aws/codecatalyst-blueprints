@@ -253,6 +253,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@caws-blueprint-util-blueprint-projen-virtual-6b30a3d092/1/packages/utils/projen-blueprint/",
           "packageDependencies": [
             ["@caws-blueprint-util/blueprint-projen", "virtual:8c40748152dc48529351c6fd138b08a537ecac9e8001cf78cb64064d6ed6df5c6ab80c803cfbc8b5066816150322a879742cb08f0cb759b39746749cfc608385#workspace:packages/utils/projen-blueprint"],
+            ["@caws-blueprint-tool/blueprint-cli", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-tool%2Fblueprint-cli%2F-%2Fblueprint-cli-1.0.4.tgz"],
+            ["@types/caws-blueprint-tool__blueprint-cli", null],
             ["@types/node", "npm:14.17.32::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.32.tgz"],
             ["@types/projen", null],
             ["npm-check-updates", "npm:11.8.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-check-updates%2F-%2Fnpm-check-updates-11.8.5.tgz"],
@@ -262,6 +264,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A4.4.4%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.4.4.tgz#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
           ],
           "packagePeers": [
+            "@caws-blueprint-tool/blueprint-cli",
+            "@types/caws-blueprint-tool__blueprint-cli",
             "@types/projen",
             "projen"
           ],
@@ -271,6 +275,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/utils/projen-blueprint/",
           "packageDependencies": [
             ["@caws-blueprint-util/blueprint-projen", "workspace:packages/utils/projen-blueprint"],
+            ["@caws-blueprint-tool/blueprint-cli", "npm:1.0.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-tool%2Fblueprint-cli%2F-%2Fblueprint-cli-1.0.4.tgz"],
             ["@types/node", "npm:14.17.32::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.32.tgz"],
             ["npm-check-updates", "npm:11.8.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-check-updates%2F-%2Fnpm-check-updates-11.8.5.tgz"],
             ["projen", "npm:0.33.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprojen%2F-%2Fprojen-0.33.1.tgz"],
