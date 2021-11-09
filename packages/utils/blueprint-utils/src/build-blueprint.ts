@@ -1,8 +1,20 @@
-import { BlueprintIntrospection } from './introspect-blueprint'
+export interface BlueprintIntrospection {
+  imports: string[];
+  options: OptionsInformation;
+  classInfo: ClassInformation;
+  defaults: any;
+}
+
+interface ClassInformation {
+  name: string;
+}
+interface OptionsInformation {
+  fullSource: string;
+}
 
 export const buildBlueprint = (originBlueprint: BlueprintIntrospection, originPackage: string): string => {
 
-return `import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
+  return `import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
 import defaults from './defaults.json';
 
 /**
@@ -23,7 +35,7 @@ import defaults from './defaults.json';
       super(options_);
       const options = Object.assign(defaults, options_);
       console.log(options);
-      
+
       // example showing copy source files
       // TODO
 
@@ -33,6 +45,6 @@ import defaults from './defaults.json';
       // example showing something else
       // blah
    }
-} 
-`
 }
+`;
+};
