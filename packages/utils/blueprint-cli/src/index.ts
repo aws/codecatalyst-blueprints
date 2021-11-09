@@ -3,14 +3,12 @@
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 
-import {PublishOptions, publish} from './publish';
-import {SynthesizeOptions, synth} from './synth';
-
-import {Argv} from 'yargs';
-import {hideBin} from 'yargs/helpers';
+import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
+import { PublishOptions, publish } from './publish';
+import { SynthesizeOptions, synth } from './synth';
 
-const log = pino({
+const log = pino.default({
   prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',
 });
@@ -18,12 +16,12 @@ const log = pino({
 log.info('started');
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-yargs(hideBin(process.argv))
+yargs.default(hideBin(process.argv))
   .command({
     command: 'synth <blueprint>',
     describe: 'locally synthesize the blueprint',
-    builder: (yargs: Argv<unknown>) => {
-      return yargs
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
         .positional('blueprint', {
           describe: 'path to the blueprint package directory',
           type: 'string',
@@ -47,8 +45,8 @@ yargs(hideBin(process.argv))
   .command({
     command: 'publish <blueprint>',
     describe: 'publishes a bueprint',
-    builder: (yargs: Argv<unknown>) => {
-      return yargs
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
         .positional('blueprint', {
           describe: 'path to the blueprint package directory',
           type: 'string',
@@ -73,8 +71,8 @@ yargs(hideBin(process.argv))
   .command({
     command: 'build-ast <blueprint>',
     describe: 'builds a blueprint ast',
-    builder: (yargs: Argv<unknown>) => {
-      return yargs
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
         .positional('blueprint', {
           describe: 'path to the blueprint file',
           type: 'string',
@@ -84,7 +82,7 @@ yargs(hideBin(process.argv))
           describe: 'output directory for blueprint ast',
           type: 'string',
           demandOption: true,
-        })
+        });
     },
     handler: async (argv: AstOptions): Promise<void> => {
       await buildAst(log, argv.blueprint, argv.outdir);

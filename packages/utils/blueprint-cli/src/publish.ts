@@ -1,6 +1,6 @@
-import * as axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as axios from 'axios';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 
@@ -53,7 +53,7 @@ export async function publish(
   }
 
   const packagePath = fs
-    .readdirSync(distributionFolder, {withFileTypes: true})
+    .readdirSync(distributionFolder, { withFileTypes: true })
     .filter(entry => entry.isFile() && entry.name.endsWith(`${version}.tgz`))
     .map(entry => entry.name)[0];
   if (!packagePath) {
@@ -72,11 +72,11 @@ export async function publish(
     },
     {
       headers: {
-        authority: 'api-gamma.quokka.codes',
-        accespt: 'application/json',
-        origin: 'https://api-gamma.quokka.codes',
+        'authority': 'api-gamma.quokka.codes',
+        'accespt': 'application/json',
+        'origin': 'https://api-gamma.quokka.codes',
         'x-api-key': 'CBxZwFn2o0pofwuIE0yR',
-        cookie: cookie,
+        'cookie': cookie,
         'content-type': 'application/json',
       },
     },
