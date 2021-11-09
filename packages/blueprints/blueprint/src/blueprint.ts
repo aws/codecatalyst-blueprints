@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as path from 'path';
 
-import {Context} from './context';
-import {Project} from 'projen';
+import { Project } from 'projen';
+import { Context } from './context';
 
 export interface ParentOptions {
   outdir: string;
