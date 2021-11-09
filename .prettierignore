@@ -1,9 +1,0 @@
-*.js
-*.json
-*.yaml
-*.yml
-.eslintrc
-
-resource-association-api
-coverage
-dist

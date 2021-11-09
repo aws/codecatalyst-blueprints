@@ -1,9 +1,0 @@
-{
-  "blueprintToExtend": "@caws-blueprint/caws.blueprint",
-  "blueprintName": "my-new-blueprint",
-  "authorName": "caws-user",
-  "description": "This is a new blueprint.",
-  "yaml": false,
-  "version": "latest",
-  "license": "MIT"
-}
