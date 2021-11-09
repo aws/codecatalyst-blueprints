@@ -1,6 +1,11 @@
 {
   "dependencies": [
     {
+      "name": "@caws-blueprint-tool/blueprint-cli",
+      "version": "1.0.3",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14.17.0",
       "type": "build"
@@ -12,7 +17,7 @@
     },
     {
       "name": "projen",
-      "version": "0.30.0",
+      "version": "0.0.0",
       "type": "build"
     },
     {
@@ -30,8 +35,13 @@
       "type": "build"
     },
     {
+      "name": "@caws-blueprint-tool/blueprint-cli",
+      "version": "^1.0.3",
+      "type": "peer"
+    },
+    {
       "name": "projen",
-      "version": "^0.30.0",
+      "version": "*",
       "type": "peer"
     }
   ],

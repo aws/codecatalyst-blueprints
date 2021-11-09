@@ -10,7 +10,6 @@ const project = new TypeScriptProject({
   github: false,
   jest: false,
   npmignoreEnabled: true,
-  projenDuringBuild: false,
   tsconfig: {
     compilerOptions: {
       esModuleInterop: true,

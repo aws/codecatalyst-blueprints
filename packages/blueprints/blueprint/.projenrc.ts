@@ -10,7 +10,6 @@ const blueprint = new ProjenBlueprint({
   eslint: false,
   jest: false,
   npmignoreEnabled: true,
-  projenDuringBuild: false,
   tsconfig: {
     compilerOptions: {
       esModuleInterop: true,
