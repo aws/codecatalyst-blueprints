@@ -8,8 +8,8 @@
     "components:publish": "yarn workspaces foreach -v --include './packages/components/*', run npm:publish",
     "tools:publish": "yarn workspaces foreach -v --include './packages/tools/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v --include './packages/utils/*' run npm:publish",
-    "blueprints:publish": "yarn workspaces foreach -v --include './packages/utils/*' run blueprint:publish",
-    "blueprints:synth": "yarn workspaces foreach -v --include './packages/utils/*' run blueprint:publish"
+    "blueprints:publish": "yarn workspaces foreach -v --include './packages/blueprints/*' run blueprint:publish",
+    "blueprints:synth": "yarn workspaces foreach -v --include './packages/blueprints/*' run blueprint:synth"
   },
   "packageManager": "yarn@3.1.0",
   "workspaces": {
