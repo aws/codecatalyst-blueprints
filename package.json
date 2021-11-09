@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
-    "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t -p run projen",
-    "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -p run eslint",
+    "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
+    "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
     "components:publish": "yarn workspaces foreach -v --include './packages/components/*', run npm:publish",
     "utils:publish": "yarn workspaces foreach -v --include './packages/utils/*' run npm:publish",

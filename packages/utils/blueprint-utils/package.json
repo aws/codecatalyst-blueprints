@@ -40,7 +40,6 @@
   "peerDependencies": {
     "projen": "*"
   },
-  "dependencies": {},
   "bundledDependencies": [],
   "main": "lib/index.js",
   "license": "MIT",

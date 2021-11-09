@@ -40,7 +40,6 @@
     "ts-node": "^9",
     "typescript": "^4.4.4"
   },
-  "peerDependencies": {},
   "dependencies": {
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
