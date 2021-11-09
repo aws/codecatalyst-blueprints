@@ -1,6 +1,7 @@
-### Development
+## Set Up
 
-We highly recommend you use VSCODE. This repo is set up to link stuff properly when using VScode.
+We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link
+things properly when using VScode. Although plugins also exist for vimlords.
 
 We recommend adding this to your `~/.bash_profile`
 
@@ -19,3 +20,26 @@ running projen post action.
 ```
 export PROJEN_DISABLE_POST=1
 ```
+
+## Development
+
+git clone
+
+```
+git clone https://github.com/aws/caws-blueprints
+```
+
+Run yarn
+
+```
+cd caws-blueprints
+yarn
+```
+
+Run a build
+
+```
+yarn build
+```
+
+You're done!
