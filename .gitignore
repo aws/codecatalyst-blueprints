@@ -1,49 +1,14 @@
-*.js
-!**/build/**/*.js
-!**/build-tools/*.js
-!**/ops-tools/*.js
-!jest.config.js
-!webpack*.config.js
-!babel.config.js
-**/bin/*.d.ts
-!@types/*.d.ts
-*.orig
+Before anything else, make sure to add the following to the .gitignore:
 
-.yarn/
+# Yarn
+.yarn/*
+!.yarn/cache
 !.yarn/releases
 !.yarn/plugins
-.pnp.*
+!.yarn/sdks
+!.yarn/versions
 
 yarn-error.log
-
-# CDK asset staging directory
-.cdk.staging
-cdk.out
-**/.aws-sam/
-
-dist/
-**/build/
-!build
-
-# Parcel default cache directory
-.parcel-cache
-.DS_Store
-
-coverage/
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-*.swp
-
-pids
-logs
-results
-tmp
 
 # Coverage reports
 coverage
@@ -51,24 +16,20 @@ coverage
 # API keys and secrets
 .env
 
-# Dependency directory
-node_modules
-
 # Editors
 .idea
 *.iml
 .vscode
 
-# OS metadata
-Thumbs.db
-
-# Ignore built ts files
+dist
 dist/**/*
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.DS_Store
+node_modules/
+
+# synthesis directories
+synth
+synthbundle-*
 
 # Yarn Integrity file
 .yarn-integrity
@@ -78,7 +39,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-
-# synthesis directories
-synth
-synthbundle-*
