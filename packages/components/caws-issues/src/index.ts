@@ -1,14 +1,14 @@
 import * as path from 'path';
 
-import {Component, YamlFile} from 'projen';
+import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Component, YamlFile } from 'projen';
 
-import {Blueprint} from '@caws-blueprint/caws.blueprint';
 
 export interface IssueDefinition {
   type: 'Issue';
 
   title: string;
-  
+
   description: string;
 
   issueStore: string;
