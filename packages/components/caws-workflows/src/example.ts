@@ -1,4 +1,4 @@
-import {WorkflowDefinition} from './workflow-definition';
+import { WorkflowDefinition } from './workflow-definition';
 
 export const ciWorkflowExample = (options: {branch: string}): WorkflowDefinition => {
   return {

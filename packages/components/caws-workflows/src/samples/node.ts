@@ -1,4 +1,4 @@
-import {WorkflowDefinition} from '..';
+import { WorkflowDefinition } from '..';
 
 export class NodeWorkflowDefinitionSamples {
   public static readonly build: WorkflowDefinition = {
@@ -19,7 +19,7 @@ export class NodeWorkflowDefinitionSamples {
         OutputArtifacts: [],
 
         Configuration: {
-          Steps: [{Run: 'npm install'}, {Run: 'npm run build'}],
+          Steps: [{ Run: 'npm install' }, { Run: 'npm run build' }],
         },
       },
     },
