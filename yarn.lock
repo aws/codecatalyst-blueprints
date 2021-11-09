@@ -537,24 +537,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 16.11.6
-  resolution: "@types/node@npm:16.11.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.6.tgz"
-  checksum: 6e19634766ff589d3d2f361c2196b671f8f133cdadc5ad347a621c360d8994b6c4fbccfb2ad9c60c588c593831a96497c9c6b77d2b7e91be723384b94f6368e7
+"@types/node@npm:*, @types/node@npm:^16.11.7":
+  version: 16.11.7
+  resolution: "@types/node@npm:16.11.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.7.tgz"
+  checksum: 2706403e6efc4aa40fdce8f0b5d9884d5600c3c8610aedc7fa5e7e298d30366f7e8b7296028d52898dca3edef4c3e827b03bf20952c4780f13fa4e79864f7a86
   languageName: node
   linkType: hard
 
 "@types/node@npm:^14.17.0":
-  version: 14.17.32
-  resolution: "@types/node@npm:14.17.32::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.32.tgz"
-  checksum: c3ec45db5d8ca6ed80bcc2fe3cd9f15c1518d43cf048dd5444d1fcbe308d302a42721cb3f19548ac2e7b8b7db4f7f6cd4bf9ed58ab1d30a0bf61758350edd9d5
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.11.7":
-  version: 16.11.7
-  resolution: "@types/node@npm:16.11.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.7.tgz"
-  checksum: 2706403e6efc4aa40fdce8f0b5d9884d5600c3c8610aedc7fa5e7e298d30366f7e8b7296028d52898dca3edef4c3e827b03bf20952c4780f13fa4e79864f7a86
+  version: 14.17.33
+  resolution: "@types/node@npm:14.17.33::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.33.tgz"
+  checksum: 47ee8d5a398f84b376023f03b83e43a71f1bf617d1014d34c0af24b0332b42e7b392c967c20bfb907fb37971993035e3b25c47a1678c745c5d122d8205ba5a19
   languageName: node
   linkType: hard
 
@@ -1014,14 +1007,14 @@ __metadata:
   linkType: hard
 
 "ajv@npm:^8.0.1":
-  version: 8.7.0
-  resolution: "ajv@npm:8.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fajv%2F-%2Fajv-8.7.0.tgz"
+  version: 8.7.1
+  resolution: "ajv@npm:8.7.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fajv%2F-%2Fajv-8.7.1.tgz"
   dependencies:
     fast-deep-equal: ^3.1.1
     json-schema-traverse: ^1.0.0
     require-from-string: ^2.0.2
     uri-js: ^4.2.2
-  checksum: c9a327bc0b62d50808f821bb8012e7b8f9f73d61145aa9ea58bb574fc176f3c698c5285422aedce534e1aa9949028d22e7bf79bd91408b78049d028966208c6e
+  checksum: e8102fa84807d5008b7439f8ffd3ccae0f98d37010c18624982d277cb8e324efd9149a5e1f56326c8793e21b858e7e220c3250ee2c29efb52fea943b8512e7aa
   languageName: node
   linkType: hard
 
@@ -2338,9 +2331,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.886":
-  version: 1.3.891
-  resolution: "electron-to-chromium@npm:1.3.891::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Felectron-to-chromium%2F-%2Felectron-to-chromium-1.3.891.tgz"
-  checksum: b4a2ffcdaa96db70e30ec3821230b715c2ff11f1619f84838ab17c2151528935a521313d7806aa67fbd8b0585e2ff75c95ee8d7a52f788046028542900c71d20
+  version: 1.3.892
+  resolution: "electron-to-chromium@npm:1.3.892::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Felectron-to-chromium%2F-%2Felectron-to-chromium-1.3.892.tgz"
+  checksum: 330a185e712dc9e2e5eca40138ce2e425408f7ff76ec28e8d8e7a487d59d160a1446aa54229b8e6a58cb2900181b1ff1280afbf538a8a5c0cc6102d0b6909ce8
   languageName: node
   linkType: hard
 
@@ -5851,8 +5844,8 @@ __metadata:
   linkType: hard
 
 "projen@npm:*":
-  version: 0.33.1
-  resolution: "projen@npm:0.33.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprojen%2F-%2Fprojen-0.33.1.tgz"
+  version: 0.33.2
+  resolution: "projen@npm:0.33.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprojen%2F-%2Fprojen-0.33.2.tgz"
   dependencies:
     "@iarna/toml": ^2.2.5
     case: ^1.6.3
@@ -5867,7 +5860,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     projen: bin/projen
-  checksum: 05c2a84a276ac828f5a25a62966e5dd7d5cb2940b7ecfcabfbf2ca8928b35b2da592e9e57485efffa5dc6814e915bdc14902bc2ec5dd29795157f2988c7a9ee7
+  checksum: 61c9eb5620e57ac818f19648a26dddc6bdbcc2c52aa2c42b174a62e4c9fdac8b7c4d9a8bcf972d90d76bff7f82322ec17c4d57fe01ece3eabc2dfe3b2cccf98d
   languageName: node
   linkType: hard
 

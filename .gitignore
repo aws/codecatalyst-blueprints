@@ -10,3 +10,4 @@ Before anything else, make sure to add the following to the .gitignore:
 
 dist
 .DS_Store
+node_modules/

@@ -2,12 +2,16 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run build"
+    "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run build",
+    "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run projen",
+    "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade"
   },
   "packageManager": "yarn@3.1.0",
-  "workspaces": [
-    "packages/**/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/**/*"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^16.11.7",
     "eslint": "^7.2.0",
