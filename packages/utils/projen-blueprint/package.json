@@ -34,6 +34,7 @@
     "@caws-blueprint-tool/blueprint-cli": "*",
     "projen": "*"
   },
+  "dependencies": {},
   "bundledDependencies": [],
   "main": "lib/index.js",
   "license": "MIT",
