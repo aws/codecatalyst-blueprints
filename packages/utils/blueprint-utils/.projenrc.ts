@@ -3,7 +3,7 @@ import * as fs from 'fs';
 
 const project = new TypeScriptProject({
   defaultReleaseBranch: 'main',
-  name: 'caws-workflows',
+  name: 'blueprint-utils',
   projenrcTs: true,
   sampleCode: false,
   eslint: true,
@@ -18,15 +18,12 @@ const project = new TypeScriptProject({
   },
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: [
-    '@caws-blueprint/caws.blueprint',
-    '@caws-blueprint-component/caws-source-repositories'
-  ],
+  deps: [],
   peerDeps: [
     'projen',
   ],
-  description: 'This is a representation of a caws workflow.',
-  packageName: '@caws-blueprint-component/caws-workflows',
+  description: 'This is a collection of utility functions that help with building blueprints.',
+  packageName: '@caws-blueprint-util/blueprint-utils',
   devDeps: [
     'ts-node'
   ],
