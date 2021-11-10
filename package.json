@@ -6,15 +6,15 @@
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
-    "components:publish": "yarn workspaces foreach -v --include './packages/components/*', run npm:publish",
-    "utils:publish": "yarn workspaces foreach -v --include './packages/utils/*' run npm:publish",
-    "blueprints:publish": "yarn workspaces foreach -v --include './packages/blueprints/*' run blueprint:publish",
-    "blueprints:synth": "yarn workspaces foreach -v --include './packages/blueprints/*' run blueprint:synth"
+    "components:publish": "yarn workspaces foreach -v --include '@caws-blueprint-component/*' run npm:publish",
+    "utils:publish": "yarn workspaces foreach -v --include '@caws-blueprint-util/*' run npm:publish",
+    "blueprints:publish": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:publish",
+    "blueprints:synth": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:synth"
   },
   "packageManager": "yarn@3.1.0",
   "workspaces": {
     "packages": [
-      "packages/**/*"
+      "./packages/**(!synth)/*"
     ]
   },
   "devDependencies": {

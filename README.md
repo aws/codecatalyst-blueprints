@@ -9,9 +9,13 @@ Set up npm to point to the correct codeartifact repository. You'll need this in 
 install.
 
 ```
+# set project config
  export NPM_REPO=`aws codeartifact get-repository-endpoint --domain template --domain-owner 721779663932 --repository blueprints-fake-npm --format npm | jq -r '.repositoryEndpoint'`
  echo 'NPM_REPO set to: '$NPM_REPO
  export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain template --domain-owner 721779663932 --query authorizationToken --output text`
+
+ # Set NPM config to also be the same repository (needed for some synths to work properly)
+ aws codeartifact login --tool npm --repository blueprints-fake-npm --domain template --domain-owner 721779663932
 ```
 
 Disable Projen post. Projen doesnt play very well with workspaces just yet. We need to disable
@@ -29,7 +33,7 @@ git clone
 git clone https://github.com/aws/caws-blueprints
 ```
 
-Run yarn
+Run yarn. This will link everything. The first time workspace setup may take a minute or two.
 
 ```
 cd caws-blueprints

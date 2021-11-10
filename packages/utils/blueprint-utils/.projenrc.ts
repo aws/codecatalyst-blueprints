@@ -44,6 +44,6 @@ project.package.addField('preferGlobal', true);
 // set custom scripts
 project.setScript('projen', 'npx projen --no-post');
 project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
-project.setScript("npm:push", 'yarn publish ./dist/js/*$npm_package_version.tgz');
+project.setScript("npm:push", 'yarn npm publish');
 
 project.synth();
