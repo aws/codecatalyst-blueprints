@@ -54,11 +54,11 @@ export async function publish(
 
   const packagePath = fs
     .readdirSync(distributionFolder, { withFileTypes: true })
-    .filter(entry => entry.isFile() && entry.name.endsWith(`${version}.tgz`))
+    .filter(entry => entry.isFile() && entry.name.endsWith('package.tgz'))
     .map(entry => entry.name)[0];
   if (!packagePath) {
     log.error(
-      'package has not yet been published locally, have you run blueprint:synth? expected: %s/*%s.tgz`',
+      'package has not yet been published locally, have you run blueprint:synth? expected: %s/package.tgz`',
       distributionFolder,
       version,
     );
@@ -68,7 +68,14 @@ export async function publish(
   const gqlResponse = await axios.default.post(
     'https://api-gamma.quokka.codes/graphql?',
     {
-      query: `mutation { createTemplateUploadUrl(input: { organizationName: "${publisher}", publisher: "${publisher}", name: "${friendlyBlueprintName}", version: "${version}" }) { uploadUrl, publishingJobId }}`,
+      query: `mutation {
+        createBlueprintUploadUrl(input: {
+          organizationName: "${publisher}",
+          publisher: "${publisher}",
+          name: "${friendlyBlueprintName}",
+          version: "${version}" }) {
+            uploadUrl, publishingJobId }
+          }`,
     },
     {
       headers: {
@@ -89,8 +96,9 @@ export async function publish(
     process.exit(254);
   }
 
-  const publishingJob = gqlResponse.data.data.createTemplateUploadUrl as PublishingJob;
+  const publishingJob = gqlResponse.data.data.createBlueprintUploadUrl as PublishingJob;
   log.info('started publishing job: %s', publishingJob.publishingJobId);
+  log.info('started publishing job URI: %s', publishingJob.uploadUrl);
 
   const uploadResponse = await axios.default.put(
     publishingJob.uploadUrl,

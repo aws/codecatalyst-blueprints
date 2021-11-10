@@ -8,7 +8,7 @@
     "compile": "npx projen compile",
     "default": "npx projen default",
     "eslint": "npx projen eslint",
-    "package": "npx projen package",
+    "package": "rm -rf ./dist/js/ && npx projen package",
     "post-compile": "npx projen post-compile",
     "pre-compile": "npx projen pre-compile",
     "publish:github": "npx projen publish:github",
