@@ -1,5 +1,5 @@
-export const buildReadme = (): string => 
-`
+export const buildReadme = (): string =>
+  `
 # Your Blueprint!
 
 This readme provides some important information about your blueprint to customers 
@@ -8,4 +8,4 @@ Feel free to include links to videos, images, charts or whatever else might help
 customers choose your Blueprint from the Blueprint selection menu.
 
 Thanks and happy building!
-`
+`;

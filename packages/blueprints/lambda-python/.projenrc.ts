@@ -3,22 +3,11 @@ import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'LambdaPython',
-  license: 'MIT',
   projenrcTs: true,
-  sampleCode: false,
-  github: false,
-  eslint: false,
-  jest: false,
-  npmignoreEnabled: true,
-  projenDuringBuild: false,
-  tsconfig: {
-    compilerOptions: {
-      esModuleInterop: true,
-    },
-  },
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
   deps: [
+    'projen',
     '@caws-blueprint/caws.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
@@ -30,8 +19,8 @@ const blueprint = new ProjenBlueprint({
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [
-    'ts-node', 
-    '@caws-blueprint-tool/blueprint-cli', 
+    'ts-node',
+    '@caws-blueprint-util/blueprint-cli',
     '@caws-blueprint-util/blueprint-projen'
   ],
   peerDeps: [],

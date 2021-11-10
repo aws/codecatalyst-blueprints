@@ -1,35 +1,49 @@
-# CodeAwsProjectTemplate
-This repository contains application, infrastructure, and test code for the Code.AWS Project Templating system:
-* Frontend Performance Tests
+## Set Up
 
-This is NOT a Brazil package, and instead relies on vanilla tooling and native AWS pipelines.
+We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link
+things properly when using VScode. Although plugins also exist for vimlords.
 
-## Code Organization
-This repository contains both test code and infrastructure code deployed together.  Application code is largely written in Typescript utilizing Node.  Infrastructure code is written in Typescript utilizing CDK.
+We recommend adding this to your `~/.bash_profile`
 
-### A Note About NPM
-DO NOT use `npm` to build or run this solution.  This solution requires `yarn` to build correctly as we are using [yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) to share code between different projects.
+Set up npm to point to the correct codeartifact repository. You'll need this in order to yarn
+install.
 
-To install yarn:
 ```
-npm install -g yarn
+# set project config
+ export NPM_REPO=`aws codeartifact get-repository-endpoint --domain template --domain-owner 721779663932 --repository blueprints-fake-npm --format npm | jq -r '.repositoryEndpoint'`
+ echo 'NPM_REPO set to: '$NPM_REPO
+ export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain template --domain-owner 721779663932 --query authorizationToken --output text`
+
+ # Set NPM config to also be the same repository (needed for some synths to work properly)
+ aws codeartifact login --tool npm --repository blueprints-fake-npm --domain template --domain-owner 721779663932
 ```
 
-### Code Layout
+Disable Projen post. Projen doesnt play very well with workspaces just yet. We need to disable
+running projen post action.
 
-* */app*: Contains any applications that make up part of this stack.
-
-* */stacks*: Contains infrastructure code as a CDK stack.  This is a self-mutating pipeline which means that the CDK stack not only contains infrastructure to run the applications, but infrastructure to build and deploy the applications.
-
-## Getting Started
-Ensure that you followed the setup outlined in the [Developer Onboarding Guide](https://w.amazon.com/bin/view/CAWS/ProjectsVertical/DeveloperOnboarding/).
-
-## Building
-### Building the Entire Stack
-To build and test the entire stack (both application and infrastructure code) you can run the following command from the `~/` root directory:
 ```
-yarn install
+export PROJEN_DISABLE_POST=1
+```
+
+## Development
+
+git clone
+
+```
+git clone https://github.com/aws/caws-blueprints
+```
+
+Run yarn. This will link everything. The first time workspace setup may take a minute or two.
+
+```
+cd caws-blueprints
+yarn
+```
+
+Run a build
+
+```
 yarn build
 ```
 
-This command will attempt to build all workspace packages include the CDK package.
+You're done!

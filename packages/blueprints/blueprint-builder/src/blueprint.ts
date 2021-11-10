@@ -4,10 +4,10 @@ import * as cp from 'child_process';
 import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/blueprint-projen';
 import {
   buildBlueprint,
-  buildDefaults,
-  buildIndex
+  buildIndex,
 } from '@caws-blueprint-util/blueprint-utils';
 import {
   Blueprint as ParentBlueprint,
@@ -15,10 +15,9 @@ import {
 } from '@caws-blueprint/caws.blueprint';
 
 // import * as camelcase from 'camelcase';
-import decamelize = require('decamelize');
+import * as decamelize from 'decamelize';
 // import { TypeScriptProject, YamlFile, TextFile } from 'projen';
 import { YamlFile, TextFile, SourceCode } from 'projen';
-import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/blueprint-projen';
 
 import { BlueprintIntrospection, introspectBlueprint } from './introspect-blueprint';
 import { buildGenerationObject, buildMetaDataObject, buildParametersObject, YamlBlueprint } from './yaml-blueprint';
@@ -34,7 +33,7 @@ export interface Options {
   /**
    * Who is the author of the blueprint?
    */
-   authorName: string;
+  authorName: string;
 
   /**
    * Blueprint Version?
@@ -82,7 +81,7 @@ export class Blueprint extends ParentBlueprint {
     this.parentIntrospection = this.doIntrospection();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dashName = decamelize(this.options.blueprintName.toString()).replace(/_/g, '-');
+    const dashName = decamelize.default(this.options.blueprintName.toString()).replace(/_/g, '-');
 
     this.repository = new SourceRepository(this, {
       title: dashName,
@@ -99,10 +98,9 @@ export class Blueprint extends ParentBlueprint {
       projenrcTs: true,
       sampleCode: false,
       github: false,
-      eslint: false,
+      eslint: true,
       jest: false,
       npmignoreEnabled: true,
-      projenDuringBuild: false,
       tsconfig: {
         compilerOptions: {
           esModuleInterop: true,
@@ -122,7 +120,7 @@ export class Blueprint extends ParentBlueprint {
         'ts-node',
         'typescript',
         '@caws-blueprint-util/blueprint-projen',
-        '@caws-blueprint-tool/blueprint-cli'
+        '@caws-blueprint-tool/blueprint-cli',
       ],
       keywords: this.options.tags || ['no-tag'],
       homepage: '',
@@ -163,7 +161,7 @@ export class Blueprint extends ParentBlueprint {
     new TextFile(this, `${this.repository.relativePath}/README.md`, {
       readonly: false,
       lines: this.parentIntrospection.readmeContent.split('\n'),
-    })
+    });
 
     // write the yaml file:
     new YamlFile(this, `${this.repository.relativePath}/blueprint.yaml`, {
@@ -178,7 +176,7 @@ export class Blueprint extends ParentBlueprint {
       outdir: this.repository.relativePath,
       parent: this,
       ...this.newBlueprintOptions,
-      overridePackageVersion: '0.0.0'
+      overridePackageVersion: '0.0.0',
     });
 
     const rcfile = new SourceCode(blueprint, '.projenrc.ts');
@@ -199,7 +197,7 @@ export class Blueprint extends ParentBlueprint {
     });
 
     const defaults = new SourceCode(blueprint, 'src/defaults.json');
-    defaults.line(`${JSON.stringify(JSON.parse(buildDefaults(this.parentIntrospection)), null, 2)}`);
+    defaults.line(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
     new TextFile(blueprint, path.join('README.md'), {
       readonly: false,

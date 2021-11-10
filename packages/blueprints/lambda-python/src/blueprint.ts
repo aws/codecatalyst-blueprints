@@ -1,12 +1,11 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
-import defaults from './defaults.json';
-
-import {SourceRepository} from '@caws-blueprint-component/caws-source-repositories';
-
+import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as cp from 'child_process';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
 import { YamlFile } from 'projen';
+import defaults from './defaults.json';
+
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -15,27 +14,27 @@ import { YamlFile } from 'projen';
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
  */
 export interface Options extends ParentOptions {
-   /**
+  /**
     * The name of the application code module.
     */
-   moduleName: string;
-   
+  moduleName: string;
 
-   /**
+
+  /**
     * The name of the S3 bucket to store build artifacts
     */
-   s3BucketName: string;
+  s3BucketName: string;
 
-   /**
+  /**
     * The AWS Account connection details
     */
-   connectionArn: string;
+  connectionArn: string;
 
-   /**
+  /**
     * The default branch to trigger releases
     * @advanced
     */
-   defaultReleaseBranch?: string;
+  defaultReleaseBranch?: string;
 }
 
 /**
@@ -43,52 +42,52 @@ export interface Options extends ParentOptions {
  * 1. This MUST be the only 'class' exported, as 'Blueprint'
  * 2. This Blueprint should extend another ParentBlueprint
  */
- export class Blueprint extends ParentBlueprint {
-   protected options: Options;
-   protected readonly repository: SourceRepository;
- 
-   constructor(options_: Options) {
-     super(options_);
-     const options = Object.assign(defaults, options_);
-     console.log(options);
-     this.options = options;
- 
-     this.repository = new SourceRepository(this, {
-       title: this.options.moduleName,
-     });
+export class Blueprint extends ParentBlueprint {
+  protected options: Options;
+  protected readonly repository: SourceRepository;
 
-     const workflowFolder = path.join(this.repository.relativePath, '.aws', 'workflows');
-     this.createWorkflow(workflowFolder, this.options);
+  constructor(options_: Options) {
+    super(options_);
+    const options = Object.assign(defaults, options_);
+    console.log(options);
+    this.options = options;
 
-   }
- 
-   override synth(): void {
-     // create my project directory
-     super.synth();
- 
-     this.copySourceFiles(this.repository.path);
-     const templateYamlLocation = path.join(this.repository.path, 'template.yaml');
-     this.createSamTemplate(templateYamlLocation, this.options);
-   }
- 
-   protected copySourceFiles(desination: string): void {
-     // the source files I want to copy are local to the template
-     const sourceFiles = path.resolve(__dirname, '../assets');
-     cp.execSync(`cp -R ${sourceFiles}/* ${desination}`, {
-       stdio: 'inherit',
-     });
-   }
- 
-   protected createWorkflow(desination: string, options: Options): void {
-     new YamlFile(this, `${desination}/build.yaml`, {
+    this.repository = new SourceRepository(this, {
+      title: this.options.moduleName,
+    });
+
+    const workflowFolder = path.join(this.repository.relativePath, '.aws', 'workflows');
+    this.createWorkflow(workflowFolder, this.options);
+
+  }
+
+  override synth(): void {
+    // create my project directory
+    super.synth();
+
+    this.copySourceFiles(this.repository.path);
+    const templateYamlLocation = path.join(this.repository.path, 'template.yaml');
+    this.createSamTemplate(templateYamlLocation, this.options);
+  }
+
+  protected copySourceFiles(desination: string): void {
+    // the source files I want to copy are local to the template
+    const sourceFiles = path.resolve(__dirname, '../assets');
+    cp.execSync(`cp -R ${sourceFiles}/* ${desination}`, {
+      stdio: 'inherit',
+    });
+  }
+
+  protected createWorkflow(desination: string, options: Options): void {
+    new YamlFile(this, `${desination}/build.yaml`, {
       marker: false,
       obj: {
         Name: 'build',
         Triggers: [
           {
             Type: 'Push',
-            Branches: ['main']
-          }
+            Branches: ['main'],
+          },
         ],
         Actions: {
           Build: {
@@ -98,26 +97,26 @@ export interface Options extends ParentOptions {
               Variables: [
                 {
                   Name: 'BUILD_ROLE_ARN',
-                  Value: options.connectionArn
-                }
+                  Value: options.connectionArn,
+                },
               ],
               Environment: {
                 Container: {
                   Image: 'public.ecr.aws/t5a3h6s3/rhboyd/build:latest',
-                }
+                },
               },
               Steps: [
-                {Run: 'python --version'},
-                {Run: 'sam build'},
-                {Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${options.s3BucketName} --output-template-file output1.yaml --region us-west-2`},
+                { Run: 'python --version' },
+                { Run: 'sam build' },
+                { Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${options.s3BucketName} --output-template-file output1.yaml --region us-west-2` },
               ],
               Artifacts: [
                 {
                   Name: 'MyCustomBuildArtifactName',
-                  Files: ['output1.yaml']
-                }
-              ]
-            }
+                  Files: ['output1.yaml'],
+                },
+              ],
+            },
           },
           DeployCloudFormationStack: {
             Identifier: 'aws/cloudformation-deploy-gamma@v1',
@@ -129,18 +128,18 @@ export interface Options extends ParentOptions {
               StackName: `${options.moduleName}-stack`,
               StackRegion: 'us-west-2',
               TemplatePath: 'MyCustomBuildArtifactName::output1.yaml',
-            }
-          }
+            },
+          },
         },
-      }
+      },
     });
-   }
- 
-   protected createSamTemplate(desination: string, options: Options): void {
+  }
+
+  protected createSamTemplate(desination: string, options: Options): void {
 
     new YamlFile(this, desination, {});
 
-     const template = `AWSTemplateFormatVersion: '2010-09-09'
+    const template = `AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   sam-app
@@ -179,7 +178,7 @@ Outputs:
   ${options.moduleName}FunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt ${options.moduleName}FunctionRole.Arn`;
- 
-     fs.writeFileSync(desination, template);
-   }
-} 
+
+    fs.writeFileSync(desination, template);
+  }
+}

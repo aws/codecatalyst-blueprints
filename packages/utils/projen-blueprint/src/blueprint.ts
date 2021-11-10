@@ -1,7 +1,7 @@
-import { TypeScriptProject, TypeScriptProjectOptions } from 'projen';
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { TypeScriptProject, TypeScriptProjectOptions } from 'projen';
 
 export interface ProjenBlueprintOptions extends TypeScriptProjectOptions {
   /**
@@ -16,12 +16,12 @@ export interface ProjenBlueprintOptions extends TypeScriptProjectOptions {
   /**
    * Publishing organization
    */
-   readonly publishingOrganization?: string;
+  readonly publishingOrganization?: string;
 
-   /**
+  /**
    * Override package version. I hope you know what you're doing.
    */
-   readonly overridePackageVersion?: string;
+  readonly overridePackageVersion?: string;
 }
 
 /**
@@ -32,48 +32,60 @@ export interface ProjenBlueprintOptions extends TypeScriptProjectOptions {
  */
 export class ProjenBlueprint extends TypeScriptProject {
 
-    constructor(options: ProjenBlueprintOptions) {
-        super({
-            ...options
-        });
+  constructor(options: ProjenBlueprintOptions) {
+    super({
+      license: 'Apache-2.0',
+      sampleCode: false,
+      github: false,
+      eslint: true,
+      jest: false,
+      npmignoreEnabled: true,
+      tsconfig: {
+        compilerOptions: {
+          esModuleInterop: true,
+          noImplicitAny: false,
+        },
+      },
+      ...options,
+    });
 
-        const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
-        this.package.addVersion(version || '0.0.0');
+    const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
+    this.package.addVersion(version || '0.0.0');
 
-        // modify bumping tasks
-        this.removeTask('bump');
-        this.addTask('bump', {
-            exec: 'npm version patch',
-        });
+    // modify bumping tasks
+    this.removeTask('bump');
+    this.addTask('bump', {
+      exec: 'npm version patch',
+    });
 
-        // set custom scripts
-        this.setScript('projen', 'npx projen --no-post');
+    // set custom scripts
+    this.setScript('projen', 'npx projen --no-post');
 
-        //make a script for creating asts
-        this.setScript(
-            'blueprint:build-ast',
-            'blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/',
-        );
+    //make a script for creating asts
+    this.setScript(
+      'blueprint:build-ast',
+      'blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/',
+    );
 
-        //set local synthing
-        this.setScript(
-            'blueprint:synth',
-            'blueprint synth ./ --outdir ./ --options ./src/defaults.json',
-        );
+    //set local synthing
+    this.setScript(
+      'blueprint:synth',
+      'blueprint synth ./ --outdir ./ --options ./src/defaults.json',
+    );
 
-        //ignore synths
-        this.gitignore.addPatterns('synth');
+    //ignore synths
+    this.gitignore.addPatterns('synth');
 
-        // set upload to aws script
-        const organization =  options.publishingOrganization || 'unknown-organization';
-        this.setScript(
-            'blueprint:publish',
-            `yarn bump && yarn build && yarn blueprint:build-ast && yarn package && blueprint publish ./ --publisher ${organization}`,
-        );
+    // set upload to aws script
+    const organization = options.publishingOrganization || 'unknown-organization';
+    this.setScript(
+      'blueprint:publish',
+      `yarn bump && yarn build && yarn blueprint:build-ast && yarn package && blueprint publish ./ --publisher ${organization}`,
+    );
 
-        //add additional metadata fields to package.json
-        this.package.addField('mediaUrls', options.mediaUrls);
-        //display name will be the package name by default
-        this.package.addField('displayName', options.displayName || this.package.packageName);
-    }
+    //add additional metadata fields to package.json
+    this.package.addField('mediaUrls', options.mediaUrls);
+    //display name will be the package name by default
+    this.package.addField('displayName', options.displayName || this.package.packageName);
+  }
 }

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as path from 'path';
 
-import {Context} from './context';
-import {Project} from 'projen';
+import { Project } from 'projen';
+import { Context } from './context';
 
 export interface ParentOptions {
   outdir: string;
@@ -29,7 +29,7 @@ export class Blueprint extends Project {
         token: process.env.NPM_CONFIG_TOKEN,
         registry:
           process.env.NPM_CONFIG_REGISTRY ??
-          'https://template-194755611428.d.codeartifact.us-west-2.amazonaws.com/npm/global-templates/',
+          'https://template-721779663932.d.codeartifact.us-west-2.amazonaws.com/npm/blueprints-fake-npm/',
       },
     };
 

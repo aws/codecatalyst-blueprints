@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import {Blueprint} from '@caws-blueprint/caws.blueprint';
-import {Component} from 'projen';
+import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Component } from 'projen';
 
 export const sourceRepositoryRootDirectory = 'src';
 

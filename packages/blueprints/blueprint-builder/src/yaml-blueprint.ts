@@ -54,8 +54,8 @@ export interface YamlBlueprint {
 const mapGenerationParameters = (defaults: ParameterMapping): Generation['Parameters'] => {
   const mapping = {};
   Object.entries(defaults).forEach(([key, value]) => {
-    if (value['Nested']) {
-      mapping[key] = mapGenerationParameters(value['Nested']);
+    if ((value as ParameterNest).Nested) {
+      mapping[key] = mapGenerationParameters((value as ParameterNest).Nested);
     } else {
       mapping[key] = `{{${value.Path.join('.')}}}`;
     }
@@ -79,11 +79,11 @@ export const buildGenerationObject = (params: {
 export const buildParametersObject = (paramters: ParameterMapping): Partial<ParameterMapping> => {
   const mapping = {};
   Object.entries(paramters).forEach(([key, value]) => {
-    if (value['Nested']) {
+    if ((value as ParameterNest).Nested) {
       mapping[key] = {
         ...value,
-        Nested: buildParametersObject(value['Nested'])
-      } 
+        Nested: buildParametersObject((value as ParameterNest).Nested),
+      };
     } else {
       mapping[key] = { ...value };
     }
@@ -98,7 +98,7 @@ export const buildMetaDataObject = (params: {
 }): YAMLMetadata => {
   const info = {
     ...params.metadata,
-    License: params.introspection.packageJsonContent.license || 'MIT',
+    License: params.introspection.packageJsonContent.license || 'Apache-2.0',
   };
 
   if (params.introspection.packageJsonContent.homepage) {
