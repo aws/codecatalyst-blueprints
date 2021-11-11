@@ -4,6 +4,8 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'blueprint',
   projenrcTs: true,
+  displayName: 'Empty Blueprint',
+  authorName: 'caws-blueprints',
 
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
@@ -11,7 +13,7 @@ const blueprint = new ProjenBlueprint({
   peerDeps: [],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description:
-    'This is a base blueprint. It is responsible for building out the project directory structure and contains some helpful methods. All blueprints should (at some level) extend this class.',
+    'This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/caws.blueprint',
   publishingOrganization: 'caws',

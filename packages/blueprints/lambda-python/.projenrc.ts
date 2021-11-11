@@ -3,6 +3,9 @@ import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'LambdaPython',
+  displayName: 'Lambda (Python)',
+  authorName: 'caws-blueprints',
+
   projenrcTs: true,
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
