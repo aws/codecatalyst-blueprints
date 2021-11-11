@@ -3,6 +3,9 @@ import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'import-from-git',
+  displayName: 'Import from Git',
+  authorName: 'caws-blueprints',
+
   projenrcTs: true,
   copyrightOwner: 'Amazon.com',
 

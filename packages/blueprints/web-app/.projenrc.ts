@@ -3,6 +3,7 @@ import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'web-app',
+  displayName: 'Web Application',
   authorName: 'caws-blueprints',
   copyrightOwner: 'Amazon.com',
   projenrcTs: true,
