@@ -249,6 +249,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@caws-blueprint-component/caws-workspaces@*, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
+  dependencies:
+    "@caws-blueprint-component/caws-source-repositories": "*"
+    "@caws-blueprint/caws.blueprint": "*"
+    "@types/node": ^14.17.0
+    "@typescript-eslint/eslint-plugin": "*"
+    "@typescript-eslint/parser": "*"
+    eslint: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    json-schema: "*"
+    npm-check-updates: ^11
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^9
+    typescript: ^4.4.4
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
 "@caws-blueprint-util/blueprint-cli@0.0.x, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
@@ -432,6 +456,7 @@ __metadata:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
     "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workspaces": "*"
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x

@@ -1,14 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/blueprint-cli",
-      "type": "build"
-    },
-    {
-      "name": "@caws-blueprint-util/blueprint-projen",
-      "type": "build"
-    },
-    {
       "name": "@types/node",
       "version": "^14.17.0",
       "type": "build"
@@ -65,31 +57,15 @@
       "type": "build"
     },
     {
-      "name": "@caws-blueprint-component/caws-environments",
-      "type": "runtime"
+      "name": "projen",
+      "type": "peer"
     },
     {
       "name": "@caws-blueprint-component/caws-source-repositories",
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint-component/caws-workflows",
-      "type": "runtime"
-    },
-    {
-      "name": "@caws-blueprint-component/caws-workspaces",
-      "type": "runtime"
-    },
-    {
-      "name": "@caws-blueprint-util/blueprint-utils",
-      "type": "runtime"
-    },
-    {
       "name": "@caws-blueprint/caws.blueprint",
-      "type": "runtime"
-    },
-    {
-      "name": "projen",
       "type": "runtime"
     }
   ],
