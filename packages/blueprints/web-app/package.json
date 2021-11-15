@@ -49,6 +49,7 @@
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
     "@caws-blueprint-component/caws-workflows": "0.0.x",
+    "@caws-blueprint-component/caws-workspaces": "0.0.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint/caws.blueprint": "^0.0.x",
     "projen": "*"

@@ -1,10 +1,14 @@
 import { Environment, EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
+import {
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+} from '@caws-blueprint/caws.blueprint';
 import { java, web } from 'projen';
-import defaults from './defaults.json';
 
+import defaults from './defaults.json';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -14,69 +18,69 @@ import defaults from './defaults.json';
  */
 export interface Options extends ParentOptions {
   /**
-    * The name of the application
-    */
+   * The name of the application
+   */
   name: string;
 
   /**
-    * Enivroments to deploy into.
-    */
+   * Enivroments to deploy into.
+   */
   environments: EnvironmentDefinition[];
 
   /**
-    * Options for the Frontend Application
-    */
+   * Options for the Frontend Application
+   */
   frontend: {
     /**
-      * The name of the Frontend Application
-      */
+     * The name of the Frontend Application
+     */
     name: string;
 
     /**
-      * The relative path of the Frontend Application
-      * @advanced
-      */
+     * The relative path of the Frontend Application
+     * @advanced
+     */
     outdir: string;
 
     /**
-      * The license of the Frontend Application
-      */
+     * The license of the Frontend Application
+     */
     license?: 'MIT' | 'Apache-2.0';
   };
 
   backend: {
     /**
-      * The name of the Backend Application
-      */
+     * The name of the Backend Application
+     */
     name: string;
 
     /**
-      * The relative path of the Backend Application
-      * @advanced
-      */
+     * The relative path of the Backend Application
+     * @advanced
+     */
     outdir: string;
 
     /**
-      * The artifactId of the backend java application
-      */
+     * The artifactId of the backend java application
+     */
     artifactId: string;
 
     /**
-      * The groupId of the backend java Application
-      */
+     * The groupId of the backend java Application
+     */
     groupId: string;
   };
   /**
-    * Specify the contents of the repository README.md
-    * @input textarea
-    * @advanced
-    */
+   * Specify the contents of the repository README.md
+   * @input textarea
+   * @advanced
+   */
   readme: string;
 
   /**
-    * Specifies the default release branch
-    * @advanced
-    */
+   * Specifies the default release branch
+   * @advanced
+   */
   defaultReleaseBranch: string;
 }
 
@@ -114,6 +118,8 @@ export class Blueprint extends ParentBlueprint {
     this.backendRepository = new SourceRepository(this, {
       title: options.backend.name,
     });
+
+    new Workspace(this, this.backendRepository, SampleWorkspaces.default);
 
     new java.JavaProject({
       outdir: this.backendRepository.relativePath,
