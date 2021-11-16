@@ -54,11 +54,11 @@ export async function publish(
 
   const packagePath = fs
     .readdirSync(distributionFolder, { withFileTypes: true })
-    .filter(entry => entry.isFile() && entry.name.endsWith('package.tgz'))
+    .filter(entry => entry.isFile() && entry.name.endsWith('.tgz'))
     .map(entry => entry.name)[0];
   if (!packagePath) {
     log.error(
-      'package has not yet been published locally, have you run blueprint:synth? expected: %s/package.tgz`',
+      'package has not yet been published locally, have you run blueprint:synth? expected something at: %s/*.tgz`',
       distributionFolder,
       version,
     );
