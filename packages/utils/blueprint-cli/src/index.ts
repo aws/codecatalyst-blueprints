@@ -35,10 +35,16 @@ yargs.default(hideBin(process.argv))
         .option('defaults', {
           description: 'path to defaults.json to feed default values into synthesis',
           type: 'string',
+        })
+        .option('cache', {
+          description: 'Generate and synth from a webpacked cache',
+          default: false,
+          type: 'boolean',
         });
     },
     handler: async (argv: SynthesizeOptions): Promise<void> => {
-      await synth(log, argv.blueprint, argv.outdir, argv.options);
+      console.log(argv);
+      await synth(log, argv.blueprint, argv.outdir, argv.cache, argv.options);
       process.exit(0);
     },
   })
