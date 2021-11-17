@@ -23,6 +23,5 @@ export const writeSynthDiver = (fileName: string, entrypoint: string) => {
   }).synth();
   console.log("===== Ending synthesis ===== ");
 })();`;
-
   fs.writeFileSync(fileName, content);
 };

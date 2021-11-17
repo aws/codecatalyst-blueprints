@@ -1,6 +1,7 @@
 import { Environment, EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
@@ -40,6 +41,11 @@ export interface Options extends ParentOptions {
      * @advanced
      */
     outdir: string;
+
+    /**
+     * The license of the Frontend Application
+     */
+    license?: 'MIT' | 'Apache-2.0';
   };
 
   backend: {
@@ -106,11 +112,14 @@ export class Blueprint extends ParentBlueprint {
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
       defaultReleaseBranch: options.defaultReleaseBranch,
+      license: options.frontend.license,
     });
 
     this.backendRepository = new SourceRepository(this, {
       title: options.backend.name,
     });
+
+    new Workspace(this, this.backendRepository, SampleWorkspaces.default);
 
     new java.JavaProject({
       outdir: this.backendRepository.relativePath,
