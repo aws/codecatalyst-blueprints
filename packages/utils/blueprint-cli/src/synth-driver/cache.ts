@@ -76,32 +76,31 @@ const createWebpackedBundle = (params: {
   // ==========================================================================
   // Since projen is external we npm install it and ship with that.
   const projenVersion = '*'; // TODO: get the projen version from package.json
-  const nodeCache = 'node_cache';
 
-  const projenInstall = 'echo {} > package.json' +
-  ` && npm install projen@${projenVersion}` +
-  ` && mv node_modules ${nodeCache}`;
+  const packageJson = {
+    dependencies: {
+      projen: projenVersion,
+    },
+  };
+
+  const projenInstall = `echo '${JSON.stringify(packageJson, null, 2)}' > package.json` +
+  ` && npm install projen@${projenVersion}`;
   console.log(projenInstall);
   cp.execSync(projenInstall, {
     stdio: 'inherit',
     cwd: params.buildDirectory,
   });
 
-  const cleanupFiles = ['package.json', 'package-lock.json'];
-  cleanupFiles.forEach((file) => {
-    if (fs.existsSync(path.join(params.buildDirectory, file))) {
-      cp.execSync(`rm ${file}`, {
-        stdio: 'inherit',
-        cwd: params.buildDirectory,
-      });
-    }
+  // we need to package up the node_modules
+  cp.execSync('tar -czvf node_modules.tar  ./node_modules/', {
+    stdio: 'inherit',
+    cwd: params.buildDirectory,
   });
-
 
   // Set correct reference to projen set it inside the cache
   const exitFilePath = path.join(params.buildDirectory, params.exitFile);
   let data = fs.readFileSync(exitFilePath, 'utf8');
   const replace = 'module.exports = projen;';
-  data = data.replace(replace, `const projen = require('./${nodeCache}/projen'); ${replace}`);
+  data = data.replace(replace, `const projen = require('projen'); ${replace}`);
   fs.writeFileSync(exitFilePath, data, 'utf8');
 };

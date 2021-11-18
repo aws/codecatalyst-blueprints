@@ -73,8 +73,19 @@ export class ProjenBlueprint extends TypeScriptProject {
       'blueprint synth ./ --outdir ./ --options ./src/defaults.json',
     );
 
+    this.setScript(
+      'blueprint:synth:cache',
+      'blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache',
+    );
+
+    this.setScript(
+      'build',
+      'npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache',
+    );
+
     //ignore synths
     this.gitignore.addPatterns('synth');
+    this.npmignore?.addPatterns('synth');
 
     // set upload to aws script
     const organization = options.publishingOrganization || 'unknown-organization';
