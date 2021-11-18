@@ -156,7 +156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@caws-blueprint-component/caws-environments@0.0.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
+"@caws-blueprint-component/caws-environments@*, @caws-blueprint-component/caws-environments@0.0.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
@@ -229,6 +229,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
   dependencies:
+    "@caws-blueprint-component/caws-environments": "*"
     "@caws-blueprint-component/caws-source-repositories": "*"
     "@caws-blueprint/caws.blueprint": "*"
     "@types/node": ^14.17.0
@@ -428,7 +429,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/caws.lambda-python@workspace:packages/blueprints/lambda-python"
   dependencies:
+    "@caws-blueprint-component/caws-environments": "*"
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.0.x
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x

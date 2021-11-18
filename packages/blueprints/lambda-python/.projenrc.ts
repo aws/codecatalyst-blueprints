@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
+import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -12,6 +12,8 @@ const blueprint = new ProjenBlueprint({
   deps: [
     'projen',
     '@caws-blueprint/caws.blueprint',
+    '@caws-blueprint-component/caws-environments',
+    '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
   ],
@@ -24,7 +26,7 @@ const blueprint = new ProjenBlueprint({
   devDeps: [
     'ts-node',
     '@caws-blueprint-util/blueprint-cli',
-    '@caws-blueprint-util/blueprint-projen'
+    '@caws-blueprint-util/blueprint-projen',
   ],
   peerDeps: [],
   /* Add release management to this project. */
@@ -32,7 +34,9 @@ const blueprint = new ProjenBlueprint({
   keywords: ['blueprint', 'lambda', 'python'],
   homepage: 'https://aws.amazon.com/',
   /* Add media url links to this project */
-  mediaUrls: ['https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png'],
+  mediaUrls: [
+    'https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png',
+  ],
 });
 
 blueprint.synth();

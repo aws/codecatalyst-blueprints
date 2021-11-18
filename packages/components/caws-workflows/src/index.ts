@@ -4,11 +4,11 @@ import { SourceRepository } from '@caws-blueprint-component/caws-source-reposito
 import { Blueprint } from '@caws-blueprint/caws.blueprint';
 import { Component, YamlFile } from 'projen';
 
-import { WorkflowDefinition } from './workflow-definition';
+import { WorkflowDefinition } from './models';
 
-export * from './example';
-export * from './workflow-definition';
+export * from './models';
 export * from './samples/node';
+export * from './factories/index';
 
 export class Workflow extends Component {
   constructor(
