@@ -1,5 +1,6 @@
-import { TypeScriptProject } from 'projen';
 import * as fs from 'fs';
+
+import {TypeScriptProject} from 'projen';
 
 const project = new TypeScriptProject({
   defaultReleaseBranch: 'main',
@@ -20,16 +21,13 @@ const project = new TypeScriptProject({
   copyrightOwner: 'Amazon.com',
   deps: [
     '@caws-blueprint/caws.blueprint',
-    '@caws-blueprint-component/caws-source-repositories'
+    '@caws-blueprint-component/caws-source-repositories',
+    '@caws-blueprint-component/caws-environments',
   ],
-  peerDeps: [
-    'projen',
-  ],
+  peerDeps: ['projen'],
   description: 'This is a representation of a caws workflow.',
   packageName: '@caws-blueprint-component/caws-workflows',
-  devDeps: [
-    'ts-node'
-  ],
+  devDeps: ['ts-node'],
 });
 
 // keep consistent versions
@@ -47,7 +45,7 @@ project.package.addField('preferGlobal', true);
 // set custom scripts
 project.setScript('projen', 'npx projen --no-post');
 project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
-project.setScript("npm:push", 'yarn npm publish');
-project.setScript("npm:push", 'yarn npm publish');
+project.setScript('npm:push', 'yarn npm publish');
+project.setScript('npm:push', 'yarn npm publish');
 
 project.synth();
