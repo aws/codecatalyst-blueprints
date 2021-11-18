@@ -1,4 +1,4 @@
-import {EnvironmentDefinition} from '@caws-blueprint-component/caws-environments';
+import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 
 export interface Variables {
   Name: string;

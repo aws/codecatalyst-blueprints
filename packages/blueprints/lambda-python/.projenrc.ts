@@ -15,7 +15,6 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint-component/caws-environments',
     '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-component/caws-source-repositories',
-    '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-util/blueprint-utils',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
