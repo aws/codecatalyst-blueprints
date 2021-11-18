@@ -11,6 +11,24 @@ export const createCache = (params: {
   const cacheFile = 'synth-cache.production.js';
   const synthDriver = 'synth-driver.js';
 
+  // cleanup non-build files from previous runs that may or may not exist
+  const cleanup = [
+    'node_modules',
+    'node_cache',
+    'package.json',
+    'package-lock.json',
+    cacheFile,
+    synthDriver,
+  ];
+  cleanup.forEach((file) => {
+    if (fs.existsSync(path.join(params.buildDirectory, file))) {
+      cp.execSync(`rm -rf ${file}`, {
+        stdio: 'inherit',
+        cwd: params.buildDirectory,
+      });
+    };
+  });
+
   // write the synth driver
   writeSynthDiver(
     path.join(params.buildDirectory, synthDriver),
@@ -24,7 +42,10 @@ export const createCache = (params: {
   }, log);
 
   // clean up the synth driver
-  // cp.execSync(`rm ${synthDriver}`);
+  cp.execSync(`rm ${synthDriver}`, {
+    stdio: 'inherit',
+    cwd: params.buildDirectory,
+  });
 
   return path.join(params.buildDirectory, cacheFile);
 };
@@ -60,14 +81,22 @@ const createWebpackedBundle = (params: {
   const projenInstall = 'echo {} > package.json' +
   ` && npm install projen@${projenVersion}` +
   ` && mv node_modules ${nodeCache}`;
-  ' && rm package.json';
-  ' && rm package-lock.json';
-
   console.log(projenInstall);
   cp.execSync(projenInstall, {
     stdio: 'inherit',
     cwd: params.buildDirectory,
   });
+
+  const cleanupFiles = ['package.json', 'package-lock.json'];
+  cleanupFiles.forEach((file) => {
+    if (fs.existsSync(path.join(params.buildDirectory, file))) {
+      cp.execSync(`rm ${file}`, {
+        stdio: 'inherit',
+        cwd: params.buildDirectory,
+      });
+    }
+  });
+
 
   // Set correct reference to projen set it inside the cache
   const exitFilePath = path.join(params.buildDirectory, params.exitFile);

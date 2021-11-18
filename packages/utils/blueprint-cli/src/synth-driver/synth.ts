@@ -62,10 +62,10 @@ export async function synth(
 
     const command = `npx node ${synthExecutionFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}'`;
     log.debug('generated command: %s', command);
-    // cp.execSync(command, {
-    //   stdio: 'inherit',
-    //   cwd: buildDirectory,
-    // });
+    cp.execSync(command, {
+      stdio: 'inherit',
+      cwd: blueprint,
+    });
   } else {
     const driverFile = path.join(blueprint, 'synth-driver.ts');
     console.log(driverFile);
