@@ -2,7 +2,7 @@
   "name": "@caws-blueprint/caws.lambda-python",
   "description": "This blueprint creates a Lambda project using python.",
   "scripts": {
-    "build": "npx projen build",
+    "build": "npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
     "bump": "npx projen bump",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
@@ -21,7 +21,8 @@
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
-    "blueprint:publish": "yarn bump && yarn build && yarn blueprint:build-ast && yarn package && blueprint publish ./ --publisher caws"
+    "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
+    "blueprint:publish": "yarn bump && yarn build yarn package && blueprint publish ./ --publisher caws"
   },
   "author": {
     "name": "caws-blueprints",

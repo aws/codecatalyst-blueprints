@@ -41,7 +41,7 @@
     "projen": "*"
   },
   "dependencies": {
-    "@caws-blueprint/caws.blueprint": "*"
+    "@caws-blueprint/caws.blueprint": "0.0.x"
   },
   "bundledDependencies": [],
   "main": "lib/index.js",

@@ -94,6 +94,8 @@ export class Blueprint extends ParentBlueprint {
     this.newBlueprintOptions = {
       defaultReleaseBranch: 'main',
       name: dashName,
+      displayName: this.options.blueprintName,
+      authorName: this.context.organizationName,
       license: this.options.license,
       projenrcTs: true,
       sampleCode: false,
@@ -120,7 +122,7 @@ export class Blueprint extends ParentBlueprint {
         'ts-node',
         'typescript',
         '@caws-blueprint-util/blueprint-projen',
-        '@caws-blueprint-tool/blueprint-cli',
+        '@caws-blueprint-util/blueprint-cli',
       ],
       keywords: this.options.tags || ['no-tag'],
       homepage: '',
