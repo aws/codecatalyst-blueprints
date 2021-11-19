@@ -8,6 +8,7 @@ import {
   StageDefinition,
   Workflow,
 } from '@caws-blueprint-component/caws-workflows';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
@@ -64,6 +65,11 @@ export class Blueprint extends ParentBlueprint {
     console.log(options);
     this.options = options;
 
+    for (const stage of this.options.stages) {
+      const entropy = Math.random().toString(36).substr(2, 5);
+      stage.environment.title = `${stage.environment.title}-${entropy}`;
+    }
+
     this.repository = new SourceRepository(this, {
       title: this.options.moduleName,
     });
@@ -80,8 +86,11 @@ export class Blueprint extends ParentBlueprint {
         options.moduleName,
         options.s3BucketName,
         options.buildRoleArn,
+        false,
       ),
     );
+
+    new Workspace(this, this.repository, SampleWorkspaces.default);
   }
 
   override synth(): void {
