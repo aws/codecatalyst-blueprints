@@ -1,6 +1,16 @@
 {
   "moduleName": "myfirstlambda",
   "defaultReleaseBranch": "main",
-  "s3BucketName": "codeawsdeploy",
-  "connectionArn": "FAKE_CONNECTION_ARN"
+  "s3BucketName": "REPLACE_ME_S3_BUCKET_NAME",
+  "buildRoleArn": "REPLACE_ME_BUILD_ARN",
+  "stages": [
+    {
+      "environment": {
+        "title": "prod",
+        "description": "this is a description"
+      },
+      "role": "REPLACE_ME_STAGE_ROLE",
+      "stackRoleArn": "REPLACE_ME_STAGE_ROLE_ARN"
+    }
+  ]
 }

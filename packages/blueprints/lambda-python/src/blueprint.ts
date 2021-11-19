@@ -1,11 +1,19 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Environment } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
+import {
+  generateWorkflow,
+  StageDefinition,
+  Workflow,
+} from '@caws-blueprint-component/caws-workflows';
+import {
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+} from '@caws-blueprint/caws.blueprint';
 import { YamlFile } from 'projen';
 import defaults from './defaults.json';
-
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -15,25 +23,29 @@ import defaults from './defaults.json';
  */
 export interface Options extends ParentOptions {
   /**
-    * The name of the application code module.
-    */
+   * The name of the application code module.
+   */
   moduleName: string;
 
-
   /**
-    * The name of the S3 bucket to store build artifacts
-    */
+   * The name of the S3 bucket to store build artifacts
+   */
   s3BucketName: string;
 
   /**
-    * The AWS Account connection details
-    */
-  connectionArn: string;
+   * The role ARN to use when building
+   */
+  buildRoleArn: string;
 
   /**
-    * The default branch to trigger releases
-    * @advanced
-    */
+   * Workflow stages to generate
+   */
+  stages: StageDefinition[];
+
+  /**
+   * The default branch to trigger releases
+   * @advanced
+   */
   defaultReleaseBranch?: string;
 }
 
@@ -56,9 +68,20 @@ export class Blueprint extends ParentBlueprint {
       title: this.options.moduleName,
     });
 
-    const workflowFolder = path.join(this.repository.relativePath, '.aws', 'workflows');
-    this.createWorkflow(workflowFolder, this.options);
+    options.stages.forEach(stage => new Environment(this, stage.environment));
 
+    new Workflow(
+      this,
+      this.repository,
+      generateWorkflow(
+        'sam-python',
+        'main',
+        options.stages,
+        options.moduleName,
+        options.s3BucketName,
+        options.buildRoleArn,
+      ),
+    );
   }
 
   override synth(): void {
@@ -78,65 +101,7 @@ export class Blueprint extends ParentBlueprint {
     });
   }
 
-  protected createWorkflow(desination: string, options: Options): void {
-    new YamlFile(this, `${desination}/build.yaml`, {
-      marker: false,
-      obj: {
-        Name: 'build',
-        Triggers: [
-          {
-            Type: 'Push',
-            Branches: ['main'],
-          },
-        ],
-        Actions: {
-          Build: {
-            Identifier: 'aws-actions/cawsbuildprivate-build@v1',
-            OutputArtifacts: ['MyCustomBuildArtifactName'],
-            Configuration: {
-              Variables: [
-                {
-                  Name: 'BUILD_ROLE_ARN',
-                  Value: options.connectionArn,
-                },
-              ],
-              Environment: {
-                Container: {
-                  Image: 'public.ecr.aws/t5a3h6s3/rhboyd/build:latest',
-                },
-              },
-              Steps: [
-                { Run: 'python --version' },
-                { Run: 'sam build' },
-                { Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${options.s3BucketName} --output-template-file output1.yaml --region us-west-2` },
-              ],
-              Artifacts: [
-                {
-                  Name: 'MyCustomBuildArtifactName',
-                  Files: ['output1.yaml'],
-                },
-              ],
-            },
-          },
-          DeployCloudFormationStack: {
-            Identifier: 'aws/cloudformation-deploy-gamma@v1',
-            // eslint-disable-next-line quotes
-            InputArtifacts: ['MyCustomBuildArtifactName'],
-            Configuration: {
-              CodeAwsRoleARN: options.connectionArn,
-              StackRoleARN: options.connectionArn,
-              StackName: `${options.moduleName}-stack`,
-              StackRegion: 'us-west-2',
-              TemplatePath: 'MyCustomBuildArtifactName::output1.yaml',
-            },
-          },
-        },
-      },
-    });
-  }
-
   protected createSamTemplate(desination: string, options: Options): void {
-
     new YamlFile(this, desination, {});
 
     const template = `AWSTemplateFormatVersion: '2010-09-09'
@@ -157,7 +122,7 @@ Resources:
     Properties:
       CodeUri: src/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      Runtime: python3.7
       Events:
         ${options.moduleName}:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api

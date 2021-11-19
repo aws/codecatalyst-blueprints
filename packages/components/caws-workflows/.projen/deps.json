@@ -61,6 +61,10 @@
       "type": "peer"
     },
     {
+      "name": "@caws-blueprint-component/caws-environments",
+      "type": "runtime"
+    },
+    {
       "name": "@caws-blueprint-component/caws-source-repositories",
       "type": "runtime"
     },

@@ -47,7 +47,9 @@
   },
   "peerDependencies": {},
   "dependencies": {
+    "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
+    "@caws-blueprint-component/caws-workflows": "0.0.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint/caws.blueprint": "0.0.x",
     "projen": "*"
@@ -61,7 +63,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.31",
+  "version": "0.0.45",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"
