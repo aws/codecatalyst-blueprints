@@ -92,7 +92,7 @@ export class ProjenBlueprint extends TypeScriptProject {
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
     this.setScript(
       'blueprint:publish',
-      `yarn bump && yarn build yarn package && blueprint publish ./ --publisher ${organization}`,
+      `yarn bump && yarn build && yarn package && blueprint publish ./ --publisher ${organization}`,
     );
 
     //add additional metadata fields to package.json

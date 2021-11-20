@@ -22,7 +22,7 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-    "blueprint:publish": "yarn bump && yarn build yarn package && blueprint publish ./ --publisher caws"
+    "blueprint:publish": "yarn bump && yarn build && yarn package && blueprint publish ./ --publisher caws"
   },
   "author": {
     "name": "caws-blueprints",
