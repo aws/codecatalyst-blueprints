@@ -6,7 +6,7 @@ import * as yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { PublishOptions, publish } from './publish';
-import { SynthesizeOptions, synth } from './synth';
+import { SynthesizeOptions, synth } from './synth-driver/synth';
 
 const log = pino.default({
   prettyPrint: true,
@@ -35,10 +35,15 @@ yargs.default(hideBin(process.argv))
         .option('defaults', {
           description: 'path to defaults.json to feed default values into synthesis',
           type: 'string',
+        })
+        .option('cache', {
+          description: 'Generate and synth from a webpacked cache',
+          default: false,
+          type: 'boolean',
         });
     },
     handler: async (argv: SynthesizeOptions): Promise<void> => {
-      await synth(log, argv.blueprint, argv.outdir, argv.options);
+      await synth(log, argv.blueprint, argv.outdir, argv.cache, argv.options);
       process.exit(0);
     },
   })
