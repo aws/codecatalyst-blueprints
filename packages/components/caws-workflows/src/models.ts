@@ -13,12 +13,18 @@ export interface Artifacts {
   Name: string;
   Files: string[];
 }
+
+export interface TestResult {
+  ReferenceArtifact: string;
+  Format: string;
+  SuccessThresholds?: {
+    PassRate: number;
+  };
+}
+
 export interface Reports {
   Name: string;
-  TestResults: {
-    ReferenceArtifact: string;
-    Format: string;
-  };
+  TestResults: TestResult[];
 }
 
 export interface BuildActionConfiguration {
@@ -36,6 +42,11 @@ export interface DeployActionConfiguration {
   StackName: string;
   StackRegion: string;
   TemplatePath: string;
+  EnvironmentName: string;
+  Parameters: [];
+  RollbackConfiguration: {
+    MonitorAlarmARNs: [];
+  };
 }
 
 export interface ActionUses {
@@ -53,6 +64,7 @@ export interface EnvironmentConnection {
 }
 
 export interface ActionDefiniton {
+  DependsOn?: string[];
   Identifier?: string;
   InputArtifacts?: string[];
   OutputArtifacts?: string[];
