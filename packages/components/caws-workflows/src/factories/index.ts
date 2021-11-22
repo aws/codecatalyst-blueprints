@@ -8,7 +8,8 @@ import * as samPython from './sam-python';
 
 
 const GENERIC_BUILD_IMAGE = 'aws-actions/cawsbuildprivate-build@v1';
-const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy@v1';
+const GENERIC_TEST_IMAGE = 'aws-actions/cawstestbeta-test@v1';
+const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy-gamma@v1';
 const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 
 export function generateWorkflow(
@@ -19,10 +20,19 @@ export function generateWorkflow(
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
+
+  tests: boolean,
 ): WorkflowDefinition {
   switch (sdk) {
     case 'sam-python':
-      return samPython.generate(defaultBranch, stages, stackName, s3BucketName, buildRoleArn);
+      return samPython.generate(
+        defaultBranch,
+        stages,
+        stackName,
+        s3BucketName,
+        buildRoleArn,
+        tests,
+      );
     default:
       throw new Error(`sdk is not supported: ${sdk}`);
   }
@@ -76,8 +86,10 @@ export function addGenericCloudFormationDeployAction(
   stage: StageDefinition,
   stackName: string,
   stackRegion: string,
+  dependsOn: string,
 ) {
   workflow.Actions[`Deploy_${stage.environment.title}`] = {
+    DependsOn: [dependsOn],
     Identifier: GENERIC_DEPLOY_IMAGE,
     InputArtifacts: [DEFAULT_ARTIFACT_NAME],
     Configuration: {
@@ -86,9 +98,52 @@ export function addGenericCloudFormationDeployAction(
       StackName: stackName,
       StackRegion: stackRegion,
       TemplatePath: `${DEFAULT_ARTIFACT_NAME}::output.yaml`,
-      Uses: {
-        Environment: stage.environment.title,
+      EnvironmentName: stage.environment.title,
+      Parameters: [],
+      RollbackConfiguration: {
+        MonitorAlarmARNs: [],
       },
+    },
+  };
+}
+
+export function addGenericTestReports(workflow: WorkflowDefinition, steps: Step[]) {
+  workflow.Actions.Test = {
+    DependsOn: ['Build'],
+    Identifier: GENERIC_TEST_IMAGE,
+    OutputArtifacts: ['CoverageArtifact', 'TestArtifact'],
+    Configuration: {
+      Steps: steps,
+      Artifacts: [
+        {
+          Name: 'CoverageArtifact',
+          Files: ['reports/cov.xml'],
+        },
+        {
+          Name: 'TestArtifact',
+          Files: ['reports/report.xml'],
+        },
+      ],
+      Reports: [
+        {
+          Name: 'CoverageArtifact',
+          TestResults: [
+            {
+              ReferenceArtifact: 'CoverageArtifact',
+              Format: 'CoberturaXml',
+            },
+          ],
+        },
+        {
+          Name: 'TestArtifact',
+          TestResults: [
+            {
+              ReferenceArtifact: 'TestArtifact',
+              Format: 'JunitXml',
+            },
+          ],
+        },
+      ],
     },
   };
 }

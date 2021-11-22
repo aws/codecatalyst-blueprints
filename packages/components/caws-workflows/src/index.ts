@@ -22,6 +22,7 @@ export class Workflow extends Component {
       blueprint,
       path.join(sourceRepository.relativePath, `.aws/workflows/${workflow.Name}.yaml`),
       {
+        marker: false,
         obj: {
           ...workflow,
         },

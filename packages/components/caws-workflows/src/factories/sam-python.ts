@@ -2,6 +2,7 @@ import {
   addGenericBranchTrigger,
   addGenericBuildAction,
   addGenericCloudFormationDeployAction,
+  addGenericTestReports,
   emptyWorkflow,
 } from '.';
 import { StageDefinition, WorkflowDefinition } from '../models';
@@ -12,6 +13,7 @@ export function generate(
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
+  tests: boolean,
   region = 'us-west-2',
 ): WorkflowDefinition {
   const workflow: WorkflowDefinition = emptyWorkflow;
@@ -26,12 +28,26 @@ export function generate(
     },
   ]);
 
+  let dependsOn = 'Build';
+  if (tests) {
+    dependsOn = 'Test';
+    addGenericTestReports(workflow, [
+      {
+        Run: 'python3 -m pip install -r tests/requirements.txt',
+      },
+      {
+        Run: 'python3 -m pytest tests/unit -v --junitxml=reports/report.xml  --cov="tests" --cov-report xml:reports/cov.xml',
+      },
+    ]);
+  }
+
   stages.forEach(stage => {
     addGenericCloudFormationDeployAction(
       workflow,
       stage,
       `${stackName}-${stage.environment.title}`,
       region,
+      dependsOn,
     );
   });
   return workflow;
