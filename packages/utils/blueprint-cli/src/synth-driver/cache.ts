@@ -2,7 +2,7 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
-import { writeSynthDiver } from './driver';
+import { writeSynthDriver } from './driver';
 
 export const createCache = (params: {
   buildDirectory: string;
@@ -14,7 +14,7 @@ export const createCache = (params: {
   // cleanup non-build files from previous runs that may or may not exist
   const cleanup = [
     'node_modules',
-    'node_cache',
+    'node_modules.tar',
     'package.json',
     'package-lock.json',
     cacheFile,
@@ -29,8 +29,7 @@ export const createCache = (params: {
     };
   });
 
-  // write the synth driver
-  writeSynthDiver(
+  writeSynthDriver(
     path.join(params.buildDirectory, synthDriver),
     params.builtEntryPoint,
   );

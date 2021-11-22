@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 import { createCache } from './cache';
-import { writeSynthDiver } from './driver';
+import { writeSynthDriver } from './driver';
 
 export interface SynthesizeOptions extends yargs.Arguments {
   blueprint: string;
