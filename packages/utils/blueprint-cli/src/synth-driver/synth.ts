@@ -70,7 +70,7 @@ export async function synth(
     const driverFile = path.join(blueprint, 'synth-driver.ts');
     console.log(driverFile);
     try {
-      writeSynthDiver(driverFile, path.join(blueprint, 'src', 'index.ts'));
+      writeSynthDriver(driverFile, path.join(blueprint, 'src', 'index.ts'));
       const command = `npx ts-node ${driverFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}'`;
 
       log.debug('generated command: %s', command);
