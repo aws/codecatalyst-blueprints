@@ -1,19 +1,17 @@
 {
-    "name": "web",
-    "environments": [{
-        "title": "Prod",
-        "description": "This is the production environment that your web application gets deployed into."
-    }],
+    "name": "HelloWorldWebApp",
     "frontend": {
         "name": "client",
-        "outdir": "client"
+        "outdir": "client",
+        "license": "MIT"
     },
     "backend": {
         "name": "api",
         "outdir": "api",
-        "artifactId": "com.acme.api",
-        "groupId": "acme"
+        "license": "MIT"
     },
-    "defaultReleaseBranch": "mainline",
-    "readme": "# Web Application"
+    "defaultReleaseBranch": "main",
+    "awsAccountId": "012345678910",
+    "awsRegion": "us-west-2",
+    "s3BucketName": "defaultS3Bucket"
 }

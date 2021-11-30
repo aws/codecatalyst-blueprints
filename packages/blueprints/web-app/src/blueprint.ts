@@ -1,14 +1,13 @@
-import { Environment, EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
-import {
-  Blueprint as ParentBlueprint,
-  Options as ParentOptions,
-} from '@caws-blueprint/caws.blueprint';
-import { java, web } from 'projen';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
+import { awscdk, AwsCdkTypeScriptApp, Project, SourceCode, web } from 'projen';
 
 import defaults from './defaults.json';
+import { helloWorldLambdaCallback } from './hello-world-lambda';
+import { createLambda } from './lambda-generator';
+import { getStackDefinition, getStackTestDefintion } from './stack';
+import { createClass } from './stack-generator';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -18,70 +17,61 @@ import defaults from './defaults.json';
  */
 export interface Options extends ParentOptions {
   /**
-   * The name of the application
-   */
+     * The name of the application.
+     */
   name: string;
-
   /**
-   * Enivroments to deploy into.
-   */
-  environments: EnvironmentDefinition[];
-
-  /**
-   * Options for the Frontend Application
-   */
+     * Options for the Frontend Application
+     */
   frontend: {
     /**
-     * The name of the Frontend Application
-     */
+         * The name of the Frontend Application
+         */
     name: string;
-
     /**
-     * The relative path of the Frontend Application
-     * @advanced
-     */
+         * The relative path of the Frontend Application
+         * @advanced
+         */
     outdir: string;
-
     /**
-     * The license of the Frontend Application
-     */
+         * The license of the Frontend Application
+         * See https://github.com/projen/projen/tree/main/license-text
+         */
     license?: 'MIT' | 'Apache-2.0';
   };
-
   backend: {
     /**
-     * The name of the Backend Application
-     */
+         * The name of the Backend Application
+         */
     name: string;
-
     /**
-     * The relative path of the Backend Application
-     * @advanced
-     */
+         * The relative path of the Backend Application
+         * @advanced
+         */
     outdir: string;
-
     /**
-     * The artifactId of the backend java application
-     */
-    artifactId: string;
-
-    /**
-     * The groupId of the backend java Application
-     */
-    groupId: string;
+         * The license of the Backend Application
+         * See https://github.com/projen/projen/tree/main/license-text
+         */
+    license?: 'MIT' | 'Apache-2.0';
   };
   /**
-   * Specify the contents of the repository README.md
-   * @input textarea
-   * @advanced
-   */
-  readme: string;
-
-  /**
-   * Specifies the default release branch
-   * @advanced
-   */
+     * Specifies the default release branch
+     * @advanced
+     */
   defaultReleaseBranch: string;
+  /**
+     * AWS Account ID
+     */
+  awsAccountId: string;
+  /**
+     * awsRegion
+     */
+  awsRegion: string;
+  /**
+     * S3 Bucket that will host the React Web App
+     */
+  s3BucketName: string;
 }
 
 /**
@@ -90,127 +80,84 @@ export interface Options extends ParentOptions {
  * 2. This Blueprint should extend another ParentBlueprint
  */
 export class Blueprint extends ParentBlueprint {
-  private readonly frontendRepository: SourceRepository;
-  private readonly backendRepository: SourceRepository;
+  protected options: Options;
 
   constructor(options_: Options) {
     super(options_);
     const options = Object.assign(defaults, options_);
+    this.options = options;
 
-    options.environments.forEach(envDef => {
-      new Environment(this, envDef);
+    const repository = new SourceRepository(this, {
+      title: this.options.name,
     });
+    new Workspace(this, repository, SampleWorkspaces.default);
 
-    this.frontendRepository = new SourceRepository(this, {
-      title: options.frontend.name,
-    });
-
-    new web.ReactTypeScriptProject({
-      outdir: this.frontendRepository.relativePath,
-      parent: this,
-      name: options.frontend.outdir,
-      authorEmail: 'caws@amazon.com',
-      authorName: 'codeaws',
-      defaultReleaseBranch: options.defaultReleaseBranch,
-      license: options.frontend.license,
-    });
-
-    this.backendRepository = new SourceRepository(this, {
-      title: options.backend.name,
-    });
-
-    new Workspace(this, this.backendRepository, SampleWorkspaces.default);
-
-    new java.JavaProject({
-      outdir: this.backendRepository.relativePath,
-      parent: this,
-      name: options.backend.name,
-      groupId: options.backend.groupId,
-      artifactId: options.backend.artifactId,
-      version: '1.0.0',
-    });
-
-    new Workflow(
-      this,
-      this.frontendRepository,
-      this.createWorkflowDefintion({
-        branch: options.defaultReleaseBranch,
-        ActionRoleArn: 'MY_ACTION_ROLE_ARN',
-        S3_BUCKET: 'MY_S3_BUCKET_VAR_VALUE',
-        CodeAwsRoleARN: 'MY_CAWS_ROLE_ARN',
-        StackRoleARN: 'MY_STACK_ROLE_ARN',
-      }),
-    );
-
-    new Workflow(
-      this,
-      this.backendRepository,
-      this.createWorkflowDefintion({
-        branch: options.defaultReleaseBranch,
-        ActionRoleArn: 'MY_ACTION_ROLE_ARN',
-        S3_BUCKET: 'MY_S3_BUCKET_VAR_VALUE',
-        CodeAwsRoleARN: 'MY_CAWS_ROLE_ARN',
-        StackRoleARN: 'MY_STACK_ROLE_ARN',
-      }),
-    );
+    this.createFrontend(this, repository);
+    this.createStacks(this, repository);
   }
 
-  protected createWorkflowDefintion(options: {
-    branch: string;
-    ActionRoleArn: string;
-    S3_BUCKET: string;
-    CodeAwsRoleARN: string;
-    StackRoleARN: string;
-  }): WorkflowDefinition {
-    return {
-      Name: 'release',
-      Triggers: [
-        {
-          Type: 'Push',
-          Branches: [options.branch],
-        },
+  private createFrontend(parent: Project, repo: SourceRepository): web.ReactTypeScriptProject {
+    const project = new web.ReactTypeScriptProject({
+      parent,
+      name: `${this.options.frontend.name}`,
+      authorEmail: 'caws@amazon.com',
+      authorName: 'codeaws',
+      outdir: `${repo.relativePath}/${this.options.frontend.outdir}`,
+      defaultReleaseBranch: this.options.defaultReleaseBranch,
+      license: this.options.frontend.license,
+    });
+
+    // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
+    //  that is incompatible with create-react-app (i.e react=scripts). We skip the preflight check
+    //  to prevent blocking warnings.
+    const dotenvFile = new SourceCode(project, '.env');
+    dotenvFile.line('SKIP_PREFLIGHT_CHECK=true');
+
+    return project;
+  }
+
+  private createStacks(parent: Project, repo: SourceRepository): Project {
+    const project = new AwsCdkTypeScriptApp({
+      parent,
+      cdkVersion: '1.95.2',
+      name: `${this.options.backend.name}`,
+      authorEmail: 'caws@amazon.com',
+      authorName: 'codeaws',
+      outdir: `${repo.relativePath}/${this.options.backend.outdir}`,
+      appEntrypoint: 'main.ts',
+      defaultReleaseBranch: this.options.defaultReleaseBranch,
+      cdkDependencies: [
+        '@aws-cdk/core',
+        '@aws-cdk/aws-lambda',
+        '@aws-cdk/aws-apigateway',
+        '@aws-cdk/aws-s3',
+        '@aws-cdk/aws-s3-deployment',
+        '@aws-cdk/aws-cloudfront',
       ],
-      Actions: {
-        BuildBackend: {
-          Identifier: 'aws/build@v1',
-          OutputArtifacts: ['buildArtifact'],
-          Configuration: {
-            ActionRoleArn: options.ActionRoleArn,
-            Variables: [
-              {
-                Name: 'S3_BUCKET',
-                Value: options.S3_BUCKET,
-              },
-            ],
-            Steps: [
-              {
-                Run: 'sam build',
-              },
-              {
-                Run: 'sam package --template-file .aws-sam/build/template.yaml --s3-bucket $S3_BUCKET --output-template-file template-packaged.yaml --region us-west-2',
-              },
-            ],
-            Artifacts: [
-              {
-                Name: 'buildArtifact',
-                Files: ['template-packaged.yaml'],
-              },
-            ],
-          },
-        },
-      },
-      DeployCloudFormationStack: {
-        DependsOn: ['buildArtifact'],
-        Identifier: 'aws/cloudformation-deploy@v1',
-        InputArtifacts: ['BuildArtifact'],
-        Configuration: {
-          CodeAwsRoleARN: options.CodeAwsRoleARN,
-          StackRoleARN: options.StackRoleARN,
-          StackName: 'serverless-api-stack',
-          StackRegion: 'us-west-2',
-          TemplatePath: 'buildArtifact::template-packaged.yaml',
-        },
-      },
-    };
+      sampleCode: false,
+      lambdaAutoDiscover: true,
+      license: this.options.frontend.license,
+    });
+
+    const lambdaName = `${this.options.name}Lambda`;
+    const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(project, lambdaName, helloWorldLambdaCallback);
+
+    const stackName = `${this.options.name}Stack`;
+    const s3BucketName = this.getUniqueS3BucketName(this.options.s3BucketName);
+    const sourceCode = getStackDefinition(stackName, s3BucketName, this.options, lambdaOptions);
+    createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
+
+    const testCode = getStackTestDefintion(project.appEntrypoint, stackName);
+    createClass(project.outdir, project.testdir, 'main.test.ts', testCode);
+
+    return project;
+  }
+
+  private getUniqueS3BucketName(s3BucketName: string) {
+    return `${s3BucketName.toLowerCase()}-${this.getSecondSinceEpoch()}`;
+  }
+
+  private getSecondSinceEpoch() {
+    return Math.floor(Date.now() / 1000);
   }
 }
