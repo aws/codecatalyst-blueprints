@@ -59,10 +59,11 @@ export function addGenericBuildAction(
   workflow: WorkflowDefinition,
   buildRoleArn: string,
   steps: Step[] = [],
+  artifactName: string = DEFAULT_ARTIFACT_NAME,
 ) {
   workflow.Actions.Build = {
     Identifier: GENERIC_BUILD_IMAGE,
-    OutputArtifacts: [DEFAULT_ARTIFACT_NAME],
+    OutputArtifacts: [artifactName],
     Configuration: {
       Variables: [
         {
@@ -73,7 +74,7 @@ export function addGenericBuildAction(
       Steps: steps,
       Artifacts: [
         {
-          Name: DEFAULT_ARTIFACT_NAME,
+          Name: artifactName,
           Files: ['output.yaml'],
         },
       ],
@@ -87,17 +88,18 @@ export function addGenericCloudFormationDeployAction(
   stackName: string,
   stackRegion: string,
   dependsOn: string,
+  artifactName: string = DEFAULT_ARTIFACT_NAME,
 ) {
   workflow.Actions[`Deploy_${stage.environment.title}`] = {
     DependsOn: [dependsOn],
     Identifier: GENERIC_DEPLOY_IMAGE,
-    InputArtifacts: [DEFAULT_ARTIFACT_NAME],
+    InputArtifacts: [artifactName],
     Configuration: {
       CodeAwsRoleARN: stage.role,
       StackRoleARN: stage.stackRoleArn,
       StackName: stackName,
       StackRegion: stackRegion,
-      TemplatePath: `${DEFAULT_ARTIFACT_NAME}::output.yaml`,
+      TemplatePath: `${artifactName}::output.yaml`,
       EnvironmentName: stage.environment.title,
       Parameters: [],
       RollbackConfiguration: {
