@@ -1,24 +1,32 @@
 {
-  "runtime": "Java 11 Gradle",
+  "runtime": "Python 3",
   "lambdas": [
   {
-        "functionName": "HelloWorldJava11Gradle",
-        "description": "This is a lambda function"
+    "functionName": "MyFunction1",
+    "description": "This is a lambda function"
+  },
+  {
+    "functionName": "MyFunction2",
+    "description": "This is a lambda function"
+  },
+  {
+    "functionName": "MyFunction3",
+    "description": "This is a lambda function"
   }
   ],
 
   "workflow": {
-    "cloudFormationStackName": "sam-lambda-prod-java11-gradle-1",
+    "cloudFormationStackName": "REPLACE_ME",
     "s3BucketName": "ramosth-serverless-app-bucket",
-    "buildRoleArn": "arn:aws:iam::200210926413:role/CawsAdmin",
+    "buildRoleArn": "REPLACE_ME_ARN",
     "stages": [
       {
         "environment": {
           "title": "prod",
           "description": "This environment is for production"
         },
-        "role": "arn:aws:iam::200210926413:role/CawsAdmin",
-        "stackRoleArn": "arn:aws:iam::200210926413:role/CawsAdmin"
+        "role": "REPLACE_ME_ARN",
+        "stackRoleArn": "REPLACE_ME_ARN"
       }
     ]
   },

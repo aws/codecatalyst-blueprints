@@ -51,6 +51,7 @@ import * as fs from 'fs';
 
       /**
        * The name of the S3 bucket to store build artifacts
+       * Must follow these naming rules: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
        */
       //todo: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html  verify bucket name
       s3BucketName: string;
@@ -240,9 +241,12 @@ const samOptionsMap = new Map([
         {Run: 'sam build'},
         {Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${this.options.workflow.s3BucketName} --output-template-file output.yaml --region ${region}`},
       ]);
+      //each stage should depend on the previous stage
+      let previousStage = 'Build'
       for (const stage of this.options.workflow.stages) {
         //todo: change to use a new cfnStackname for each deployment action
-        addGenericCloudFormationDeployAction(workflowDefinition, stage, this.options.workflow.cloudFormationStackName, region, 'Build');
+        addGenericCloudFormationDeployAction(workflowDefinition, stage, this.options.workflow.cloudFormationStackName, region, previousStage);
+        previousStage = `Deploy_${stage.environment.title}`;
       }
       new Workflow(
         this,
