@@ -111,7 +111,6 @@ const findProjenVersion = (options: {
   nodeModulesPath: string;
 }, log: pino.BaseLogger) => {
   const projenPackageJson = path.join(options.nodeModulesPath, 'projen', 'package.json');
-  console.log(projenPackageJson);
   const packageJson = JSON.parse(fs.readFileSync(projenPackageJson, 'utf8'));
 
   if (packageJson.version) {
