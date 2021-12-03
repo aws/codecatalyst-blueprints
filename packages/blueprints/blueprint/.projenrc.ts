@@ -6,11 +6,9 @@ const blueprint = new ProjenBlueprint({
   projenrcTs: true,
   displayName: 'Empty Blueprint',
   authorName: 'caws-blueprints',
-
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
-  deps: ['projen'],
-  peerDeps: [],
+  peerDeps: ['projen'],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description:
     'This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',

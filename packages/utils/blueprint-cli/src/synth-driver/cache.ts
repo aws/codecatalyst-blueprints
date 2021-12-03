@@ -74,7 +74,9 @@ const createWebpackedBundle = (params: {
   // This is a a hack until projen can be properly webpacked
   // ==========================================================================
   // Since projen is external we npm install it and ship with that.
-  const projenVersion = '*'; // TODO: get the projen version from package.json
+  const projenVersion = findProjenVersion({
+    nodeModulesPath: path.join(params.buildDirectory, '..', 'node_modules'),
+  }, log);
 
   const packageJson = {
     dependencies: {
@@ -91,8 +93,8 @@ const createWebpackedBundle = (params: {
   });
 
   // we need to package up the node_modules
-  cp.execSync('tar -czvf node_modules.tar  ./node_modules/', {
-    stdio: 'inherit',
+  log.debug('Packaging node_modules');
+  cp.execSync('tar -czf node_modules.tar  ./node_modules/', {
     cwd: params.buildDirectory,
   });
 
@@ -102,4 +104,19 @@ const createWebpackedBundle = (params: {
   const replace = 'module.exports = projen;';
   data = data.replace(replace, `const projen = require('projen'); ${replace}`);
   fs.writeFileSync(exitFilePath, data, 'utf8');
+};
+
+
+const findProjenVersion = (options: {
+  nodeModulesPath: string;
+}, log: pino.BaseLogger) => {
+  const projenPackageJson = path.join(options.nodeModulesPath, 'projen', 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(projenPackageJson, 'utf8'));
+
+  if (packageJson.version) {
+    log.debug(`Found projen, looks like you're using version: ${packageJson.version} in your node modules. Using '${packageJson.version}' to build the cache.`);
+    return packageJson.version;
+  }
+  log.debug('Can\'t find a projen version. Using \'*\' to build the cache.');
+  return '*';
 };
