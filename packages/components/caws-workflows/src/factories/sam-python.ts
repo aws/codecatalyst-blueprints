@@ -7,6 +7,10 @@ import {
 } from '.';
 import { StageDefinition, WorkflowDefinition } from '../models';
 
+const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
+const DEFAULT_COVERAGE_ARTIFACT = 'CoverageArtifact';
+const DEFAULT_TEST_ARTIFACT = 'TestArtifact';
+
 export function generate(
   defaultBranch = 'main',
   stages: StageDefinition[] = [],
@@ -26,7 +30,8 @@ export function generate(
     {
       Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${s3BucketName} --output-template-file output.yaml --region ${region}`,
     },
-  ]);
+  ],
+  DEFAULT_ARTIFACT_NAME);
 
   let dependsOn = 'Build';
   if (tests) {
@@ -38,7 +43,8 @@ export function generate(
       {
         Run: 'python3 -m pytest tests/unit -v --junitxml=reports/report.xml  --cov="tests" --cov-report xml:reports/cov.xml',
       },
-    ]);
+    ],
+    DEFAULT_COVERAGE_ARTIFACT, DEFAULT_TEST_ARTIFACT);
   }
 
   stages.forEach(stage => {
@@ -48,6 +54,7 @@ export function generate(
       `${stackName}-${stage.environment.title}`,
       region,
       dependsOn,
+      DEFAULT_ARTIFACT_NAME,
     );
   });
   return workflow;

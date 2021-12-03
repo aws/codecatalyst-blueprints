@@ -10,7 +10,6 @@ import * as samPython from './sam-python';
 const GENERIC_BUILD_IMAGE = 'aws-actions/cawsbuildprivate-build@v1';
 const GENERIC_TEST_IMAGE = 'aws-actions/cawstestbeta-test@v1';
 const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy-gamma@v1';
-const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 
 export function generateWorkflow(
   sdk: WorkflowRuntimeSdk,
@@ -59,10 +58,11 @@ export function addGenericBuildAction(
   workflow: WorkflowDefinition,
   buildRoleArn: string,
   steps: Step[] = [],
+  artifactName: string,
 ) {
   workflow.Actions.Build = {
     Identifier: GENERIC_BUILD_IMAGE,
-    OutputArtifacts: [DEFAULT_ARTIFACT_NAME],
+    OutputArtifacts: [artifactName],
     Configuration: {
       Variables: [
         {
@@ -73,7 +73,7 @@ export function addGenericBuildAction(
       Steps: steps,
       Artifacts: [
         {
-          Name: DEFAULT_ARTIFACT_NAME,
+          Name: artifactName,
           Files: ['output.yaml'],
         },
       ],
@@ -87,17 +87,18 @@ export function addGenericCloudFormationDeployAction(
   stackName: string,
   stackRegion: string,
   dependsOn: string,
+  artifactName: string,
 ) {
   workflow.Actions[`Deploy_${stage.environment.title}`] = {
     DependsOn: [dependsOn],
     Identifier: GENERIC_DEPLOY_IMAGE,
-    InputArtifacts: [DEFAULT_ARTIFACT_NAME],
+    InputArtifacts: [artifactName],
     Configuration: {
       CodeAwsRoleARN: stage.role,
       StackRoleARN: stage.stackRoleArn,
       StackName: stackName,
       StackRegion: stackRegion,
-      TemplatePath: `${DEFAULT_ARTIFACT_NAME}::output.yaml`,
+      TemplatePath: `${artifactName}::output.yaml`,
       EnvironmentName: stage.environment.title,
       Parameters: [],
       RollbackConfiguration: {
@@ -107,38 +108,38 @@ export function addGenericCloudFormationDeployAction(
   };
 }
 
-export function addGenericTestReports(workflow: WorkflowDefinition, steps: Step[]) {
+export function addGenericTestReports(workflow: WorkflowDefinition, steps: Step[], coverageArtifactName: string, testArtifactName: string) {
   workflow.Actions.Test = {
     DependsOn: ['Build'],
     Identifier: GENERIC_TEST_IMAGE,
-    OutputArtifacts: ['CoverageArtifact', 'TestArtifact'],
+    OutputArtifacts: [coverageArtifactName, testArtifactName],
     Configuration: {
       Steps: steps,
       Artifacts: [
         {
-          Name: 'CoverageArtifact',
+          Name: coverageArtifactName,
           Files: ['reports/cov.xml'],
         },
         {
-          Name: 'TestArtifact',
+          Name: testArtifactName,
           Files: ['reports/report.xml'],
         },
       ],
       Reports: [
         {
-          Name: 'CoverageArtifact',
+          Name: coverageArtifactName,
           TestResults: [
             {
-              ReferenceArtifact: 'CoverageArtifact',
+              ReferenceArtifact: coverageArtifactName,
               Format: 'CoberturaXml',
             },
           ],
         },
         {
-          Name: 'TestArtifact',
+          Name: testArtifactName,
           TestResults: [
             {
-              ReferenceArtifact: 'TestArtifact',
+              ReferenceArtifact: testArtifactName,
               Format: 'JunitXml',
             },
           ],
