@@ -29,50 +29,43 @@ import * as fs from 'fs';
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
  */
  export interface Options extends ParentOptions {
+  /**
+  * The name your application's source repository
+  */
+  sourceRepositoryName: string;
+  /**
+  * What runtime language do want your lambda functions to use
+  */
+  runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle'; //'Ruby 2.7' | '.NET Core 3' |
+  /**
+   * A set of lambdas for your serverless application
+   */
+  lambdas: Lambda[];
+  /**
+   * The configurations for your workflow
+   */
+   workflow: {
+
 
     /**
-    * What runtime language do want your lambdas to use
-    */
-    runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle'; //'Ruby 2.7' | '.NET Core 3' |
-    /**
-     * A set of lambdas for your serverless application
+     * The name of the S3 bucket to store build artifacts
      */
-    lambdas: Lambda[];
+    s3BucketName: string;
+
     /**
-     * The configurations for your workflow
+     * The role ARN to use when building your application
      */
-     workflow: {
-      /**
-       * The name of the CloudFormation stack to deploy your serverless application
-       */
-      //!this might be phased out with the changes to stages/stage definition
-      //todo: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-parameters.html verify stack formation name
-      cloudFormationStackName: string;
-
-      /**
-       * The name of the S3 bucket to store build artifacts
-       * Must follow these naming rules: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-       */
-      //todo: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html  verify bucket name
-      s3BucketName: string;
-
-      /**
-       * The role ARN to use when building
-       */
-      //todo: verify connection arn https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html
-      buildRoleArn: string;
-
-      /**
-       * Workflow stages to generate
-       */
-      stages: StageDefinition[];
-    }
-
-   /**
-    * The default branch to trigger releases
-    * @advanced
-    */
-    defaultReleaseBranch?: string;
+    buildRoleArn: string;
+    /**
+     * The name of the CloudFormation stack to deploy your application
+     */
+    //!this might be phased out with the changes to stages/stage definition
+    cloudFormationStackName: string;
+    /**
+     * The workflow stages of your project
+     */
+    stages: StageDefinition[];
+  }
 }
 
 
@@ -101,25 +94,6 @@ export interface Lambda {
    description?: string;
 }
 
-/**
- * Available Runtimes:
- * That aren't considered being cut
- * Java Coretto 11 -> Gradle/Maven might be getting cut so we will see on this one
- * Node v14
- * .Net Core 6 -> unsure if this is backwards compatible
- * Python 3.7 not 3.9
- *
- * ----------------------------------------------------------------
- * Things that might be cut in the workflows docker image:
- * RubyGems 3.1
- * Gradle 7.1
- * Maven 3.8.1
- */
-
-//Maps the human readable runtime language to its sam runtime, code uri, handler, additional sam template properties, dependency manager, and cache directory name
-//todo remove dependency manager no longer needed with svn change
-//?keep cacheDir as things will get messy if we support another runtime of python or nodejs!
-
 const samOptionsMap = new Map([
    ['Java 11 Maven', {runtime: 'java11', codeUri: 'HelloWorldFunction', handler: 'helloworld.App::handleRequest', templateProps: java11, cacheDir: 'java11maven', gitSrcPath: 'cookiecutter-aws-sam-hello-java-maven'}],
    ['Java 11 Gradle', {runtime: 'java11', codeUri: 'HelloWorldFunction', handler: 'helloworld.App::handleRequest', templateProps: java11,cacheDir: 'java11gradle', gitSrcPath: 'cookiecutter-aws-sam-hello-java-gradle'}],
@@ -147,38 +121,19 @@ const samOptionsMap = new Map([
       super(options_);
       const options = Object.assign(defaults, options_);
       this.options = options;
-      //!Optional members of options can be empty when trying to synth
-      if (!this.options.defaultReleaseBranch){
-        this.options.defaultReleaseBranch = 'main';
-      }
+
       this.repository = new SourceRepository(this, {
-         title: "lambdas"
+         title: this.options.sourceRepositoryName
        });
        this.lambdas = options.lambdas;
       //!Quokka tries to synth after anything has changed currently, throw error early
       if (this.lambdas.length === 0) {
         throw new Error("At least 1 Lambda function is required to create this project")
       }
-      //TODO: find git branch naming rules
+      /*
       const lambdaPattern = '^[a-zA-Z0-9][-_a-zA-Z0-9]*';
       //must start with a letter and must only constin alphanumeric or hypehns
       const cloudFormationPattern = '^[a-zA-Z][-a-zA-Z0-9]*';
-      //https://regex101.com/library/pOfxYN
-      //todo: figure out connection arn regex
-      //const arnPattern = "^arn:(?P<Partition>[^:\n]*):(?P<Service>[^:\n]*):(?P<Region>[^:\n]*):(?P<AccountID>[^:\n]*):(?P<Ignore>(?P<ResourceType>[^:\/\n]*)[:\/])?(?P<Resource>.*)$";
-      //https://stackoverflow.com/questions/50480924/regex-for-s3-bucket-name
-      /*
-        (?!^xn--) -> s3 bucket name cannot start with xn--
-        (?!.*-s3alias$) -> s3 bucket name cannot end with suffix -s3alias
-      */
-      /*
-      !Connection arn may not be needed to be checked with the changes to code.aws connections
-      const connectionArn = this.options.workflow.connectionArn;
-      if (!connectionArn.match(connectionArnPattern)){
-        throw new Error("Invalid ARN format, please refer to https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for \
-        valid arn formats");
-      }
-      */
       const s3BucketPattern = '(?!^xn--)(?!.*-s3alias$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)';
       //git releasebranchNaming
       const releaseBranchPattern = "^[a-zA-Z][-_a-zA-Z0-9]*";
@@ -214,7 +169,7 @@ const samOptionsMap = new Map([
       if (uniqname.size !== this.lambdas.length) {
         throw new Error("Lambda function names must be unique");
       }
-
+      */
    }
 
    override synth(): void {
@@ -230,13 +185,13 @@ const samOptionsMap = new Map([
       new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {contents: readmeContents})
       //Workflow
       const workflowDefinition: WorkflowDefinition = {
-        Name: 'build',
+        Name: 'build-and-release',
         Triggers: [],
         Actions: {},
       }
       //todo: add region selection
       const region = 'us-west-2'
-      addGenericBranchTrigger(workflowDefinition, this.options.defaultReleaseBranch);
+      addGenericBranchTrigger(workflowDefinition, 'main');
       addGenericBuildAction(workflowDefinition, this.options.workflow.buildRoleArn, [
         {Run: 'sam build'},
         {Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${this.options.workflow.s3BucketName} --output-template-file output.yaml --region ${region}`},

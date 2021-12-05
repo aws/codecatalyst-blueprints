@@ -1,34 +1,26 @@
 {
+  "sourceRepositoryName": "MyServerlessAppRepo",
   "runtime": "Python 3",
   "lambdas": [
   {
-    "functionName": "MyFunction1",
-    "description": "This is a lambda function"
-  },
-  {
-    "functionName": "MyFunction2",
-    "description": "This is a lambda function"
-  },
-  {
-    "functionName": "MyFunction3",
+    "functionName": "HelloWorld",
     "description": "This is a lambda function"
   }
   ],
 
   "workflow": {
     "cloudFormationStackName": "REPLACE_ME",
-    "s3BucketName": "ramosth-serverless-app-bucket",
-    "buildRoleArn": "REPLACE_ME_ARN",
+    "s3BucketName": "REPLACE_ME",
+    "buildRoleArn": "REPLACE_ME",
     "stages": [
       {
         "environment": {
           "title": "prod",
           "description": "This environment is for production"
         },
-        "role": "REPLACE_ME_ARN",
-        "stackRoleArn": "REPLACE_ME_ARN"
+        "role": "REPLACE_ME",
+        "stackRoleArn": "REPLACE_ME"
       }
     ]
-  },
-  "defaultReleaseBranch": "main"
+  }
 }
