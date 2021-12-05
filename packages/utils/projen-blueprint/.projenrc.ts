@@ -19,12 +19,13 @@ const project = new TypeScriptProject({
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
   peerDeps: [
-    'projen',
+    "projen",
     "@caws-blueprint-util/blueprint-cli"
   ],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
   packageName: '@caws-blueprint-util/blueprint-projen',
   devDeps: [
+    "projen",
     'ts-node'
   ],
 });
