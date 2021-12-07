@@ -24,15 +24,3 @@ interface ApiGateway{
 }
 */
 
-export interface Lambda {
-  /**
-   * What do you want to name your lambda function
-   * Must be alphanumeric
-   */
-  functionName: string;
-
-  /**
-   * Describe your lambda function
-   */
-  description?: string;
-}

@@ -19,8 +19,23 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Lambda, RuntimeMapping } from './models';
+import { RuntimeMapping } from './models';
 import { runtimeMappings } from './runtimeMappings';
+
+export interface Lambda {
+  /**
+   * What do you want to name your lambda function
+   * Must be alphanumeric
+   */
+  functionName: string;
+
+  /**
+   * Describe your lambda function
+   */
+  description?: string;
+}
+
+
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard

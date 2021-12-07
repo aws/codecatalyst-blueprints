@@ -1,6 +1,6 @@
 {
   "sourceRepositoryName": "MyServerlessAppRepo",
-  "runtime": "Java 11 Gradle",
+  "runtime": "Python 3",
   "lambdas": [
   {
     "functionName": "HelloWorld",

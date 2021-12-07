@@ -1,4 +1,5 @@
-import { Lambda, RuntimeMapping } from './models';
+import { RuntimeMapping } from './models';
+import { Lambda } from './blueprint';
 import { StageDefinition } from '@caws-blueprint-component/caws-workflows';
 
 export function generateReadmeContents(
