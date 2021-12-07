@@ -359,7 +359,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
-    "@caws-blueprint/caws.blueprint": 0.0.x
+    "@caws-blueprint/caws.blueprint": 0.x
     "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
@@ -378,7 +378,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/caws.blueprint@0.0.x, @caws-blueprint/caws.blueprint@^0.0.x, @caws-blueprint/caws.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/caws.blueprint@0.0.x, @caws-blueprint/caws.blueprint@0.x, @caws-blueprint/caws.blueprint@^0.0.x, @caws-blueprint/caws.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/caws.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
@@ -472,7 +472,7 @@ __metadata:
     standard-version: ^9
     ts-node: ^9
     typescript: "*"
-    webpack-cli: ^4.9.1
+    webpack: ^5.64.4
   languageName: unknown
   linkType: soft
 
@@ -8354,6 +8354,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"watchpack@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "watchpack@npm:2.3.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwatchpack%2F-%2Fwatchpack-2.3.0.tgz"
+  dependencies:
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.1.2
+  checksum: 54f577fe311ae6130b43c3202ddc5c66ea8cdc5e0569b6e1dbccf5c0f5f4f8d4d00b7b97f6ae6d53e9361766bf0dc4e6dc7b30e57392948af9795217f6d9d7a7
+  languageName: node
+  linkType: hard
+
 "webpack-cli@npm:^4.9.1":
   version: 4.9.1
   resolution: "webpack-cli@npm:4.9.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack-cli%2F-%2Fwebpack-cli-4.9.1.tgz"
@@ -8438,6 +8448,43 @@ __metadata:
   bin:
     webpack: bin/webpack.js
   checksum: e02fcd3bfdc7e3322291b476af60f46dc4a31ec4349af4d1d47018b8e449820968d4ab8f1e8b313dd5cfcf1b47c7f976fe39fde73411d03c173a692c3dae428e
+  languageName: node
+  linkType: hard
+
+"webpack@npm:^5.64.4":
+  version: 5.64.4
+  resolution: "webpack@npm:5.64.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fwebpack%2F-%2Fwebpack-5.64.4.tgz"
+  dependencies:
+    "@types/eslint-scope": ^3.7.0
+    "@types/estree": ^0.0.50
+    "@webassemblyjs/ast": 1.11.1
+    "@webassemblyjs/wasm-edit": 1.11.1
+    "@webassemblyjs/wasm-parser": 1.11.1
+    acorn: ^8.4.1
+    acorn-import-assertions: ^1.7.6
+    browserslist: ^4.14.5
+    chrome-trace-event: ^1.0.2
+    enhanced-resolve: ^5.8.3
+    es-module-lexer: ^0.9.0
+    eslint-scope: 5.1.1
+    events: ^3.2.0
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.2.4
+    json-parse-better-errors: ^1.0.2
+    loader-runner: ^4.2.0
+    mime-types: ^2.1.27
+    neo-async: ^2.6.2
+    schema-utils: ^3.1.0
+    tapable: ^2.1.1
+    terser-webpack-plugin: ^5.1.3
+    watchpack: ^2.3.0
+    webpack-sources: ^3.2.2
+  peerDependenciesMeta:
+    webpack-cli:
+      optional: true
+  bin:
+    webpack: bin/webpack.js
+  checksum: 62ac598291374fa5269c80fcd82ad3cbf8e8c3f837c2bf6ea80812812154d9f4d3390c6fdc1ce85323e6fdd46132e3e3db08cde9a1b4d61197879e867c7c1375
   languageName: node
   linkType: hard
 

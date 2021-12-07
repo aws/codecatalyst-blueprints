@@ -74,13 +74,9 @@ const createWebpackedBundle = (params: {
   // This is a a hack until projen can be properly webpacked
   // ==========================================================================
   // Since projen is external we npm install it and ship with that.
-<<<<<<< HEAD
-  const projenVersion = '0.34.14'; // TODO: get the projen version from package.json
-=======
   const projenVersion = findProjenVersion({
     nodeModulesPath: path.join(params.buildDirectory, '..', 'node_modules'),
   }, log);
->>>>>>> a5002cd4627d49be899fce90d62cdbc7bbf19424
 
   const packageJson = {
     dependencies: {

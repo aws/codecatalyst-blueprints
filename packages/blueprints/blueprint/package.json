@@ -45,11 +45,7 @@
     "ts-node": "^9",
     "typescript": "^4.4.4"
   },
-<<<<<<< HEAD
-  "dependencies": {
-=======
   "peerDependencies": {
->>>>>>> a5002cd4627d49be899fce90d62cdbc7bbf19424
     "projen": "*"
   },
   "dependencies": {},
