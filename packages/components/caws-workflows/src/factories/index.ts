@@ -3,6 +3,7 @@ import {
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
+  PullRequestEvent,
 } from '..';
 import * as samPython from './sam-python';
 
@@ -43,14 +44,29 @@ export const emptyWorkflow: WorkflowDefinition = {
   Actions: {},
 };
 
-export function addGenericBranchTrigger(workflow: WorkflowDefinition, branch = 'main') {
+//todo: change branches to branch and include optional files changed parameter
+export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches = ['main'], filesChanged?: string[]) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
 
   workflow.Triggers.push({
     Type: 'Push',
-    Branches: [branch],
+    Branches: branches,
+    ...(filesChanged && { FileChanged: filesChanged }),
+  });
+}
+
+export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]) {
+  if (!workflow.Triggers) {
+    workflow.Triggers = [];
+  }
+
+  workflow.Triggers.push({
+    Type: 'PullRequest',
+    Events: events,
+    Branches: branches,
+    ...(filesChanged && { FileChanged: filesChanged }),
   });
 }
 
