@@ -35,8 +35,7 @@
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
-    "typescript": "*",
-    "webpack": "^5.64.4"
+    "typescript": "*"
   },
   "peerDependencies": {},
   "dependencies": {
@@ -65,7 +64,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
