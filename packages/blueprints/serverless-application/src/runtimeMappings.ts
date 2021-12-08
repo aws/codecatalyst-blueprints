@@ -62,7 +62,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     runtime:'python3.7',
     codeUri: 'hello_world/',
     srcCodePath: 'hello_world',
-    testPath: 'tests/',
+    testPath: 'tests',
     handler: 'app.lambda_handler',
     templateProps: python37,
     cacheDir: 'python37',

@@ -78,7 +78,7 @@ For more information on serverless applications, see the [AWS Serverless Applica
 
 ## Using the SAM CLI to build and test locally
 
-You can use the Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that can emulate your Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+You can use the Serverless Application Model Command Line Interface (SAM CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
 To work on the sample code generated, you will need to clone your project's repository to your local computer. If you haven't, do that first. You can find instructions in the [Quokka User Guide](_https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/source-repositories-clone.html_) .
 
 To use the SAM CLI, you need the following tools into your workspace.
@@ -110,7 +110,7 @@ The SAM CLI can also emulate your applications API. Use the sam local start-api 
   curl http://localhost:3000/
 \`\`\`
 
-For more information on sam local start-api, see the [Sam Local Invoke Start-Api Reference Guide](_https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html_)
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](_https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html_)
 The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
 
 \`\`\`yaml
@@ -130,7 +130,7 @@ The application is deployed through Quokka.Codes using the workflow defined in \
 
   ${environments}
 
-For more information on deploying using workflows and organizing deployments by environment, see the [Workflow Deployment User Guide](_https://alpha-docs-aws.amazon.com/quokka/latest/userguide/deploy.html_)
+For more information on deploying using workflows and organizing deployments by environment, see the [Quokka.Codes Workflow Deployment User Guide](_https://alpha-docs-aws.amazon.com/quokka/latest/userguide/deploy.html_)
 
 ## Additional Resources
 See the [Quokka.Codes User Guide](_https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/welcome.html_) for additional information on using the features and resources of Quokka.Codes
