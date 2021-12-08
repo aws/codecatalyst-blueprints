@@ -197,7 +197,7 @@ export interface Lambda {
       //todo: add region selection, when available
       const region = 'us-west-2'
       const artifactName = 'MyServerlessAppArtifact';
-      addGenericBranchTrigger(workflowDefinition, defaultReleaseBranch);
+      addGenericBranchTrigger(workflowDefinition, [defaultReleaseBranch]);
       addGenericBuildAction(workflowDefinition, this.options.workflow.buildRoleArn, [
         {Run: 'sam build'},
         {Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${this.options.workflow.s3BucketName} --output-template-file output.yaml --region ${region}`},
