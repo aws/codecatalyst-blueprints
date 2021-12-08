@@ -2,7 +2,7 @@
   "name": "@caws-blueprint/blueprints.blueprint",
   "description": "This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.",
   "scripts": {
-    "build": "npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "build": "npx projen build",
     "bump": "npx projen bump",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
@@ -22,7 +22,8 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-    "blueprint:publish": "yarn bump && yarn build && yarn package && blueprint publish ./ --publisher caws"
+    "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher caws"
   },
   "author": {
     "name": "caws-blueprints",
