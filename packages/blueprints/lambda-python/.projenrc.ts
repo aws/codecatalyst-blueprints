@@ -11,7 +11,7 @@ const blueprint = new ProjenBlueprint({
   /* Runtime dependencies of this blueprint. */
   deps: [
     'projen',
-    '@caws-blueprint/caws.blueprint',
+    '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-environments',
     '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-component/caws-workspaces',
@@ -21,7 +21,7 @@ const blueprint = new ProjenBlueprint({
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This blueprint creates a Lambda project using python.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/caws.lambda-python',
+  packageName: '@caws-blueprint/blueprints.lambda-python',
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [

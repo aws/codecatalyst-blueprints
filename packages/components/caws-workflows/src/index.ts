@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 
 import { WorkflowDefinition } from './models';

@@ -5,7 +5,7 @@ import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-work
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
-} from '@caws-blueprint/caws.blueprint';
+} from '@caws-blueprint/blueprints.blueprint';
 import { java, web } from 'projen';
 
 import defaults from './defaults.json';

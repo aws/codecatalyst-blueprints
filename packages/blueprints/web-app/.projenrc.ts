@@ -11,7 +11,7 @@ const blueprint = new ProjenBlueprint({
   /* Runtime dependencies of this blueprint. */
   deps: [
     'projen',
-    '@caws-blueprint/caws.blueprint',
+    '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
     '@caws-blueprint-component/caws-workflows',
@@ -21,7 +21,7 @@ const blueprint = new ProjenBlueprint({
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This blueprint creates and deploys a web application',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/caws.web-app',
+  packageName: '@caws-blueprint/blueprints.web-app',
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [

@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/caws.blueprint",
+  "name": "@caws-blueprint/blueprints.blueprint",
   "description": "This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.",
   "scripts": {
     "build": "npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache",

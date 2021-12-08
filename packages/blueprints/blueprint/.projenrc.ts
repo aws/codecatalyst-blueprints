@@ -13,7 +13,7 @@ const blueprint = new ProjenBlueprint({
   description:
     'This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/caws.blueprint',
+  packageName: '@caws-blueprint/blueprints.blueprint',
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [
