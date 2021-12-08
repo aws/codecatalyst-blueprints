@@ -22,7 +22,7 @@ export function generate(
 ): WorkflowDefinition {
   const workflow: WorkflowDefinition = emptyWorkflow;
 
-  addGenericBranchTrigger(workflow, defaultBranch);
+  addGenericBranchTrigger(workflow, [defaultBranch]);
 
   addGenericBuildAction(workflow, buildRoleArn, [
     { Run: 'python --version' },
