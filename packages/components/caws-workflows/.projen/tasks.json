@@ -202,7 +202,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import json-schema npm-check-updates standard-version ts-node typescript @caws-blueprint-component/caws-environments @caws-blueprint-component/caws-source-repositories @caws-blueprint/caws.blueprint"
+          "exec": "yarn upgrade @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import json-schema npm-check-updates standard-version ts-node typescript @caws-blueprint-component/caws-environments @caws-blueprint-component/caws-source-repositories @caws-blueprint/blueprints.blueprint"
         },
         {
           "exec": "npx projen"
