@@ -14,7 +14,7 @@ import {
   addGenericBuildAction
   //addGenericTestReports
 } from '@caws-blueprint-component/caws-workflows';
-import { SampleDir, SampleFile, YamlFile } from 'projen';
+import { SampleDir, SampleFile } from 'projen';
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -24,13 +24,13 @@ import { runtimeMappings } from './runtimeMappings';
 
 export interface Lambda {
   /**
-   * What do you want to name your lambda function
+   * Enter the name of your Lambda function
    * Must be alphanumeric
    */
   functionName: string;
 
   /**
-   * Describe your lambda function
+   * Enter a description of your Lambda function
    */
   description?: string;
 }
@@ -44,15 +44,15 @@ export interface Lambda {
  */
  export interface Options extends ParentOptions {
   /**
-  * The name your application's source repository
+  * Enter the name your application's source repository
   */
   sourceRepositoryName: string;
   /**
-  * What runtime language do want your lambda functions to use
+  * What runtime language do want your serverless application to use
   */
   runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle'; //'Ruby 2.7' | '.NET Core 3' |
   /**
-   * A set of lambdas for your serverless application
+   * Enter the configuration details for your application's Lambda function(s)
    */
   lambdas: Lambda[];
   /**
@@ -62,21 +62,24 @@ export interface Lambda {
 
 
     /**
-     * The name of the S3 bucket to store build artifacts
+     * Enter the name of the S3 bucket to store build artifacts.
+     * Must be an existing S3 bucket
      */
     s3BucketName: string;
 
     /**
-     * The role ARN to use when building your application
-     */
-    buildRoleArn: string;
-    /**
-     * The name of the CloudFormation stack to deploy your application
+     * Enter the name of the CloudFormation stack to deploy your application
      */
     //!this might be phased out with the changes to stages/stage definition
     cloudFormationStackName: string;
+
     /**
-     * The workflow stages of your project
+     * Enter the role ARN to use when building your application
+     */
+    buildRoleArn: string;
+
+    /**
+     * Configure the workflow stages of your project
      */
     stages: StageDefinition[];
   }
@@ -102,7 +105,6 @@ export interface Lambda {
       this.repository = new SourceRepository(this, {
          title: this.options.sourceRepositoryName
        });
-       this.options.lambdas = options.lambdas;
 
       //!Ensure that users aren't able to remove all list items from a list before attempting to synth
       if (this.options.lambdas.length === 0) {
@@ -236,8 +238,6 @@ export interface Lambda {
         }
       }
       cp.execSync(`rm -rf ${toDeletePath}`);
-
-
    }
 
    /**
@@ -308,77 +308,6 @@ Globals:
     const template = header + resources + '\n' + outputs;
     new SampleFile(this, destinationPath, { contents: template });
  }
-
-
-
-    /**
-    * Generate Sam Template
-    *
-    * todo: fix Error: Failed to create changeset for the stack: nov15, ex: Waiter ChangeSetCreateComplete failed: Waiter encountered a terminal failure state: For expression "Status" we matched expected path: "FAILED" Status: FAILED. Reason: Template error: instance of Fn::GetAtt references undefined resource helloWorldPython2FunctionRole
-    *! Use createTemplate for now until this is fixed
-    */
-     protected createTemplatePrototype(runtimeOptions: RuntimeMapping): void {
-      const template = {
-        Transform: "AWS::Serverless-2016-10-31",
-        Description: "An SAM template to deploy your serverless application",
-        Globals: {
-          Function: {
-            Timeout: 20
-          }
-        },
-      }
-      const resources:any = {};
-      const outputs:any = {};
-      for (const lambda of this.options.lambdas) {
-        const properties = {
-          CodeUri: `${lambda.functionName}/${runtimeOptions!.codeUri}`,
-          Description: lambda.description,
-          //...runtimeOptions!.templateProps,
-          Events: {
-            [lambda.functionName]: {
-              Type: "Api",
-              Properties: {
-                Path: `/${lambda.functionName}`,
-                Method: "get"
-              }
-            }
-          }
-        }
-
-        resources[`${lambda.functionName}`] = {
-            Type: "AWS::Serverless::Function",
-            Properties: {
-              ...properties
-            }
-        };
-
-        outputs[`${lambda.functionName}Api`] = {
-            Description: "API Gateway endpoint URL for Prod stage for Hello World function",
-            Value: {
-             ["Fn::Sub"]: `https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/${lambda.functionName}`,
-            }
-        };
-
-        outputs[`${lambda.functionName}Function`] = {
-            Description: "Hello World Lambda Function ARN",
-            Value: {
-              ["Fn::GetAtt"]:  `${lambda.functionName}Function.Arn`
-            }
-        };
-
-        outputs[`${lambda.functionName}FunctionIamRole`] = {
-            Description: "Implicit IAM Role created for Hello World function",
-            Value: {
-              ["Fn::GetAtt"]: `${lambda.functionName}FunctionRole.Arn`
-            }
-        };
-      }
-
-      template["Resources"] = resources;
-      template["Outputs"] = outputs;
-      const destinationPath = path.join(this.repository.relativePath, 'template.yaml');
-      new YamlFile(this, destinationPath, {obj: template});
-    }
 
 }
 
