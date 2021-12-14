@@ -4,7 +4,8 @@ import { Options } from './blueprint';
 
 const TYPESCRIPT_EXT = '.ts';
 
-export function getStackDefinition(stackName: string, s3BucketName: string, blueprintOptions: Options, lambdaOptions: awscdk.LambdaFunctionOptions) {
+export function getStackDefinition(stackName: string, blueprintOptions: Options, lambdaOptions: awscdk.LambdaFunctionOptions) {
+  const s3BucketName = getUniqueS3BucketName(blueprintOptions.sourceRepositoryName);
   return `import { App, Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -17,7 +18,7 @@ export class ${stackName} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
     const mySiteBucket = new s3.Bucket(this, \'${s3BucketName}\', {
-      bucketName: \'${s3BucketName}\',
+      bucketName: \`${s3BucketName}-\$\{props?.env?.region ?? 'us-west-2'\}\`,
       websiteIndexDocument: \'index.html\',
       publicReadAccess: false,
     });
@@ -29,7 +30,7 @@ export class ${stackName} extends Stack {
     mySiteBucket.grantRead(originAccessIdentity);
 
     new s3deploy.BucketDeployment(this, \'ReactApp\', {
-      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.frontend.outdir}/build\')],
+      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.frontend.name}/build\')],
       destinationBucket: mySiteBucket
     });
 
@@ -57,17 +58,24 @@ export class ${stackName} extends Stack {
   }
 }
 
-const devEnv = {
-  account: \'${blueprintOptions.awsAccountId}\',
-  region: \'${blueprintOptions.awsRegion}\',
+const env = {
+  region: process.env.awsRegion,
 };
 
 const app = new App();
 
-new ${stackName}(app, \'${stackName}\', { env: devEnv });
+new ${stackName}(app, \'${stackName}\', { env });
 
 app.synth();
 `;
+}
+
+function getUniqueS3BucketName(sourceRepositoryName: string) {
+  return `${sourceRepositoryName.toLowerCase()}-${getSecondSinceEpoch()}`;
+}
+
+function getSecondSinceEpoch() {
+  return Math.floor(Date.now() / 1000);
 }
 
 export function getStackTestDefintion(appEntrypoint: string, stackName: string) {
@@ -77,7 +85,7 @@ import { ${stackName} } from '../src/${basename(appEntrypoint, TYPESCRIPT_EXT)}'
 
  test('Snapshot', () => {
    const app = new App();
-   const stack = new ${stackName}(app, 'test', { env: { account: '123', region: 'us-west-2' } });
+   const stack = new ${stackName}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
 
    expect(app.synth().getStackArtifact(stack.artifactId).template).toMatchSnapshot();
  });
