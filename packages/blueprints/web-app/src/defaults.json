@@ -1,18 +1,23 @@
 {
-  "name": "HelloWorldWebApp",
+  "sourceRepositoryName": "HelloWorldWebApp",
   "frontend": {
     "name": "client",
-    "outdir": "client",
-    "license": "MIT",
-    "s3BucketName": "REPLACE-ME-REACT-APP-BUCKET-NAME"
+    "license": "MIT"
   },
   "backend": {
     "name": "api",
-    "outdir": "api",
-    "license": "MIT"
+    "license": "MIT",
+    "language": "Typescript"
   },
-  "defaultReleaseBranch": "main",
-  "awsAccountId": "012345678910",
-  "awsRegion": "us-west-2",
-  "buildDeployAndStackRoleArn": "REPLACE_ME_BUILD_ARN"
+  "stages": [
+    {
+      "environment": {
+        "title": "prod",
+        "description": "this is my prod stage"
+      },
+      "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
+      "region": "us-west-1"
+    }
+  ],
+  "defaultReleaseBranch": "main"
 }
