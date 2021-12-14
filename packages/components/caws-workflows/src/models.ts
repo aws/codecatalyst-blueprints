@@ -93,3 +93,11 @@ export interface StageDefinition {
   role: string;
   stackRoleArn: string;
 }
+
+export enum PullRequestEvent {
+  DRAFT = 'draft',
+  OPEN = 'open',
+  CLOSED = 'closed',
+  MERGED = 'merged',
+  REVISION = 'revision'
+}
