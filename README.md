@@ -47,3 +47,25 @@ yarn build
 ```
 
 You're done!
+
+## Testing Changes
+
+Modify a component
+```
+cd packages/components/<component>
+```
+
+Rebuild the component
+```
+yarn build
+```
+
+To see the changes applied in a blueprint run synth
+```
+cd packages/blueprints/<blueprint>
+yarn blueprint:synth
+```
+This generates the blueprint in the `synth` folder
+```
+packages/blueprints/<blueprint>/synth/<timestamp>
+```
