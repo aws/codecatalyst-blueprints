@@ -15,8 +15,7 @@ export class SampleWorkspaces {
       {
         name: 'aws-runtime',
         container: {
-          image:
-            'image: 012802407964.dkr.ecr.us-west-2.amazonaws.com/barsecrrepo-2a53e09ae3b25e5624c746d11fe76a3d2f1df790:live_universal_100',
+          image: 'public.ecr.aws/d8s8g4g8/a893fn7923fnoe:latest',
           mountSources: true,
         },
       },
