@@ -91,6 +91,9 @@ export type WorkflowRuntimeLanguage = 'sam-python';
 export interface StageDefinition {
   environment: EnvironmentDefinition;
   role: string;
+}
+
+export interface CfnStageDefinition extends StageDefinition {
   stackRoleArn: string;
 }
 
