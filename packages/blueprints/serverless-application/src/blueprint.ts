@@ -6,7 +6,7 @@ import { SourceRepository } from '@caws-blueprint-component/caws-source-reposito
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   //generateWorkflow,
-  StageDefinition,
+  CfnStageDefinition,
   WorkflowDefinition,
   Workflow,
   addGenericCloudFormationDeployAction,
@@ -81,7 +81,7 @@ export interface Lambda {
     /**
      * Configure the workflow stages of your project
      */
-    stages: StageDefinition[];
+    stages: CfnStageDefinition[];
   }
 }
 
