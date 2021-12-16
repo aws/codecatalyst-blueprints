@@ -1,5 +1,5 @@
 import {
-  StageDefinition,
+  CfnStageDefinition,
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
@@ -15,7 +15,7 @@ const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy-gamma@v1';
 export function generateWorkflow(
   sdk: WorkflowRuntimeSdk,
   defaultBranch = 'main',
-  stages: StageDefinition[] = [],
+  stages: CfnStageDefinition[] = [],
 
   stackName: string,
   s3BucketName: string,
@@ -99,7 +99,7 @@ export function addGenericBuildAction(
 
 export function addGenericCloudFormationDeployAction(
   workflow: WorkflowDefinition,
-  stage: StageDefinition,
+  stage: CfnStageDefinition,
   stackName: string,
   stackRegion: string,
   dependsOn: string,

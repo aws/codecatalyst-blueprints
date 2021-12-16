@@ -5,7 +5,7 @@ import { Environment } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import {
   generateWorkflow,
-  StageDefinition,
+  CfnStageDefinition,
   Workflow,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
@@ -43,7 +43,7 @@ export interface Options extends ParentOptions {
   /**
    * Workflow stages to generate
    */
-  stages: StageDefinition[];
+  stages: CfnStageDefinition[];
 
   /**
    * The default branch to trigger releases
