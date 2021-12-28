@@ -5,14 +5,13 @@ import { Environment } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
-  //generateWorkflow,
   StageDefinition,
   WorkflowDefinition,
   Workflow,
   addGenericCloudFormationDeployAction,
   addGenericBranchTrigger,
-  addGenericBuildAction
-  //addGenericTestReports
+  addGenericBuildAction,
+  CfnStageDefinition
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleDir, SampleFile, YamlFile } from 'projen';
 import * as cp from 'child_process';
@@ -50,7 +49,7 @@ export interface Lambda {
   /**
   * What runtime language do want your lambda functions to use
   */
-  runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle'; //'Ruby 2.7' | '.NET Core 3' |
+  runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
   /**
    * A set of lambdas for your serverless application
    */
@@ -73,7 +72,6 @@ export interface Lambda {
     /**
      * The name of the CloudFormation stack to deploy your application
      */
-    //!this might be phased out with the changes to stages/stage definition
     cloudFormationStackName: string;
     /**
      * The workflow stages of your project
@@ -100,16 +98,14 @@ export interface Lambda {
       this.options = options;
 
       this.repository = new SourceRepository(this, {
-         title: this.options.sourceRepositoryName
-       });
-       this.options.lambdas = options.lambdas;
-
-      //!Ensure that users aren't able to remove all list items from a list before attempting to synth
+        title: this.options.sourceRepositoryName
+      });
+      this.options.lambdas = options.lambdas;
+      /*
       if (this.options.lambdas.length === 0) {
-        //! Error message requires doc writer review
         throw new Error("At least 1 Lambda function is required to create this project")
       }
-      /*
+
       ? Uncomment if a limit on the number of lambdas or workflow stages is needed
       if (this.options.lambdas.length > LAMBDA_LIMIT) {
         throw new Error(`This blueprint is limited to generating ${LAMBDA_LIMIT} lambda functions`)
@@ -119,7 +115,7 @@ export interface Lambda {
       }
       */
       /*
-      todo: uncomment input validation when available on the front end to send messages to users
+      ? uncomment input validation when available on the front end to send messages to users
       ! All validation error messages need to be reviewed by doc writers before we enable them to be sent to the front end to users
       ! Input validation that will be out of date:
       ? defaultReleaseBranch as we have no current way of enforcing that on source repository
@@ -173,9 +169,9 @@ export interface Lambda {
         throw new Error("Lambda function names must be unique");
       }
       */
-   }
+  }
 
-   override synth(): void {
+    override synth(): void {
       //MDE config workspace
       new Workspace(this, this.repository, SampleWorkspaces.default);
       //environments
@@ -211,7 +207,11 @@ export interface Lambda {
           //! Error message requires doc writer review
           throw new Error ('Cloudformation stack name cannot be more than 128 characters')
         }
-        addGenericCloudFormationDeployAction(workflowDefinition, stage, cfnStackname, region, previousStage, artifactName);
+        const cfnStage: CfnStageDefinition = {
+          ...stage,
+          stackRoleArn: stage.role
+        }
+        addGenericCloudFormationDeployAction(workflowDefinition, cfnStage, cfnStackname, region, previousStage, artifactName);
         previousStage = `Deploy_${stage.environment.title}`;
       }
       new Workflow(
