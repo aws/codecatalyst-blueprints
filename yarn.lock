@@ -455,6 +455,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@caws-blueprint/caws.serverless-application@workspace:packages/blueprints/serverless-application":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint/caws.serverless-application@workspace:packages/blueprints/serverless-application"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.0.x
+    "@caws-blueprint-component/caws-source-repositories": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workspaces": 0.0.x
+    "@caws-blueprint-util/blueprint-cli": 0.0.x
+    "@caws-blueprint-util/blueprint-projen": 0.0.x
+    "@caws-blueprint/caws.blueprint": 0.0.x
+    "@types/node": ^12.x
+    npm-check-updates: ^11
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^9
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "@caws-blueprint/caws.web-app@workspace:packages/blueprints/web-app":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/caws.web-app@workspace:packages/blueprints/web-app"
@@ -859,6 +879,13 @@ __metadata:
   version: 16.11.9
   resolution: "@types/node@npm:16.11.9::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-16.11.9.tgz"
   checksum: baec2e6471ee58fd1e9874e6f47ab95a918a0f46b42424392e4c13e3e07f078f8b72b6b48073b0b14f710ed66c5f1b2e497df43f28151000f11f5f299382cfe2
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^12.x":
+  version: 12.20.37
+  resolution: "@types/node@npm:12.20.37::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fblueprints-fake-npm%2F%40types%2Fnode%2F-%2Fnode-12.20.37.tgz"
+  checksum: 8c8b12f802678b3b87c5344b6c84082be08561dda81dc161d42be8cd327330d1a5227cef039c45a5e63a6d4a01ef5ef215dccc42d06100f59f6a8814b4f91cdd
   languageName: node
   linkType: hard
 
@@ -8128,6 +8155,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:*":
+  version: 4.5.2
+  resolution: "typescript@npm:4.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fblueprints-fake-npm%2Ftypescript%2F-%2Ftypescript-4.5.2.tgz"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 74f9ce65d532bdf5d0214b3f60cf37992180023388c87a11ee6f838a803067ef0b63c600fa501b0deb07f989257dce1e244c9635ed79feca40bbccf6e0aa1ebc
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.0.3, typescript@npm:^4.4.4":
   version: 4.5.2
   resolution: "typescript@npm:4.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftypescript%2F-%2Ftypescript-4.5.2.tgz"
@@ -8135,6 +8172,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 74f9ce65d532bdf5d0214b3f60cf37992180023388c87a11ee6f838a803067ef0b63c600fa501b0deb07f989257dce1e244c9635ed79feca40bbccf6e0aa1ebc
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@*#~builtin<compat/typescript>":
+  version: 4.5.2
+  resolution: "typescript@patch:typescript@npm%3A4.5.2%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fblueprints-fake-npm%252Ftypescript%252F-%252Ftypescript-4.5.2.tgz#~builtin<compat/typescript>::version=4.5.2&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 24a439e062a05e3285a4f0e8a40644116ecdca89f3e908bed01e5a01b9aee747e3bcf0e85fe9e017e5ebf0c0863437c39479f2616f55a244c2d82d37022cdc4f
   languageName: node
   linkType: hard
 
