@@ -6,15 +6,6 @@ export const java11=  `
           PARAM1: VALUE
 `;
 
-/*
-export const dotnetcore3 = `
-      MemorySize: 256
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-`
-*/
-
 export const python37 = ``
 
 export const nodejs14 = ``
