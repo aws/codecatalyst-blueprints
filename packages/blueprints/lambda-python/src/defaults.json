@@ -9,8 +9,7 @@
         "title": "prod",
         "description": "this is a description"
       },
-      "role": "REPLACE_ME_STAGE_ROLE",
-      "stackRoleArn": "REPLACE_ME_STAGE_ROLE_ARN"
+      "role": "REPLACE_ME_STAGE_ROLE"
     }
   ]
 }

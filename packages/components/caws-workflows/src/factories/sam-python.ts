@@ -5,7 +5,7 @@ import {
   addGenericTestReports,
   emptyWorkflow,
 } from '.';
-import { CfnStageDefinition, WorkflowDefinition } from '../models';
+import { CfnStageDefinition, StageDefinition, WorkflowDefinition } from '../models';
 
 const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 const DEFAULT_COVERAGE_ARTIFACT = 'CoverageArtifact';
@@ -13,7 +13,7 @@ const DEFAULT_TEST_ARTIFACT = 'TestArtifact';
 
 export function generate(
   defaultBranch = 'main',
-  stages: CfnStageDefinition[] = [],
+  stages: StageDefinition[] = [],
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
@@ -50,7 +50,10 @@ export function generate(
   stages.forEach(stage => {
     addGenericCloudFormationDeployAction(
       workflow,
-      stage,
+      {
+        ...stage,
+        stackRoleArn: stage.role,
+      } as CfnStageDefinition,
       `${stackName}-${stage.environment.title}`,
       region,
       dependsOn,
