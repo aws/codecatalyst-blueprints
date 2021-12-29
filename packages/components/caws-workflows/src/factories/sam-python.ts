@@ -26,6 +26,7 @@ export function generate(
   addGenericBranchTrigger(workflow, [defaultBranch]);
 
   addGenericBuildAction(workflow, buildRoleArn, [
+    { Run: '. ./.aws/scripts/setup-sam.sh' },
     { Run: 'python --version' },
     { Run: 'sam build' },
     {
