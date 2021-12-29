@@ -17,12 +17,11 @@ export function generateWorkflow(
   sdk: WorkflowRuntimeSdk,
   defaultBranch = 'main',
   stages: StageDefinition[] = [],
-
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
-
   tests: boolean,
+  stackRoleArn?: string,
 ): WorkflowDefinition {
   switch (sdk) {
     case 'sam-python':
@@ -33,6 +32,7 @@ export function generateWorkflow(
         s3BucketName,
         buildRoleArn,
         tests,
+        stackRoleArn!,
       );
     default:
       throw new Error(`sdk is not supported: ${sdk}`);
