@@ -18,6 +18,7 @@ export function generate(
   s3BucketName: string,
   buildRoleArn: string,
   tests: boolean,
+  stackRoleArn: string,
   region = 'us-west-2',
 ): WorkflowDefinition {
   const workflow: WorkflowDefinition = emptyWorkflow;
@@ -52,7 +53,7 @@ export function generate(
       workflow,
       {
         ...stage,
-        stackRoleArn: stage.role,
+        stackRoleArn,
       } as CfnStageDefinition,
       `${stackName}-${stage.environment.title}`,
       region,

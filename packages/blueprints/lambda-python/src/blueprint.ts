@@ -36,9 +36,14 @@ export interface Options extends ParentOptions {
   s3BucketName: string;
 
   /**
-   * The role ARN to use when building
+   * The role ARN to use when building your application
    */
   buildRoleArn: string;
+
+  /**
+   * The role ARN to use to deploy your application through CloudFormation
+   */
+  stackRoleArn: string;
 
   /**
    * Workflow stages to generate
@@ -89,6 +94,7 @@ export class Blueprint extends ParentBlueprint {
         options.s3BucketName,
         options.buildRoleArn,
         false,
+        options.stackRoleArn,
       ),
     );
 

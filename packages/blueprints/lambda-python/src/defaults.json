@@ -3,7 +3,8 @@
   "defaultReleaseBranch": "main",
   "s3BucketName": "REPLACE_ME_S3_BUCKET_NAME",
   "buildRoleArn": "REPLACE_ME_BUILD_ARN",
-  "stages": [
+  "stackRoleArn": "REPLACE_ME_STACK_ARN"
+,  "stages": [
     {
       "environment": {
         "title": "prod",
