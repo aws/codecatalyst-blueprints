@@ -69,3 +69,14 @@ This generates the blueprint in the `synth` folder
 ```
 packages/blueprints/<blueprint>/synth/<timestamp>
 ```
+
+### Publishing
+
+You must have write access to the 'blueprints' organization in code.aws in order to publish. You'll need to get a `CAWS_COOKIE` and set in in your environment.
+
+```
+// paste it into your terminal like so:
+export CAWS_COOKIE='session-blhahBlahblahBlah'
+// run from the root
+yarn blueprints:publish
+```
