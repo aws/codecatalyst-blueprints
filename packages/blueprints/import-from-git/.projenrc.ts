@@ -20,7 +20,7 @@ const blueprint = new ProjenBlueprint({
     'This blueprint imports a project from a public Git URL. It can be used with Github, GitLab, BitBucket, or any git provider.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.import-from-git',
-  publishingOrganization: 'caws',
+  publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',

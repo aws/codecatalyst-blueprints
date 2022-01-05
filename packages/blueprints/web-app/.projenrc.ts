@@ -22,7 +22,7 @@ const blueprint = new ProjenBlueprint({
   description: 'This blueprint creates and deploys a web application',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.web-app',
-  publishingOrganization: 'caws',
+  publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',

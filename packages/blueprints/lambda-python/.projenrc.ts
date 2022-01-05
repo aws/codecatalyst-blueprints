@@ -22,7 +22,7 @@ const blueprint = new ProjenBlueprint({
   description: 'This blueprint creates a Lambda project using python.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.lambda-python',
-  publishingOrganization: 'caws',
+  publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',
