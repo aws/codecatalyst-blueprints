@@ -1,14 +1,7 @@
 {
   "sourceRepositoryName": "HelloWorldWebApp",
-  "frontend": {
-    "name": "client",
-    "license": "MIT"
-  },
-  "backend": {
-    "name": "api",
-    "license": "MIT",
-    "language": "Typescript"
-  },
+  "reactFolderName": "client",
+  "nodeFolderName": "api",
   "stages": [
     {
       "environment": {
@@ -18,6 +11,5 @@
       "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
       "region": "us-west-1"
     }
-  ],
-  "defaultReleaseBranch": "main"
+  ]
 }

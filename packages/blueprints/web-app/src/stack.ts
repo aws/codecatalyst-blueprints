@@ -30,7 +30,7 @@ export class ${stackName} extends Stack {
     mySiteBucket.grantRead(originAccessIdentity);
 
     new s3deploy.BucketDeployment(this, \'ReactApp\', {
-      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.frontend.name}/build\')],
+      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.reactFolderName}/build\')],
       destinationBucket: mySiteBucket
     });
 

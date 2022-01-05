@@ -28,37 +28,17 @@ export interface Options extends ParentOptions {
    */
   sourceRepositoryName: string;
   /**
-   * Frontend related parameters
+   * Name of the frontend project and directory.
    */
-  frontend: {
-    /**
-     * Name of the frontend project and directory.
-     */
-    name: string;
-    /**
-     * Frontend license.
-     */
-    license?: 'MIT' | 'Apache-2.0';
-  };
-  backend: {
-    /**
-     * Name of the backend project and directory.
-     */
-    name: string;
-    /**
-     * Backend license.
-     */
-    license?: 'MIT' | 'Apache-2.0';
-  };
+  reactFolderName: string;
+  /**
+   * Name of the backend project and directory.
+   */
+  nodeFolderName: string;
   /**
    * An array of stage definitions
    */
   stages: any[];
-  /**
-   * Default release branch.
-   * @advanced
-   */
-  defaultReleaseBranch?: string;
 }
 
 /**
@@ -89,12 +69,11 @@ export class Blueprint extends ParentBlueprint {
   private createFrontend(repo: SourceRepository): web.ReactTypeScriptProject {
     const project = new web.ReactTypeScriptProject({
       parent: this,
-      name: `${this.options.frontend.name}`,
+      name: `${this.options.reactFolderName}`,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${repo.relativePath}/${this.options.frontend.name}`,
-      license: this.options.frontend.license,
-      defaultReleaseBranch: this.options.defaultReleaseBranch as string,
+      outdir: `${repo.relativePath}/${this.options.reactFolderName}`,
+      defaultReleaseBranch: 'main',
     });
 
     // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
@@ -110,10 +89,10 @@ export class Blueprint extends ParentBlueprint {
     const project = new AwsCdkTypeScriptApp({
       parent: this,
       cdkVersion: '1.95.2',
-      name: `${this.options.backend.name}`,
+      name: `${this.options.nodeFolderName}`,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${repo.relativePath}/${this.options.backend.name}`,
+      outdir: `${repo.relativePath}/${this.options.nodeFolderName}`,
       appEntrypoint: 'main.ts',
       cdkDependencies: [
         '@aws-cdk/core',
@@ -133,8 +112,7 @@ export class Blueprint extends ParentBlueprint {
       },
       sampleCode: false,
       lambdaAutoDiscover: true,
-      license: this.options.backend.license,
-      defaultReleaseBranch: this.options.defaultReleaseBranch as string,
+      defaultReleaseBranch: 'main',
     });
 
     const lambdaName = `${this.options.sourceRepositoryName}Lambda`;
@@ -158,7 +136,7 @@ export class Blueprint extends ParentBlueprint {
       Triggers: [
         {
           Type: 'push',
-          Branches: [this.options.defaultReleaseBranch as string],
+          Branches: ['main'],
         },
       ],
       Actions: {},
@@ -184,8 +162,8 @@ export class Blueprint extends ParentBlueprint {
         Steps: [
           { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
           { Run: `export awsRegion=${stage.region}` },
-          { Run: `cd ./${this.options.frontend.name} && npm install && npm run build` },
-          { Run: `cd ../${this.options.backend.name} && npm install && npm run build` },
+          { Run: `cd ./${this.options.reactFolderName} && npm install && npm run build` },
+          { Run: `cd ../${this.options.nodeFolderName} && npm install && npm run build` },
           // { Run: `export AWS_SDK_LOAD_CONFIG=1` },
           { Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${stage.region}` },
           { Run: 'npm run env -- cdk deploy --require-approval never' },
