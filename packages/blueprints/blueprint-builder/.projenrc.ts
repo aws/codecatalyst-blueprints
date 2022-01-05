@@ -24,7 +24,7 @@ const blueprint = new ProjenBlueprint({
   description: 'Use this to build additional blueprints from existing blueprints.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.blueprint-builder',
-  publishingOrganization: 'caws',
+  publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',

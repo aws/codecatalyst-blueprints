@@ -23,7 +23,7 @@
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
-    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher caws"
+    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
   },
   "author": {
     "name": "caws-blueprints",
@@ -57,7 +57,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.120",
+  "version": "0.0.126",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"
