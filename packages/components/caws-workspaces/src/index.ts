@@ -17,10 +17,11 @@ export class Workspace extends Component {
   ) {
     super(blueprint);
 
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, '.mde.devfile.yaml'), {
+    new YamlFile(blueprint, path.join(sourceRepository.relativePath, 'devfile.yaml'), {
       obj: {
         ...workspace,
       },
+      marker: false,
     });
   }
 }

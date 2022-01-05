@@ -91,5 +91,16 @@ export type WorkflowRuntimeLanguage = 'sam-python';
 export interface StageDefinition {
   environment: EnvironmentDefinition;
   role: string;
+}
+
+export interface CfnStageDefinition extends StageDefinition {
   stackRoleArn: string;
+}
+
+export enum PullRequestEvent {
+  DRAFT = 'draft',
+  OPEN = 'open',
+  CLOSED = 'closed',
+  MERGED = 'merged',
+  REVISION = 'revision'
 }

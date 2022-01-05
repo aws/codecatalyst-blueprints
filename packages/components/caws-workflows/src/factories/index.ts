@@ -1,8 +1,10 @@
 import {
+  CfnStageDefinition,
   StageDefinition,
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
+  PullRequestEvent,
 } from '..';
 import * as samPython from './sam-python';
 
@@ -15,12 +17,11 @@ export function generateWorkflow(
   sdk: WorkflowRuntimeSdk,
   defaultBranch = 'main',
   stages: StageDefinition[] = [],
-
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
-
   tests: boolean,
+  stackRoleArn?: string,
 ): WorkflowDefinition {
   switch (sdk) {
     case 'sam-python':
@@ -31,6 +32,7 @@ export function generateWorkflow(
         s3BucketName,
         buildRoleArn,
         tests,
+        stackRoleArn!,
       );
     default:
       throw new Error(`sdk is not supported: ${sdk}`);
@@ -43,14 +45,29 @@ export const emptyWorkflow: WorkflowDefinition = {
   Actions: {},
 };
 
-export function addGenericBranchTrigger(workflow: WorkflowDefinition, branch = 'main') {
+//todo: change branches to branch and include optional files changed parameter
+export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches = ['main'], filesChanged?: string[]) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
 
   workflow.Triggers.push({
     Type: 'Push',
-    Branches: [branch],
+    Branches: branches,
+    ...(filesChanged && { FileChanged: filesChanged }),
+  });
+}
+
+export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]) {
+  if (!workflow.Triggers) {
+    workflow.Triggers = [];
+  }
+
+  workflow.Triggers.push({
+    Type: 'PullRequest',
+    Events: events,
+    Branches: branches,
+    ...(filesChanged && { FileChanged: filesChanged }),
   });
 }
 
@@ -83,7 +100,7 @@ export function addGenericBuildAction(
 
 export function addGenericCloudFormationDeployAction(
   workflow: WorkflowDefinition,
-  stage: StageDefinition,
+  stage: CfnStageDefinition,
   stackName: string,
   stackRegion: string,
   dependsOn: string,

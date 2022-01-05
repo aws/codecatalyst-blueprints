@@ -13,7 +13,7 @@ import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { YamlFile } from 'projen';
+import { YamlFile, SampleFile } from 'projen';
 import defaults from './defaults.json';
 
 /**
@@ -21,6 +21,8 @@ import defaults from './defaults.json';
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard
  * 2. This is how you control the fields that show up on a wizard selection panel. Keeping this small leads to a better user experience.
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
+ * 4. All required members of 'Options' must be defined in 'defaults.json' to synth your blueprint locally
+ * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
   /**
@@ -34,9 +36,14 @@ export interface Options extends ParentOptions {
   s3BucketName: string;
 
   /**
-   * The role ARN to use when building
+   * The role ARN to use when building your application
    */
   buildRoleArn: string;
+
+  /**
+   * The role ARN to use to deploy your application through CloudFormation
+   */
+  stackRoleArn: string;
 
   /**
    * Workflow stages to generate
@@ -87,6 +94,7 @@ export class Blueprint extends ParentBlueprint {
         options.s3BucketName,
         options.buildRoleArn,
         false,
+        options.stackRoleArn,
       ),
     );
 
@@ -94,6 +102,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
+    this.addSamInstallScript();
     // create my project directory
     super.synth();
 
@@ -107,6 +116,21 @@ export class Blueprint extends ParentBlueprint {
     const sourceFiles = path.resolve(__dirname, '../assets');
     cp.execSync(`cp -R ${sourceFiles}/* ${desination}`, {
       stdio: 'inherit',
+    });
+  }
+
+  protected addSamInstallScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
+      contents: `#!/usr/bin/env bash
+echo "Setting up sam"
+
+yum install unzip -y
+
+curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
+
+./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
+`,
     });
   }
 
@@ -131,7 +155,7 @@ Resources:
     Properties:
       CodeUri: src/
       Handler: app.lambda_handler
-      Runtime: python3.7
+      Runtime: python3.6
       Events:
         ${options.moduleName}:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
