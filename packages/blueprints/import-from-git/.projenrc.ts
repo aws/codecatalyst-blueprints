@@ -11,7 +11,7 @@ const blueprint = new ProjenBlueprint({
 
   /* Runtime dependencies of this blueprint. */
   deps: [
-    '@caws-blueprint/caws.blueprint',
+    '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
   ],
@@ -19,7 +19,7 @@ const blueprint = new ProjenBlueprint({
   description:
     'This blueprint imports a project from a public Git URL. It can be used with Github, GitLab, BitBucket, or any git provider.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/caws.import-from-git',
+  packageName: '@caws-blueprint/blueprints.import-from-git',
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [

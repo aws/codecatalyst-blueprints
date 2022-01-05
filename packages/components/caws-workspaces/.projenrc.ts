@@ -19,7 +19,7 @@ const project = new TypeScriptProject({
   },
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: ['@caws-blueprint/caws.blueprint', '@caws-blueprint-component/caws-source-repositories'],
+  deps: ['@caws-blueprint/blueprints.blueprint', '@caws-blueprint-component/caws-source-repositories'],
   peerDeps: ['projen'],
   description: 'This is a representation of a caws development environment workspace.',
   packageName: '@caws-blueprint-component/caws-workspaces',

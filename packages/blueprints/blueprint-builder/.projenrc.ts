@@ -15,7 +15,7 @@ const blueprint = new ProjenBlueprint({
     'camelcase@1.x',
     'decamelize@5.0.x',
     'typescript@4.x',
-    '@caws-blueprint/caws.blueprint@0.x',
+    '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
     '@caws-blueprint-util/blueprint-projen'
@@ -23,7 +23,7 @@ const blueprint = new ProjenBlueprint({
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'Use this to build additional blueprints from existing blueprints.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/caws.blueprint-builder',
+  packageName: '@caws-blueprint/blueprints.blueprint-builder',
   publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [

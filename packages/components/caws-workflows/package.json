@@ -43,7 +43,7 @@
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
-    "@caws-blueprint/caws.blueprint": "0.0.x"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
   "bundledDependencies": [],
   "main": "lib/index.js",

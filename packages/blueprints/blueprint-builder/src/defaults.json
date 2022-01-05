@@ -1,5 +1,5 @@
 {
-  "blueprintToExtend": "@caws-blueprint/caws.blueprint",
+  "blueprintToExtend": "@caws-blueprint/blueprints.blueprint",
   "blueprintName": "my-new-blueprint",
   "authorName": "caws-user",
   "description": "This is a new blueprint.",
