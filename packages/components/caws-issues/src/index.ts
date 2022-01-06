@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { Blueprint } from '@caws-blueprint/caws.blueprint';
+import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 
 

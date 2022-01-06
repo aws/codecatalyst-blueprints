@@ -12,7 +12,7 @@ import {
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
-} from '@caws-blueprint/caws.blueprint';
+} from '@caws-blueprint/blueprints.blueprint';
 
 // import * as camelcase from 'camelcase';
 import * as decamelize from 'decamelize';

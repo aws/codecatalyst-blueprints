@@ -5,7 +5,7 @@ import {
   addGenericTestReports,
   emptyWorkflow,
 } from '.';
-import { CfnStageDefinition, WorkflowDefinition } from '../models';
+import { CfnStageDefinition, StageDefinition, WorkflowDefinition } from '../models';
 
 const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 const DEFAULT_COVERAGE_ARTIFACT = 'CoverageArtifact';
@@ -13,11 +13,12 @@ const DEFAULT_TEST_ARTIFACT = 'TestArtifact';
 
 export function generate(
   defaultBranch = 'main',
-  stages: CfnStageDefinition[] = [],
+  stages: StageDefinition[] = [],
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
   tests: boolean,
+  stackRoleArn: string,
   region = 'us-west-2',
 ): WorkflowDefinition {
   const workflow: WorkflowDefinition = emptyWorkflow;
@@ -25,6 +26,7 @@ export function generate(
   addGenericBranchTrigger(workflow, [defaultBranch]);
 
   addGenericBuildAction(workflow, buildRoleArn, [
+    { Run: '. ./.aws/scripts/setup-sam.sh' },
     { Run: 'python --version' },
     { Run: 'sam build' },
     {
@@ -50,7 +52,10 @@ export function generate(
   stages.forEach(stage => {
     addGenericCloudFormationDeployAction(
       workflow,
-      stage,
+      {
+        ...stage,
+        stackRoleArn,
+      } as CfnStageDefinition,
       `${stackName}-${stage.environment.title}`,
       region,
       dependsOn,

@@ -1,8 +1,8 @@
 {
-  "name": "@caws-blueprint/caws.blueprint",
+  "name": "@caws-blueprint/blueprints.blueprint",
   "description": "This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.",
   "scripts": {
-    "build": "npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "build": "npx projen build",
     "bump": "npx projen bump",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
@@ -22,7 +22,8 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-    "blueprint:publish": "yarn bump && yarn build && yarn package && blueprint publish ./ --publisher caws"
+    "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
   },
   "author": {
     "name": "caws-blueprints",
@@ -56,7 +57,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.120",
+  "version": "0.0.126",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

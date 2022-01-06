@@ -5,15 +5,15 @@ import { Environment } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import {
   generateWorkflow,
-  CfnStageDefinition,
+  StageDefinition,
   Workflow,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
-} from '@caws-blueprint/caws.blueprint';
-import { YamlFile } from 'projen';
+} from '@caws-blueprint/blueprints.blueprint';
+import { YamlFile, SampleFile } from 'projen';
 import defaults from './defaults.json';
 
 /**
@@ -36,14 +36,19 @@ export interface Options extends ParentOptions {
   s3BucketName: string;
 
   /**
-   * The role ARN to use when building
+   * The role ARN to use when building your application
    */
   buildRoleArn: string;
 
   /**
+   * The role ARN to use to deploy your application through CloudFormation
+   */
+  stackRoleArn: string;
+
+  /**
    * Workflow stages to generate
    */
-  stages: CfnStageDefinition[];
+  stages: StageDefinition[];
 
   /**
    * The default branch to trigger releases
@@ -89,6 +94,7 @@ export class Blueprint extends ParentBlueprint {
         options.s3BucketName,
         options.buildRoleArn,
         false,
+        options.stackRoleArn,
       ),
     );
 
@@ -96,6 +102,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
+    this.addSamInstallScript();
     // create my project directory
     super.synth();
 
@@ -109,6 +116,21 @@ export class Blueprint extends ParentBlueprint {
     const sourceFiles = path.resolve(__dirname, '../assets');
     cp.execSync(`cp -R ${sourceFiles}/* ${desination}`, {
       stdio: 'inherit',
+    });
+  }
+
+  protected addSamInstallScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
+      contents: `#!/usr/bin/env bash
+echo "Setting up sam"
+
+yum install unzip -y
+
+curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
+
+./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
+`,
     });
   }
 
@@ -133,7 +155,7 @@ Resources:
     Properties:
       CodeUri: src/
       Handler: app.lambda_handler
-      Runtime: python3.7
+      Runtime: python3.6
       Events:
         ${options.moduleName}:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api

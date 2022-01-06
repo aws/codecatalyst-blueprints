@@ -1,5 +1,6 @@
 import {
   CfnStageDefinition,
+  StageDefinition,
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
@@ -15,13 +16,12 @@ const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy-gamma@v1';
 export function generateWorkflow(
   sdk: WorkflowRuntimeSdk,
   defaultBranch = 'main',
-  stages: CfnStageDefinition[] = [],
-
+  stages: StageDefinition[] = [],
   stackName: string,
   s3BucketName: string,
   buildRoleArn: string,
-
   tests: boolean,
+  stackRoleArn?: string,
 ): WorkflowDefinition {
   switch (sdk) {
     case 'sam-python':
@@ -32,6 +32,7 @@ export function generateWorkflow(
         s3BucketName,
         buildRoleArn,
         tests,
+        stackRoleArn!,
       );
     default:
       throw new Error(`sdk is not supported: ${sdk}`);

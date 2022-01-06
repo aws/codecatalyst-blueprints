@@ -19,7 +19,7 @@ const project = new TypeScriptProject({
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
   deps: [
-    '@caws-blueprint/caws.blueprint',
+    '@caws-blueprint/blueprints.blueprint',
   ],
   peerDeps: [
     'projen',

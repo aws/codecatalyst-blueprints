@@ -79,8 +79,8 @@ export class ProjenBlueprint extends TypeScriptProject {
     );
 
     this.setScript(
-      'build',
-      'npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache',
+      'build:cache',
+      'yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache',
     );
 
     //ignore synths
@@ -92,7 +92,7 @@ export class ProjenBlueprint extends TypeScriptProject {
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
     this.setScript(
       'blueprint:publish',
-      `yarn bump && yarn build && yarn package && blueprint publish ./ --publisher ${organization}`,
+      `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`,
     );
 
     //add additional metadata fields to package.json
