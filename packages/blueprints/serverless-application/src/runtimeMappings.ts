@@ -2,22 +2,6 @@ import { java11, python37, nodejs14 } from './templateContents';
 import { RuntimeMapping } from './models';
 
 
-/**
- * Runtime mappings shape
- * [Readable Runtime Language,
- * {
- * runtime:
- * codeUri:
- * testPath:
- * handler:
- * cacheDir:
- * gitSrcPath:
- * installInstructions:
- * }]
- *
- */
-
-
 export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
   ['Java 11 Maven', {
     runtime: 'java11',
@@ -30,7 +14,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     gitSrcPath: 'cookiecutter-aws-sam-hello-java-maven',
     dependenciesFilePath: 'pom.xml',
     installInstructions: 'Install [Python 3](__https__:__//www.python.org/downloads/__)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
-    //https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html may want to use oracle download for java11
   }],
   ['Java 11 Gradle', {
     runtime: 'java11',

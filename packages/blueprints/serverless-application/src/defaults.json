@@ -18,7 +18,8 @@
           "title": "prod",
           "description": "This environment is for production"
         },
-        "role": "REPLACE_ME"
+        "role": "REPLACE_ME",
+        "stackRoleArn": "REPLACE_ME"
       }
     ]
   }
