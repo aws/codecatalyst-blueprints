@@ -1,21 +1,5 @@
-import { java11, python37, nodejs14 } from './templateContents';
+import { java11, python36, nodejs14 } from './templateContents';
 import { RuntimeMapping } from './models';
-
-
-/**
- * Runtime mappings shape
- * [Readable Runtime Language,
- * {
- * runtime:
- * codeUri:
- * testPath:
- * handler:
- * cacheDir:
- * gitSrcPath:
- * installInstructions:
- * }]
- *
- */
 
 
 export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
@@ -30,7 +14,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     gitSrcPath: 'cookiecutter-aws-sam-hello-java-maven',
     dependenciesFilePath: 'pom.xml',
     installInstructions: 'Install [Python 3](__https__:__//www.python.org/downloads/__)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
-    //https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html may want to use oracle download for java11
   }],
   ['Java 11 Gradle', {
     runtime: 'java11',
@@ -59,17 +42,17 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
 
   }],
   ['Python 3', {
-    runtime:'python3.7',
+    runtime:'python3.6',
     codeUri: 'hello_world/',
     srcCodePath: 'hello_world',
     testPath: 'tests',
     handler: 'app.lambda_handler',
-    templateProps: python37,
-    cacheDir: 'python37',
+    templateProps: python36,
+    cacheDir: 'python36',
     gitSrcPath: 'cookiecutter-aws-sam-hello-python',
     dependenciesFilePath: 'requirements.txt',
     //https://github.com/aws/aws-sam-cli/blob/develop/DEVELOPMENT_GUIDE.md
-    installInstructions: 'Install [Python3.7](https://www.python.org/downloads/)',
+    installInstructions: 'Install [Python3.6](https://www.python.org/downloads/)',
   }],
 
 ]);

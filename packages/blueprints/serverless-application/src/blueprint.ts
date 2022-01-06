@@ -57,8 +57,7 @@ export interface Lambda {
   /**
    * The configurations for your workflow
    */
-   workflow: {
-
+  workflow: {
 
     /**
      * Enter the name of the S3 bucket to store build artifacts.
@@ -83,10 +82,6 @@ export interface Lambda {
   }
 }
 
-//? Uncomment if a limit on the number of lambdas or workflow stages is needed
-//const LAMBDA_LIMIT = 10;
-//const WORKFLOW_STAGE_LIMIT = 10;
-
 /**
  * This is the actual blueprint class.
  * 1. This MUST be the only 'class' exported, as 'Blueprint'
@@ -101,84 +96,9 @@ export interface Lambda {
       this.options = options;
 
       this.repository = new SourceRepository(this, {
-<<<<<<< HEAD
-         title: this.options.sourceRepositoryName
-       });
-
-      //!Ensure that users aren't able to remove all list items from a list before attempting to synth
-=======
         title: this.options.sourceRepositoryName
       });
       this.options.lambdas = options.lambdas;
-      /*
->>>>>>> 652ec9e1906d7ee6f459dad933c3167355d8c7fe
-      if (this.options.lambdas.length === 0) {
-        throw new Error("At least 1 Lambda function is required to create this project")
-      }
-
-      ? Uncomment if a limit on the number of lambdas or workflow stages is needed
-      if (this.options.lambdas.length > LAMBDA_LIMIT) {
-        throw new Error(`This blueprint is limited to generating ${LAMBDA_LIMIT} lambda functions`)
-      }
-      if(this.options.workflow.stages.length > WORKFLOW_STAGE_LIMIT){
-        throw new Error(`This blueprint is limited to generating ${WORKFLOW_STAGE_LIMIT} workflow stages`);
-      }
-      */
-      /*
-      ? uncomment input validation when available on the front end to send messages to users
-      ! All validation error messages need to be reviewed by doc writers before we enable them to be sent to the front end to users
-      ! Input validation that will be out of date:
-      ? defaultReleaseBranch as we have no current way of enforcing that on source repository
-      ? arn input validation has been removed already given the expected integration with aws connections so users wont have to input the arn themselves
-      ? s3BucketName validation may not be needed if it is associated with the environment selection feature
-
-      const cloudFormationPattern = '^[a-zA-Z][-a-zA-Z0-9]*';
-
-      if (this.options.workflow.cloudFormationStackName.length > 128 ||
-        !this.options.workflow.cloudFormationStackName.match(cloudFormationPattern)) {
-        throw new Error("CloudFormation Stack Name must be alphanumeric with hypens, start with an alphabetic character, and cannot be longer than 128 characters in length");
-      }
-
-      const s3BucketPattern = '(?!^xn--)(?!.*-s3alias$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)';
-
-      if (this.options.workflow.s3BucketName.length < 3 || s3BucketName.length > 63 ||
-        !this.options.workflow.s3BucketName.match(s3BucketPattern)) {
-
-        throw new Error("Invalid S3 Bucket Name, please refer to https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html \
-        for S3 bucket naming rules");
-      }
-
-      //const releaseBranchPattern = "^[a-zA-Z][-_a-zA-Z0-9]*";
-      //if (!this.options.defaultReleaseBranch.match(releaseBranchPattern)){
-      //  throw new Error("Invalid default release branch name");
-      //}
-
-      ?lambdaFunctionNamePattern is the pattern used for lambda function names
-      https://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#API_CreateFunction_RequestSyntax
-
-      //const lambdaFunctionNamePattern = '^[a-zA-Z0-9][-_a-zA-Z0-9]*';
-      ? the function name in given in options is used as a logical id so it should follow cloudformation logical id pattern
-      ? logical ids must be unique within a template
-      https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
-      const logicalIdPattern = '^[a-zA-Z0-9]*'
-
-      const uniqname = new Set;
-      for (const lambda of this.options.lambdas){
-        if (!lambda.functionName.match(logicalIdPattern)) {
-          throw new Error("Lambda function names must be alphanumeric");
-        }
-        ? When deployed using workflows -> function name becomes <cfnStackName>-<functionName>-<Entropy> with the cfnStackName being cutoff to fit within 64 characters
-        ? Unsure at what length we should cut off a lambda function name for users when it is input in options
-
-        //if (lambda.functionName.length < 1 || lambda.functionName.length > 64){
-        //  throw new Error("Lambda function names must have a length of at least 1 and cannot exceed 140 characters");
-        //}
-        uniqname.add(lambda.functionName)
-      }
-      if (uniqname.size !== this.options.lambdas.length) {
-        throw new Error("Lambda function names must be unique");
-      }
-      */
   }
 
     override synth(): void {
@@ -203,25 +123,24 @@ export interface Lambda {
       //todo: add region selection, when available
       const region = 'us-west-2'
       const artifactName = 'MyServerlessAppArtifact';
+      this.addSamInstallScript();
       addGenericBranchTrigger(workflowDefinition, [defaultReleaseBranch]);
       addGenericBuildAction(workflowDefinition, this.options.workflow.buildRoleArn, [
+        {Run: '. ./.aws/scripts/setup-sam.sh'},
         {Run: 'sam build'},
         {Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${this.options.workflow.s3BucketName} --output-template-file output.yaml --region ${region}`},
       ], artifactName);
       //each stage should depend on the previous stage
       let previousStage = 'Build'
       for (const stage of this.options.workflow.stages) {
-        //! Append the environment title to the cloudformation stack name
+        // Append the environment title to the cloudformation stack name
         const cfnStackname = `${this.options.workflow.cloudFormationStackName}-${stage.environment.title}`
-        if (cfnStackname.length > 128) {
+        //if (cfnStackname.length > 128) {
           //! Error message requires doc writer review
-          throw new Error ('Cloudformation stack name cannot be more than 128 characters')
-        }
-        const cfnStage: CfnStageDefinition = {
-          ...stage,
-          stackRoleArn: stage.role
-        }
-        addGenericCloudFormationDeployAction(workflowDefinition, cfnStage, cfnStackname, region, previousStage, artifactName);
+          //throw new Error ('Cloudformation stack name cannot be more than 128 characters')
+        //}
+
+        addGenericCloudFormationDeployAction(workflowDefinition, stage, cfnStackname, region, previousStage, artifactName);
         previousStage = `Deploy_${stage.environment.title}`;
       }
       new Workflow(
@@ -238,7 +157,7 @@ export interface Lambda {
 
       const toDeletePath = this.populateLambdaSourceCode(runtimeOptions);
       super.synth();
-      //! verify synth generating source code for each lambda
+      // verify synth generating source code for each lambda
       for (const lambda of this.options.lambdas) {
         if (!fs.existsSync(path.join(this.repository.path, lambda.functionName))) {
           //! Error message requires doc writer review
@@ -265,6 +184,21 @@ export interface Lambda {
         new SampleDir(this, newLambdaPath, {sourceDir});
       }
       return sourceDir;
+  }
+
+  protected addSamInstallScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
+      contents: `#!/usr/bin/env bash
+echo "Setting up sam"
+
+yum install unzip -y
+
+curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
+
+./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
+`,
+    });
   }
 
    /**

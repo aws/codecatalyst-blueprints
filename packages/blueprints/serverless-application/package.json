@@ -2,7 +2,7 @@
   "name": "@caws-blueprint/caws.serverless-application",
   "description": "This blueprint generates a serverless application project. The project will contain source code and configuration files to build and deploy your serverless application",
   "scripts": {
-    "build": "npx projen build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "build": "npx projen build",
     "bump": "npx projen bump",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
@@ -21,7 +21,8 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-    "blueprint:publish": "yarn bump && yarn build && yarn package && blueprint publish ./ --publisher caws"
+    "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
+    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher caws"
   },
   "author": {
     "name": "caws-blueprints",
@@ -64,7 +65,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.64",
+  "version": "0.0.66",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
