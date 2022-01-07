@@ -8,6 +8,7 @@ import { AstOptions, buildAst } from './build-ast';
 import { PublishOptions, publish } from './publish';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 
+
 const log = pino.default({
   prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',
@@ -16,7 +17,8 @@ const log = pino.default({
 log.info('started');
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-yargs.default(hideBin(process.argv))
+yargs
+  .default(hideBin(process.argv))
   .command({
     command: 'synth <blueprint>',
     describe: 'locally synthesize the blueprint',
@@ -66,10 +68,16 @@ yargs.default(hideBin(process.argv))
           description: 'the code.aws cookie to use for authorization',
           demandOption: false,
           type: 'string',
+        })
+        .option('endpoint', {
+          description: 'the code.aws endpoint to publish against',
+          demandOption: false,
+          type: 'string',
+          default: 'api-gamma.quokka.codes',
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {
-      await publish(log, argv.blueprint, argv.publisher, argv.cookie);
+      await publish(log, argv.blueprint, argv.publisher, argv.endpoint, argv.cookie);
       process.exit(0);
     },
   })

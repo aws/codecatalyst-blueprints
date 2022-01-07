@@ -8,6 +8,7 @@ export interface PublishOptions extends yargs.Arguments {
   blueprint: string;
   publisher: string;
   cookie?: string;
+  endpoint: string;
 }
 
 interface PublishingJob {
@@ -19,6 +20,7 @@ export async function publish(
   log: pino.BaseLogger,
   blueprint: string,
   publisher: string,
+  endpoint: string,
   cookie?: string,
 ): Promise<void> {
   if (!fs.existsSync(blueprint)) {
@@ -65,8 +67,10 @@ export async function publish(
     process.exit(199);
   }
 
+  log.info('using endpoint: %s', endpoint);
+
   const gqlResponse = await axios.default.post(
-    'https://api-gamma.quokka.codes/graphql?',
+    `https://${endpoint}/graphql?`,
     {
       query: `mutation {
         createBlueprintUploadUrl(input: {
@@ -79,10 +83,9 @@ export async function publish(
     },
     {
       headers: {
-        'authority': 'api-gamma.quokka.codes',
+        'authority': endpoint,
         'accespt': 'application/json',
-        'origin': 'https://api-gamma.quokka.codes',
-        'x-api-key': 'CBxZwFn2o0pofwuIE0yR',
+        'origin': `https://${endpoint}`,
         'cookie': cookie,
         'content-type': 'application/json',
       },
