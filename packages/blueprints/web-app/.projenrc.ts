@@ -31,7 +31,7 @@ const blueprint = new ProjenBlueprint({
   ],
   /* Add release management to this project. */
   // release: undefined,
-  keywords: ['blueprint', 'webapp', 'java', 'react'],
+  keywords: ['blueprint', 'webapp', 'typescript', 'react', 'node'],
   homepage: 'https://aws.amazon.com/',
   /* Add media url links to this project */
   mediaUrls: [
