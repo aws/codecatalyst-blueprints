@@ -21,8 +21,8 @@ const blueprint = new ProjenBlueprint({
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This blueprint creates and deploys a web application',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/blueprints.web-app',
-  publishingOrganization: 'blueprints',
+  packageName: '@caws-blueprint/caws.web-app',
+  publishingOrganization: 'caws',
   /* Build dependencies for this module. */
   devDeps: [
     'ts-node',
@@ -31,7 +31,7 @@ const blueprint = new ProjenBlueprint({
   ],
   /* Add release management to this project. */
   // release: undefined,
-  keywords: ['blueprint', 'webapp', 'java', 'react'],
+  keywords: ['blueprint', 'webapp', 'typescript', 'react', 'node'],
   homepage: 'https://aws.amazon.com/',
   /* Add media url links to this project */
   mediaUrls: [
