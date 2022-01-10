@@ -5,7 +5,10 @@ import { Options } from './blueprint';
 const TYPESCRIPT_EXT = '.ts';
 
 export function getStackDefinition(stackName: string, blueprintOptions: Options, lambdaOptions: awscdk.LambdaFunctionOptions) {
-  const s3BucketName = getUniqueS3BucketName(blueprintOptions.sourceRepositoryName);
+  const s3BucketName = getUniqueS3BucketName(blueprintOptions.repositoryName);
+  const appStack: string = `${stackName}Stack`;
+  const apiStack: string = `${stackName}ApiStack`;
+
   return `import { App, Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -14,7 +17,25 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 
 import { ${lambdaOptions.constructName} } from './${basename(lambdaOptions.constructFile!, TYPESCRIPT_EXT )}';
 
-export class ${stackName} extends Stack {
+export class ${apiStack} extends Stack {
+  constructor(scope: Construct, id: string, props: StackProps) {
+    super(scope, id, props);
+
+    const handler = new ${lambdaOptions.constructName}(this, \'${lambdaOptions.constructName}\');
+    const api = new apigateway.LambdaRestApi(this, \'${appStack}ApiGateway\', {
+      restApiName: \'${apiStack}ApiGateway\',
+      handler,
+      description: \'API gateway for ${apiStack}\',
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS
+      },
+    });
+    new CfnOutput(this, \'apiurl\', { value: api.url });
+  }
+}
+
+export class ${appStack} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
     const mySiteBucket = new s3.Bucket(this, \'${s3BucketName}\', {
@@ -25,7 +46,7 @@ export class ${stackName} extends Stack {
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
-      \'${stackName}OriginAccessIdentity\'
+      \'${appStack}OriginAccessIdentity\'
     );
     mySiteBucket.grantRead(originAccessIdentity);
 
@@ -46,15 +67,9 @@ export class ${stackName} extends Stack {
       ],
     });
 
-    const handler = new ${lambdaOptions.constructName}(this, \'${lambdaOptions.constructName}\');
-    new apigateway.LambdaRestApi(this, \'${stackName}ApiGateway\', {
-      restApiName: \'${stackName}ApiGateway\',
-      handler,
-      description: \'API gateway for ${stackName}\',
-    });
 
     new CfnOutput(this, \'Bucket\', { value: mySiteBucket.bucketName });
-    new CfnOutput(this, \'CloudFront URL\', { value: \`https://\$\{distribution.distributionDomainName\}\` });
+    new CfnOutput(this, \'CloudFrontURL\', { value: \`https://\$\{distribution.distributionDomainName\}\` });
   }
 }
 
@@ -64,14 +79,15 @@ const env = {
 
 const app = new App();
 
-new ${stackName}(app, \'${stackName}\', { env });
+new ${apiStack}(app, \`${apiStack}\`, { env });
+new ${appStack}(app, \'${appStack}\', { env });
 
 app.synth();
 `;
 }
 
-function getUniqueS3BucketName(sourceRepositoryName: string) {
-  return `${sourceRepositoryName.toLowerCase()}-${getSecondSinceEpoch()}`;
+function getUniqueS3BucketName(repositoryName: string) {
+  return `${repositoryName.toLowerCase()}-${getSecondSinceEpoch()}`;
 }
 
 function getSecondSinceEpoch() {
@@ -79,13 +95,14 @@ function getSecondSinceEpoch() {
 }
 
 export function getStackTestDefintion(appEntrypoint: string, stackName: string) {
+  const appStack: string = `${stackName}Stack`;
   return `import { App } from \'@aws-cdk/core\';
 import '@aws-cdk/assert/jest';
-import { ${stackName} } from '../src/${basename(appEntrypoint, TYPESCRIPT_EXT)}';
+import { ${appStack} } from '../src/${basename(appEntrypoint, TYPESCRIPT_EXT)}';
 
  test('Snapshot', () => {
    const app = new App();
-   const stack = new ${stackName}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
+   const stack = new ${appStack}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
 
    expect(app.synth().getStackArtifact(stack.artifactId).template).toMatchSnapshot();
  });

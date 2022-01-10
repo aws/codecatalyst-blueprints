@@ -1,15 +1,15 @@
 {
-  "sourceRepositoryName": "HelloWorldWebApp",
-  "reactFolderName": "client",
-  "nodeFolderName": "api",
+  "repositoryName": "HelloWorldApp",
+  "reactFolderName": "react",
+  "nodeFolderName": "node",
   "stages": [
     {
       "environment": {
-        "title": "prod",
-        "description": "this is my prod stage"
+        "title": "personal",
+        "description": "this is my personal test environment"
       },
       "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
-      "region": "us-west-1"
+      "region": "us-west-2"
     }
   ]
 }
