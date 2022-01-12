@@ -12,6 +12,7 @@ export interface WorkspaceComponent {
 export interface WorkspaceComponentContainer {
   image: string;
   mountSources: boolean;
+  command: string[];
 }
 
 export interface WorkspaceMetadata {
