@@ -1,19 +1,15 @@
 {
-    "name": "web",
-    "environments": [{
-        "title": "Prod",
-        "description": "This is the production environment that your web application gets deployed into."
-    }],
-    "frontend": {
-        "name": "client",
-        "outdir": "client"
-    },
-    "backend": {
-        "name": "api",
-        "outdir": "api",
-        "artifactId": "com.acme.api",
-        "groupId": "acme"
-    },
-    "defaultReleaseBranch": "mainline",
-    "readme": "# Web Application"
+  "sourceRepositoryName": "HelloWorldWebApp",
+  "reactFolderName": "client",
+  "nodeFolderName": "api",
+  "stages": [
+    {
+      "environment": {
+        "title": "prod",
+        "description": "this is my prod stage"
+      },
+      "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
+      "region": "us-west-1"
+    }
+  ]
 }

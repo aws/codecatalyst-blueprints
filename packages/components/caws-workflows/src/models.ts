@@ -5,6 +5,10 @@ export interface Variables {
   Value: string;
 }
 
+export interface OutputVariables {
+  Name: string;
+}
+
 export interface Step {
   Run: string;
 }
@@ -34,6 +38,7 @@ export interface BuildActionConfiguration {
   Artifacts?: Artifacts[];
   Reports?: Reports[];
   Uses?: ActionUses;
+  OutputVariables?: OutputVariables[];
 }
 
 export interface DeployActionConfiguration {

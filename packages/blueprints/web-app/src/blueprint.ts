@@ -1,14 +1,18 @@
-import { Environment, EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
+import { Environment } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
+import { Workflow, BuildActionConfiguration, Step, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { java, web } from 'projen';
+import { awscdk, AwsCdkTypeScriptApp, Project, SourceCode, web } from 'projen';
 
 import defaults from './defaults.json';
+import { helloWorldLambdaCallback } from './hello-world-lambda';
+import { createLambda } from './lambda-generator';
+import { getStackDefinition, getStackTestDefintion } from './stack';
+import { createClass } from './stack-generator';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -20,70 +24,21 @@ import defaults from './defaults.json';
 */
 export interface Options extends ParentOptions {
   /**
-   * The name of the application
+   * The name of the source repository.
    */
-  name: string;
-
+  sourceRepositoryName: string;
   /**
-   * Enivroments to deploy into.
+   * Name of the frontend project and directory.
    */
-  environments: EnvironmentDefinition[];
-
+  reactFolderName: string;
   /**
-   * Options for the Frontend Application
+   * Name of the backend project and directory.
    */
-  frontend: {
-    /**
-     * The name of the Frontend Application
-     */
-    name: string;
-
-    /**
-     * The relative path of the Frontend Application
-     * @advanced
-     */
-    outdir: string;
-
-    /**
-     * The license of the Frontend Application
-     */
-    license?: 'MIT' | 'Apache-2.0';
-  };
-
-  backend: {
-    /**
-     * The name of the Backend Application
-     */
-    name: string;
-
-    /**
-     * The relative path of the Backend Application
-     * @advanced
-     */
-    outdir: string;
-
-    /**
-     * The artifactId of the backend java application
-     */
-    artifactId: string;
-
-    /**
-     * The groupId of the backend java Application
-     */
-    groupId: string;
-  };
+  nodeFolderName: string;
   /**
-   * Specify the contents of the repository README.md
-   * @input textarea
-   * @advanced
+   * An array of stage definitions
    */
-  readme: string;
-
-  /**
-   * Specifies the default release branch
-   * @advanced
-   */
-  defaultReleaseBranch: string;
+  stages: any[];
 }
 
 /**
@@ -92,127 +47,154 @@ export interface Options extends ParentOptions {
  * 2. This Blueprint should extend another ParentBlueprint
  */
 export class Blueprint extends ParentBlueprint {
-  private readonly frontendRepository: SourceRepository;
-  private readonly backendRepository: SourceRepository;
+  protected options: Options;
 
   constructor(options_: Options) {
     super(options_);
     const options = Object.assign(defaults, options_);
+    this.options = options;
 
-    options.environments.forEach(envDef => {
-      new Environment(this, envDef);
+    const repository = new SourceRepository(this, {
+      title: this.options.sourceRepositoryName,
     });
+    new Workspace(this, repository, SampleWorkspaces.default);
 
-    this.frontendRepository = new SourceRepository(this, {
-      title: options.frontend.name,
-    });
+    this.options.stages.forEach(stage => new Environment(this, stage.environment));
 
-    new web.ReactTypeScriptProject({
-      outdir: this.frontendRepository.relativePath,
-      parent: this,
-      name: options.frontend.outdir,
-      authorEmail: 'caws@amazon.com',
-      authorName: 'codeaws',
-      defaultReleaseBranch: options.defaultReleaseBranch,
-      license: options.frontend.license,
-    });
-
-    this.backendRepository = new SourceRepository(this, {
-      title: options.backend.name,
-    });
-
-    new Workspace(this, this.backendRepository, SampleWorkspaces.default);
-
-    new java.JavaProject({
-      outdir: this.backendRepository.relativePath,
-      parent: this,
-      name: options.backend.name,
-      groupId: options.backend.groupId,
-      artifactId: options.backend.artifactId,
-      version: '1.0.0',
-    });
-
-    new Workflow(
-      this,
-      this.frontendRepository,
-      this.createWorkflowDefintion({
-        branch: options.defaultReleaseBranch,
-        ActionRoleArn: 'MY_ACTION_ROLE_ARN',
-        S3_BUCKET: 'MY_S3_BUCKET_VAR_VALUE',
-        CodeAwsRoleARN: 'MY_CAWS_ROLE_ARN',
-        StackRoleARN: 'MY_STACK_ROLE_ARN',
-      }),
-    );
-
-    new Workflow(
-      this,
-      this.backendRepository,
-      this.createWorkflowDefintion({
-        branch: options.defaultReleaseBranch,
-        ActionRoleArn: 'MY_ACTION_ROLE_ARN',
-        S3_BUCKET: 'MY_S3_BUCKET_VAR_VALUE',
-        CodeAwsRoleARN: 'MY_CAWS_ROLE_ARN',
-        StackRoleARN: 'MY_STACK_ROLE_ARN',
-      }),
-    );
+    this.createFrontend(repository);
+    this.createStacks(repository);
+    this.createWorkflow(repository);
   }
 
-  protected createWorkflowDefintion(options: {
-    branch: string;
-    ActionRoleArn: string;
-    S3_BUCKET: string;
-    CodeAwsRoleARN: string;
-    StackRoleARN: string;
-  }): WorkflowDefinition {
-    return {
-      Name: 'release',
+  private createFrontend(repo: SourceRepository): web.ReactTypeScriptProject {
+    const project = new web.ReactTypeScriptProject({
+      parent: this,
+      name: `${this.options.reactFolderName}`,
+      authorEmail: 'caws@amazon.com',
+      authorName: 'codeaws',
+      outdir: `${repo.relativePath}/${this.options.reactFolderName}`,
+      defaultReleaseBranch: 'main',
+    });
+
+    // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
+    //  that is incompatible with create-react-app (i.e react-scripts). We skip the preflight check
+    //  to prevent blocking warnings.
+    const dotenvFile = new SourceCode(project, '.env');
+    dotenvFile.line('SKIP_PREFLIGHT_CHECK=true');
+
+    return project;
+  }
+
+  private createStacks(repo: SourceRepository): Project {
+    const project = new AwsCdkTypeScriptApp({
+      parent: this,
+      cdkVersion: '1.95.2',
+      name: `${this.options.nodeFolderName}`,
+      authorEmail: 'caws@amazon.com',
+      authorName: 'codeaws',
+      outdir: `${repo.relativePath}/${this.options.nodeFolderName}`,
+      appEntrypoint: 'main.ts',
+      cdkDependencies: [
+        '@aws-cdk/core',
+        '@aws-cdk/aws-lambda',
+        '@aws-cdk/aws-apigateway',
+        '@aws-cdk/aws-s3',
+        '@aws-cdk/aws-s3-deployment',
+        '@aws-cdk/aws-cloudfront',
+      ],
+      devDeps: [
+        'cdk-assets',
+      ],
+      context: {
+        // TODO: may be able to remove this
+        //       and is related to using cdk-assets?
+        '@aws-cdk/core:newStyleStackSynthesis': 'true',
+      },
+      sampleCode: false,
+      lambdaAutoDiscover: true,
+      defaultReleaseBranch: 'main',
+    });
+
+    const lambdaName = `${this.options.sourceRepositoryName}Lambda`;
+    const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(project, lambdaName, helloWorldLambdaCallback);
+
+    const stackName = `${this.options.sourceRepositoryName}Stack`;
+
+    const sourceCode = getStackDefinition(stackName, this.options, lambdaOptions);
+    createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
+
+    const testCode = getStackTestDefintion(project.appEntrypoint, stackName);
+    createClass(project.outdir, project.testdir, 'main.test.ts', testCode);
+
+    return project;
+  }
+
+  // TODO: A temporary hack for deploying cdk apps through workflows.
+  private createWorkflow(repository: SourceRepository) {
+    const workflowDefinition: WorkflowDefinition = {
+      Name: 'buildAssets',
       Triggers: [
         {
-          Type: 'Push',
-          Branches: [options.branch],
+          Type: 'push',
+          Branches: ['main'],
         },
       ],
-      Actions: {
-        BuildBackend: {
-          Identifier: 'aws/build@v1',
-          OutputArtifacts: ['buildArtifact'],
-          Configuration: {
-            ActionRoleArn: options.ActionRoleArn,
-            Variables: [
-              {
-                Name: 'S3_BUCKET',
-                Value: options.S3_BUCKET,
-              },
-            ],
-            Steps: [
-              {
-                Run: 'sam build',
-              },
-              {
-                Run: 'sam package --template-file .aws-sam/build/template.yaml --s3-bucket $S3_BUCKET --output-template-file template-packaged.yaml --region us-west-2',
-              },
-            ],
-            Artifacts: [
-              {
-                Name: 'buildArtifact',
-                Files: ['template-packaged.yaml'],
-              },
-            ],
-          },
-        },
-      },
-      DeployCloudFormationStack: {
-        DependsOn: ['buildArtifact'],
-        Identifier: 'aws/cloudformation-deploy@v1',
-        InputArtifacts: ['BuildArtifact'],
-        Configuration: {
-          CodeAwsRoleARN: options.CodeAwsRoleARN,
-          StackRoleARN: options.StackRoleARN,
-          StackName: 'serverless-api-stack',
-          StackRegion: 'us-west-2',
-          TemplatePath: 'buildArtifact::template-packaged.yaml',
-        },
-      },
+      Actions: {},
     };
+
+    this.options.stages.forEach((stage: any) => {
+      this.createDeployAction(stage, workflowDefinition);
+    });
+
+    new Workflow(
+      this,
+      repository,
+      workflowDefinition,
+    );
+
+  }
+
+  private createDeployAction(stage: any, workflow: WorkflowDefinition) {
+    workflow.Actions[`Build_${stage.environment.title}`] = {
+      Identifier: 'aws-actions/cawsbuildprivate-build@v1',
+      Configuration: {
+        ActionRoleArn: stage.role,
+        Steps: [
+          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
+          { Run: `export awsRegion=${stage.region}` },
+          { Run: `cd ./${this.options.reactFolderName} && npm install && npm run build` },
+          { Run: `cd ../${this.options.nodeFolderName} && npm install && npm run build` },
+          // { Run: `export AWS_SDK_LOAD_CONFIG=1` },
+          { Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${stage.region}` },
+          { Run: 'npm run env -- cdk deploy --require-approval never' },
+          // TODO - Look into using this to push artifacts to s3.
+          // { Run: `npm run env -- cdk synth` },
+          // { Run: `npm run env -- cdk-assets publish --path ./cdk.out/${this.options.sourceRepositoryName}Stack.assets.json` }
+        ] as Step[],
+      } as BuildActionConfiguration,
+    };
+    //         workflow.Actions[`Bootstrap_${stage.environment.title}`] = {
+    //           DependsOn: [`Build_${stage.environment.title}`],
+    //           Identifier: 'aws-actions/cawsbuildprivate-build@v1',
+    //           Configuration: {
+    //             ActionRoleArn: stage.role,
+    //             Steps: [
+    //             ] as Step[],
+    //           }
+    //         }
+
+    //         workflow.Actions[`Deploy_${stage.environment.title}`] = {
+    //           DependsOn: [`Bootstrap_${stage.environment.title}`],
+    //           Identifier: 'aws-actions/cawsbuildprivate-build@v1',
+    //           Configuration: {
+    //             ActionRoleArn: stage.role,
+    //             Steps: [
+    //             ] as Step[],
+    //           } as BuildActionConfiguration,
+    //         };
+  };
+
+  private getIdFromArn(arnRole: string) {
+    return arnRole.split(':')[4];
   }
 }
