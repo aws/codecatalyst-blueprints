@@ -1,25 +1,29 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import { Environment } from '@caws-blueprint-component/caws-environments';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import {
   ActionIdentifierAlias,
   BuildActionConfiguration,
   Step,
+  StageDefinition,
   Workflow,
   WorkflowDefinition,
   getDefaultActionIdentifier,
 } from '@caws-blueprint-component/caws-workflows';
-import {AwsCdkTypeScriptApp, Project, SourceCode, awscdk, web} from 'projen';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import {SampleWorkspaces, Workspace} from '@caws-blueprint-component/caws-workspaces';
-import {getStackDefinition, getStackTestDefintion} from './stack';
+import { AwsCdkTypeScriptApp, Project, SourceCode, awscdk, web } from 'projen';
 
-import {Environment} from '@caws-blueprint-component/caws-environments';
-import {SourceRepository} from '@caws-blueprint-component/caws-source-repositories';
-import {createClass} from './stack-generator';
-import {createLambda} from './lambda-generator';
 import defaults from './defaults.json';
-import {helloWorldLambdaCallback} from './hello-world-lambda';
+import { helloWorldLambdaCallback } from './hello-world-lambda';
+import { createLambda } from './lambda-generator';
+import { getStackDefinition, getStackTestDefintion } from './stack';
+
+import { createClass } from './stack-generator';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -30,22 +34,19 @@ import {helloWorldLambdaCallback} from './hello-world-lambda';
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
+  repositoryName: string;
   /**
-   * The name of the source repository.
-   */
-  sourceRepositoryName: string;
-  /**
-   * Name of the frontend project and directory.
+   * Name of the folder for the frontend stack, such as react or ui.
    */
   reactFolderName: string;
   /**
-   * Name of the backend project and directory.
+   * Name of the folder for the backend stack, such as node or api.
    */
   nodeFolderName: string;
   /**
    * An array of stage definitions
    */
-  stages: any[];
+  stages: StageDefinition[];
 }
 
 /**
@@ -55,6 +56,7 @@ export interface Options extends ParentOptions {
  */
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
+  protected readonly frontend: web.ReactTypeScriptProject;
 
   constructor(options_: Options) {
     super(options_);
@@ -62,13 +64,13 @@ export class Blueprint extends ParentBlueprint {
     this.options = options;
 
     const repository = new SourceRepository(this, {
-      title: this.options.sourceRepositoryName,
+      title: this.options.repositoryName,
     });
     new Workspace(this, repository, SampleWorkspaces.default);
 
     this.options.stages.forEach(stage => new Environment(this, stage.environment));
 
-    this.createFrontend(repository);
+    this.frontend = this.createFrontend(repository);
     this.createStacks(repository);
     this.createWorkflow(repository);
   }
@@ -81,6 +83,9 @@ export class Blueprint extends ParentBlueprint {
       authorName: 'codeaws',
       outdir: `${repo.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
+      deps: [
+        'axios',
+      ],
     });
 
     // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
@@ -89,7 +94,59 @@ export class Blueprint extends ParentBlueprint {
     const dotenvFile = new SourceCode(project, '.env');
     dotenvFile.line('SKIP_PREFLIGHT_CHECK=true');
 
+    // Need to create a /build directory with an empty .keep file
+    project.gitignore.removePatterns('/build/');
+    createClass(project.outdir, 'build', '.keep', '');
+
     return project;
+  }
+
+  override synth(): void {
+    super.synth();
+
+    // overwite the App.tsx file with some additional logic
+    const sourceCode = [
+      "import logo from './logo.svg';",
+      "import './App.css';",
+      "import axios from 'axios';",
+      "import config from './config.json';",
+      "import { useState, useEffect } from 'react';",
+      '',
+      'function App() {',
+      '  const [result, setResult] = useState({ data: null });',
+      '  useEffect(() => {',
+      '    const getData = async (): Promise<void> => {',
+      '      const result = await axios.get(config.HelloWorldAppApiStack.apiurl);',
+      '      setResult({ data: result.data });',
+      '    };',
+      '    getData();',
+      '  }, []);',
+      '  return (',
+      '   <div className="App">',
+      '      <header className="App-header">',
+      '        <img src={logo} className="App-logo" alt="logo" />',
+      '        <p>',
+      '          Edit <code>src/App.tsx</code> and save to reload.',
+      '        </p>',
+      '        <p>',
+      '          {result.data}',
+      '        </p>',
+      '        <a className="App-link"',
+      '          href="https://reactjs.org"',
+      '          target="_blank"',
+      '          rel="noopener noreferrer"',
+      '        >',
+      '          Learn React',
+      '        </a>',
+      '      </header>',
+      '    </div>',
+      '  );',
+      '}',
+      '',
+      'export default App;',
+      '',
+    ];
+    fs.writeFileSync(path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'), sourceCode.join('\n'));
   }
 
   private createStacks(repo: SourceRepository): Project {
@@ -111,8 +168,6 @@ export class Blueprint extends ParentBlueprint {
       ],
       devDeps: ['cdk-assets'],
       context: {
-        // TODO: may be able to remove this
-        //       and is related to using cdk-assets?
         '@aws-cdk/core:newStyleStackSynthesis': 'true',
       },
       sampleCode: false,
@@ -120,15 +175,14 @@ export class Blueprint extends ParentBlueprint {
       defaultReleaseBranch: 'main',
     });
 
-    const lambdaName = `${this.options.sourceRepositoryName}Lambda`;
+    const lambdaName = `${this.options.repositoryName}Lambda`;
     const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(
       project,
       lambdaName,
       helloWorldLambdaCallback,
     );
 
-    const stackName = `${this.options.sourceRepositoryName}Stack`;
-
+    const stackName = `${this.options.repositoryName}`;
     const sourceCode = getStackDefinition(stackName, this.options, lambdaOptions);
     createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
 
@@ -151,11 +205,15 @@ export class Blueprint extends ParentBlueprint {
       Actions: {},
     };
 
-    this.options.stages.forEach((stage: any) => {
+    this.options.stages.forEach((stage: StageDefinition) => {
       this.createDeployAction(stage, workflowDefinition);
     });
 
-    new Workflow(this, repository, workflowDefinition);
+    new Workflow(
+      this,
+      repository,
+      workflowDefinition,
+    );
   }
 
   private createDeployAction(stage: any, workflow: WorkflowDefinition) {
@@ -167,43 +225,21 @@ export class Blueprint extends ParentBlueprint {
       Configuration: {
         ActionRoleArn: stage.role,
         Steps: [
-          {Run: `export awsAccountId=${this.getIdFromArn(stage.role)}`},
-          {Run: `export awsRegion=${stage.region}`},
-          {Run: `cd ./${this.options.reactFolderName} && npm install && npm run build`},
-          {Run: `cd ../${this.options.nodeFolderName} && npm install && npm run build`},
-          // { Run: `export AWS_SDK_LOAD_CONFIG=1` },
-          {
-            Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
-              stage.region
-            }`,
-          },
-          {Run: 'npm run env -- cdk deploy --require-approval never'},
-          // TODO - Look into using this to push artifacts to s3.
-          // { Run: `npm run env -- cdk synth` },
-          // { Run: `npm run env -- cdk-assets publish --path ./cdk.out/${this.options.sourceRepositoryName}Stack.assets.json` }
+          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
+          { Run: `export awsRegion=${stage.region}` },
+          { Run: `cd ./${this.options.nodeFolderName} && npm install && npm run build` },
+          { Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${stage.region}` },
+          { Run: `npm run env -- cdk deploy ${this.options.repositoryName}ApiStack --outputs-file ../${this.options.reactFolderName}/src/config.json --require-approval never` },
+          { Run: `cd ../${this.options.reactFolderName} && npm install && npm run build` },
+          { Run: `cd ../${this.options.nodeFolderName}` },
+          { Run: `npm run env -- cdk deploy ${this.options.repositoryName}Stack --require-approval never --outputs-file config.json` },
+          // TODO - a hack to get the cloudformation url to show up under build outputs
+          { Run: `eval $(jq -r \'.${this.options.repositoryName}Stack | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')` },
         ] as Step[],
+        OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
     };
-    //         workflow.Actions[`Bootstrap_${stage.environment.title}`] = {
-    //           DependsOn: [`Build_${stage.environment.title}`],
-    //           Identifier: 'aws-actions/cawsbuildprivate-build@v1',
-    //           Configuration: {
-    //             ActionRoleArn: stage.role,
-    //             Steps: [
-    //             ] as Step[],
-    //           }
-    //         }
-
-    //         workflow.Actions[`Deploy_${stage.environment.title}`] = {
-    //           DependsOn: [`Bootstrap_${stage.environment.title}`],
-    //           Identifier: 'aws-actions/cawsbuildprivate-build@v1',
-    //           Configuration: {
-    //             ActionRoleArn: stage.role,
-    //             Steps: [
-    //             ] as Step[],
-    //           } as BuildActionConfiguration,
-    //         };
-  }
+  };
 
   private getIdFromArn(arnRole: string) {
     return arnRole.split(':')[4];
