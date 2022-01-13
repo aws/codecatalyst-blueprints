@@ -1,4 +1,4 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/caws.blueprint';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import defaults from './defaults.json';
 import { generateReadmeContents } from './readmeContents'
 import { Environment } from '@caws-blueprint-component/caws-environments';
@@ -11,7 +11,7 @@ import {
   addGenericCloudFormationDeployAction,
   addGenericBranchTrigger,
   addGenericBuildAction,
-  CfnStageDefinition
+  StageDefinition
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleDir, SampleFile } from 'projen';
 import * as cp from 'child_process';
@@ -76,9 +76,13 @@ export interface Lambda {
     buildRoleArn: string;
 
     /**
+     * Enter the role ARN to use when deploying your application through CloudFormation
+     */
+    stackRoleArn: string;
+    /**
      * Configure the workflow stages of your project
      */
-    stages: CfnStageDefinition[];
+    stages: StageDefinition[];
   }
 }
 
@@ -139,8 +143,8 @@ export interface Lambda {
           //! Error message requires doc writer review
           //throw new Error ('Cloudformation stack name cannot be more than 128 characters')
         //}
-
-        addGenericCloudFormationDeployAction(workflowDefinition, stage, cfnStackname, region, previousStage, artifactName);
+        const cfnStage = {...stage, stackRoleArn: this.options.workflow.stackRoleArn}
+        addGenericCloudFormationDeployAction(workflowDefinition, cfnStage, cfnStackname, region, previousStage, artifactName);
         previousStage = `Deploy_${stage.environment.title}`;
       }
       new Workflow(

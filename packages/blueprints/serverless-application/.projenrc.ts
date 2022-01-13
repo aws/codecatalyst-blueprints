@@ -1,7 +1,7 @@
 import { ProjenBlueprint } from '@caws-blueprint-util/blueprint-projen';
 const project = new ProjenBlueprint({
   "defaultReleaseBranch": "main",
-  "name": "serverless-application",
+  "name": "sam-serverless-application",
   "license": "MIT",
   "copyrightOwner": 'Amazon.com',
 
@@ -21,15 +21,15 @@ const project = new ProjenBlueprint({
     }
   },
   "deps": [
-    "@caws-blueprint/caws.blueprint",
+    "@caws-blueprint/blueprints.blueprint",
     "@caws-blueprint-component/caws-workflows",
     "@caws-blueprint-component/caws-source-repositories",
     "@caws-blueprint-component/caws-workspaces",
     "@caws-blueprint-component/caws-environments"
   ],
-  "description": "This blueprint generates a serverless application project. The project will contain source code and configuration files to build and deploy your serverless application",
-  "packageName": "@caws-blueprint/caws.serverless-application",
-  "publishingOrganization": "caws",
+  "description": "This blueprint generates a serverless application model (SAM) project. The project will contain source code and configuration files to build and deploy your SAM application",
+  "packageName": "@caws-blueprint/blueprints.sam-serverless-application",
+  "publishingOrganization": "blueprints",
   "devDeps": [
     "ts-node",
     "typescript",
@@ -39,7 +39,7 @@ const project = new ProjenBlueprint({
   "keywords": ["blueprint", "sam", "lambda", "python", "node", "nodejs", "java", "net", "ruby", "serverless"],
   "homepage": "https://aws.amazon.com/",
   "mediaUrls": ["https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"],
-  "displayName": "Serverless Application Blueprint"
+  "displayName": "Serverless Application Model (SAM) Blueprint"
 });
 
 project.synth();

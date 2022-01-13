@@ -13,7 +13,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     cacheDir: 'java11maven',
     gitSrcPath: 'cookiecutter-aws-sam-hello-java-maven',
     dependenciesFilePath: 'pom.xml',
-    installInstructions: 'Install [Python 3](__https__:__//www.python.org/downloads/__)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
+    installInstructions: 'Install [Python 3](https://www.python.org/downloads/)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
   }],
   ['Java 11 Gradle', {
     runtime: 'java11',
@@ -25,7 +25,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     cacheDir: 'java11gradle',
     gitSrcPath: 'cookiecutter-aws-sam-hello-java-gradle',
     dependenciesFilePath: 'build.gradle',
-    installInstructions: 'Install [Python 3](__https__:__//www.python.org/downloads/__)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)',
+    installInstructions: 'Install [Python 3](https://www.python.org/downloads/)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)',
 
   }],
   ['Node.js 14', {
@@ -38,7 +38,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     cacheDir: 'nodejs14',
     gitSrcPath: 'cookiecutter-aws-sam-hello-nodejs',
     dependenciesFilePath: 'package.json',
-    installInstructions: 'Install [Python 3](__https__:__//www.python.org/downloads/__)\n * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)',
+    installInstructions: 'Install [Python 3](https://www.python.org/downloads/)\n * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)',
 
   }],
   ['Python 3', {
