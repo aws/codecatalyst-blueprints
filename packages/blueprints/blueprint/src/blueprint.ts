@@ -25,6 +25,7 @@ export class Blueprint extends Project {
       rootDir: path.resolve(this.outdir),
       organizationName: process.env.CONTEXT_ORGANIZATIONNAME,
       projectName: process.env.CONTEXT_PROJECTNAME,
+      environmentId: process.env.CONTEXT_ENVIRONMENTID,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
         registry:

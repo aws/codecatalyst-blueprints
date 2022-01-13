@@ -1,19 +1,18 @@
+import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import {
   CfnStageDefinition,
+  PullRequestEvent,
   StageDefinition,
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
-  PullRequestEvent,
 } from '..';
+import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
 import * as samPython from './sam-python';
 
 
-const GENERIC_BUILD_IMAGE = 'aws-actions/cawsbuildprivate-build@v1';
-const GENERIC_TEST_IMAGE = 'aws-actions/cawstestbeta-test@v1';
-const GENERIC_DEPLOY_IMAGE = 'aws/cloudformation-deploy-gamma@v1';
-
 export function generateWorkflow(
+  blueprint: Blueprint,
   sdk: WorkflowRuntimeSdk,
   defaultBranch = 'main',
   stages: StageDefinition[] = [],
@@ -26,6 +25,7 @@ export function generateWorkflow(
   switch (sdk) {
     case 'sam-python':
       return samPython.generate(
+        blueprint,
         defaultBranch,
         stages,
         stackName,
@@ -46,7 +46,11 @@ export const emptyWorkflow: WorkflowDefinition = {
 };
 
 //todo: change branches to branch and include optional files changed parameter
-export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches = ['main'], filesChanged?: string[]) {
+export function addGenericBranchTrigger(
+  workflow: WorkflowDefinition,
+  branches = ['main'],
+  filesChanged?: string[],
+) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
@@ -58,7 +62,12 @@ export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches =
   });
 }
 
-export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]) {
+export function addGenericPullRequestTrigger(
+  workflow: WorkflowDefinition,
+  events: PullRequestEvent[],
+  branches = ['main'],
+  filesChanged?: string[],
+) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
@@ -72,13 +81,17 @@ export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, event
 }
 
 export function addGenericBuildAction(
+  blueprint: Blueprint,
   workflow: WorkflowDefinition,
   buildRoleArn: string,
   steps: Step[] = [],
   artifactName: string,
 ) {
   workflow.Actions.Build = {
-    Identifier: GENERIC_BUILD_IMAGE,
+    Identifier: getDefaultActionIdentifier(
+      ActionIdentifierAlias.build,
+      blueprint.context.environmentId,
+    ),
     OutputArtifacts: [artifactName],
     Configuration: {
       Variables: [
@@ -99,6 +112,7 @@ export function addGenericBuildAction(
 }
 
 export function addGenericCloudFormationDeployAction(
+  blueprint: Blueprint,
   workflow: WorkflowDefinition,
   stage: CfnStageDefinition,
   stackName: string,
@@ -108,7 +122,10 @@ export function addGenericCloudFormationDeployAction(
 ) {
   workflow.Actions[`Deploy_${stage.environment.title}`] = {
     DependsOn: [dependsOn],
-    Identifier: GENERIC_DEPLOY_IMAGE,
+    Identifier: getDefaultActionIdentifier(
+      ActionIdentifierAlias.deploy,
+      blueprint.context.environmentId,
+    ),
     InputArtifacts: [artifactName],
     Configuration: {
       CodeAwsRoleARN: stage.role,
@@ -125,10 +142,19 @@ export function addGenericCloudFormationDeployAction(
   };
 }
 
-export function addGenericTestReports(workflow: WorkflowDefinition, steps: Step[], coverageArtifactName: string, testArtifactName: string) {
+export function addGenericTestReports(
+  blueprint: Blueprint,
+  workflow: WorkflowDefinition,
+  steps: Step[],
+  coverageArtifactName: string,
+  testArtifactName: string,
+) {
   workflow.Actions.Test = {
     DependsOn: ['Build'],
-    Identifier: GENERIC_TEST_IMAGE,
+    Identifier: getDefaultActionIdentifier(
+      ActionIdentifierAlias.test,
+      blueprint.context.environmentId,
+    ),
     OutputArtifacts: [coverageArtifactName, testArtifactName],
     Configuration: {
       Steps: steps,

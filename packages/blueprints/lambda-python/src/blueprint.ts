@@ -87,6 +87,7 @@ export class Blueprint extends ParentBlueprint {
       this,
       this.repository,
       generateWorkflow(
+        this,
         'sam-python',
         'main',
         options.stages,
@@ -120,8 +121,11 @@ export class Blueprint extends ParentBlueprint {
   }
 
   protected addSamInstallScript() {
-    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
-      contents: `#!/usr/bin/env bash
+    new SampleFile(
+      this,
+      path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'),
+      {
+        contents: `#!/usr/bin/env bash
 echo "Setting up sam"
 
 yum install unzip -y
@@ -131,7 +135,8 @@ unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
 
 ./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
 `,
-    });
+      },
+    );
   }
 
   protected createSamTemplate(desination: string, options: Options): void {

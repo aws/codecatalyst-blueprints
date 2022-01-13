@@ -107,5 +107,5 @@ export enum PullRequestEvent {
   OPEN = 'open',
   CLOSED = 'closed',
   MERGED = 'merged',
-  REVISION = 'revision'
+  REVISION = 'revision',
 }
