@@ -6,6 +6,7 @@ import { Component, YamlFile } from 'projen';
 
 import { WorkflowDefinition } from './models';
 
+export * from './actions';
 export * from './models';
 export * from './samples/node';
 export * from './factories/index';

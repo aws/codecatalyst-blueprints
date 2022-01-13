@@ -1,3 +1,4 @@
+import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import {
   addGenericBranchTrigger,
   addGenericBuildAction,
@@ -7,11 +8,13 @@ import {
 } from '.';
 import { CfnStageDefinition, StageDefinition, WorkflowDefinition } from '../models';
 
+
 const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 const DEFAULT_COVERAGE_ARTIFACT = 'CoverageArtifact';
 const DEFAULT_TEST_ARTIFACT = 'TestArtifact';
 
 export function generate(
+  blueprint: Blueprint,
   defaultBranch = 'main',
   stages: StageDefinition[] = [],
   stackName: string,
@@ -25,32 +28,43 @@ export function generate(
 
   addGenericBranchTrigger(workflow, [defaultBranch]);
 
-  addGenericBuildAction(workflow, buildRoleArn, [
-    { Run: '. ./.aws/scripts/setup-sam.sh' },
-    { Run: 'python --version' },
-    { Run: 'sam build' },
-    {
-      Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${s3BucketName} --output-template-file output.yaml --region ${region}`,
-    },
-  ],
-  DEFAULT_ARTIFACT_NAME);
+  addGenericBuildAction(
+    blueprint,
+    workflow,
+    buildRoleArn,
+    [
+      { Run: '. ./.aws/scripts/setup-sam.sh' },
+      { Run: 'python --version' },
+      { Run: 'sam build' },
+      {
+        Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${s3BucketName} --output-template-file output.yaml --region ${region}`,
+      },
+    ],
+    DEFAULT_ARTIFACT_NAME,
+  );
 
   let dependsOn = 'Build';
   if (tests) {
     dependsOn = 'Test';
-    addGenericTestReports(workflow, [
-      {
-        Run: 'python3 -m pip install -r tests/requirements.txt',
-      },
-      {
-        Run: 'python3 -m pytest tests/unit -v --junitxml=reports/report.xml  --cov="tests" --cov-report xml:reports/cov.xml',
-      },
-    ],
-    DEFAULT_COVERAGE_ARTIFACT, DEFAULT_TEST_ARTIFACT);
+    addGenericTestReports(
+      blueprint,
+      workflow,
+      [
+        {
+          Run: 'python3 -m pip install -r tests/requirements.txt',
+        },
+        {
+          Run: 'python3 -m pytest tests/unit -v --junitxml=reports/report.xml  --cov="tests" --cov-report xml:reports/cov.xml',
+        },
+      ],
+      DEFAULT_COVERAGE_ARTIFACT,
+      DEFAULT_TEST_ARTIFACT,
+    );
   }
 
   stages.forEach(stage => {
     addGenericCloudFormationDeployAction(
+      blueprint,
       workflow,
       {
         ...stage,

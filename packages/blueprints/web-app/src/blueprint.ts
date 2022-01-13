@@ -1,18 +1,25 @@
-import { Environment } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, BuildActionConfiguration, Step, WorkflowDefinition } from '@caws-blueprint-component/caws-workflows';
-import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
+import {
+  ActionIdentifierAlias,
+  BuildActionConfiguration,
+  Step,
+  Workflow,
+  WorkflowDefinition,
+  getDefaultActionIdentifier,
+} from '@caws-blueprint-component/caws-workflows';
+import {AwsCdkTypeScriptApp, Project, SourceCode, awscdk, web} from 'projen';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { awscdk, AwsCdkTypeScriptApp, Project, SourceCode, web } from 'projen';
+import {SampleWorkspaces, Workspace} from '@caws-blueprint-component/caws-workspaces';
+import {getStackDefinition, getStackTestDefintion} from './stack';
 
+import {Environment} from '@caws-blueprint-component/caws-environments';
+import {SourceRepository} from '@caws-blueprint-component/caws-source-repositories';
+import {createClass} from './stack-generator';
+import {createLambda} from './lambda-generator';
 import defaults from './defaults.json';
-import { helloWorldLambdaCallback } from './hello-world-lambda';
-import { createLambda } from './lambda-generator';
-import { getStackDefinition, getStackTestDefintion } from './stack';
-import { createClass } from './stack-generator';
+import {helloWorldLambdaCallback} from './hello-world-lambda';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -21,7 +28,7 @@ import { createClass } from './stack-generator';
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
  * 4. All required members of 'Options' must be defined in 'defaults.json' to synth your blueprint locally
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
-*/
+ */
 export interface Options extends ParentOptions {
   /**
    * The name of the source repository.
@@ -102,9 +109,7 @@ export class Blueprint extends ParentBlueprint {
         '@aws-cdk/aws-s3-deployment',
         '@aws-cdk/aws-cloudfront',
       ],
-      devDeps: [
-        'cdk-assets',
-      ],
+      devDeps: ['cdk-assets'],
       context: {
         // TODO: may be able to remove this
         //       and is related to using cdk-assets?
@@ -116,7 +121,11 @@ export class Blueprint extends ParentBlueprint {
     });
 
     const lambdaName = `${this.options.sourceRepositoryName}Lambda`;
-    const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(project, lambdaName, helloWorldLambdaCallback);
+    const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(
+      project,
+      lambdaName,
+      helloWorldLambdaCallback,
+    );
 
     const stackName = `${this.options.sourceRepositoryName}Stack`;
 
@@ -146,27 +155,29 @@ export class Blueprint extends ParentBlueprint {
       this.createDeployAction(stage, workflowDefinition);
     });
 
-    new Workflow(
-      this,
-      repository,
-      workflowDefinition,
-    );
-
+    new Workflow(this, repository, workflowDefinition);
   }
 
   private createDeployAction(stage: any, workflow: WorkflowDefinition) {
     workflow.Actions[`Build_${stage.environment.title}`] = {
-      Identifier: 'aws-actions/cawsbuildprivate-build@v1',
+      Identifier: getDefaultActionIdentifier(
+        ActionIdentifierAlias.build,
+        this.context.environmentId,
+      ),
       Configuration: {
         ActionRoleArn: stage.role,
         Steps: [
-          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
-          { Run: `export awsRegion=${stage.region}` },
-          { Run: `cd ./${this.options.reactFolderName} && npm install && npm run build` },
-          { Run: `cd ../${this.options.nodeFolderName} && npm install && npm run build` },
+          {Run: `export awsAccountId=${this.getIdFromArn(stage.role)}`},
+          {Run: `export awsRegion=${stage.region}`},
+          {Run: `cd ./${this.options.reactFolderName} && npm install && npm run build`},
+          {Run: `cd ../${this.options.nodeFolderName} && npm install && npm run build`},
           // { Run: `export AWS_SDK_LOAD_CONFIG=1` },
-          { Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${stage.region}` },
-          { Run: 'npm run env -- cdk deploy --require-approval never' },
+          {
+            Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
+              stage.region
+            }`,
+          },
+          {Run: 'npm run env -- cdk deploy --require-approval never'},
           // TODO - Look into using this to push artifacts to s3.
           // { Run: `npm run env -- cdk synth` },
           // { Run: `npm run env -- cdk-assets publish --path ./cdk.out/${this.options.sourceRepositoryName}Stack.assets.json` }
@@ -192,7 +203,7 @@ export class Blueprint extends ParentBlueprint {
     //             ] as Step[],
     //           } as BuildActionConfiguration,
     //         };
-  };
+  }
 
   private getIdFromArn(arnRole: string) {
     return arnRole.split(':')[4];
