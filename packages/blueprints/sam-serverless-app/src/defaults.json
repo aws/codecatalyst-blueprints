@@ -1,0 +1,26 @@
+{
+  "sourceRepositoryName": "MyServerlessAppRepo",
+  "runtime": "Python 3",
+  "lambdas": [
+  {
+    "functionName": "HelloWorld",
+    "description": "This is a lambda function"
+  }
+  ],
+
+  "workflow": {
+    "cloudFormationStackName": "REPLACE_ME",
+    "s3BucketName": "REPLACE_ME",
+    "buildRoleArn": "REPLACE_ME",
+    "stackRoleArn": "REPLACE_ME",
+    "stages": [
+      {
+        "environment": {
+          "title": "prod",
+          "description": "This environment is for production"
+        },
+        "role": "REPLACE_ME"
+      }
+    ]
+  }
+}
