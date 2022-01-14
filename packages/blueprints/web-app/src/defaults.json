@@ -5,8 +5,8 @@
   "stages": [
     {
       "environment": {
-        "title": "personal",
-        "description": "this is my personal test environment"
+        "title": "development",
+        "description": "this is my development environment"
       },
       "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
       "region": "us-west-2"

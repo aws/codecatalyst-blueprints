@@ -19,7 +19,7 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint-component/caws-workspaces',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
-  description: 'This blueprint creates and deploys a web application',
+  description: 'This blueprint creates and deploys a web application.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.web-app',
   publishingOrganization: 'blueprints',
