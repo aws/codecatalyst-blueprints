@@ -16,13 +16,14 @@ import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { AwsCdkTypeScriptApp, Project, SourceCode, awscdk, web } from 'projen';
+import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen';
 
 import defaults from './defaults.json';
 import { helloWorldLambdaCallback } from './hello-world-lambda';
 import { createLambda } from './lambda-generator';
+import { generateReadmeContents } from './readme-contents';
+import { generatePackageJson } from './package-json-contents';
 import { getStackDefinition, getStackTestDefintion } from './stack';
-
 import { createClass } from './stack-generator';
 
 /**
@@ -56,6 +57,7 @@ export interface Options extends ParentOptions {
  */
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
+  protected readonly repository: SourceRepository;
   protected readonly frontend: web.ReactTypeScriptProject;
 
   constructor(options_: Options) {
@@ -63,25 +65,25 @@ export class Blueprint extends ParentBlueprint {
     const options = Object.assign(defaults, options_);
     this.options = options;
 
-    const repository = new SourceRepository(this, {
+    this.repository = new SourceRepository(this, {
       title: this.options.repositoryName,
     });
-    new Workspace(this, repository, SampleWorkspaces.default);
+    new Workspace(this, this.repository, SampleWorkspaces.default);
 
     this.options.stages.forEach(stage => new Environment(this, stage.environment));
 
-    this.frontend = this.createFrontend(repository);
-    this.createStacks(repository);
-    this.createWorkflow(repository);
+    this.frontend = this.createFrontend();
+    this.createStacks();
+    this.createWorkflow();
   }
 
-  private createFrontend(repo: SourceRepository): web.ReactTypeScriptProject {
+  private createFrontend(): web.ReactTypeScriptProject {
     const project = new web.ReactTypeScriptProject({
       parent: this,
       name: `${this.options.reactFolderName}`,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${repo.relativePath}/${this.options.reactFolderName}`,
+      outdir: `${this.repository.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
       deps: [
         'axios',
@@ -102,6 +104,12 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
+    const readmeContents: string = generateReadmeContents(this.options.reactFolderName, this.options.nodeFolderName);
+    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), { contents: readmeContents });
+
+    const rootPackageJson: string = generatePackageJson(this.options.reactFolderName, this.options.nodeFolderName);
+    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), { contents: rootPackageJson });
+
     super.synth();
 
     // overwite the App.tsx file with some additional logic
@@ -149,14 +157,14 @@ export class Blueprint extends ParentBlueprint {
     fs.writeFileSync(path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'), sourceCode.join('\n'));
   }
 
-  private createStacks(repo: SourceRepository): Project {
+  private createStacks(): AwsCdkTypeScriptApp {
     const project = new AwsCdkTypeScriptApp({
       parent: this,
       cdkVersion: '1.95.2',
       name: `${this.options.nodeFolderName}`,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${repo.relativePath}/${this.options.nodeFolderName}`,
+      outdir: `${this.repository.relativePath}/${this.options.nodeFolderName}`,
       appEntrypoint: 'main.ts',
       cdkDependencies: [
         '@aws-cdk/core',
@@ -193,7 +201,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   // TODO: A temporary hack for deploying cdk apps through workflows.
-  private createWorkflow(repository: SourceRepository) {
+  private createWorkflow() {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',
       Triggers: [
@@ -211,7 +219,7 @@ export class Blueprint extends ParentBlueprint {
 
     new Workflow(
       this,
-      repository,
+      this.repository,
       workflowDefinition,
     );
   }
