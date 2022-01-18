@@ -11,7 +11,7 @@ const blueprint = new ProjenBlueprint({
   peerDeps: ['projen'],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description:
-    'This is a base blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
+    'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.blueprint',
   publishingOrganization: 'blueprints',
