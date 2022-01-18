@@ -20,6 +20,8 @@ const project = new TypeScriptProject({
   copyrightOwner: 'Amazon.com',
   deps: [
     '@caws-blueprint/blueprints.blueprint',
+    'decamelize',
+    "camelcase",
   ],
   peerDeps: [
     'projen',
