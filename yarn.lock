@@ -210,6 +210,8 @@ __metadata:
     "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
+    camelcase: 5.0.x
+    decamelize: 5.0.x
     eslint: "*"
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
@@ -1920,7 +1922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:5.0.0":
+"camelcase@npm:5.0.0, camelcase@npm:5.0.x":
   version: 5.0.0
   resolution: "camelcase@npm:5.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcamelcase%2F-%2Fcamelcase-5.0.0.tgz"
   checksum: 8bfe920e0472d79d34f0279da1391f155bcce7fc74c99b49dafae4f787396040a34f4023da837ab0b4372e63224b460f9524b495906863c38876faea9da53705

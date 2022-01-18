@@ -41,7 +41,9 @@
     "projen": "*"
   },
   "dependencies": {
-    "@caws-blueprint/blueprints.blueprint": "0.0.x"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "camelcase": "5.0.x",
+    "decamelize": "5.0.x"
   },
   "bundledDependencies": [],
   "main": "lib/index.js",
