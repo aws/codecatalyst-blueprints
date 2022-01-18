@@ -21,8 +21,8 @@ import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen
 import defaults from './defaults.json';
 import { helloWorldLambdaCallback } from './hello-world-lambda';
 import { createLambda } from './lambda-generator';
-import { generateReadmeContents } from './readme-contents';
 import { generatePackageJson } from './package-json-contents';
+import { generateReadmeContents } from './readme-contents';
 import { getStackDefinition, getStackTestDefintion } from './stack';
 import { createClass } from './stack-generator';
 
@@ -108,7 +108,7 @@ export class Blueprint extends ParentBlueprint {
     new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), { contents: readmeContents });
 
     const rootPackageJson: string = generatePackageJson(this.options.reactFolderName, this.options.nodeFolderName);
-    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), { contents: rootPackageJson });
+    new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), { contents: rootPackageJson });
 
     super.synth();
 

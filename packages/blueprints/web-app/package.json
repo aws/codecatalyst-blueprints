@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.web-app",
-  "description": "This blueprint creates and deploys a web application",
+  "description": "This blueprint creates and deploys a web application.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
