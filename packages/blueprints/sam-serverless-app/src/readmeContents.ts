@@ -69,7 +69,7 @@ This project will deploy the following AWS Resources after being successfuly cre
 
   - API Gateway - A resource for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. For more information on API Gateway, see the [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
 
-  - IAM Role(s) - A resource for securely controled access to the lambda function(s). For more information on IAM, see the [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+  - IAM Role(s) - A resource for securely controlled access to AWS resource, such as the lambda function(s). For more information on IAM, see the [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
 
 ## Serverless Application
 
