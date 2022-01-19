@@ -1,12 +1,6 @@
-<figure class="video_container">
-  <video width="100%" controls="true" allowfullscreen="true" frameborder="0" poster="https://caws-video-test.s3.us-west-2.amazonaws.com/blueprint-sam-ss.png">
-    <source src="https://caws-video-test.s3.us-west-2.amazonaws.com/blueprint-sam.mp4" type="video/mp4">
-  </video>
-</figure>
-
 ## Blueprints
 
-Blueprints are a project generation tool. Blueprints will generate source code and configuaration files such as package.json, Makefile, eslint, etc. for your project.
+Blueprints are a project generation tool. Blueprints will generate source code and configuration files such as package.json, Makefile, eslint, etc. for your project.
 Blueprints can generate files supporting AWS resources such as cdk constructs, cloudformation and sam templates, etc.
 Blueprints can also generate components and files supporting Quokka.Codes resources such as source repositories, workflows, environments, etc.
 For more information on blueprints, see the _Working with blueprints in Quokka_ section in the **Quokka User Guide**
@@ -24,7 +18,7 @@ This blueprint will generate the following files and folders:
 
 - .mde.devfile.yaml - A DevFile that defines developer workspaces or cloud-native development environments.
 
-- README - Information on the files and folders in the project, how to build, test, and deploy your appliction.
+- README - Information on the files and folders in the project, how to build, test, and deploy your application.
 
 This blueprint will generate the following resources in a Quokka.Codes project:
 
@@ -54,7 +48,7 @@ This blueprint will deploy the following AWS Resources upon successful project c
 
   For more information on API Gateway, see the [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
 
-- IAM Role(s) - A resource for securely controled access to the lambda function(s).
+- IAM Role(s) - A resource for securely controlled access to AWS resources, such as the lambda function(s).
 
   For more information on IAM, see the [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
 
