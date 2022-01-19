@@ -17,12 +17,6 @@ export interface Options extends ParentOptions {
    * Which Git repository do we clone? This should be a https URL.
    */
   gitRepository: string;
-
-  /**
-   * Specifies the branch we're cloning from
-   * @advanced
-   */
-  branch?: string;
 }
 
 /**
