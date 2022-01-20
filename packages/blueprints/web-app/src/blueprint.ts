@@ -124,7 +124,7 @@ export class Blueprint extends ParentBlueprint {
       '  const [result, setResult] = useState({ data: null });',
       '  useEffect(() => {',
       '    const getData = async (): Promise<void> => {',
-      '      const result = await axios.get(config.HelloWorldAppApiStack.apiurl);',
+      `      const result = await axios.get(config.${this.options.repositoryName}ApiStack.apiurl);`,
       '      setResult({ data: result.data });',
       '    };',
       '    getData();',
