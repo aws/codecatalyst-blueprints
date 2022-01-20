@@ -35,19 +35,26 @@ import { createClass } from './stack-generator';
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
+  /**
+   * Add deployment stages.
+   */
+   stages: StageDefinition[];
+
+  /**
+   * Customize your project's repositiory name.
+   * @advanced
+   */
   repositoryName: string;
   /**
    * Name of the folder for the frontend stack, such as react or ui.
+   * @advanced
    */
   reactFolderName: string;
   /**
    * Name of the folder for the backend stack, such as node or api.
+   * @advanced
    */
   nodeFolderName: string;
-  /**
-   * An array of stage definitions
-   */
-  stages: StageDefinition[];
 }
 
 /**
