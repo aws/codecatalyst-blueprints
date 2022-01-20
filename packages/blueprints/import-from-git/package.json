@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.import-from-git",
-  "description": "This blueprint imports a project from a public Git URL. It can be used with Github, GitLab, BitBucket, or any git provider.",
+  "description": "This blueprint imports a project from a public Git URL. It can be used with Github, GitLab, Bitbucket, or any Git provider.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",

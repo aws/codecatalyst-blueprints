@@ -4,7 +4,7 @@ export function generateReadmeContents(
 ) {
   return `## This Project:
 
-This project is a Cloud Development Kit (CDK) Web Application Project generated using the AWS Blueprints system. For more information on blueprints, see [Blueprints User Guide](https://docs.aws.amazon.com/quokka/latest/userguide/projects-blueprints.html). This project contains the source code, supporting files, and Quokka.Codes resources for a CDK application that is deploying using Quokka.Codes workflows.
+This project is a Cloud Development Kit (CDK) Web application Project generated using the AWS Blueprints system. For more information on blueprints, see [Blueprints User Guide](https://docs.aws.amazon.com/quokka/latest/userguide/projects-blueprints.html). This project contains the source code, supporting files, and Quokka.Codes resources for a CDK application that is deploying using Quokka.Codes workflows.
 
 This project contains the following files and folders in its source repository:
 
@@ -28,19 +28,21 @@ This project contains the following files and folders in its source repository:
 
 This project has created the following Quokka.Codes Resources:
 
- - Source repository - A git repository to store, version, and manage project assets.
+  - Source repository - A git repository to store, version, and manage project assets.
 
-    For more information on source repositories, see the _Source repositories in Quokka_ section in the **Quokka User Guide**
+  For more information on source repositories, see _Working with source repositories_ in the **Quokka User Guide**
 
-  - Workflow - An automated procedure that defines how to build, test, and deploy the serverless application.
+  - Workflow - An automated procedure that defines how to build, test, and deploy the web application.
 
-    For more information on workflows, see the _Build, test, and deploy with workflows in Quokka_ section in the **Quokka User Guide**
+  For more information on workflows, see _Build, test, and deploy with workflows_ in the **Quokka User Guide**
 
   - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into a development, staging, or production environment.
 
-    For more information on environments, see the _Organizing deployments using environments_ section in the **Quokka User Guide**
+  For more information on environments, see _Organizing deployments using environments_ in the **Quokka User Guide**.
 
   - Workspace - A cloud native development environment. A workspace must be manually created with the generated DevFile using the create workspace operation on Quokka.Codes.
+
+  For more information on the create workspace operation and workspaces, see _Working with workspaces_ in the **Quokka User Guide**.
 
 This project will deploy the following AWS Resources after being successfuly created, the deployment status can be viewed in the project's workflow:
 
@@ -58,7 +60,7 @@ This project will deploy the following AWS Resources after being successfuly cre
 
 - Lambda Function - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers
 
-For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+  For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 
 - IAM Role(s) - A resource for securely controlled access to AWS
 
