@@ -38,7 +38,7 @@ const project = new ProjenBlueprint({
   "keywords": ["blueprint", "sam", "lambda", "python", "node", "nodejs", "java", "serverless"],
   "homepage": "https://aws.amazon.com/",
   "mediaUrls": ["https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"],
-  "displayName": "Serverless Application Model (SAM) Blueprint"
+  "displayName": "Serverless Application Model (SAM) blueprint"
 });
 
 project.synth();

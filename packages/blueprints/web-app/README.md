@@ -5,7 +5,7 @@ Blueprints can generate files supporting AWS resources such as CDK constructs, C
 Blueprints can also generate components and files supporting Quokka.Codes resources such as source repositories, workflows, environments, etc.
 
 ## This Blueprint:
-This blueprint generates a Web Application project. This blueprint will generate the source code, supporting files, and create resources for a web application that is deployed using Quokka workflows.
+This blueprint generates a web application project. This blueprint will generate the source code, supporting files, and create resources for a web application that is deployed using Quokka workflows.
 
 This blueprint will generate the following files and folders:
 
@@ -34,7 +34,7 @@ This blueprint will deploy the following AWS Resources upon successful project c
 
 - Lambda Function - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers
 
-For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+  For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 
 - IAM Role(s) - A resource for securely controlled access to AWS
 
