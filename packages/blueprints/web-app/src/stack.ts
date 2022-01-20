@@ -50,11 +50,6 @@ export class ${appStack} extends Stack {
     );
     mySiteBucket.grantRead(originAccessIdentity);
 
-    new s3deploy.BucketDeployment(this, \'ReactApp\', {
-      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.reactFolderName}/build\')],
-      destinationBucket: mySiteBucket
-    });
-
     const distribution = new cloudfront.CloudFrontWebDistribution(this, \'distributionCDN\', {
       originConfigs: [
         {
@@ -65,6 +60,12 @@ export class ${appStack} extends Stack {
           behaviors: [{ isDefaultBehavior: true }],
         }
       ],
+    });
+
+    new s3deploy.BucketDeployment(this, \'ReactApp\', {
+      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.reactFolderName}/build\')],
+      destinationBucket: mySiteBucket,
+      distribution,
     });
 
 
