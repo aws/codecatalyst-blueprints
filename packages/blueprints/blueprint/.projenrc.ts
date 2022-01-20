@@ -4,7 +4,7 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'blueprint',
   projenrcTs: true,
-  displayName: 'Empty Project',
+  displayName: 'Empty project',
   authorName: 'caws-blueprints',
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
