@@ -18,6 +18,7 @@ import {
 } from '@caws-blueprint/blueprints.blueprint';
 import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen';
 
+import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
 import { helloWorldLambdaCallback } from './hello-world-lambda';
 import { createLambda } from './lambda-generator';
@@ -110,6 +111,9 @@ export class Blueprint extends ParentBlueprint {
     const rootPackageJson: string = generatePackageJson(this.options.reactFolderName, this.options.nodeFolderName);
     new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), { contents: rootPackageJson });
 
+    const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
+    new SampleFile(this, path.join(this.repository.relativePath, this.options.reactFolderName, this.frontend.srcdir, 'config.json'), { contents: defaultConfig });
+
     super.synth();
 
     // overwite the App.tsx file with some additional logic
@@ -124,7 +128,12 @@ export class Blueprint extends ParentBlueprint {
       '  const [result, setResult] = useState({ data: null });',
       '  useEffect(() => {',
       '    const getData = async (): Promise<void> => {',
-      `      const result = await axios.get(config.${this.options.repositoryName}ApiStack.apiurl);`,
+      '      try {',
+      `          const result = await axios.get(config.${this.options.repositoryName}ApiStack.apiurl ?? '');`,
+      '      } catch (e) {',
+      '          // consume exceptions',
+      '          console.log(e)',
+      '      }',
       '      setResult({ data: result.data });',
       '    };',
       '    getData();',
