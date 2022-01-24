@@ -449,6 +449,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@caws-blueprint/blueprints.upload-watcher-test@workspace:packages/blueprints/upload-test-blueprint":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint/blueprints.upload-watcher-test@workspace:packages/blueprints/upload-test-blueprint"
+  dependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.0.x
+    "@caws-blueprint-util/blueprint-projen": 0.0.x
+    "@types/node": ^14.17.0
+    "@typescript-eslint/eslint-plugin": "*"
+    "@typescript-eslint/parser": "*"
+    eslint: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    json-schema: "*"
+    npm-check-updates: ^11
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^9
+    typescript: ^4.4.4
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
 "@caws-blueprint/blueprints.web-app@workspace:packages/blueprints/web-app":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.web-app@workspace:packages/blueprints/web-app"
