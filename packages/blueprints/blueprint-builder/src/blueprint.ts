@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as cp from 'child_process';
-// import * as fs from 'fs';
+import * as fs from 'fs';
 import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
@@ -65,6 +65,12 @@ export interface Options {
    * @advanced
    */
   license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
+
+  /**
+   * Projen pinned version. Dont change unless you know what you're doing.
+   * @advanced
+   */
+  projenVersion: '0.34.14';
 }
 
 export class Blueprint extends ParentBlueprint {
@@ -177,9 +183,13 @@ export class Blueprint extends ParentBlueprint {
     const blueprint = new ProjenBlueprint({
       outdir: this.repository.relativePath,
       parent: this,
+      mediaUrls: ['media-urls-that-have-to-do-with-your-blueprint'],
+      displayName: 'Your Blueprint Display Name',
+      publishingOrganization: 'Your Publishing Organization',
       ...this.newBlueprintOptions,
       overridePackageVersion: '0.0.0',
     });
+    blueprint.addDevDeps(`projen@${this.options.projenVersion}`);
 
     const rcfile = new SourceCode(blueprint, '.projenrc.ts');
     rcfile.line('import { ProjenBlueprint } from \'@caws-blueprint-util/blueprint-projen\';');
@@ -198,12 +208,20 @@ export class Blueprint extends ParentBlueprint {
       indexFile.line(line);
     });
 
+    // set up assets sample assets folder:
+    new SourceCode(blueprint, 'assets/put-your-sample-assets-here.txt');
+
     const defaults = new SourceCode(blueprint, 'src/defaults.json');
     defaults.line(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
+    const readmeContentPath = path.join(__dirname, '..', 'assets', '/starter-readme.md');
+    const readmeContent = fs.readFileSync(readmeContentPath, 'utf8');
     new TextFile(blueprint, path.join('README.md'), {
       readonly: false,
-      lines: this.parentIntrospection.readmeContent.split('\n'),
+      lines: [
+        ...readmeContent.split('\n'),
+        ...this.parentIntrospection.readmeContent.split('\n'),
+      ],
     });
   }
 
