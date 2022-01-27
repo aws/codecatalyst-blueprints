@@ -32,6 +32,7 @@ export interface Options {
 
   /**
    * Who is the author of the blueprint?
+   * @validateRegex (/^[a-zA-Z0-9_]+$/,"Must contain only upper and lowercase letters, numbers, and underscores")
    */
   authorName: string;
 
