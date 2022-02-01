@@ -128,15 +128,14 @@ export function addGenericCloudFormationDeployAction(
     ),
     InputArtifacts: [artifactName],
     Configuration: {
-      CodeAwsRoleARN: stage.role,
-      StackRoleARN: stage.stackRoleArn,
-      StackName: stackName,
-      StackRegion: stackRegion,
-      TemplatePath: `${artifactName}::output.yaml`,
-      EnvironmentName: stage.environment.title,
-      Parameters: [],
-      RollbackConfiguration: {
-        MonitorAlarmARNs: [],
+      ActionRoleArn: stage.role,
+      DeploymentEnvironment: stage.environment.title,
+      Parameters: {
+        'name': stackName,
+        'region': stackRegion,
+        'role-arn': stage.stackRoleArn,
+        'template': './output.yaml',
+        'capabilities': 'CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM',
       },
     },
   };

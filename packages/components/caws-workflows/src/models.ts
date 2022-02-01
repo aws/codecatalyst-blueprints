@@ -42,15 +42,14 @@ export interface BuildActionConfiguration {
 }
 
 export interface DeployActionConfiguration {
-  CodeAwsRoleARN: string;
-  StackRoleARN: string;
-  StackName: string;
-  StackRegion: string;
-  TemplatePath: string;
-  EnvironmentName: string;
-  Parameters: [];
-  RollbackConfiguration: {
-    MonitorAlarmARNs: [];
+  ActionRoleArn: string;
+  DeploymentEnvironment: string;
+  Parameters: {
+    name: string;
+    region: string;
+    'role-arn': string;
+    template: string;
+    capabilities: string;
   };
 }
 
