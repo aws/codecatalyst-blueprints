@@ -14,8 +14,8 @@ const ACTION_IDENTIFIERS: {[key: string]: {default: string; prod: string}} = {
     prod: 'aws/managed-test@v1',
   },
   deploy: {
-    default: 'aws/cloudformation-deploy-gamma@v1',
-    prod: 'aws/cloudformation-deploy@v1',
+    default: 'aws/cfn-deploy-gamma@v1',
+    prod: 'aws/cfn-deploy@v1',
   },
 };
 
