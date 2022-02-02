@@ -161,7 +161,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -173,7 +173,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -184,7 +184,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-issue@workspace:packages/components/caws-issues"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -196,7 +196,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -207,10 +207,10 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
-    camelcase: 5.0.x
+    camelcase: 5.3.x
     decamelize: 5.0.x
     eslint: "*"
     eslint-import-resolver-node: "*"
@@ -221,7 +221,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -234,7 +234,7 @@ __metadata:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -246,7 +246,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -258,7 +258,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -270,7 +270,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -280,28 +280,28 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
   dependencies:
-    "@types/jest": 26.0.15
-    "@types/node": ^14.17.0
-    "@types/pino": ^6.3.2
-    "@types/yargs": 17.0.2
+    "@types/jest": 26.0.24
+    "@types/node": ^14.18.10
+    "@types/pino": ^6.3.12
+    "@types/yargs": 17.0.8
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
-    axios: ^0.21.4
+    axios: ^0.25.0
     eslint: "*"
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
     npm-check-updates: ^11
-    pino: ^6.7.0
+    pino: ^6.13.4
     pino-pretty: "*"
     projen: "*"
     standard-version: ^9
     ts-jest: "*"
     ts-loader: "*"
     ts-node: ^9
-    typescript: ^4.4.4
-    yargs: ^17.1.1
+    typescript: ^4.5.5
+    yargs: ^17.3.1
   bin:
     blueprint: lib/index.js
   languageName: unknown
@@ -312,7 +312,7 @@ __metadata:
   resolution: "@caws-blueprint-util/blueprint-projen@workspace:packages/utils/projen-blueprint"
   dependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -324,7 +324,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     projen: "*"
@@ -335,7 +335,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-utils@workspace:packages/utils/blueprint-utils"
   dependencies:
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -347,7 +347,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -362,7 +362,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     camelcase: 1.x
@@ -376,7 +376,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   languageName: unknown
   linkType: soft
 
@@ -386,7 +386,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-projen": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -398,7 +398,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -413,7 +413,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -425,7 +425,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   languageName: unknown
   linkType: soft
 
@@ -461,7 +461,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": ^0.0.x
-    "@types/node": ^14.17.0
+    "@types/node": ^14.18.10
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -473,7 +473,7 @@ __metadata:
     projen: "*"
     standard-version: ^9
     ts-node: ^9
-    typescript: ^4.4.4
+    typescript: ^4.5.5
   languageName: unknown
   linkType: soft
 
@@ -809,13 +809,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:26.0.15":
-  version: 26.0.15
-  resolution: "@types/jest@npm:26.0.15::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjest%2F-%2Fjest-26.0.15.tgz"
+"@types/jest@npm:26.0.24":
+  version: 26.0.24
+  resolution: "@types/jest@npm:26.0.24::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjest%2F-%2Fjest-26.0.24.tgz"
   dependencies:
     jest-diff: ^26.0.0
     pretty-format: ^26.0.0
-  checksum: 5bbed3d3afa40bcac9eb2e8e76957b40b7cb86228a7a1dd455f7e30cb283a7314f7d7afaf2d46ca52ba5ce62168e0f60c57e0ab7509a6b91eab42460709b6bf1
+  checksum: ae39675412f08d884926254e9b12bfd2b5a4e4d204c94d3148cb942174a474930d0c60540133c968f22241d4712b7940c96cbc883096eb326a4d5b206fb78bd0
   languageName: node
   linkType: hard
 
@@ -863,10 +863,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.17.0":
-  version: 14.17.34
-  resolution: "@types/node@npm:14.17.34::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.17.34.tgz"
-  checksum: 803a7532b6998aca6aa1b3e6239f280e82612d4f641d38fbf08962c905ea9d1b278b2f09d396beac5120a4e68f33d7467298b197f2f00150ec1dcd546de02a89
+"@types/node@npm:^14.18.10":
+  version: 14.18.10
+  resolution: "@types/node@npm:14.18.10::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.18.10.tgz"
+  checksum: e722eec37be85dd7dddc4cfd26c501c66f1f2a7e0f603f57ff925348e65a5db603b06363fa27489cbecff44f0ae59812f22509923c4c45ffa5958604cc002401
   languageName: node
   linkType: hard
 
@@ -903,7 +903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pino@npm:6.3, @types/pino@npm:^6.3.2":
+"@types/pino@npm:6.3, @types/pino@npm:^6.3.12":
   version: 6.3.12
   resolution: "@types/pino@npm:6.3.12::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fpino%2F-%2Fpino-6.3.12.tgz"
   dependencies:
@@ -945,12 +945,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@types/yargs@npm:17.0.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs%2F-%2Fyargs-17.0.2.tgz"
+"@types/yargs@npm:17.0.8":
+  version: 17.0.8
+  resolution: "@types/yargs@npm:17.0.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fyargs%2F-%2Fyargs-17.0.8.tgz"
   dependencies:
     "@types/yargs-parser": "*"
-  checksum: 6f4600d3b786c0eb083782f59c9ed61bb4c204269b0a07819bb9e9b1fc29deaf4fe28abde7dca5fbf3cf851beca9458cbcf63ebd128ebfe83d31002d84337b31
+  checksum: 63d06700ffbed745f00d7994eb92416649c8a3ead22f26446979d383f3af52fa9400bb185268f3a44a2348749098ffe33a8185ca676b77bc3206c63b8b73fd01
   languageName: node
   linkType: hard
 
@@ -1683,12 +1683,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.4":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxios%2F-%2Faxios-0.21.4.tgz"
+"axios@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "axios@npm:0.25.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Faxios%2F-%2Faxios-0.25.0.tgz"
   dependencies:
-    follow-redirects: ^1.14.0
-  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
+    follow-redirects: ^1.14.7
+  checksum: 2a8a3787c05f2a0c9c3878f49782357e2a9f38945b93018fb0c4fd788171c43dceefbb577988628e09fea53952744d1ecebde234b561f1e703aa43e0a598a3ad
   languageName: node
   linkType: hard
 
@@ -1894,14 +1894,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:5.0.0, camelcase@npm:5.0.x":
+"camelcase@npm:5.0.0":
   version: 5.0.0
   resolution: "camelcase@npm:5.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcamelcase%2F-%2Fcamelcase-5.0.0.tgz"
   checksum: 8bfe920e0472d79d34f0279da1391f155bcce7fc74c99b49dafae4f787396040a34f4023da837ab0b4372e63224b460f9524b495906863c38876faea9da53705
   languageName: node
   linkType: hard
 
-"camelcase@npm:^5.3.1":
+"camelcase@npm:5.3.x, camelcase@npm:^5.3.1":
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcamelcase%2F-%2Fcamelcase-5.3.1.tgz"
   checksum: e6effce26b9404e3c0f301498184f243811c30dfe6d0b9051863bd8e4034d09c8c2923794f280d6827e5aa055f6c434115ff97864a16a963366fb35fd673024b
@@ -3649,13 +3649,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-warning@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "fastify-warning@npm:0.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastify-warning%2F-%2Ffastify-warning-0.2.0.tgz"
-  checksum: c19ebccf54a3122877d2248400772ca98bacbabdf97826211ede29246c640d47431a2eebed1f52f9421139ed5e52e42d3bd4aefc46e27b6f34add3507529fd97
-  languageName: node
-  linkType: hard
-
 "fastq@npm:^1.6.0":
   version: 1.13.0
   resolution: "fastq@npm:1.13.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffastq%2F-%2Ffastq-1.13.0.tgz"
@@ -3797,13 +3790,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0":
-  version: 1.14.5
-  resolution: "follow-redirects@npm:1.14.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffollow-redirects%2F-%2Ffollow-redirects-1.14.5.tgz"
+"follow-redirects@npm:^1.14.7":
+  version: 1.14.7
+  resolution: "follow-redirects@npm:1.14.7::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ffollow-redirects%2F-%2Ffollow-redirects-1.14.7.tgz"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: f004a76b2ee3a849772c2816e30928253bf47537b0f00184d89f4966413add96a228a4d96ca8c702bc045a683c52c2ba41545c915cc1a5e33bf8fd9d07b59aee
+  checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
   languageName: node
   linkType: hard
 
@@ -6373,20 +6366,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^6.7.0":
-  version: 6.13.3
-  resolution: "pino@npm:6.13.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpino%2F-%2Fpino-6.13.3.tgz"
+"pino@npm:^6.13.4":
+  version: 6.13.4
+  resolution: "pino@npm:6.13.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpino%2F-%2Fpino-6.13.4.tgz"
   dependencies:
     fast-redact: ^3.0.0
     fast-safe-stringify: ^2.0.8
-    fastify-warning: ^0.2.0
     flatstr: ^1.0.12
     pino-std-serializers: ^3.1.0
+    process-warning: ^1.0.0
     quick-format-unescaped: ^4.0.3
     sonic-boom: ^1.0.2
   bin:
     pino: bin.js
-  checksum: a580decd47a1c8b32a846ba1cb478087b523636d697bd4c57833d10b3f2b35c7d06739715ad9a291b41caf002b8d1bbf98674bfb3e99989fd41b7d934cca861c
+  checksum: 8146f2bcd1657127931be902c6e697b9eb1fe71ba7858efa4076ac4a932b6b98ec047667040235e69f802314f2bcbd3d76e915959780fbc0ba0fa3c1b79c417e
   languageName: node
   linkType: hard
 
@@ -6472,6 +6465,13 @@ __metadata:
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprocess-nextick-args%2F-%2Fprocess-nextick-args-2.0.1.tgz"
   checksum: 1d38588e520dab7cea67cbbe2efdd86a10cc7a074c09657635e34f035277b59fbb57d09d8638346bf7090f8e8ebc070c96fa5fd183b777fff4f5edff5e9466cf
+  languageName: node
+  linkType: hard
+
+"process-warning@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "process-warning@npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fprocess-warning%2F-%2Fprocess-warning-1.0.0.tgz"
+  checksum: c708a03241deec3cabaeee39c4f9ee8c4d71f1c5ef9b746c8252cdb952a6059068cfcdaf348399775244cbc441b6ae5e26a9c87ed371f88335d84f26d19180f9
   languageName: node
   linkType: hard
 
@@ -8139,13 +8139,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.0.3, typescript@npm:^4.4.4":
+"typescript@npm:^4.0.3":
   version: 4.5.2
   resolution: "typescript@npm:4.5.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftypescript%2F-%2Ftypescript-4.5.2.tgz"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 74f9ce65d532bdf5d0214b3f60cf37992180023388c87a11ee6f838a803067ef0b63c600fa501b0deb07f989257dce1e244c9635ed79feca40bbccf6e0aa1ebc
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^4.5.5":
+  version: 4.5.5
+  resolution: "typescript@npm:4.5.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftypescript%2F-%2Ftypescript-4.5.5.tgz"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 506f4c919dc8aeaafa92068c997f1d213b9df4d9756d0fae1a1e7ab66b585ab3498050e236113a1c9e57ee08c21ec6814ca7a7f61378c058d79af50a4b1f5a5e
   languageName: node
   linkType: hard
 
@@ -8159,13 +8169,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.0.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.0.3#~builtin<compat/typescript>":
   version: 4.5.2
   resolution: "typescript@patch:typescript@npm%3A4.5.2%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.5.2.tgz#~builtin<compat/typescript>::version=4.5.2&hash=ddd1e8"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 24a439e062a05e3285a4f0e8a40644116ecdca89f3e908bed01e5a01b9aee747e3bcf0e85fe9e017e5ebf0c0863437c39479f2616f55a244c2d82d37022cdc4f
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+  version: 4.5.5
+  resolution: "typescript@patch:typescript@npm%3A4.5.5%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Ftypescript%252F-%252Ftypescript-4.5.5.tgz#~builtin<compat/typescript>::version=4.5.5&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 9cdde4aae20b2904431f3f2ca8acaf3b0cc52faddf68aa88b288c9d0520221817da43783a756fce7ab9360033ada0371c3ff93dfc4bdb4b13f6e9bac64e1658d
   languageName: node
   linkType: hard
 
@@ -8589,6 +8609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yargs-parser@npm:^21.0.0":
+  version: 21.0.0
+  resolution: "yargs-parser@npm:21.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs-parser%2F-%2Fyargs-parser-21.0.0.tgz"
+  checksum: 1e205fca1cb7a36a1585e2b94a64e641c12741b53627d338e12747f4dca3c3610cdd9bb235040621120548dd74c3ef03a8168d52a1eabfedccbe4a62462b6731
+  languageName: node
+  linkType: hard
+
 "yargs@npm:^16.0.0, yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-16.2.0.tgz"
@@ -8604,18 +8631,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.1.1":
-  version: 17.2.1
-  resolution: "yargs@npm:17.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-17.2.1.tgz"
+"yargs@npm:^17.3.1":
+  version: 17.3.1
+  resolution: "yargs@npm:17.3.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyargs%2F-%2Fyargs-17.3.1.tgz"
   dependencies:
     cliui: ^7.0.2
     escalade: ^3.1.1
     get-caller-file: ^2.0.5
     require-directory: ^2.1.1
-    string-width: ^4.2.0
+    string-width: ^4.2.3
     y18n: ^5.0.5
-    yargs-parser: ^20.2.2
-  checksum: 451aac46f82da776f436018feed0244bc0e7b4355f7e397bcb53d34c691b177c0d71db3dda9653760e1bc240254d8b763a252ff918ef9e235a8d202e2909c4eb
+    yargs-parser: ^21.0.0
+  checksum: 64fc2e32c56739f1d14d2d24acd17a6944c3c8e3e3558f09fc1953ac112e868cc16013d282886b9d5be22187f8b9ed4f60741a6b1011f595ce2718805a656852
   languageName: node
   linkType: hard
 

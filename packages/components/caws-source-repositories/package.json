@@ -35,14 +35,14 @@
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.5"
   },
   "peerDependencies": {
     "projen": "*"
   },
   "dependencies": {
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
-    "camelcase": "5.0.x",
+    "camelcase": "5.3.x",
     "decamelize": "5.0.x"
   },
   "bundledDependencies": [],
