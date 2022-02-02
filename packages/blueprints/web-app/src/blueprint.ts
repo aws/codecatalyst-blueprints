@@ -39,7 +39,7 @@ export interface Options extends ParentOptions {
   /**
    * Add deployment stages.
    */
-   stages: StageDefinition[];
+  stages: StageDefinition[];
 
   /**
    * Customize your project's repositiory name.
