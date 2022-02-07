@@ -38,7 +38,6 @@
     "ts-node": "^9",
     "typescript": "*"
   },
-  "peerDependencies": {},
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
@@ -63,7 +62,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
