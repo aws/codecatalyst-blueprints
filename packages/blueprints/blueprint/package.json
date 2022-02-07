@@ -49,6 +49,7 @@
   "peerDependencies": {
     "projen": "*"
   },
+  "dependencies": {},
   "bundledDependencies": [],
   "keywords": [
     "blueprint"

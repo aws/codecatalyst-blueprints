@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {Environment} from '@caws-blueprint-component/caws-environments';
-import {SourceRepository} from '@caws-blueprint-component/caws-source-repositories';
+import { Environment } from '@caws-blueprint-component/caws-environments';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import {
   ActionIdentifierAlias,
   BuildActionConfiguration,
@@ -11,21 +11,21 @@ import {
   WorkflowDefinition,
   getDefaultActionIdentifier,
 } from '@caws-blueprint-component/caws-workflows';
-import {SampleWorkspaces, Workspace} from '@caws-blueprint-component/caws-workspaces';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import {AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web} from 'projen';
+import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen';
 
-import {generateConfigJson} from './default-config';
+import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
-import {helloWorldLambdaCallback} from './hello-world-lambda';
-import {createLambda} from './lambda-generator';
-import {generatePackageJson} from './package-json-contents';
-import {generateReadmeContents} from './readme-contents';
-import {getStackDefinition, getStackTestDefintion} from './stack';
-import {createClass} from './stack-generator';
+import { helloWorldLambdaCallback } from './hello-world-lambda';
+import { createLambda } from './lambda-generator';
+import { generatePackageJson } from './package-json-contents';
+import { generateReadmeContents } from './readme-contents';
+import { getStackDefinition, getStackTestDefintion } from './stack';
+import { createClass } from './stack-generator';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -134,7 +134,7 @@ export class Blueprint extends ParentBlueprint {
         this.frontend.srcdir,
         'config.json',
       ),
-      {contents: defaultConfig},
+      { contents: defaultConfig },
     );
 
     super.synth();
@@ -264,9 +264,9 @@ export class Blueprint extends ParentBlueprint {
       Configuration: {
         ActionRoleArn: stage.role,
         Steps: [
-          {Run: `export awsAccountId=${this.getIdFromArn(stage.role)}`},
-          {Run: `export awsRegion=${stage.region}`},
-          {Run: `cd ./${this.options.nodeFolderName} && npm install && npm run build`},
+          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
+          { Run: `export awsRegion=${stage.region}` },
+          { Run: `cd ./${this.options.nodeFolderName} && npm install && npm run build` },
           {
             Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
               stage.region
@@ -275,8 +275,8 @@ export class Blueprint extends ParentBlueprint {
           {
             Run: `npm run env -- cdk deploy ${this.options.repositoryName}ApiStack --outputs-file ../${this.options.reactFolderName}/src/config.json --require-approval never`,
           },
-          {Run: `cd ../${this.options.reactFolderName} && npm install && npm run build`},
-          {Run: `cd ../${this.options.nodeFolderName}`},
+          { Run: `cd ../${this.options.reactFolderName} && npm install && npm run build` },
+          { Run: `cd ../${this.options.nodeFolderName}` },
           {
             Run: `npm run env -- cdk deploy ${this.options.repositoryName}Stack --require-approval never --outputs-file config.json`,
           },
@@ -285,7 +285,7 @@ export class Blueprint extends ParentBlueprint {
             Run: `eval $(jq -r \'.${this.options.repositoryName}Stack | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
-        OutputVariables: [{Name: 'CloudFrontURL'}],
+        OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
     };
   }

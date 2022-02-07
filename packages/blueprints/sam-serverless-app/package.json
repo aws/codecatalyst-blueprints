@@ -38,6 +38,7 @@
     "ts-node": "^9",
     "typescript": "*"
   },
+  "peerDependencies": {},
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
