@@ -3,6 +3,16 @@
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link
 things properly when using VScode. Although plugins also exist for vimlords.
 
+#### Prereq:
+Install these globally
+```
+npm install ts-node -g
+npm install webpack-cli -g
+npm install nvm -g
+npm install yarn -g
+```
+
+
 We recommend adding this to your `~/.bash_profile`
 
 Set up npm to point to the correct codeartifact repository. You'll need this in order to yarn
@@ -24,6 +34,7 @@ running projen post action.
 ```
 export PROJEN_DISABLE_POST=1
 ```
+
 
 ## Development
 
