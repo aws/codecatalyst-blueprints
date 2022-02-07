@@ -5,10 +5,7 @@ import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/blueprint-projen';
-import {
-  buildBlueprint,
-  buildIndex,
-} from '@caws-blueprint-util/blueprint-utils';
+import { buildBlueprint, buildIndex } from '@caws-blueprint-util/blueprint-utils';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
@@ -20,26 +17,19 @@ import * as decamelize from 'decamelize';
 import { YamlFile, TextFile, SourceCode } from 'projen';
 
 import { BlueprintIntrospection, introspectBlueprint } from './introspect-blueprint';
-import { buildGenerationObject, buildMetaDataObject, buildParametersObject, YamlBlueprint } from './yaml-blueprint';
+import {
+  buildGenerationObject,
+  buildMetaDataObject,
+  buildParametersObject,
+  YamlBlueprint,
+} from './yaml-blueprint';
 
 export interface Options {
   /**
    * Create a new blueprint from an existing blueprint:
-   * @optional
    * @displayName Blueprint to extend
    */
   blueprintToExtend: string;
-
-  /**
-   * Who is the author of the blueprint?
-   * @validateRegex (/^[a-zA-Z0-9_]+$/,"Must contain only upper and lowercase letters, numbers, and underscores")
-   */
-  authorName: string;
-
-  /**
-   * Blueprint Version?
-   */
-  version?: string;
 
   /**
    * What do you want to call your new blueprint?
@@ -52,9 +42,11 @@ export interface Options {
   description?: string;
 
   /**
-   * Would you like to build this as yaml?
+   * Who is the author of the blueprint?
+   * @validationRegex /^[a-zA-Z0-9_]+$/
+   * @validationMessage Must contain only upper and lowercase letters, numbers and underscores
    */
-  yaml?: boolean;
+  authorName: string;
 
   /**
    * Tags for your Blueprint:
@@ -62,16 +54,37 @@ export interface Options {
   tags?: string[];
 
   /**
-   * License for your Blueprint
-   * @advanced
+   * @collapsed true
    */
-  license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
+  advancedSettings?: {
+    /**
+     * Would you like to build this as yaml?
+     */
+    yaml?: boolean;
 
-  /**
-   * Projen pinned version. Dont change unless you know what you're doing.
-   * @advanced
-   */
-  projenVersion: '0.34.14';
+    /**
+     * Blueprint Version?
+     */
+    version?: string;
+
+    /**
+     * License for your Blueprint
+     */
+    license:
+    | 'MIT'
+    | 'Apache-2.0'
+    | 'BSD-2-Clause'
+    | 'BSD-3-Clause'
+    | 'ISC'
+    | 'MPL-2.0'
+    | 'Unlicense'
+    | 'Public-Domain';
+
+    /**
+     * Projen pinned version. Dont change unless you know what you're doing.
+     */
+    projenVersion: '0.34.14';
+  };
 }
 
 export class Blueprint extends ParentBlueprint {
@@ -103,7 +116,7 @@ export class Blueprint extends ParentBlueprint {
       name: dashName,
       displayName: this.options.blueprintName,
       authorName: this.context.organizationName,
-      license: this.options.license,
+      license: this.options.advancedSettings?.license,
       projenrcTs: true,
       sampleCode: false,
       github: false,
@@ -133,11 +146,13 @@ export class Blueprint extends ParentBlueprint {
       ],
       keywords: this.options.tags || ['no-tag'],
       homepage: '',
-      mediaUrls: ['https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png'],
+      mediaUrls: [
+        'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',
+      ],
     };
     console.log('New blueprint options:', JSON.stringify(this.newBlueprintOptions, null, 2));
 
-    if (this.options.yaml) {
+    if (this.options.advancedSettings?.yaml) {
       this.buildYamlComponents();
     } else {
       this.buildTypescriptComponents();
@@ -155,13 +170,13 @@ export class Blueprint extends ParentBlueprint {
           Version: '0.0.0',
           Author: this.context.organizationName || 'no-organization-found',
           Organization: this.context.organizationName || 'no-organization-found',
-          License: this.options.license,
+          License: this.options.advancedSettings?.license || 'no-license-found',
         },
       }),
       Parameters: buildParametersObject(this.parentIntrospection.options.nodes),
       Generation: buildGenerationObject({
         parent: this.options.blueprintToExtend,
-        version: this.options.version || 'latest',
+        version: this.options.advancedSettings?.version || 'latest',
         parameters: this.parentIntrospection.options.nodes,
       }),
     };
@@ -190,24 +205,30 @@ export class Blueprint extends ParentBlueprint {
       ...this.newBlueprintOptions,
       overridePackageVersion: '0.0.0',
     });
-    blueprint.addDevDeps(`projen@${this.options.projenVersion}`);
+    blueprint.addDevDeps(`projen@${this.options.advancedSettings?.projenVersion}`);
 
     const rcfile = new SourceCode(blueprint, '.projenrc.ts');
-    rcfile.line('import { ProjenBlueprint } from \'@caws-blueprint-util/blueprint-projen\';');
+    rcfile.line("import { ProjenBlueprint } from '@caws-blueprint-util/blueprint-projen';");
     rcfile.line('');
-    rcfile.line(`const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`);
+    rcfile.line(
+      `const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`,
+    );
     rcfile.line('');
     rcfile.line('project.synth();');
 
     const blueprintFile = new SourceCode(blueprint, 'src/blueprint.ts');
-    buildBlueprint(this.parentIntrospection, this.options.blueprintToExtend).split('\n').forEach(line => {
-      blueprintFile.line(line);
-    });
+    buildBlueprint(this.parentIntrospection, this.options.blueprintToExtend)
+      .split('\n')
+      .forEach(line => {
+        blueprintFile.line(line);
+      });
 
     const indexFile = new SourceCode(blueprint, 'src/index.ts');
-    buildIndex().split('\n').forEach(line => {
-      indexFile.line(line);
-    });
+    buildIndex()
+      .split('\n')
+      .forEach(line => {
+        indexFile.line(line);
+      });
 
     // set up assets sample assets folder:
     new SourceCode(blueprint, 'assets/put-your-sample-assets-here.txt');
@@ -219,10 +240,7 @@ export class Blueprint extends ParentBlueprint {
     const readmeContent = fs.readFileSync(readmeContentPath, 'utf8');
     new TextFile(blueprint, path.join('README.md'), {
       readonly: false,
-      lines: [
-        ...readmeContent.split('\n'),
-        ...this.parentIntrospection.readmeContent.split('\n'),
-      ],
+      lines: [...readmeContent.split('\n'), ...this.parentIntrospection.readmeContent.split('\n')],
     });
   }
 
@@ -252,17 +270,9 @@ export class Blueprint extends ParentBlueprint {
       'lib/defaults.json',
     );
 
-    const packageJsonLocation = path.resolve(
-      parentResolutionDirectory,
-      'package',
-      'package.json',
-    );
+    const packageJsonLocation = path.resolve(parentResolutionDirectory, 'package', 'package.json');
 
-    const readmeLocation = path.resolve(
-      parentResolutionDirectory,
-      'package',
-      'README.md',
-    );
+    const readmeLocation = path.resolve(parentResolutionDirectory, 'package', 'README.md');
 
     const introspection = introspectBlueprint({
       sourceBlueprintLocation,

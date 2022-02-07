@@ -161,7 +161,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -184,7 +184,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-issue@workspace:packages/components/caws-issues"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -207,7 +207,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
   dependencies:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     camelcase: 5.3.x
@@ -234,7 +234,7 @@ __metadata:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -258,7 +258,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -281,7 +281,7 @@ __metadata:
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
   dependencies:
     "@types/jest": 26.0.24
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@types/pino": ^6.3.12
     "@types/yargs": 17.0.8
     "@typescript-eslint/eslint-plugin": "*"
@@ -312,7 +312,7 @@ __metadata:
   resolution: "@caws-blueprint-util/blueprint-projen@workspace:packages/utils/projen-blueprint"
   dependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -335,7 +335,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-utils@workspace:packages/utils/blueprint-utils"
   dependencies:
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -362,7 +362,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     camelcase: 1.x
@@ -386,7 +386,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-projen": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -413,7 +413,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -461,7 +461,7 @@ __metadata:
     "@caws-blueprint-util/blueprint-projen": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint/blueprints.blueprint": ^0.0.x
-    "@types/node": ^14.18.10
+    "@types/node": ^14.17.0
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
     eslint: "*"
@@ -863,7 +863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.18.10":
+"@types/node@npm:^14.17.0":
   version: 14.18.10
   resolution: "@types/node@npm:14.18.10::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fnode%2F-%2Fnode-14.18.10.tgz"
   checksum: e722eec37be85dd7dddc4cfd26c501c66f1f2a7e0f603f57ff925348e65a5db603b06363fa27489cbecff44f0ae59812f22509923c4c45ffa5958604cc002401
