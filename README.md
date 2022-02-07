@@ -46,8 +46,8 @@ git clone https://github.com/aws/caws-blueprints
 Run yarn. This will link everything. The first time workspace setup may take a minute or two.
 
 ```
-nvm use
 cd caws-blueprints
+nvm use
 source ~/.bash_profile
 blueprints-setup
 yarn
