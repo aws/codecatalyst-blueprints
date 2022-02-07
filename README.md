@@ -7,7 +7,7 @@ things properly when using VScode. Although plugins also exist for vimlords. Man
 Install these globally. This is required for various tooling to work properly
 ```
 npm install ts-node -g
-npm install webpack-cli -g
+npm install webpack -g
 npm install nvm -g
 npm install yarn -g
 brew install jq
