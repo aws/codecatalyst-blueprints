@@ -16,24 +16,22 @@ brew install jq
 
 We recommend adding this to your `~/.bash_profile`
 
-Set up npm to point to the correct codeartifact repository. You'll need this in order to yarn
-install.
-
 ```
-# set project config
- export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm | jq -r '.repositoryEndpoint'`
- echo 'NPM_REPO set to: '$NPM_REPO
- export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --output text`
+blueprints-setup() {
+    # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
+    ada credentials update --once --account 721779663932 --role codeartifact-readonly
 
- # Set NPM config to also be the same repository (needed for some synths to work properly)
- aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932
-```
+    # Set NPM config to also be the same repository (needed for some synths to work properly)
+    aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932
 
-Disable Projen post. Projen doesnt play very well with workspaces just yet. We need to disable
-running projen post action.
+    #set the repositories in your workspace
+    export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm | jq -r '.repositoryEndpoint'`
+    echo 'NPM_REPO set to: '$NPM_REPO
+    export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --output text` 
 
-```
-export PROJEN_DISABLE_POST=1
+    #disable projen post synthesis
+    export PROJEN_DISABLE_POST=1
+}
 ```
 
 
@@ -50,6 +48,8 @@ Run yarn. This will link everything. The first time workspace setup may take a m
 ```
 nvm use
 cd caws-blueprints
+source ~/.bash_profile
+blueprints-setup
 yarn
 ```
 
