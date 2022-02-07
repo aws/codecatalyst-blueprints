@@ -4,12 +4,13 @@ We highly recommend you use [vscode](https://code.visualstudio.com/). This repo 
 things properly when using VScode. Although plugins also exist for vimlords.
 
 #### Prereq:
-Install these globally
+Install these globally. This is required for various tooling to work properly
 ```
 npm install ts-node -g
 npm install webpack-cli -g
 npm install nvm -g
 npm install yarn -g
+brew install jq
 ```
 
 
