@@ -43,7 +43,7 @@ git clone <my-blueprints>
 
 Run yarn. This will link everything. The first time workspace setup may take a minute or two.
 
-> Set projen to version `0.34.14` in the generated package.json. Projen pushes breaking updates
+> Set projen to version `0.52.18` in the generated package.json. Projen pushes breaking updates
 > periodically, the blueprints team is working through them.
 
 ```

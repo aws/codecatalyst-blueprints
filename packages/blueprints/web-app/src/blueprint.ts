@@ -16,7 +16,7 @@ import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen';
+import { SampleFile, SourceCode, awscdk, web } from 'projen';
 
 import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
@@ -37,25 +37,24 @@ import { createClass } from './stack-generator';
  */
 export interface Options extends ParentOptions {
   /**
+   * Customize your project's repositiory name.
+   */
+  repositoryName: string;
+
+  /**
+   * Name of the folder for the frontend stack, such as react or ui.
+   */
+  reactFolderName: string;
+
+  /**
+   * Name of the folder for the backend stack, such as node or api.
+   */
+  nodeFolderName: string;
+
+  /**
    * Add deployment stages.
    */
   stages: StageDefinition[];
-
-  /**
-   * Customize your project's repositiory name.
-   * @advanced
-   */
-  repositoryName: string;
-  /**
-   * Name of the folder for the frontend stack, such as react or ui.
-   * @advanced
-   */
-  reactFolderName: string;
-  /**
-   * Name of the folder for the backend stack, such as node or api.
-   * @advanced
-   */
-  nodeFolderName: string;
 }
 
 /**
@@ -93,9 +92,7 @@ export class Blueprint extends ParentBlueprint {
       authorName: 'codeaws',
       outdir: `${this.repository.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
-      deps: [
-        'axios',
-      ],
+      deps: ['axios'],
     });
 
     // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
@@ -112,14 +109,33 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
-    const readmeContents: string = generateReadmeContents(this.options.reactFolderName, this.options.nodeFolderName);
-    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), { contents: readmeContents });
+    const readmeContents: string = generateReadmeContents(
+      this.options.reactFolderName,
+      this.options.nodeFolderName,
+    );
+    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {
+      contents: readmeContents,
+    });
 
-    const rootPackageJson: string = generatePackageJson(this.options.reactFolderName, this.options.nodeFolderName);
-    new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), { contents: rootPackageJson });
+    const rootPackageJson: string = generatePackageJson(
+      this.options.reactFolderName,
+      this.options.nodeFolderName,
+    );
+    new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), {
+      contents: rootPackageJson,
+    });
 
     const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
-    new SampleFile(this, path.join(this.repository.relativePath, this.options.reactFolderName, this.frontend.srcdir, 'config.json'), { contents: defaultConfig });
+    new SampleFile(
+      this,
+      path.join(
+        this.repository.relativePath,
+        this.options.reactFolderName,
+        this.frontend.srcdir,
+        'config.json',
+      ),
+      { contents: defaultConfig },
+    );
 
     super.synth();
 
@@ -170,11 +186,14 @@ export class Blueprint extends ParentBlueprint {
       'export default App;',
       '',
     ];
-    fs.writeFileSync(path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'), sourceCode.join('\n'));
+    fs.writeFileSync(
+      path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'),
+      sourceCode.join('\n'),
+    );
   }
 
-  private createStacks(): AwsCdkTypeScriptApp {
-    const project = new AwsCdkTypeScriptApp({
+  private createStacks(): awscdk.AwsCdkTypeScriptApp {
+    const project = new awscdk.AwsCdkTypeScriptApp({
       parent: this,
       cdkVersion: '1.95.2',
       name: `${this.options.nodeFolderName}`,
@@ -233,11 +252,7 @@ export class Blueprint extends ParentBlueprint {
       this.createDeployAction(stage, workflowDefinition);
     });
 
-    new Workflow(
-      this,
-      this.repository,
-      workflowDefinition,
-    );
+    new Workflow(this, this.repository, workflowDefinition);
   }
 
   private createDeployAction(stage: any, workflow: WorkflowDefinition) {
@@ -252,18 +267,28 @@ export class Blueprint extends ParentBlueprint {
           { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
           { Run: `export awsRegion=${stage.region}` },
           { Run: `cd ./${this.options.nodeFolderName} && npm install && npm run build` },
-          { Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${stage.region}` },
-          { Run: `npm run env -- cdk deploy ${this.options.repositoryName}ApiStack --outputs-file ../${this.options.reactFolderName}/src/config.json --require-approval never` },
+          {
+            Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
+              stage.region
+            }`,
+          },
+          {
+            Run: `npm run env -- cdk deploy ${this.options.repositoryName}ApiStack --outputs-file ../${this.options.reactFolderName}/src/config.json --require-approval never`,
+          },
           { Run: `cd ../${this.options.reactFolderName} && npm install && npm run build` },
           { Run: `cd ../${this.options.nodeFolderName}` },
-          { Run: `npm run env -- cdk deploy ${this.options.repositoryName}Stack --require-approval never --outputs-file config.json` },
+          {
+            Run: `npm run env -- cdk deploy ${this.options.repositoryName}Stack --require-approval never --outputs-file config.json`,
+          },
           // TODO - a hack to get the cloudformation url to show up under build outputs
-          { Run: `eval $(jq -r \'.${this.options.repositoryName}Stack | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')` },
+          {
+            Run: `eval $(jq -r \'.${this.options.repositoryName}Stack | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
+          },
         ] as Step[],
         OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
     };
-  };
+  }
 
   private getIdFromArn(arnRole: string) {
     return arnRole.split(':')[4];

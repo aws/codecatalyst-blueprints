@@ -7,12 +7,12 @@
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
+    "eject": "npx projen eject",
     "eslint": "npx projen eslint",
     "package": "rm -rf ./dist/js/ && npx projen package",
     "post-compile": "npx projen post-compile",
+    "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
-    "publish:github": "npx projen publish:github",
-    "release": "npx projen release",
     "test": "npx projen test",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
@@ -31,22 +31,21 @@
   },
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.0.x",
-    "@caws-blueprint-util/blueprint-projen": "0.0.x",
-    "@types/node": "^14.17.0",
-    "@typescript-eslint/eslint-plugin": "*",
-    "@typescript-eslint/parser": "*",
-    "eslint": "*",
+    "@caws-blueprint-util/projen-blueprint": "0.0.x",
+    "@types/node": "^12",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
+    "eslint": "^8",
     "eslint-import-resolver-node": "*",
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
     "json-schema": "*",
-    "npm-check-updates": "^11",
+    "npm-check-updates": "^12",
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
     "typescript": "^4.5.5"
   },
-  "peerDependencies": {},
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
@@ -56,7 +55,6 @@
     "@caws-blueprint/blueprints.blueprint": "^0.0.x",
     "projen": "*"
   },
-  "bundledDependencies": [],
   "keywords": [
     "blueprint",
     "node",
@@ -65,9 +63,9 @@
     "webapp"
   ],
   "main": "lib/index.js",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.46",
+  "version": "0.0.48",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

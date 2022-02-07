@@ -1,7 +1,7 @@
-import { TypeScriptProject } from 'projen';
+import { typescript } from 'projen';
 import * as fs from 'fs';
 
-const project = new TypeScriptProject({
+const project = new typescript.TypeScriptProject({
   defaultReleaseBranch: 'main',
   name: 'projen-blueprint',
   projenrcTs: true,
@@ -23,7 +23,7 @@ const project = new TypeScriptProject({
     "@caws-blueprint-util/blueprint-cli"
   ],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
-  packageName: '@caws-blueprint-util/blueprint-projen',
+  packageName: '@caws-blueprint-util/projen-blueprint',
   devDeps: [
     "projen",
     'ts-node'
@@ -35,6 +35,7 @@ const version = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).version;
 project.package.addVersion(version || '0.0.0');
 
 // modify bumping tasks
+project.removeTask('release');
 project.removeTask('bump');
 project.addTask('bump', {
   exec: 'npm version patch -no-git-tag-version',

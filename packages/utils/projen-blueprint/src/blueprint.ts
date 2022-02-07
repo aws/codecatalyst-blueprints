@@ -1,9 +1,8 @@
-
 import * as fs from 'fs';
 import * as path from 'path';
-import { TypeScriptProject, TypeScriptProjectOptions } from 'projen';
+import { typescript } from 'projen';
 
-export interface ProjenBlueprintOptions extends TypeScriptProjectOptions {
+export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
   /**
    * List of media url links
    */
@@ -24,17 +23,18 @@ export interface ProjenBlueprintOptions extends TypeScriptProjectOptions {
   readonly overridePackageVersion?: string;
 }
 
+
 /**
  * Blueprint app in TypeScript
  *
  *
  * @pjid blueprint
  */
-export class ProjenBlueprint extends TypeScriptProject {
+export class ProjenBlueprint extends typescript.TypeScriptProject {
 
   constructor(options: ProjenBlueprintOptions) {
     super({
-      license: 'Apache-2.0',
+      license: 'MIT',
       sampleCode: false,
       github: false,
       eslint: true,
@@ -53,9 +53,10 @@ export class ProjenBlueprint extends TypeScriptProject {
     this.package.addVersion(version || '0.0.0');
 
     // modify bumping tasks
+    this.removeTask('release');
     this.removeTask('bump');
     this.addTask('bump', {
-      exec: 'npm version patch',
+      exec: 'npm version patch -no-git-tag-version',
     });
 
     // set custom scripts
