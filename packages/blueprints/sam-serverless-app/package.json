@@ -7,11 +7,11 @@
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
+    "eject": "npx projen eject",
     "package": "rm -rf ./dist/js/ && npx projen package",
     "post-compile": "npx projen post-compile",
+    "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
-    "publish:github": "npx projen publish:github",
-    "release": "npx projen release",
     "test": "npx projen test",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
@@ -30,15 +30,14 @@
   },
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.0.x",
-    "@caws-blueprint-util/blueprint-projen": "0.0.x",
-    "@types/node": "^12.x",
-    "npm-check-updates": "^11",
+    "@caws-blueprint-util/projen-blueprint": "0.0.x",
+    "@types/node": "^12",
+    "npm-check-updates": "^12",
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
     "typescript": "*"
   },
-  "peerDependencies": {},
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
@@ -46,7 +45,6 @@
     "@caws-blueprint-component/caws-workspaces": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
-  "bundledDependencies": [],
   "keywords": [
     "blueprint",
     "java",
@@ -57,11 +55,8 @@
     "sam",
     "serverless"
   ],
-  "engines": {
-    "node": ">= 12.x"
-  },
   "main": "lib/index.js",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://aws.amazon.com/",
   "version": "0.0.75",
   "types": "lib/index.d.ts",

@@ -7,6 +7,6 @@
     "yaml": false,
     "version": "latest",
     "license": "MIT",
-    "projenVersion": "0.34.14"
+    "projenVersion": "0.52.18"
   }
 }

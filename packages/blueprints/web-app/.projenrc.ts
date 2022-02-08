@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen';
+import {ProjenBlueprint} from '@caws-blueprint-util/projen-blueprint';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -27,7 +27,7 @@ const blueprint = new ProjenBlueprint({
   devDeps: [
     'ts-node',
     '@caws-blueprint-util/blueprint-cli',
-    '@caws-blueprint-util/blueprint-projen',
+    '@caws-blueprint-util/projen-blueprint',
   ],
   /* Add release management to this project. */
   // release: undefined,

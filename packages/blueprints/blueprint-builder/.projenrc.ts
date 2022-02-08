@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/blueprint-projen'
+import {ProjenBlueprint} from '@caws-blueprint-util/projen-blueprint'
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -18,7 +18,7 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
-    '@caws-blueprint-util/blueprint-projen'
+    '@caws-blueprint-util/projen-blueprint'
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'Use this to build additional blueprints from existing blueprints.',

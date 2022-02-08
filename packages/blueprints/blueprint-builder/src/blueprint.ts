@@ -4,8 +4,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/blueprint-projen';
-import { buildBlueprint, buildIndex } from '@caws-blueprint-util/blueprint-utils';
+import {
+  buildBlueprint,
+  buildIndex,
+} from '@caws-blueprint-util/blueprint-utils';
+import {
+  ProjenBlueprint,
+  ProjenBlueprintOptions,
+} from '@caws-blueprint-util/projen-blueprint';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
@@ -83,7 +89,7 @@ export interface Options {
     /**
      * Projen pinned version. Dont change unless you know what you're doing.
      */
-    projenVersion: '0.34.14';
+    projenVersion: '0.52.18';
   };
 }
 
@@ -141,7 +147,7 @@ export class Blueprint extends ParentBlueprint {
       devDeps: [
         'ts-node',
         'typescript',
-        '@caws-blueprint-util/blueprint-projen',
+        '@caws-blueprint-util/projen-blueprint',
         '@caws-blueprint-util/blueprint-cli',
       ],
       keywords: this.options.tags || ['no-tag'],

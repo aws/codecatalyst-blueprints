@@ -5,17 +5,17 @@
       "type": "build"
     },
     {
-      "name": "@caws-blueprint-util/blueprint-projen",
+      "name": "@caws-blueprint-util/projen-blueprint",
       "type": "build"
     },
     {
       "name": "@types/node",
-      "version": "^12.x",
+      "version": "^12",
       "type": "build"
     },
     {
       "name": "npm-check-updates",
-      "version": "^11",
+      "version": "^12",
       "type": "build"
     },
     {

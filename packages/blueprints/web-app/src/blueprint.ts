@@ -16,7 +16,7 @@ import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { AwsCdkTypeScriptApp, SampleFile, SourceCode, awscdk, web } from 'projen';
+import { SampleFile, SourceCode, awscdk, web } from 'projen';
 
 import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
@@ -192,8 +192,8 @@ export class Blueprint extends ParentBlueprint {
     );
   }
 
-  private createStacks(): AwsCdkTypeScriptApp {
-    const project = new AwsCdkTypeScriptApp({
+  private createStacks(): awscdk.AwsCdkTypeScriptApp {
+    const project = new awscdk.AwsCdkTypeScriptApp({
       parent: this,
       cdkVersion: '1.95.2',
       name: `${this.options.nodeFolderName}`,
