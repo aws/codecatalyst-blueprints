@@ -77,7 +77,12 @@ export class Blueprint extends ParentBlueprint {
     });
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
-    this.options.stages.forEach(stage => new Environment(this, stage.environment));
+    this.options.stages.forEach(stage => {
+      if (stage.environment.title.length < 1) {
+        throw new Error('Invalid environment title length');
+      }
+      new Environment(this, stage.environment);
+    });
 
     this.frontend = this.createFrontend();
     this.createStacks();

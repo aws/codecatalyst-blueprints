@@ -9,6 +9,7 @@
     "components:publish": "yarn workspaces foreach -v --include '@caws-blueprint-component/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v --include '@caws-blueprint-util/*' run npm:publish",
     "blueprints:publish": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:publish",
+    "blueprints:publish:prod": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:publish --endpoint public.api.quokka.codes",
     "blueprints:synth": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:synth",
     "blueprints:synth:cache": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:synth:cache"
   },
