@@ -110,9 +110,9 @@ export interface Lambda {
       new Workspace(this, this.repository, SampleWorkspaces.default);
       //environments
       for (const stage of this.options.workflow.stages) {
-        if (stage.environment.title.length < 1){
-          throw new Error('Invalid environment title length');
-        }
+        // if (stage.environment.title.length < 1){
+        //   throw new Error('Invalid environment title length');
+        // }
         stage.environment.title = `${stage.environment.title}`;
       }
       this.options.workflow.stages.forEach(stage => new Environment(this, stage.environment));

@@ -50,11 +50,15 @@ export interface Options extends ParentOptions {
    * Name of the folder for the backend stack, such as node or api.
    */
   nodeFolderName: string;
-
   /**
-   * Add deployment stages.
+   * The configurations for your workflow
    */
-  stages: StageDefinition[];
+  workflow: {
+    /**
+     * Add deployment stages.
+     */
+    stages: StageDefinition[];
+  };
 }
 
 /**
@@ -77,12 +81,17 @@ export class Blueprint extends ParentBlueprint {
     });
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
-    this.options.stages.forEach(stage => {
-      if (stage.environment.title.length < 1) {
-        throw new Error('Invalid environment title length');
-      }
+    for (const stage of this.options.workflow.stages) {
+      // if (!stage.environment.title || (
+      //   stage.environment?.title.length < 3 || stage.environment?.title.length > 63)) {
+      //   throw new Error('Environment title length must be between 3 and 63 characters');
+      // }
+      // const regex = /^[a-zA-Z0-9]+(?:[-_\\.][a-zA-Z0-9]+)*$/;
+      // if (!regex.test(stage.environment.title)) {
+      //   throw new Error(`Environment title does not match regular expression: ${regex}`)
+      // }
       new Environment(this, stage.environment);
-    });
+    }
 
     this.frontend = this.createFrontend();
     this.createStacks();
@@ -253,7 +262,7 @@ export class Blueprint extends ParentBlueprint {
       Actions: {},
     };
 
-    this.options.stages.forEach((stage: StageDefinition) => {
+    this.options.workflow.stages.forEach((stage: StageDefinition) => {
       this.createDeployAction(stage, workflowDefinition);
     });
 
