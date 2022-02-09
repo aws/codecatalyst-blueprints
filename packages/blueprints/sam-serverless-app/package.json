@@ -58,7 +58,11 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
+<<<<<<< HEAD
   "version": "0.0.82",
+=======
+  "version": "0.0.80",
+>>>>>>> facffbca45d0a74d84e189ca1bd36a5c1403a0bc
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
