@@ -18,6 +18,18 @@ export class SampleWorkspaces {
           image: 'public.ecr.aws/aws-mde/universal-image:latest',
           mountSources: true,
           command: ['sleep', 'infinity'],
+          volumeMounts: [
+            {
+              name: 'docker-store',
+              path: '/var/lib/docker',
+            },
+          ],
+        },
+      },
+      {
+        name: 'docker-store',
+        volume: {
+          size: '16Gi',
         },
       },
     ],
