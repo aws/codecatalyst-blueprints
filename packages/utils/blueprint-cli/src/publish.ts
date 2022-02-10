@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as axios from 'axios';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
+import { verifyIdentity } from './verify-identity';
 
 export interface PublishOptions extends yargs.Arguments {
   blueprint: string;
@@ -67,6 +68,9 @@ export async function publish(
     process.exit(199);
   }
 
+  log.info('verifying identity');
+  const indentity = await verifyIdentity({ endpoint, cookie });
+  log.info(`Publishing as ${indentity.name} at ${indentity.email}`);
   log.info('using endpoint: %s', endpoint);
 
   const gqlResponse = await axios.default.post(
@@ -87,6 +91,7 @@ export async function publish(
         'accespt': 'application/json',
         'origin': `https://${endpoint}`,
         'cookie': cookie,
+        'anti-csrftoken-a2z': indentity.csrfToken,
         'content-type': 'application/json',
       },
     },
