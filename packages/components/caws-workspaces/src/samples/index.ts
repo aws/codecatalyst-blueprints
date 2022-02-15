@@ -17,7 +17,7 @@ export class SampleWorkspaces {
         container: {
           image: 'public.ecr.aws/aws-mde/universal-image:latest',
           mountSources: true,
-          command: ['sleep', 'infinity'],
+          command: ['sh', '/entrypoint.sh', 'sleep', 'infinity'],
           volumeMounts: [
             {
               name: 'docker-store',
