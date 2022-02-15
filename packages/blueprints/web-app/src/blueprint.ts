@@ -107,6 +107,13 @@ export class Blueprint extends ParentBlueprint {
       outdir: `${this.repository.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
       deps: ['axios'],
+      tsconfig: {
+        // Related to https://github.com/projen/projen/issues/1462
+        include: ['src', 'src/loader.d.ts'],
+        compilerOptions: {
+          noUnusedLocals: false,
+        },
+      },
     });
 
     // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
@@ -203,6 +210,18 @@ export class Blueprint extends ParentBlueprint {
     fs.writeFileSync(
       path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'),
       sourceCode.join('\n'),
+    );
+
+    // Related to https://github.com/projen/projen/issues/1462
+    const loaderCode = [
+      "declare module '*.svg' {",
+      'const content: any;',
+      'export default content;',
+      '}',
+    ];
+    fs.writeFileSync(
+      path.join(this.frontend.outdir, this.frontend.srcdir, 'loader.d.ts'),
+      loaderCode.join('\n'),
     );
   }
 

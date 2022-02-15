@@ -1,4 +1,4 @@
-import { SourceCode, typescript, awscdk } from 'projen';
+import { SourceCode, typescript, awscdk, DependencyType } from 'projen';
 
 /**
  * @param project
@@ -8,12 +8,10 @@ import { SourceCode, typescript, awscdk } from 'projen';
  * @returns
  */
 export function createLambda(project: typescript.TypeScriptAppProject, functionName: string, callback: Function): awscdk.LambdaFunctionOptions {
-
-  //TODO: we should make this into a better object
-  const cdkDeps: awscdk.AwsCdkDeps = {
+  const cdkDeps: awscdk.AwsCdkDeps = new awscdk.AwsCdkDepsJs(project, {
+    dependencyType: DependencyType.BUILD,
     cdkVersion: '1.95.0',
-    cdkMinimumVersion: '1.95.0',
-  } as awscdk.AwsCdkDeps;
+  });
 
   const options: awscdk.LambdaFunctionOptions = {
     entrypoint: `${project.srcdir}/${functionName}.lambda.ts`,
