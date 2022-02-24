@@ -109,6 +109,7 @@ export class Blueprint extends ParentBlueprint {
       outdir: `${this.repository.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
       deps: ['axios'],
+      devDeps: ['jest-junit'],
       tsconfig: {
         // Related to https://github.com/projen/projen/issues/1462
         include: ['src', 'src/loader.d.ts'],
@@ -117,6 +118,11 @@ export class Blueprint extends ParentBlueprint {
         },
       },
     });
+
+    // Override the react-scripts test command to generate coverage and test reports
+    project.testTask.reset();
+    project.testTask.exec('react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit');
+    project.gitignore.addPatterns('junit.xml');
 
     // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
     //  that is incompatible with create-react-app (i.e react-scripts). We skip the preflight check
@@ -291,7 +297,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private createDeployAction(stage: any, workflow: WorkflowDefinition) {
-    const AUTO_DISCOVERY_ARTIFACT_NAME =  'AutoDiscoveryArtifact';
+    const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
 
     workflow.Actions[`Build_${stage.environment.title}`] = {
       Identifier: getDefaultActionIdentifier(
