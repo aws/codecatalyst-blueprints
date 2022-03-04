@@ -17,7 +17,6 @@ import {
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
 
-// import * as camelcase from 'camelcase';
 import * as decamelize from 'decamelize';
 // import { TypeScriptProject, YamlFile, TextFile } from 'projen';
 import { YamlFile, TextFile, SourceCode } from 'projen';
@@ -60,7 +59,7 @@ export interface Options {
   tags?: string[];
 
   /**
-   * @collapsed true
+   *
    */
   advancedSettings?: {
     /**

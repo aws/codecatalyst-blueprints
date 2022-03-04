@@ -15,6 +15,8 @@ import defaults from './defaults.json';
 export interface Options extends ParentOptions {
   /**
    * Which Git repository do we clone? This should be a https URL.
+   * @validationRegex /^https://[a-zA-Z0-9_/.-]+$/
+   * @validationMessage Git repository URL must start with https:// and contain only alphanumeric characters, dashes (-), periods (.), underscores, and forward slashes (/).
    */
   gitRepository: string;
 }
