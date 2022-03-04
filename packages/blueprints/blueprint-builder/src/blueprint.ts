@@ -59,7 +59,7 @@ export interface Options {
   tags?: string[];
 
   /**
-   *
+   * @collapsed true
    */
   advancedSettings?: {
     /**

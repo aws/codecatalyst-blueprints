@@ -1,6 +1,6 @@
 # Introduction
 
-The frontend wizard on quokka.codes is populated by the Options interface exported from the blueprint. The frontend wizard supports modifications and features of a blueprint's Options using [JSDOC style comments and tags](https://jsdoc.app/about-getting-started.html). The JSDOC style comments and tags allow you to do things such as selecting the text displayed above an option and enable featues like input validation or making the option collapsible. Below is an example of using JSDOC comments and tags with a blueprint's options and what they will look like in the frontend wizard on quokka.codes:
+The frontend wizard on quokka.codes is populated by the Options interface exported from the blueprint. The frontend wizard supports modifications and features of a blueprint's Options using [JSDOC style comments and tags](https://jsdoc.app/about-getting-started.html). The JSDOC style comments and tags allow you to do things such as selecting the text displayed above an option and enable featues like input validation or making the option collapsible. Below is an example of using JSDOC comments and tags with a blueprint's options:
 
 ```
 export interface Options {
@@ -13,7 +13,6 @@ export interface Options {
 
   /**
    * Add a description for your new blueprint.
-   *
    */
    description?: string;
 
@@ -24,8 +23,6 @@ export interface Options {
   tags?: string[];
 }
 ```
-***Insert image of the options in the wizard***
-
 
 The display name each option of the Options interface will appear in [camelCase](https://en.wikipedia.org/wiki/Camel_case) format by default. Plain text in the JSDOC style comment will be displayed as text above the option in the wizard.
 
