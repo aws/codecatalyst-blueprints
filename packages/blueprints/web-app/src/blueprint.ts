@@ -1,7 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import { Environment } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
   ActionIdentifierAlias,
   BuildActionConfiguration,
@@ -16,16 +14,14 @@ import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
-import { SampleFile, SourceCode, awscdk, web } from 'projen';
-
+import { createBackend } from './backend/create-backend';
 import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
-import { helloWorldLambdaCallback } from './hello-world-lambda';
-import { createLambda } from './lambda-generator';
-import { generatePackageJson } from './package-json-contents';
+import { createFrontend } from './frontend/create-frontend';
 import { generateReadmeContents } from './readme-contents';
-import { getStackDefinition, getStackTestDefintion } from './stack';
-import { createClass } from './stack-generator';
+
+// Projen version string used when creating the webapp
+export const PROJEN_VERSION = '0.52.18';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -50,6 +46,7 @@ export interface Options extends ParentOptions {
    * Name of the folder for the backend stack, such as node or api.
    */
   nodeFolderName: string;
+
   /**
    * The configurations for your workflow
    */
@@ -58,6 +55,16 @@ export interface Options extends ParentOptions {
      * Add deployment stages.
      */
     stages: StageDefinition[];
+  };
+
+  /**
+   * @collapsed true
+   */
+  advanced: {
+    /**
+     * How many lambdas would you like to create?
+     */
+    lambdaNames: string[];
   };
 }
 
@@ -68,207 +75,159 @@ export interface Options extends ParentOptions {
  */
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
+  protected readonly repositoryName: string;
+  protected readonly stackName: string;
+  protected readonly reactFolderName: string;
+  protected readonly nodeFolderName: string;
   protected readonly repository: SourceRepository;
-  protected readonly frontend: web.ReactTypeScriptProject;
+  // protected readonly frontend: web.ReactTypeScriptProject;
 
   constructor(options_: Options) {
     super(options_);
     const options = Object.assign(defaults, options_);
     this.options = options;
+    const { repositoryName, reactFolderName, nodeFolderName } = options;
+    this.repositoryName = makeValidFolder(repositoryName);
+    this.reactFolderName = makeValidFolder(reactFolderName);
+    this.nodeFolderName = makeValidFolder(nodeFolderName);
 
-    this.repository = new SourceRepository(this, {
-      title: this.options.repositoryName,
-    });
-    new Workspace(this, this.repository, SampleWorkspaces.default);
+    this.stackName = makeValidFolder(this.repositoryName.toLowerCase(), {invalidChars: ['-']});
+    this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
 
-    for (const stage of this.options.workflow.stages) {
-      // if (!stage.environment.title || (
-      //   stage.environment?.title.length < 3 || stage.environment?.title.length > 63)) {
-      //   throw new Error('Environment title length must be between 3 and 63 characters');
-      // }
-      // const regex = /^[a-zA-Z0-9]+(?:[-_\\.][a-zA-Z0-9]+)*$/;
-      // if (!regex.test(stage.environment.title)) {
-      //   throw new Error(`Environment title does not match regular expression: ${regex}`)
-      // }
-      new Environment(this, stage.environment);
+    if(!options.advanced.lambdaNames || !options.advanced.lambdaNames.length) {
+      options.advanced.lambdaNames = ['defaultLambdaHandler'];
     }
 
-    this.frontend = this.createFrontend();
-    this.createStacks();
-    this.createWorkflow();
-  }
+    this.repository = new SourceRepository(this, {
+      title: this.repositoryName,
+    });
 
-  private createFrontend(): web.ReactTypeScriptProject {
-    const project = new web.ReactTypeScriptProject({
-      parent: this,
-      name: `${this.options.reactFolderName}`,
+    createFrontend(this.repository, this.reactFolderName, {
+      name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${this.repository.relativePath}/${this.options.reactFolderName}`,
       defaultReleaseBranch: 'main',
       deps: ['axios'],
+      github: false,
       tsconfig: {
-        // Related to https://github.com/projen/projen/issues/1462
-        include: ['src', 'src/loader.d.ts'],
+        include: ['src/**/loaders.d.ts'],
         compilerOptions: {
+          module: 'CommonJS',
           noUnusedLocals: false,
+          noImplicitAny: false,
         },
       },
     });
 
-    // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
-    //  that is incompatible with create-react-app (i.e react-scripts). We skip the preflight check
-    //  to prevent blocking warnings.
-    const dotenvFile = new SourceCode(project, '.env');
-    dotenvFile.line('SKIP_PREFLIGHT_CHECK=true');
-
-    // Need to create a /build directory with an empty .keep file
-    project.gitignore.removePatterns('/build/');
-    createClass(project.outdir, 'build', '.keep', '');
-
-    return project;
-  }
-
-  override synth(): void {
-    const readmeContents: string = generateReadmeContents(
-      this.options.reactFolderName,
-      this.options.nodeFolderName,
-    );
-    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {
-      contents: readmeContents,
-    });
-
-    const rootPackageJson: string = generatePackageJson(
-      this.options.reactFolderName,
-      this.options.nodeFolderName,
-    );
-    new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), {
-      contents: rootPackageJson,
-    });
-
-    const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
-    new SampleFile(
-      this,
-      path.join(
-        this.repository.relativePath,
-        this.options.reactFolderName,
-        this.frontend.srcdir,
-        'config.json',
-      ),
-      { contents: defaultConfig },
-    );
-
-    super.synth();
-
-    // overwite the App.tsx file with some additional logic
-    const sourceCode = [
-      "import logo from './logo.svg';",
-      "import './App.css';",
-      "import axios from 'axios';",
-      "import config from './config.json';",
-      "import { useState, useEffect } from 'react';",
-      '',
-      'function App() {',
-      '  const [result, setResult] = useState({ data: null });',
-      '  useEffect(() => {',
-      '    const getData = async (): Promise<void> => {',
-      '      try {',
-      `          const result = await axios.get(config.${this.options.repositoryName}ApiStack.apiurl ?? '');`,
-      '          setResult({ data: result.data });',
-      '      } catch (e) {',
-      '          // consume exceptions',
-      '          console.log(e)',
-      '      }',
-      '    };',
-      '    getData();',
-      '  }, []);',
-      '  return (',
-      '   <div className="App">',
-      '      <header className="App-header">',
-      '        <img src={logo} className="App-logo" alt="logo" />',
-      '        <p>',
-      '          Edit <code>src/App.tsx</code> and save to reload.',
-      '        </p>',
-      '        <p>',
-      '          {result.data}',
-      '        </p>',
-      '        <a className="App-link"',
-      '          href="https://reactjs.org"',
-      '          target="_blank"',
-      '          rel="noopener noreferrer"',
-      '        >',
-      '          Learn React',
-      '        </a>',
-      '      </header>',
-      '    </div>',
-      '  );',
-      '}',
-      '',
-      'export default App;',
-      '',
-    ];
-    fs.writeFileSync(
-      path.join(this.frontend.outdir, this.frontend.srcdir, 'App.tsx'),
-      sourceCode.join('\n'),
-    );
-
-    // Related to https://github.com/projen/projen/issues/1462
-    const loaderCode = [
-      "declare module '*.svg' {",
-      'const content: any;',
-      'export default content;',
-      '}',
-    ];
-    fs.writeFileSync(
-      path.join(this.frontend.outdir, this.frontend.srcdir, 'loader.d.ts'),
-      loaderCode.join('\n'),
-    );
-  }
-
-  private createStacks(): awscdk.AwsCdkTypeScriptApp {
-    const project = new awscdk.AwsCdkTypeScriptApp({
-      parent: this,
+    createBackend({
+      repository: this.repository,
+      folder: this.nodeFolderName,
+      frontendfolder: this.reactFolderName,
+      stackName: this.stackName,
+      lambdas: this.options.advanced.lambdaNames,
+    }, {
+      name: this.nodeFolderName,
       cdkVersion: '1.95.2',
-      name: `${this.options.nodeFolderName}`,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
-      outdir: `${this.repository.relativePath}/${this.options.nodeFolderName}`,
       appEntrypoint: 'main.ts',
       cdkDependencies: [
-        '@aws-cdk/core',
+        '@aws-cdk/assert',
         '@aws-cdk/aws-lambda',
         '@aws-cdk/aws-apigateway',
         '@aws-cdk/aws-s3',
         '@aws-cdk/aws-s3-deployment',
         '@aws-cdk/aws-cloudfront',
+        '@aws-cdk/core',
       ],
-      devDeps: ['cdk-assets'],
+      devDeps: [
+        'cdk-assets',
+        'projen@0.52.18',
+      ],
       context: {
         '@aws-cdk/core:newStyleStackSynthesis': 'true',
       },
+      github: false,
       sampleCode: false,
       lambdaAutoDiscover: true,
       defaultReleaseBranch: 'main',
     });
+    this.createWorkflow();
 
-    const lambdaName = `${this.options.repositoryName}Lambda`;
-    const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(
-      project,
-      lambdaName,
-      helloWorldLambdaCallback,
-    );
+    new Workspace(this, this.repository, SampleWorkspaces.default);
+    for (const stage of this.options.workflow.stages) {
+      new Environment(this, stage.environment);
+    }
 
-    const stackName = `${this.options.repositoryName}`;
-    const sourceCode = getStackDefinition(stackName, this.options, lambdaOptions);
-    createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
+    new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
+    new SourceFile(this.repository, 'GETTING_STARTED.md', "How to get started with this web application");
 
-    const testCode = getStackTestDefintion(project.appEntrypoint, stackName);
-    createClass(project.outdir, project.testdir, 'main.test.ts', testCode);
-
-    return project;
+    const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
+    new SourceFile(this.repository, `${this.reactFolderName}/src/config.json`, JSON.stringify(defaultConfig, null, 2));
   }
 
-  // TODO: A temporary hack for deploying cdk apps through workflows.
+  // override synth(): void {
+  //   new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {
+  //     contents: readmeContents,
+  //   });
+
+  //   const rootPackageJson: string = generatePackageJson(
+  //     this.options.reactFolderName,
+  //     this.options.nodeFolderName,
+  //   );
+  //   new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), {
+  //     contents: rootPackageJson,
+  //   });
+
+  //
+
+  //   super.synth();
+  // }
+
+  // private createBackend(): awscdk.AwsCdkTypeScriptApp {
+    // const project = new awscdk.AwsCdkTypeScriptApp({
+    //   parent: this,
+    //   cdkVersion: '1.95.2',
+    //   name: `${this.options.nodeFolderName}`,
+    //   authorEmail: 'caws@amazon.com',
+    //   authorName: 'codeaws',
+    //   outdir: `${this.repository.relativePath}/${this.options.nodeFolderName}`,
+    //   appEntrypoint: 'main.ts',
+    //   cdkDependencies: [
+    //     '@aws-cdk/core',
+    //     '@aws-cdk/aws-lambda',
+    //     '@aws-cdk/aws-apigateway',
+    //     '@aws-cdk/aws-s3',
+    //     '@aws-cdk/aws-s3-deployment',
+    //     '@aws-cdk/aws-cloudfront',
+    //   ],
+    //   devDeps: ['cdk-assets'],
+    //   context: {
+    //     '@aws-cdk/core:newStyleStackSynthesis': 'true',
+    //   },
+    //   sampleCode: false,
+    //   lambdaAutoDiscover: true,
+    //   defaultReleaseBranch: 'main',
+    // });
+
+  //   const lambdaName = `${this.options.repositoryName}Lambda`;
+  //   const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(
+  //     project,
+  //     lambdaName,
+  //     helloWorldLambdaCallback,
+  //   );
+
+    // const stackName = `${this.options.repositoryName}`;
+    // const sourceCode = getStackDefinition(stackName, this.options, lambdaOptions);
+    // createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
+
+    // const testCode = getStackTestDefintion(project.appEntrypoint, stackName);
+    // createClass(project.outdir, project.testdir, 'main.test.ts', testCode);
+
+  //   return project;
+  // }
+
+  // // TODO: A temporary hack for deploying cdk apps through workflows.
   private createWorkflow() {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',
@@ -299,23 +258,25 @@ export class Blueprint extends ParentBlueprint {
         Steps: [
           { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
           { Run: `export awsRegion=${stage.region}` },
-          { Run: `cd ./${this.options.nodeFolderName} && npm install && npm run build` },
+          { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
           {
-            Run: `npm run env -- cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
+            Run: `npx cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
               stage.region
             }`,
           },
           {
-            Run: `npm run env -- cdk deploy ${this.options.repositoryName}ApiStack --outputs-file ../${this.options.reactFolderName}/src/config.json --require-approval never`,
+            Run: `yarn deploy:copy-config`,
           },
-          { Run: `cd ../${this.options.reactFolderName} && npm install && npm run build` },
-          { Run: `cd ../${this.options.nodeFolderName}` },
+          { Run: 'cd ..' },
+          { Run: `cd ./${this.reactFolderName} && yarn && yarn build` },
+          { Run: 'cd ..' },
+          { Run: `cd ./${this.nodeFolderName}` },
           {
-            Run: `npm run env -- cdk deploy ${this.options.repositoryName}Stack --require-approval never --outputs-file config.json`,
+            Run: `npx cdk deploy ${this.stackName} --require-approval never --outputs-file config.json`,
           },
           // TODO - a hack to get the cloudformation url to show up under build outputs
           {
-            Run: `eval $(jq -r \'.${this.options.repositoryName}Stack | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
+            Run: `eval $(jq -r \'.${this.stackName} | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
         OutputVariables: [{ Name: 'CloudFrontURL' }],
@@ -324,6 +285,6 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private getIdFromArn(arnRole: string) {
-    return arnRole.split(':')[4];
+    return arnRole.split(':')[4] || 'REPLACE_ME_AWS_ACCOUNT_NUMBER';
   }
 }

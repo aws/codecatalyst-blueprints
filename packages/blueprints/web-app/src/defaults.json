@@ -1,7 +1,10 @@
 {
-  "repositoryName": "HelloWorldApp",
+  "repositoryName": "MyFirstWebApp",
   "reactFolderName": "react",
   "nodeFolderName": "node",
+  "advanced": {
+    "lambdaNames": ["FirstLambda", "SecondLambda", "ThirdLambda"]
+  },
   "workflow": {
     "stages": [
       {

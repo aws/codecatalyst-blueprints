@@ -1,40 +1,82 @@
 import { basename } from 'path';
 import { awscdk } from 'projen';
-import { Options } from './blueprint';
-
 const TYPESCRIPT_EXT = '.ts';
 
-export function getStackDefinition(stackName: string, blueprintOptions: Options, lambdaOptions: awscdk.LambdaFunctionOptions) {
-  const s3BucketName = getUniqueS3BucketName(blueprintOptions.repositoryName);
-  const appStack: string = `${stackName}Stack`;
-  const apiStack: string = `${stackName}ApiStack`;
+export function getStackDefinition(params: {
+  stackName: string,
+  frontEndFolder: string,
+  lambdaOptions: awscdk.LambdaFunctionOptions[],
+}) {
+  const { stackName, frontEndFolder, lambdaOptions } = params;
+
+  const s3BucketName = getUniqueS3BucketName(stackName);
+  const appStack: string = `${stackName}Frontend`;
+  const apiStack: string = `${stackName}Backend`;
+
+  const lambdaImports = lambdaOptions.map(lambdaOption => {
+    return `import { ${lambdaOption.constructName} } from './${basename(lambdaOption.constructFile!, TYPESCRIPT_EXT )}';`;
+  });
 
   return `import { App, Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as path from 'path';
 
-import { ${lambdaOptions.constructName} } from './${basename(lambdaOptions.constructFile!, TYPESCRIPT_EXT )}';
+${lambdaImports.join('\n')}
 
+
+const attachLambda = (
+  api: apigateway.LambdaRestApi,
+  stack: Stack,
+  LambdaFunc: (new (options: Stack, name: string) => lambda.Function),
+  name: string,
+  options: {
+    path: string;
+    method: string[];
+  }) => {
+  const resource = api.root.addResource(options.path);
+  options.method.forEach(method => {
+    resource.addMethod(method, new apigateway.LambdaIntegration(new LambdaFunc(stack, name)));
+  });
+  new CfnOutput(stack, \`apiurl\${name}\`, { value: \`\${path.join(api.url, options.path)}/\` });
+};
+
+// backend stack
 export class ${apiStack} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
-
-    const handler = new ${lambdaOptions.constructName}(this, \'${lambdaOptions.constructName}\');
-    const api = new apigateway.LambdaRestApi(this, \'${appStack}ApiGateway\', {
-      restApiName: \'${apiStack}ApiGateway\',
-      handler,
-      description: \'API gateway for ${apiStack}\',
+    const api = new apigateway.LambdaRestApi(this, '${stackName}.ApiGateway', {
+      restApiName: '${stackName}ApiStackApiGateway',
+      // using ${lambdaOptions[0].constructName} as the default handler.
+      handler: new ${lambdaOptions[0].constructName}(this, 'default-handler'),
+      proxy: false,
+      description: 'API gateway for ${stackName}Stack',
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS
       },
     });
-    new CfnOutput(this, \'apiurl\', { value: api.url });
+
+    new CfnOutput(this, 'apiurl', { value: api.url });
+    `
+    +
+    lambdaOptions.map(lambdaOption => {
+    return`
+    // GET https://<CloudFrontURL>/${lambdaOption.constructName?.toLowerCase()}
+    attachLambda(api, this, ${lambdaOption.constructName}, 'id-${lambdaOption.constructName}', {
+      path: '${lambdaOption.constructName?.toLowerCase()}',
+      method: ['GET']
+    });`
+    }).join('\n')
+    +
+    `
   }
 }
 
+// Frontend stack
 export class ${appStack} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
@@ -63,7 +105,7 @@ export class ${appStack} extends Stack {
     });
 
     new s3deploy.BucketDeployment(this, \'ReactApp\', {
-      sources: [s3deploy.Source.asset(\'./../${blueprintOptions.reactFolderName}/build\')],
+      sources: [s3deploy.Source.asset(\'./../${frontEndFolder}/build\')],
       destinationBucket: mySiteBucket,
       distribution,
     });
@@ -81,7 +123,6 @@ const env = {
 const app = new App();
 
 new ${apiStack}(app, \`${apiStack}\`, { env });
-new ${appStack}(app, \'${appStack}\', { env });
 
 app.synth();
 `;
