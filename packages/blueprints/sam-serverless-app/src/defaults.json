@@ -9,10 +9,10 @@
   ],
 
   "workflow": {
-    "cloudFormationStackName": "REPLACE_ME",
-    "s3BucketName": "REPLACE_ME",
-    "buildRoleArn": "REPLACE_ME",
-    "stackRoleArn": "REPLACE_ME",
+    "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
+    "s3BucketName": "replace-me-bucket-name",
+    "buildRoleArn": "arn:aws:iam::123456789012:role/REPLACE-ME-ROLE-NAME",
+    "stackRoleArn": "arn:aws:iam::123456789012:role/REPLACE-ME-ROLE-NAME",
     "stages": [
       {
         "environment": {

@@ -40,16 +40,22 @@ import { createClass } from './stack-generator';
 export interface Options extends ParentOptions {
   /**
    * Customize your project's repositiory name.
+   * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+   * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
    */
   repositoryName: string;
 
   /**
    * Name of the folder for the frontend stack, such as react or ui.
+   * @validationRegex /^[a-zA-Z0-9_-]+$/
+   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
    */
   reactFolderName: string;
 
   /**
    * Name of the folder for the backend stack, such as node or api.
+   * @validationRegex /^[a-zA-Z0-9_-]+$/
+   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
    */
   nodeFolderName: string;
   /**
