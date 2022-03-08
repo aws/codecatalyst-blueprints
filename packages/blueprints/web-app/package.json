@@ -20,7 +20,7 @@
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
-    "blueprint:synth": "blueprint synth ./ --outdir /Users/alexfors/Desktop/temp-web-app --options ./src/defaults.json",
+    "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
     "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
     "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
