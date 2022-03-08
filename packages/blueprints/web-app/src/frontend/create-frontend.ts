@@ -8,6 +8,8 @@ import { createReplacementFrontend } from './create-replacement-frontend';
 export const createFrontend = (
   repository: SourceRepository,
   folder: string,
+  lambdas: string[],
+  stackName: string,
   options: web.ReactTypeScriptProjectOptions,
 ): web.ReactTypeScriptProject => {
   const rcvariable = 'frontend';
@@ -27,18 +29,14 @@ export const createFrontend = (
 
 
   // Override the react-scripts test command to generate coverage and test reports
-  const reactScriptsTestTask = project.testTask.name;
-  const reactScriptsTest = {
-    exec: 'react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit',
-    description: "Overrides the react-scripts test command to generate coverage and test reports",
-  }
+  const reactScriptsTestExec = 'react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit';
   project.testTask.reset();
-  project.addTask(reactScriptsTestTask, reactScriptsTest);
+  project.testTask.exec(reactScriptsTestExec);
   projenrc.addPostInstantiation({
     line: `${rcvariable}.testTask.reset()`,
   });
   projenrc.addPostInstantiation({
-    line: `${rcvariable}.addTask("${reactScriptsTestTask}", ${JSON.stringify(reactScriptsTest, null, 2)});`,
+    line: `${rcvariable}.testTask.exec("${reactScriptsTestExec}");`,
   });
 
   // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
@@ -50,7 +48,7 @@ export const createFrontend = (
   new SourceFile(repository, `${folder}/build/.keep`, '');
 
   // update the index.tsx file to include the replacement app
-  new SourceFile(repository, `${folder}/src/App.tsx`, createReplacementFrontend(repository.title));
+  new SourceFile(repository, `${folder}/src/App.tsx`, createReplacementFrontend(stackName, lambdas));
   new SourceFile(repository, `${folder}/src/config.json`, '{}');
 
   new SourceFile(repository, `${folder}/README.md`, createReadme());
