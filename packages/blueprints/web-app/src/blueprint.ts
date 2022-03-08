@@ -36,16 +36,22 @@ export const PROJEN_VERSION = '0.52.18';
 export interface Options extends ParentOptions {
   /**
    * Customize your project's repositiory name.
+   * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+   * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
    */
   repositoryName: string;
 
   /**
    * Name of the folder for the frontend stack, such as react or ui.
+   * @validationRegex /^[a-zA-Z0-9_-]+$/
+   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
    */
   reactFolderName: string;
 
   /**
    * Name of the folder for the backend stack, such as node or api.
+   * @validationRegex /^[a-zA-Z0-9_-]+$/
+   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
    */
   nodeFolderName: string;
 
@@ -82,7 +88,6 @@ export class Blueprint extends ParentBlueprint {
   protected readonly reactFolderName: string;
   protected readonly nodeFolderName: string;
   protected readonly repository: SourceRepository;
-  // protected readonly frontend: web.ReactTypeScriptProject;
 
   constructor(options_: Options) {
     super(options_);
@@ -170,68 +175,6 @@ export class Blueprint extends ParentBlueprint {
     new SourceFile(this.repository, `${this.reactFolderName}/src/config.json`, JSON.stringify(defaultConfig, null, 2));
   }
 
-  // override synth(): void {
-  //   new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {
-  //     contents: readmeContents,
-  //   });
-
-  //   const rootPackageJson: string = generatePackageJson(
-  //     this.options.reactFolderName,
-  //     this.options.nodeFolderName,
-  //   );
-  //   new SampleFile(this, path.join(this.repository.relativePath, 'package.json'), {
-  //     contents: rootPackageJson,
-  //   });
-
-  //
-
-  //   super.synth();
-  // }
-
-  // private createBackend(): awscdk.AwsCdkTypeScriptApp {
-    // const project = new awscdk.AwsCdkTypeScriptApp({
-    //   parent: this,
-    //   cdkVersion: '1.95.2',
-    //   name: `${this.options.nodeFolderName}`,
-    //   authorEmail: 'caws@amazon.com',
-    //   authorName: 'codeaws',
-    //   outdir: `${this.repository.relativePath}/${this.options.nodeFolderName}`,
-    //   appEntrypoint: 'main.ts',
-    //   cdkDependencies: [
-    //     '@aws-cdk/core',
-    //     '@aws-cdk/aws-lambda',
-    //     '@aws-cdk/aws-apigateway',
-    //     '@aws-cdk/aws-s3',
-    //     '@aws-cdk/aws-s3-deployment',
-    //     '@aws-cdk/aws-cloudfront',
-    //   ],
-    //   devDeps: ['cdk-assets'],
-    //   context: {
-    //     '@aws-cdk/core:newStyleStackSynthesis': 'true',
-    //   },
-    //   sampleCode: false,
-    //   lambdaAutoDiscover: true,
-    //   defaultReleaseBranch: 'main',
-    // });
-
-  //   const lambdaName = `${this.options.repositoryName}Lambda`;
-  //   const lambdaOptions: awscdk.LambdaFunctionOptions = createLambda(
-  //     project,
-  //     lambdaName,
-  //     helloWorldLambdaCallback,
-  //   );
-
-    // const stackName = `${this.options.repositoryName}`;
-    // const sourceCode = getStackDefinition(stackName, this.options, lambdaOptions);
-    // createClass(project.outdir, project.srcdir, 'main.ts', sourceCode);
-
-    // const testCode = getStackTestDefintion(project.appEntrypoint, stackName);
-    // createClass(project.outdir, project.testdir, 'main.test.ts', testCode);
-
-  //   return project;
-  // }
-
-  // // TODO: A temporary hack for deploying cdk apps through workflows.
   private createWorkflow() {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',

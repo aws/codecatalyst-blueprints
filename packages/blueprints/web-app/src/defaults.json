@@ -12,7 +12,7 @@
           "title": "development",
           "description": "this is my development environment"
         },
-        "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
+        "role": "arn:aws:iam::123456789012:role/REPLACE-ME-DEPLOY-ROLE-NAME",
         "region": "us-west-2"
       }
     ]
