@@ -9,10 +9,10 @@ import { typescript, awscdk, DependencyType } from 'projen';
  */
 export const createLambdaInfra = (
   project: typescript.TypeScriptAppProject,
-  functionName: string
+  functionName: string,
 ): awscdk.LambdaFunctionOptions => {
 
-    const options: awscdk.LambdaFunctionOptions = {
+  const options: awscdk.LambdaFunctionOptions = {
     entrypoint: `${project.srcdir}/${functionName}.lambda.ts`,
     constructFile: `${project.srcdir}/${getConstructFileName(functionName)}.ts`,
     constructName: `${functionName}Function`,

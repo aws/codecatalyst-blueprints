@@ -58,11 +58,11 @@ export const createProjenProject = <T extends Project>(
   options.projectOptions = {
     projenrcTs: true,
     ...options.projectOptions,
-  }
+  };
 
   const project = new ProjenProject({
     outdir: path.join(repository.path, options.subfolder || ''),
-    ...options.projectOptions
+    ...options.projectOptions,
   });
 
   if (options.projenVersion && (project as any).addDevDeps) {

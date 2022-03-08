@@ -3,9 +3,9 @@ import { awscdk } from 'projen';
 const TYPESCRIPT_EXT = '.ts';
 
 export function getStackDefinition(params: {
-  stackName: string,
-  frontEndFolder: string,
-  lambdaOptions: awscdk.LambdaFunctionOptions[],
+  stackName: string;
+  frontEndFolder: string;
+  lambdaOptions: awscdk.LambdaFunctionOptions[];
 }) {
   const { stackName, frontEndFolder, lambdaOptions } = params;
 
@@ -64,12 +64,12 @@ export class ${apiStack} extends Stack {
     `
     +
     lambdaOptions.map(lambdaOption => {
-    return`
+      return `
     // GET https://<CloudFrontURL>/${lambdaOption.constructName?.toLowerCase()}
     attachLambda(api, this, ${lambdaOption.constructName}, 'id-${lambdaOption.constructName}', {
       path: '${lambdaOption.constructName?.toLowerCase()}',
       method: ['GET']
-    });`
+    });`;
     }).join('\n')
     +
     `

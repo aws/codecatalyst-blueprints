@@ -98,10 +98,10 @@ export class Blueprint extends ParentBlueprint {
     this.reactFolderName = makeValidFolder(reactFolderName);
     this.nodeFolderName = makeValidFolder(nodeFolderName);
 
-    this.stackName = makeValidFolder(this.repositoryName.toLowerCase(), {invalidChars: ['-']});
+    this.stackName = makeValidFolder(this.repositoryName.toLowerCase(), { invalidChars: ['-'] });
     this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
 
-    if(!options.advanced.lambdaNames || !options.advanced.lambdaNames.length) {
+    if (!options.advanced.lambdaNames || !options.advanced.lambdaNames.length) {
       options.advanced.lambdaNames = ['defaultLambdaHandler'];
     }
 
@@ -169,7 +169,7 @@ export class Blueprint extends ParentBlueprint {
     }
 
     new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
-    new SourceFile(this.repository, 'GETTING_STARTED.md', "How to get started with this web application");
+    new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
 
     const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
     new SourceFile(this.repository, `${this.reactFolderName}/src/config.json`, JSON.stringify(defaultConfig, null, 2));
@@ -214,7 +214,7 @@ export class Blueprint extends ParentBlueprint {
             }`,
           },
           {
-            Run: `yarn deploy:copy-config`,
+            Run: 'yarn deploy:copy-config',
           },
           { Run: 'cd ..' },
           { Run: `cd ./${this.reactFolderName} && yarn && yarn build` },

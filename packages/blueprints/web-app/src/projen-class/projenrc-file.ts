@@ -1,5 +1,5 @@
-import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import * as path from 'path';
+import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 
 export interface imports {
   import: string;
@@ -30,7 +30,7 @@ export class ProjenRCFile extends SourceFile {
     options?: Options,
   ) {
     super(repository, path.join(options?.subfolder || '', '.projenrc.ts'), '', {
-      readonly: false
+      readonly: false,
     });
     repository.blueprint._addComponent(this);
   }
@@ -53,14 +53,14 @@ export class ProjenRCFile extends SourceFile {
       [key: string]: Set<string>;
     } ;
     this.imports.forEach(import_ => {
-      if(!condencedImports[import_.from]) {
+      if (!condencedImports[import_.from]) {
         condencedImports[import_.from] = new Set();
       }
       condencedImports[import_.from].add(import_.import);
-    })
+    });
 
     const imports = Object.keys(condencedImports).map(
-      from => `import { ${[...condencedImports[from]].join(',')} } from '${from}';`
+      from => `import { ${[...condencedImports[from]].join(',')} } from '${from}';`,
     );
     const instantiations = this.instantiations.map(instantiation => `const ${instantiation.variable} = new ${instantiation.instantiatedClass}(${JSON.stringify(instantiation.options, null, 2)});`);
     const postInstantiations = this.postInstantiations.map(postInstantiation => postInstantiation.line);

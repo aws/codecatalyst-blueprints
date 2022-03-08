@@ -1,5 +1,5 @@
 export const createReadme = (): string => {
-return `
+  return `
 
 ## Usage
 This react application is a projen project. You should use projen to manage the configuration of this project.
@@ -33,4 +33,4 @@ Run just the front end locally.
 yarn react-scripts start
 \`\`\`
 `;
-}
+};

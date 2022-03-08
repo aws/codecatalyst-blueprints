@@ -21,4 +21,4 @@ export const createReadme = (): string => {
   yarn autodeploy
   \`\`\`
   `;
-  }
+};

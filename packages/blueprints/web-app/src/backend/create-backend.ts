@@ -1,19 +1,19 @@
 import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { awscdk } from 'projen';
-import { createLambdaInfra, defaultLambdaReturn } from './create-lambda';
-import { createProjenProject } from '../projen-class/create-projen-project';
-import { getStackDefinition, getStackTestDefintion } from './create-stack';
 import { PROJEN_VERSION } from '..';
+import { createProjenProject } from '../projen-class/create-projen-project';
+import { createLambdaInfra, defaultLambdaReturn } from './create-lambda';
 import { createReadme } from './create-readme';
+import { getStackDefinition, getStackTestDefintion } from './create-stack';
 
 export const createBackend = (options: {
-    repository: SourceRepository,
-    folder: string,
-    frontendfolder: string,
-    stackName: string,
-    lambdas: string[],
-  },
-  projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
+  repository: SourceRepository;
+  folder: string;
+  frontendfolder: string;
+  stackName: string;
+  lambdas: string[];
+},
+projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
 ): awscdk.AwsCdkTypeScriptApp => {
   const rcvariable = 'backend';
   const { repository, folder, frontendfolder, stackName, lambdas } = options;
@@ -23,18 +23,18 @@ export const createBackend = (options: {
     projenVersion: PROJEN_VERSION,
     import: 'awscdk',
     instantiatedClass: 'awscdk.AwsCdkTypeScriptApp',
-    projectOptions
+    projectOptions,
   });
 
   // add autodeploy task
   const autoDeployTaskName = 'autodeploy';
   const autoDeployTask = {
-    exec: "cdk watch",
-    description: "Builds, and autodeploys the project for easy development",
-  }
+    exec: 'cdk watch',
+    description: 'Builds, and autodeploys the project for easy development',
+  };
   projenrc.addPostInstantiation({
-    line: '// after a deploy to the backend stack, copy the output to the frontend so it knowsthe backend url.'
-  })
+    line: '// after a deploy to the backend stack, copy the output to the frontend so it knowsthe backend url.',
+  });
   projenrc.addPostInstantiation({
     line: `${rcvariable}.addTask("${autoDeployTaskName}", ${JSON.stringify(autoDeployTask, null, 2)});`,
   });
@@ -44,8 +44,8 @@ export const createBackend = (options: {
   const copyConfigTaskName = 'deploy:copy-config';
   const copyConfigTask = {
     exec: `cdk deploy --outputs-file ../${frontendfolder}/src/config.json --require-approval never`,
-    description: "Deploys the project, and copies the config into the front end folder",
-  }
+    description: 'Deploys the project, and copies the config into the front end folder',
+  };
   projenrc.addPostInstantiation({
     line: `${rcvariable}.addTask("${copyConfigTaskName}", ${JSON.stringify(copyConfigTask, null, 2)});`,
   });
@@ -55,8 +55,8 @@ export const createBackend = (options: {
     new SourceFile(repository, `${folder}/src/${lambdaName}.lambda.ts`, [
       'exports.handler = async (event: any, context: any) => {',
       `  return (${defaultLambdaReturn.toString().replace('<<lambda backend>>', lambdaName)})();`,
-      '};'
-    ].join('\n'))
+      '};',
+    ].join('\n'));
     return createLambdaInfra(project, lambdaName);
   });
 
@@ -74,7 +74,7 @@ export const createBackend = (options: {
   new SourceFile(
     repository,
     `${folder}/src/main.test.ts`,
-    getStackTestDefintion(project.appEntrypoint, stackName)
+    getStackTestDefintion(project.appEntrypoint, stackName),
   );
 
   new SourceFile(repository, `${folder}/README.md`, createReadme());
