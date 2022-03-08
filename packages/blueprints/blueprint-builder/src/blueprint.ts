@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as cp from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { buildIndex } from '@caws-blueprint-util/blueprint-utils';
 import {
   ProjenBlueprint,
-  ProjenBlueprintOptions
+  ProjenBlueprintOptions,
 } from '@caws-blueprint-util/projen-blueprint';
 import {
   Blueprint as ParentBlueprint,
-  Options as ParentOptions
+  Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
 
-import * as cp from 'child_process';
 import * as decamelize from 'decamelize';
-import * as fs from 'fs';
-import * as path from 'path';
 import { TextFile, YamlFile } from 'projen';
 
 import { buildBlueprint } from './build-blueprint';
@@ -22,7 +22,7 @@ import {
   buildGenerationObject,
   buildMetaDataObject,
   buildParametersObject,
-  YamlBlueprint
+  YamlBlueprint,
 } from './yaml-blueprint';
 
 export interface Options {
