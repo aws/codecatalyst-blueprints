@@ -12,6 +12,14 @@ yarn && yarn projen && yarn build
 ## Running the front end
 Usually, you'll want to run the front end and the backend together. Otherwise the frontend will not be able to fetch anything from the backend. You can configure where the front-end is pointed by changing the url in the configuration file \`src/config.json\`
 \`\`\`
+# switch into your aws account
+<switch into aws account>
+# switch into backend folder
+yarn deploy:copy-config
+\`\`\`
+
+or just update the configuration file \`src/config.json\`
+\`\`\`
 {
     "<<my-stack-name>>" : {
         apiurl: "<<my API Url>>"
