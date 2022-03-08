@@ -2,6 +2,8 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "clean-all": "bash ./scripts/clean.sh",
+    "clean-synth": "bash ./scripts/clean-synth.sh",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
