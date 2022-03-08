@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as axios from 'axios';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
-import { verifyIdentity } from './verify-identity';
+import {verifyIdentity} from './verify-identity';
 
 export interface PublishOptions extends yargs.Arguments {
   blueprint: string;
@@ -56,7 +56,7 @@ export async function publish(
   }
 
   const packagePath = fs
-    .readdirSync(distributionFolder, { withFileTypes: true })
+    .readdirSync(distributionFolder, {withFileTypes: true})
     .filter(entry => entry.isFile() && entry.name.endsWith('.tgz'))
     .map(entry => entry.name)[0];
   if (!packagePath) {
@@ -69,7 +69,7 @@ export async function publish(
   }
 
   log.info('verifying identity');
-  const indentity = await verifyIdentity({ endpoint, cookie });
+  const indentity = await verifyIdentity({endpoint, cookie});
   log.info(`Publishing as ${indentity.name} at ${indentity.email}`);
   log.info('using endpoint: %s', endpoint);
 
@@ -81,16 +81,16 @@ export async function publish(
           organizationName: "${publisher}",
           publisher: "${publisher}",
           name: "${friendlyBlueprintName}",
-          version: "${version}" }) {
+          versionId: "${version}" }) {
             uploadUrl, publishingJobId }
           }`,
     },
     {
       headers: {
-        'authority': endpoint,
-        'accespt': 'application/json',
-        'origin': `https://${endpoint}`,
-        'cookie': cookie,
+        authority: endpoint,
+        accespt: 'application/json',
+        origin: `https://${endpoint}`,
+        cookie: cookie,
         'anti-csrftoken-a2z': indentity.csrfToken,
         'content-type': 'application/json',
       },

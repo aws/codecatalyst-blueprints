@@ -25,6 +25,8 @@ export interface Lambda {
   /**
    * Enter the name of your Lambda function
    * Must be alphanumeric
+   * @validationRegex /^[a-zA-Z0-9]{1,56}$/
+   * @validationMessage Must contain only alphanumeric characters and be up to 56 characters in length
    */
   functionName: string;
 
@@ -44,6 +46,8 @@ export interface Lambda {
  export interface Options extends ParentOptions {
   /**
   * Enter the name your application's source repository
+  * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+  * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
   */
   sourceRepositoryName: string;
   /**
@@ -58,25 +62,34 @@ export interface Lambda {
    * The configurations for your workflow
    */
   workflow: {
-
     /**
      * Enter the name of the S3 bucket to store build artifacts.
      * Must be an existing S3 bucket
+     * @validationRegex /^(?!xn--)^(?!([0-9]{1,3}.){3}[0-9]{1,3}$)([a-z0-9][a-z0-9.-]{1,61}[a-z0-9])(?<!-s3alias)$/
+     * @validationMessage SBucket names must only contain lowercase letters, numbers, and dashes.
+     * See rules for bucket naming: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
      */
     s3BucketName: string;
-
     /**
      * Enter the name of the CloudFormation stack to deploy your application
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,127}$/
+     * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
      */
     cloudFormationStackName: string;
 
     /**
      * Enter the role ARN to use when building your application
+     * @validationRegex /^arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9+=,.@_-]{1,64}$/
+     * @validationMessage IAM role ARN must match pattern arn:aws:iam::<account ID>:role/<role name>.
+     * Valid role names are up to 64 alphanumeric characters including the following symbols plus (+), equal (=), comma (,), period (.), at (@), underscore (_), and hyphen (-).
      */
     buildRoleArn: string;
 
     /**
      * Enter the role ARN to use when deploying your application through CloudFormation
+     * @validationRegex /^arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9+=,.@_-]{1,64}$/
+     * @validationMessage IAM role ARN must match pattern arn:aws:iam::<account ID>:role/<role name>.
+     * Valid role names are up to 64 alphanumeric characters including the following symbols plus (+), equal (=), comma (,), period (.), at (@), underscore (_), and hyphen (-).
      */
     stackRoleArn: string;
     /**
