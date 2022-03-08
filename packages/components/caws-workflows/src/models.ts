@@ -28,6 +28,7 @@ export interface TestResult {
 
 export interface Reports {
   Name: string;
+  AutoDiscover?: boolean;
   TestResults: TestResult[];
 }
 

@@ -8,6 +8,8 @@ import {
   Workflow,
   WorkflowDefinition,
   getDefaultActionIdentifier,
+  Artifacts,
+  Reports,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
@@ -109,6 +111,8 @@ export class Blueprint extends ParentBlueprint {
       defaultReleaseBranch: 'main',
       deps: ['axios'],
       github: false,
+      devDeps: ['jest-junit'],
+      gitignore: ['junit.xml'],
       tsconfig: {
         include: ['src/**/loaders.d.ts'],
         compilerOptions: {
@@ -248,6 +252,8 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private createDeployAction(stage: any, workflow: WorkflowDefinition) {
+    const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
+
     workflow.Actions[`Build_${stage.environment.title}`] = {
       Identifier: getDefaultActionIdentifier(
         ActionIdentifierAlias.build,
@@ -279,8 +285,15 @@ export class Blueprint extends ParentBlueprint {
             Run: `eval $(jq -r \'.${this.stackName} | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
+        Artifacts: [
+          { Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] },
+        ] as Artifacts[],
+        Reports: [
+          { Name: 'AutoDiscovered', AutoDiscover: true, TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }] },
+        ] as unknown as Reports[],
         OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
+      OutputArtifacts: [AUTO_DISCOVERY_ARTIFACT_NAME],
     };
   }
 

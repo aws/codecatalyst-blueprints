@@ -43,7 +43,7 @@ export const createBackend = (options: {
   // add copy-config task
   const copyConfigTaskName = 'deploy:copy-config';
   const copyConfigTask = {
-    exec: `"cdk deploy --outputs-file ../${frontendfolder}/src/config.json --require-approval never"`,
+    exec: `cdk deploy --outputs-file ../${frontendfolder}/src/config.json --require-approval never`,
     description: "Deploys the project, and copies the config into the front end folder",
   }
   projenrc.addPostInstantiation({

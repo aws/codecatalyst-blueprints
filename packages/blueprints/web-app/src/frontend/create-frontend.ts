@@ -10,11 +10,12 @@ export const createFrontend = (
   folder: string,
   options: web.ReactTypeScriptProjectOptions,
 ): web.ReactTypeScriptProject => {
-  const { project } = createProjenProject(repository, web.ReactTypeScriptProject, {
+  const rcvariable = 'frontend';
+  const { project, projenrc } = createProjenProject(repository, web.ReactTypeScriptProject, {
     subfolder: folder,
     import: 'web',
     instantiatedClass: 'web.ReactTypeScriptProject',
-    rcvariable: 'frontend',
+    rcvariable,
     projenVersion: PROJEN_VERSION,
     projectOptions: options,
   });
@@ -23,6 +24,22 @@ export const createFrontend = (
   const content: any;
   export default content;
 }`);
+
+
+  // Override the react-scripts test command to generate coverage and test reports
+  const reactScriptsTestTask = project.testTask.name;
+  const reactScriptsTest = {
+    exec: 'react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit',
+    description: "Overrides the react-scripts test command to generate coverage and test reports",
+  }
+  project.testTask.reset();
+  project.addTask(reactScriptsTestTask, reactScriptsTest);
+  projenrc.addPostInstantiation({
+    line: `${rcvariable}.testTask.reset()`,
+  });
+  projenrc.addPostInstantiation({
+    line: `${rcvariable}.addTask("${reactScriptsTestTask}", ${JSON.stringify(reactScriptsTest, null, 2)});`,
+  });
 
   // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
   //  that is incompatible with create-react-app (i.e react-scripts). We skip the preflight check
