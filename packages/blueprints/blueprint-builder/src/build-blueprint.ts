@@ -17,6 +17,11 @@ export const buildBlueprint = (originBlueprint: BlueprintIntrospection, originPa
   return `import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
 import defaults from './defaults.json';
 
+// Sample imports:
+// import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+// import { TextFile } from 'projen';
+// import * as fs from 'fs';
+
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard
@@ -38,14 +43,20 @@ import defaults from './defaults.json';
       const options = Object.assign(defaults, options_);
       console.log(options);
 
-      // example showing copy source files
-      // TODO
+      /** SAMPLE CODE START
 
-      // example showing adding workflows
-      // blah
+       // add a repository
+       const repo = new SourceRepository(this, { title: 'MyRepo' });
 
-      // example showing something else
-      // blah
+       // example showing add files to the repository
+       // assets get synth'd from the 'assets' folder. At synth time, the asset folder is a sibling of the blueprint.ts.
+       const filecontent = fs.readFileSync('./assets/put-your-sample-assets-here.txt').toString();
+       new TextFile(this, \`\${repo.relativePath}/copied-file.txt\`, {
+          readonly: false,
+          lines: filecontent.split('\\n'),
+        });
+
+       SAMPLE CODE END */
    }
 }
 `;

@@ -1,33 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as cp from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
-
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import {
-  buildBlueprint,
-  buildIndex,
-} from '@caws-blueprint-util/blueprint-utils';
+import { buildIndex } from '@caws-blueprint-util/blueprint-utils';
 import {
   ProjenBlueprint,
-  ProjenBlueprintOptions,
+  ProjenBlueprintOptions
 } from '@caws-blueprint-util/projen-blueprint';
 import {
   Blueprint as ParentBlueprint,
-  Options as ParentOptions,
+  Options as ParentOptions
 } from '@caws-blueprint/blueprints.blueprint';
 
-// import * as camelcase from 'camelcase';
+import * as cp from 'child_process';
 import * as decamelize from 'decamelize';
-// import { TypeScriptProject, YamlFile, TextFile } from 'projen';
-import { YamlFile, TextFile, SourceCode } from 'projen';
+import * as fs from 'fs';
+import * as path from 'path';
+import { TextFile, YamlFile } from 'projen';
 
+import { buildBlueprint } from './build-blueprint';
 import { BlueprintIntrospection, introspectBlueprint } from './introspect-blueprint';
 import {
   buildGenerationObject,
   buildMetaDataObject,
   buildParametersObject,
-  YamlBlueprint,
+  YamlBlueprint
 } from './yaml-blueprint';
 
 export interface Options {
@@ -138,6 +133,7 @@ export class Blueprint extends ParentBlueprint {
       copyrightOwner: this.context.organizationName || 'unknown',
       deps: [
         this.options.blueprintToExtend,
+        'projen',
         '@caws-blueprint-component/caws-workflows',
         '@caws-blueprint-component/caws-source-repositories',
       ],
@@ -213,34 +209,35 @@ export class Blueprint extends ParentBlueprint {
     });
     blueprint.addDevDeps(`projen@${this.options.advancedSettings?.projenVersion}`);
 
-    const rcfile = new SourceCode(blueprint, '.projenrc.ts');
-    rcfile.line("import { ProjenBlueprint } from '@caws-blueprint-util/blueprint-projen';");
-    rcfile.line('');
-    rcfile.line(
+    const rcfile = new TextFile(blueprint, '.projenrc.ts', { readonly: false });
+    rcfile.addLine("import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';");
+    rcfile.addLine('');
+    rcfile.addLine(
       `const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`,
     );
-    rcfile.line('');
-    rcfile.line('project.synth();');
+    rcfile.addLine('');
+    rcfile.addLine('project.synth();');
 
-    const blueprintFile = new SourceCode(blueprint, 'src/blueprint.ts');
+    const blueprintFile = new TextFile(blueprint, 'src/blueprint.ts', { readonly: false });
     buildBlueprint(this.parentIntrospection, this.options.blueprintToExtend)
       .split('\n')
       .forEach(line => {
-        blueprintFile.line(line);
+        blueprintFile.addLine(line);
       });
 
-    const indexFile = new SourceCode(blueprint, 'src/index.ts');
+    const indexFile = new TextFile(blueprint, 'src/index.ts', { readonly: false });
     buildIndex()
       .split('\n')
       .forEach(line => {
-        indexFile.line(line);
+        indexFile.addLine(line);
       });
 
     // set up assets sample assets folder:
-    new SourceCode(blueprint, 'assets/put-your-sample-assets-here.txt');
+    const sampleAsset = new TextFile(blueprint, 'assets/put-your-sample-assets-here.txt', { readonly: false });
+    sampleAsset.addLine('A LINE OF A SAMPLE ASSET');
 
-    const defaults = new SourceCode(blueprint, 'src/defaults.json');
-    defaults.line(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
+    const defaults = new TextFile(blueprint, 'src/defaults.json');
+    defaults.addLine(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
     const readmeContentPath = path.join(__dirname, '..', 'assets', '/starter-readme.md');
     const readmeContent = fs.readFileSync(readmeContentPath, 'utf8');
