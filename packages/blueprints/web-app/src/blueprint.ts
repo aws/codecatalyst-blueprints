@@ -17,7 +17,6 @@ import {
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
 import { createBackend } from './backend/create-backend';
-import { generateConfigJson } from './default-config';
 import defaults from './defaults.json';
 import { createFrontend } from './frontend/create-frontend';
 import { generateReadmeContents } from './readme-contents';
@@ -70,9 +69,9 @@ export interface Options extends ParentOptions {
    */
   advanced: {
     /**
-     * How many lambdas would you like to create?
+     * What would you like to call your lambda function?
      */
-    lambdaNames: string[];
+    lambdaName: string;
   };
 }
 
@@ -101,15 +100,13 @@ export class Blueprint extends ParentBlueprint {
     this.stackName = makeValidFolder(this.repositoryName.toLowerCase(), { invalidChars: ['-'] });
     this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
 
-    if (!options.advanced.lambdaNames || !options.advanced.lambdaNames.length) {
-      options.advanced.lambdaNames = ['defaultLambdaHandler'];
-    }
+    let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
 
     this.repository = new SourceRepository(this, {
       title: this.repositoryName,
     });
 
-    createFrontend(this.repository, this.reactFolderName, this.options.advanced.lambdaNames, this.stackName, {
+    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.stackName, {
       name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
@@ -133,7 +130,7 @@ export class Blueprint extends ParentBlueprint {
       folder: this.nodeFolderName,
       frontendfolder: this.reactFolderName,
       stackName: this.stackName,
-      lambdas: this.options.advanced.lambdaNames,
+      lambdas: lambdaNames,
     }, {
       name: this.nodeFolderName,
       cdkVersion: '1.95.2',
@@ -170,9 +167,6 @@ export class Blueprint extends ParentBlueprint {
 
     new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
     new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
-
-    const defaultConfig = generateConfigJson(`${this.options.repositoryName}ApiStack`);
-    new SourceFile(this.repository, `${this.reactFolderName}/src/config.json`, JSON.stringify(defaultConfig, null, 2));
   }
 
   private createWorkflow() {

@@ -3,7 +3,7 @@
   "reactFolderName": "react",
   "nodeFolderName": "node",
   "advanced": {
-    "lambdaNames": ["FirstLambda", "SecondLambda", "ThirdLambda"]
+    "lambdaName": "FirstLambda"
   },
   "workflow": {
     "stages": [
