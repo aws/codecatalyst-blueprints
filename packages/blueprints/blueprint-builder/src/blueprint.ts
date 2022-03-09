@@ -116,7 +116,8 @@ export class Blueprint extends ParentBlueprint {
       defaultReleaseBranch: 'main',
       name: dashName,
       displayName: this.options.blueprintName,
-      authorName: this.context.organizationName,
+      authorName: this.context.organizationName || 'no-organization-found',
+      publishingOrganization: this.context.organizationName || 'unknown-publshing-organization',
       license: this.options.advancedSettings?.license,
       projenrcTs: true,
       sampleCode: false,
@@ -139,7 +140,6 @@ export class Blueprint extends ParentBlueprint {
       ],
       description: `${this.options.description}`,
       packageName,
-      publishingOrganization: this.context.organizationName,
       devDeps: [
         'ts-node',
         'typescript',
