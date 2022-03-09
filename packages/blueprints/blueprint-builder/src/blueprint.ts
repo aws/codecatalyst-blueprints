@@ -85,6 +85,11 @@ export interface Options {
      * Projen pinned version. Dont change unless you know what you're doing.
      */
     projenVersion: '0.52.18';
+
+    /**
+     * Override the publishing organization. Dont change unless you know what you're doing.
+     */
+    organizationOverride?: string;
   };
 }
 
@@ -93,6 +98,7 @@ export class Blueprint extends ParentBlueprint {
   protected newBlueprintOptions: ProjenBlueprintOptions;
   protected repository: SourceRepository;
   protected parentIntrospection: BlueprintIntrospection;
+  protected builderOrganizationName: string;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(options_: Options & ParentOptions) {
@@ -109,15 +115,16 @@ export class Blueprint extends ParentBlueprint {
     });
     console.log('repository:', this.repository.path);
 
-    const packageName = `@caws-blueprint/${this.context.organizationName}.${dashName}`;
+    this.builderOrganizationName = this.options.advancedSettings?.organizationOverride || this.context.organizationName || '<<unknown-organization>>';
+    const packageName = `@caws-blueprint/${this.builderOrganizationName}.${dashName}`;
 
-    // this.context.organizationName
     this.newBlueprintOptions = {
-      defaultReleaseBranch: 'main',
+      authorName: this.builderOrganizationName,
+      publishingOrganization: this.builderOrganizationName,
+      packageName,
       name: dashName,
       displayName: this.options.blueprintName,
-      authorName: this.context.organizationName || 'no-organization-found',
-      publishingOrganization: this.context.organizationName || 'unknown-publshing-organization',
+      defaultReleaseBranch: 'main',
       license: this.options.advancedSettings?.license,
       projenrcTs: true,
       sampleCode: false,
@@ -131,7 +138,7 @@ export class Blueprint extends ParentBlueprint {
           noImplicitAny: false,
         },
       },
-      copyrightOwner: this.context.organizationName || 'unknown',
+      copyrightOwner: this.builderOrganizationName || 'unknown',
       deps: [
         this.options.blueprintToExtend,
         'projen',
@@ -139,7 +146,7 @@ export class Blueprint extends ParentBlueprint {
         '@caws-blueprint-component/caws-source-repositories',
       ],
       description: `${this.options.description}`,
-      packageName,
+
       devDeps: [
         'ts-node',
         'typescript',
@@ -170,8 +177,8 @@ export class Blueprint extends ParentBlueprint {
           Description: this.options.description || '',
           Package: this.newBlueprintOptions.packageName || 'no-packagename-found',
           Version: '0.0.0',
-          Author: this.context.organizationName || 'no-organization-found',
-          Organization: this.context.organizationName || 'no-organization-found',
+          Author: this.builderOrganizationName,
+          Organization: this.builderOrganizationName,
           License: this.options.advancedSettings?.license || 'no-license-found',
         },
       }),
@@ -236,7 +243,9 @@ export class Blueprint extends ParentBlueprint {
     const sampleAsset = new TextFile(blueprint, 'assets/put-your-sample-assets-here.txt', { readonly: false });
     sampleAsset.addLine('A LINE OF A SAMPLE ASSET');
 
-    const defaults = new TextFile(blueprint, 'src/defaults.json');
+    const defaults = new TextFile(blueprint, 'src/defaults.json', {
+      readonly: false,
+    });
     defaults.addLine(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
     const readmeContentPath = path.join(__dirname, '..', 'assets', '/starter-readme.md');
