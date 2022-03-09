@@ -89,7 +89,7 @@ export interface Options {
     /**
      * Override the publishing organization. Dont change unless you know what you're doing.
      */
-     organizationOverride?: string;
+    organizationOverride?: string;
   };
 }
 
