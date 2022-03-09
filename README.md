@@ -1,7 +1,7 @@
 ## Set Up
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link
-things properly when using VScode. Although plugins also exist for vimlords. Many gitignored files will be invisible in vim and may cause annoying problems. 
+things properly when using VScode. Although plugins also exist for vimlords. Many gitignored files will be invisible in vim and may cause annoying problems.
 
 #### Prereq:
 Install these globally. This is required for various tooling to work properly
@@ -27,7 +27,7 @@ blueprints-setup() {
     #set the repositories in your workspace
     export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm | jq -r '.repositoryEndpoint'`
     echo 'NPM_REPO set to: '$NPM_REPO
-    export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --output text` 
+    export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --output text`
 
     #disable projen post synthesis
     export PROJEN_DISABLE_POST=1
@@ -92,4 +92,18 @@ You must have write access to the 'blueprints' organization in code.aws in order
 export CAWS_COOKIE='session-blhahBlahblahBlah'
 // run from the root
 yarn blueprints:publish
+```
+
+### Clean up:
+
+As you test changes to blueprints locally you will build up alot of projects created in the synth directory of the blueprint, to clean up the synth directory and remove these old projects run:
+
+```
+yarn clean-synth
+```
+
+Sometimes you may need to reset this project to a clean repository and remove the node modules, dist, lib, and synth directories. To reset this project to a clean repository run:
+
+```
+yarn clean-all
 ```

@@ -49,7 +49,7 @@ import * as fs from 'fs';
       // example showing add files to the repository
       // assets get synth'd from the 'assets' folder. At synth time, the asset folder is a sibling of the blueprint.ts.
       const filecontent = fs.readFileSync('./assets/put-your-sample-assets-here.txt').toString();
-      new TextFile(this, \`\${repo.relativePath}/copied-file.txt\`, {
+      new TextFile(this as any, \`\${repo.relativePath}/copied-file.txt\`, {
         readonly: false,
         lines: filecontent.split('\\n'),
       });
