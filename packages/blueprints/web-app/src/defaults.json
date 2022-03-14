@@ -1,9 +1,9 @@
 {
-  "repositoryName": "MyFirstWebApp",
+  "repositoryName": "WebApplication",
   "reactFolderName": "react",
   "nodeFolderName": "node",
   "advanced": {
-    "lambdaName": "hiThereMike"
+    "lambdaName": "FirstBackendLambda"
   },
   "stages": [{
     "environment": {
