@@ -55,16 +55,6 @@ export interface Options extends ParentOptions {
   nodeFolderName: string;
 
   /**
-   * The configurations for your workflow
-   */
-  workflow: {
-    /**
-     * Add deployment stages.
-     */
-    stages: StageDefinition[];
-  };
-
-  /**
    * @collapsed true
    */
   advanced: {
@@ -73,6 +63,12 @@ export interface Options extends ParentOptions {
      */
     lambdaName: string;
   };
+
+  /**
+   * Your blueprint includes default environments for production. You can rename your default environments and connect to your AWS account here.
+   */
+  stages: StageDefinition[];
+
 }
 
 /**
@@ -101,6 +97,7 @@ export class Blueprint extends ParentBlueprint {
     this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
 
     let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
+    lambdaNames = lambdaNames.map(lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`);
 
     this.repository = new SourceRepository(this, {
       title: this.repositoryName,
@@ -158,18 +155,21 @@ export class Blueprint extends ParentBlueprint {
       lambdaAutoDiscover: true,
       defaultReleaseBranch: 'main',
     });
-    this.createWorkflow();
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
-    for (const stage of this.options.workflow.stages) {
+    (options.stages || []).forEach((stage, index) => {
+      if (!stage.environment.title) {
+        stage.environment.title = `stage_${index}`;
+      }
+      this.createWorkflow(stage);
       new Environment(this, stage.environment);
-    }
+    });
 
     new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
     new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
   }
 
-  private createWorkflow() {
+  private createWorkflow(stage: StageDefinition) {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',
       Triggers: [
@@ -181,17 +181,14 @@ export class Blueprint extends ParentBlueprint {
       Actions: {},
     };
 
-    this.options.workflow.stages.forEach((stage: StageDefinition) => {
-      this.createDeployAction(stage, workflowDefinition);
-    });
-
+    this.createDeployAction(stage, workflowDefinition);
     new Workflow(this, this.repository, workflowDefinition);
   }
 
-  private createDeployAction(stage: any, workflow: WorkflowDefinition) {
+  private createDeployAction(stage: StageDefinition, workflow: WorkflowDefinition) {
     const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
 
-    workflow.Actions[`Build_${stage.environment.title}`] = {
+    workflow.Actions[`Build_${stage?.environment.title}`] = {
       Identifier: getDefaultActionIdentifier(
         ActionIdentifierAlias.build,
         this.context.environmentId,
@@ -200,12 +197,12 @@ export class Blueprint extends ParentBlueprint {
         ActionRoleArn: stage.role,
         Steps: [
           { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
-          { Run: `export awsRegion=${stage.region}` },
+          { Run: 'export awsRegion=us-west-2' },
+          { Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep` },
+          { Run: 'npm install -g yarn' },
           { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
           {
-            Run: `npx cdk bootstrap aws://${this.getIdFromArn(stage.role)}/${
-              stage.region
-            }`,
+            Run: `npx cdk bootstrap aws://${this.getIdFromArn(stage.role)}/us-west-2`,
           },
           {
             Run: 'yarn deploy:copy-config',
@@ -215,11 +212,11 @@ export class Blueprint extends ParentBlueprint {
           { Run: 'cd ..' },
           { Run: `cd ./${this.nodeFolderName}` },
           {
-            Run: `npx cdk deploy ${this.stackName} --require-approval never --outputs-file config.json`,
+            Run: `npx cdk deploy ${this.stackName}Frontend --require-approval never --outputs-file config.json`,
           },
           // TODO - a hack to get the cloudformation url to show up under build outputs
           {
-            Run: `eval $(jq -r \'.${this.stackName} | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
+            Run: `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
         Artifacts: [

@@ -123,6 +123,7 @@ const env = {
 const app = new App();
 
 new ${apiStack}(app, \`${apiStack}\`, { env });
+new ${appStack}(app, \`${appStack}\`, { env });
 
 app.synth();
 `;
@@ -137,16 +138,23 @@ function getSecondSinceEpoch() {
 }
 
 export function getStackTestDefintion(appEntrypoint: string, stackName: string) {
-  const appStack: string = `${stackName}Stack`;
+  const appStack: string = `${stackName}Backend`;
+  const apiStack: string = `${stackName}Frontend`;
+
   return `import { App } from \'@aws-cdk/core\';
 import '@aws-cdk/assert/jest';
-import { ${appStack} } from '../src/${basename(appEntrypoint, TYPESCRIPT_EXT)}';
+import { ${appStack}, ${apiStack} } from '../src/${basename(appEntrypoint, TYPESCRIPT_EXT)}';
 
- test('Snapshot', () => {
+ test('Snapshot ${appStack}', () => {
    const app = new App();
-   const stack = new ${appStack}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
-
-   expect(app.synth().getStackArtifact(stack.artifactId).template).toMatchSnapshot();
+   const appStack = new ${appStack}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
+   expect(app.synth().getStackArtifact(appStack.artifactId).template).toMatchSnapshot();
  });
+
+ test('Snapshot ${apiStack}', () => {
+  const app = new App();
+  const apiStack = new ${apiStack}(app, 'test', { env: { account: '123', region: 'test-region-1' } });
+  expect(app.synth().getStackArtifact(apiStack.artifactId).template).toMatchSnapshot();
+});
 `;
 }

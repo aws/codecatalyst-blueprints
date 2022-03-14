@@ -3,18 +3,14 @@
   "reactFolderName": "react",
   "nodeFolderName": "node",
   "advanced": {
-    "lambdaName": "FirstLambda"
+    "lambdaName": "hiThereMike"
   },
-  "workflow": {
-    "stages": [
-      {
-        "environment": {
-          "title": "development",
-          "description": "this is my development environment"
-        },
-        "role": "arn:aws:iam::123456789012:role/REPLACE-ME-DEPLOY-ROLE-NAME",
-        "region": "us-west-2"
-      }
-    ]
-  }
+  "stages": [{
+    "environment": {
+      "title" : "Development"
+    },
+    "role": "arn:aws:iam::123456789012:role/REPLACE-ME-DEPLOY-ROLE-NAME",
+    "accountid": "",
+    "region": "us-west-2"
+  }]
 }

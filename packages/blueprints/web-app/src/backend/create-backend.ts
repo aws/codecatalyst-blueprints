@@ -42,14 +42,12 @@ projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
 
   // add copy-config task
   const copyConfigTaskName = 'deploy:copy-config';
-  const copyConfigTask = {
-    exec: `cdk deploy --outputs-file ../${frontendfolder}/src/config.json --require-approval never`,
-    description: 'Deploys the project, and copies the config into the front end folder',
-  };
+  const copyConfigTask = `cdk deploy ${stackName}Backend --outputs-file ../${frontendfolder}/src/config.json --require-approval never`;
+
+  project.setScript(copyConfigTaskName, copyConfigTask);
   projenrc.addPostInstantiation({
-    line: `${rcvariable}.addTask("${copyConfigTaskName}", ${JSON.stringify(copyConfigTask, null, 2)});`,
+    line: `${rcvariable}.setScript("${copyConfigTaskName}", "${copyConfigTask}");`,
   });
-  project.addTask(copyConfigTaskName, copyConfigTask);
 
   const lambdaOptions = (lambdas || []).map(lambdaName => {
     new SourceFile(repository, `${folder}/src/${lambdaName}.lambda.ts`, [
