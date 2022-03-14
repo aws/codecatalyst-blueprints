@@ -1,17 +1,16 @@
 {
-  "repositoryName": "HelloWorldApp",
+  "repositoryName": "WebApplication",
   "reactFolderName": "react",
   "nodeFolderName": "node",
-  "workflow": {
-    "stages": [
-      {
-        "environment": {
-          "title": "development",
-          "description": "this is my development environment"
-        },
-        "role": "REPLACE_ME_DEPLOY_ROLE_ARN",
-        "region": "us-west-2"
-      }
-    ]
-  }
+  "advanced": {
+    "lambdaName": "FirstBackendLambda"
+  },
+  "stages": [{
+    "environment": {
+      "title" : "Development"
+    },
+    "role": "arn:aws:iam::123456789012:role/REPLACE-ME-DEPLOY-ROLE-NAME",
+    "accountid": "",
+    "region": "us-west-2"
+  }]
 }
