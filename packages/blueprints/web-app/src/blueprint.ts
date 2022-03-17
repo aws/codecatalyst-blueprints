@@ -8,8 +8,7 @@ import {
   Workflow,
   WorkflowDefinition,
   getDefaultActionIdentifier,
-  Artifacts,
-  Reports,
+  TriggerType,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
@@ -23,6 +22,7 @@ import { generateReadmeContents } from './readme-contents';
 
 // Projen version string used when creating the webapp
 export const PROJEN_VERSION = '0.52.18';
+const SCHEMA_VERSION = 1.0;
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -172,9 +172,10 @@ export class Blueprint extends ParentBlueprint {
   private createWorkflow(stage: StageDefinition) {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',
+      SchemaVersion: SCHEMA_VERSION,
       Triggers: [
         {
-          Type: 'push',
+          Type: TriggerType.PUSH,
           Branches: ['main'],
         },
       ],
@@ -186,13 +187,24 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private createDeployAction(stage: StageDefinition, workflow: WorkflowDefinition) {
-    const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
+    const AUTO_DISCOVERY_REPORT_NAME = 'AutoDiscovered';
 
     workflow.Actions[`Build_${stage?.environment.title}`] = {
       Identifier: getDefaultActionIdentifier(
         ActionIdentifierAlias.build,
         this.context.environmentId,
       ),
+      Inputs: {
+        Sources: ['WorkFlowSource'],
+        Variables: [{
+          Name: 'Account Id',
+          Value: stage.accountid,
+        },
+        {
+          Name: 'Region',
+          Value: stage.region,
+        }],
+      },
       Configuration: {
         ActionRoleArn: stage.role,
         Steps: [
@@ -219,15 +231,28 @@ export class Blueprint extends ParentBlueprint {
             Run: `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
-        Artifacts: [
-          { Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] },
-        ] as Artifacts[],
-        Reports: [
-          { Name: 'AutoDiscovered', AutoDiscover: true, TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }] },
-        ] as unknown as Reports[],
-        OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
-      OutputArtifacts: [AUTO_DISCOVERY_ARTIFACT_NAME],
+      Environment: {
+        Name: stage.environment.title,
+        Connections: [{
+          Name: stage.accountid,
+          Role: stage.role,
+        }],
+      },
+      Outputs: {
+        Artifacts: [
+          {
+            Name: AUTO_DISCOVERY_REPORT_NAME,
+            Files: '**/*',
+          },
+        ],
+        AutoDiscoverReports: [{
+          Enabled: true,
+          ReportNamePrefix: 'AutoDiscovered',
+          IncludePaths: '**/*',
+        }],
+        Variables: ['CloudFrontURL'],
+      },
     };
   }
 

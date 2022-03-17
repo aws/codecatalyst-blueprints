@@ -6,6 +6,7 @@ import {
   Step,
   WorkflowDefinition,
   WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
+  TriggerType,
 } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
 import * as samPython from './sam-python';
@@ -56,7 +57,7 @@ export function addGenericBranchTrigger(
   }
 
   workflow.Triggers.push({
-    Type: 'Push',
+    Type: TriggerType.PUSH,
     Branches: branches,
     ...(filesChanged && { FileChanged: filesChanged }),
   });
@@ -73,7 +74,7 @@ export function addGenericPullRequestTrigger(
   }
 
   workflow.Triggers.push({
-    Type: 'PullRequest',
+    Type: TriggerType.PULLREQUEST,
     Events: events,
     Branches: branches,
     ...(filesChanged && { FileChanged: filesChanged }),
@@ -92,21 +93,31 @@ export function addGenericBuildAction(
       ActionIdentifierAlias.build,
       blueprint.context.environmentId,
     ),
-    OutputArtifacts: [artifactName],
-    Configuration: {
+    Inputs: {
       Variables: [
         {
           Name: 'BUILD_ROLE_ARN',
           Value: buildRoleArn,
         },
       ],
-      Steps: steps,
+      Sources: ['WorkfloSource'],
+    },
+    Outputs: {
       Artifacts: [
         {
           Name: artifactName,
-          Files: ['output.yaml'],
+          Files: 'output.yaml',
         },
       ],
+
+      AutoDiscoverReports: [{
+        Enabled: true,
+        ReportNamePrefix: 'AutoDiscovered',
+        IncludePaths: '**/*',
+      }],
+    },
+    Configuration: {
+      Steps: steps,
     },
   };
 }
@@ -126,7 +137,19 @@ export function addGenericCloudFormationDeployAction(
       ActionIdentifierAlias.deploy,
       blueprint.context.environmentId,
     ),
-    InputArtifacts: [artifactName],
+    Inputs: {
+      Artifacts: [artifactName],
+      Variables: [
+        {
+          Name: 'Account Id',
+          Value: stage.accountid,
+        },
+        {
+          Name: 'Region',
+          Value: stage.region,
+        },
+      ],
+    },
     Configuration: {
       ActionRoleArn: stage.role,
       DeploymentEnvironment: stage.environment.title,
@@ -137,6 +160,13 @@ export function addGenericCloudFormationDeployAction(
         'template': './output.yaml',
         'capabilities': 'CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM',
       },
+    },
+    Environment: {
+      Name: stage.environment.title,
+      Connections: [{
+        Name: stage.accountid,
+        Role: stage.role,
+      }],
     },
   };
 }
@@ -154,39 +184,21 @@ export function addGenericTestReports(
       ActionIdentifierAlias.test,
       blueprint.context.environmentId,
     ),
-    OutputArtifacts: [coverageArtifactName, testArtifactName],
-    Configuration: {
-      Steps: steps,
+    Outputs: {
       Artifacts: [
         {
           Name: coverageArtifactName,
-          Files: ['reports/cov.xml'],
+          Files: 'reports/cov.xml',
         },
         {
           Name: testArtifactName,
-          Files: ['reports/report.xml'],
+          Files: 'reports/report.xml',
         },
       ],
-      Reports: [
-        {
-          Name: coverageArtifactName,
-          TestResults: [
-            {
-              ReferenceArtifact: coverageArtifactName,
-              Format: 'CoberturaXml',
-            },
-          ],
-        },
-        {
-          Name: testArtifactName,
-          TestResults: [
-            {
-              ReferenceArtifact: testArtifactName,
-              Format: 'JunitXml',
-            },
-          ],
-        },
-      ],
+      Reports: [coverageArtifactName, testArtifactName],
+    },
+    Configuration: {
+      Steps: steps,
     },
   };
 }

@@ -1,4 +1,4 @@
-import { WorkflowDefinition } from '..';
+import { WorkflowDefinition, TriggerType } from '..';
 
 export class NodeWorkflowDefinitionSamples {
   public static readonly build: WorkflowDefinition = {
@@ -6,7 +6,7 @@ export class NodeWorkflowDefinitionSamples {
 
     Triggers: [
       {
-        Type: 'Push',
+        Type: TriggerType.PUSH,
 
         Branches: ['main'],
       },
@@ -15,8 +15,6 @@ export class NodeWorkflowDefinitionSamples {
     Actions: {
       Build: {
         Identifier: 'aws/managed-test@v1',
-
-        OutputArtifacts: [],
 
         Configuration: {
           Steps: [{ Run: 'npm install' }, { Run: 'npm run build' }],

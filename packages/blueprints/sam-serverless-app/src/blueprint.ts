@@ -133,9 +133,11 @@ export interface Lambda {
       const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
       const defaultReleaseBranch = 'main';
       const workflowName = 'build-and-release'
+      const SCHEMA_VERSION = 1.0;
       //Workflow
       const workflowDefinition: WorkflowDefinition = {
         Name: workflowName,
+        SchemaVersion: SCHEMA_VERSION,
         Triggers: [],
         Actions: {},
       }
