@@ -26,29 +26,6 @@ export enum TriggerType {
   PULLREQUEST = 'PULLREQUEST',
 }
 
-/*
-export enum Identifier {
-  'aws/action-extensions-hello-world@v1',
-  'aws/build@v1',
-  'aws/cawsbuildprivate-build@v1',
-  'aws/cawscfnprivate-deploy@v1',
-  'aws/cawstest@v1',
-  'aws/cfn-deploy-temp@v1',
-  'aws/cloudformation-deploy@v1',
-  'aws/codebuild-run-build@v1',
-  'aws/codebuild-run-integration_tests@v1',
-  'aws/codebuild-run-test@v1',
-  'aws/codebuild-run-tests@v1',
-  'aws/deployteam-dev@v1',
-  'aws/ecs-deploy@v1',
-  'aws/ecs-render-task-definition@v1',
-  'aws/github-actions-runner@v1',
-  'aws/managed-test@v1',
-  'aws/s3-deploy@v1',
-  'aws/workflows-mock@v1',
-}
-*/
-
 export interface Step {
   Run: string;
 }
@@ -76,7 +53,7 @@ export interface DeployActionConfiguration {
 }
 
 export interface ActionDefiniton {
-  Identifier?: string; // | Identifier;
+  Identifier?: string;
   Configuration?: BuildActionConfiguration | DeployActionConfiguration;
   DependsOn?: string[];
   Inputs?: InputsDefinition;
@@ -93,7 +70,7 @@ export interface TriggerDefiniton {
 
 export interface WorkflowDefinition {
   Name?: string;
-  SchemaVersion?: Number;
+  SchemaVersion?: string;
   RunMode?: RunModeDefiniton;
   Sources?: SourceDefiniton;
   Triggers?: TriggerDefiniton[];

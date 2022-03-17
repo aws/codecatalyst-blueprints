@@ -22,7 +22,7 @@ import { generateReadmeContents } from './readme-contents';
 
 // Projen version string used when creating the webapp
 export const PROJEN_VERSION = '0.52.18';
-const SCHEMA_VERSION = 1.0;
+const SCHEMA_VERSION = '1.0';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
