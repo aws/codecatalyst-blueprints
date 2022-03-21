@@ -3,7 +3,7 @@
   "reactFolderName": "react",
   "nodeFolderName": "node",
   "advanced": {
-    "lambdaName": "FirstBackendLambda"
+    "lambdaName": "FirstEndpoint"
   },
   "stages": [{
     "environment": {
