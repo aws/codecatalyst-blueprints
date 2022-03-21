@@ -1,6 +1,6 @@
-import { RuntimeMapping } from './models';
-import { Lambda } from './blueprint';
-import { StageDefinition } from '@caws-blueprint-component/caws-workflows';
+import {Lambda} from './blueprint';
+import {RuntimeMapping} from './models';
+import {StageDefinition} from '@caws-blueprint-component/caws-workflows';
 
 export function generateReadmeContents(
   runtimeMapping: RuntimeMapping,
@@ -8,19 +8,18 @@ export function generateReadmeContents(
   lambdas: Lambda[],
   stages: StageDefinition[],
   cloudFormationStackName: string,
-  s3bucketName: string,
   workflowName: string,
-){
+) {
   //Generate input variables
   let functionNames = '';
   for (let i = 0; i < lambdas.length - 1; i++) {
-    functionNames += `${lambdas[i].functionName}, `
+    functionNames += `${lambdas[i].functionName}, `;
   }
   functionNames += `${lambdas[lambdas.length - 1].functionName}`;
 
   let environments = '';
-  for (const stage of stages){
-    environments += `- \`${stage.environment.title}\` using the cloudformation stack \`${cloudFormationStackName}-${stage.environment.title}\`\n`
+  for (const stage of stages) {
+    environments += `- \`${stage.environment.title}\` using the cloudformation stack \`${cloudFormationStackName}-${stage.environment.title}\`\n`;
   }
 
   const readmeContents = `
@@ -126,7 +125,7 @@ The SAM CLI reads the application template to determine the API's routes and the
 The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
 
 ## Deploying your serverless application
-The application is deployed through Quokka.Codes using the workflow defined in \`.aws/workflows/${workflowName}.yaml\`. The workflow is triggered by pushes to the \`${defaultReleaseBranch}\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in \`${s3bucketName}\`, and deploys your application to your project environments in the following order:
+The application is deployed through Quokka.Codes using the workflow defined in \`.aws/workflows/${workflowName}.yaml\`. The workflow is triggered by pushes to the \`${defaultReleaseBranch}\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in a generated s3 bucket, and deploys your application to your project environments in the following order:
 
   ${environments}
 
@@ -137,6 +136,3 @@ See the Quokka User Guide for additional information on using the features and r
 `;
   return readmeContents;
 }
-
-
-
