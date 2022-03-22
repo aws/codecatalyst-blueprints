@@ -3,8 +3,7 @@
   "runtime": "Python 3",
   "lambdas": [
   {
-    "functionName": "HelloWorld",
-    "description": "This is a lambda function"
+    "functionName": "HelloWorld"
   }
   ],
 

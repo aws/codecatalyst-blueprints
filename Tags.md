@@ -52,3 +52,8 @@ usage:
 - **Requires**: N/A
 - **Usage**: Change option display name. Allows formats other than camelCase for the display name.
 - **Example**: `@displayName Blueprint Name`
+
+## @defaultEntropy
+- **Requires**: N/A
+- **Usage**: instructs the wizard to add entropy to the input parameters
+- **Example**: `@defaultEntropy`

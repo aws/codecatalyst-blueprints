@@ -1,21 +1,26 @@
 import { Environment } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
+import {
+  SourceFile,
+  SourceRepository,
+  makeValidFolder,
+} from '@caws-blueprint-component/caws-source-repositories';
 import {
   ActionIdentifierAlias,
+  Artifacts,
   BuildActionConfiguration,
-  Step,
+  Reports,
   StageDefinition,
+  Step,
   Workflow,
   WorkflowDefinition,
   getDefaultActionIdentifier,
-  Artifacts,
-  Reports,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@caws-blueprint/blueprints.blueprint';
+
 import { createBackend } from './backend/create-backend';
 import defaults from './defaults.json';
 import { createFrontend } from './frontend/create-frontend';
@@ -60,6 +65,7 @@ export interface Options extends ParentOptions {
   advanced: {
     /**
      * What would you like to call your lambda function?
+     * @defaultEntropy
      */
     lambdaName: string;
   };
@@ -68,7 +74,6 @@ export interface Options extends ParentOptions {
    * Your blueprint includes default environments for production. You can rename your default environments and connect to your AWS account here.
    */
   stages: StageDefinition[];
-
 }
 
 /**
@@ -97,7 +102,9 @@ export class Blueprint extends ParentBlueprint {
     this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
 
     let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
-    lambdaNames = lambdaNames.map(lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`);
+    lambdaNames = lambdaNames.map(
+      lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`,
+    );
 
     this.repository = new SourceRepository(this, {
       title: this.repositoryName,
@@ -122,39 +129,39 @@ export class Blueprint extends ParentBlueprint {
       },
     });
 
-    createBackend({
-      repository: this.repository,
-      folder: this.nodeFolderName,
-      frontendfolder: this.reactFolderName,
-      stackName: this.stackName,
-      lambdas: lambdaNames,
-    }, {
-      name: this.nodeFolderName,
-      cdkVersion: '1.95.2',
-      authorEmail: 'caws@amazon.com',
-      authorName: 'codeaws',
-      appEntrypoint: 'main.ts',
-      cdkDependencies: [
-        '@aws-cdk/assert',
-        '@aws-cdk/aws-lambda',
-        '@aws-cdk/aws-apigateway',
-        '@aws-cdk/aws-s3',
-        '@aws-cdk/aws-s3-deployment',
-        '@aws-cdk/aws-cloudfront',
-        '@aws-cdk/core',
-      ],
-      devDeps: [
-        'cdk-assets',
-        'projen@0.52.18',
-      ],
-      context: {
-        '@aws-cdk/core:newStyleStackSynthesis': 'true',
+    createBackend(
+      {
+        repository: this.repository,
+        folder: this.nodeFolderName,
+        frontendfolder: this.reactFolderName,
+        stackName: this.stackName,
+        lambdas: lambdaNames,
       },
-      github: false,
-      sampleCode: false,
-      lambdaAutoDiscover: true,
-      defaultReleaseBranch: 'main',
-    });
+      {
+        name: this.nodeFolderName,
+        cdkVersion: '1.95.2',
+        authorEmail: 'caws@amazon.com',
+        authorName: 'codeaws',
+        appEntrypoint: 'main.ts',
+        cdkDependencies: [
+          '@aws-cdk/assert',
+          '@aws-cdk/aws-lambda',
+          '@aws-cdk/aws-apigateway',
+          '@aws-cdk/aws-s3',
+          '@aws-cdk/aws-s3-deployment',
+          '@aws-cdk/aws-cloudfront',
+          '@aws-cdk/core',
+        ],
+        devDeps: ['cdk-assets', 'projen@0.52.18'],
+        context: {
+          '@aws-cdk/core:newStyleStackSynthesis': 'true',
+        },
+        github: false,
+        sampleCode: false,
+        lambdaAutoDiscover: true,
+        defaultReleaseBranch: 'main',
+      },
+    );
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
     (options.stages || []).forEach((stage, index) => {
@@ -165,8 +172,16 @@ export class Blueprint extends ParentBlueprint {
       new Environment(this, stage.environment);
     });
 
-    new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
-    new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
+    new SourceFile(
+      this.repository,
+      'README.md',
+      generateReadmeContents(this.reactFolderName, this.nodeFolderName),
+    );
+    new SourceFile(
+      this.repository,
+      'GETTING_STARTED.md',
+      'How to get started with this web application',
+    );
   }
 
   private createWorkflow(stage: StageDefinition) {
@@ -198,7 +213,9 @@ export class Blueprint extends ParentBlueprint {
         Steps: [
           { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
           { Run: 'export awsRegion=us-west-2' },
-          { Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep` },
+          {
+            Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
+          },
           { Run: 'npm install -g yarn' },
           { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
           {
@@ -219,11 +236,13 @@ export class Blueprint extends ParentBlueprint {
             Run: `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
           },
         ] as Step[],
-        Artifacts: [
-          { Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] },
-        ] as Artifacts[],
+        Artifacts: [{ Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] }] as Artifacts[],
         Reports: [
-          { Name: 'AutoDiscovered', AutoDiscover: true, TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }] },
+          {
+            Name: 'AutoDiscovered',
+            AutoDiscover: true,
+            TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }],
+          },
         ] as unknown as Reports[],
         OutputVariables: [{ Name: 'CloudFrontURL' }],
       } as BuildActionConfiguration,
