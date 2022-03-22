@@ -1,11 +1,8 @@
 {
-  "sourceRepositoryName": "MyServerlessAppRepo",
+
   "runtime": "Python 3",
-  "lambda": {
-    "functionName": "SamFirstEndpoint"
-  },
+  "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
   "workflow": {
-    "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
     "s3BucketName": "replace-me-bucket-name",
     "buildRoleArn": "arn:aws:iam::123456789012:role/REPLACE-ME-ROLE-NAME",
     "stackRoleArn": "arn:aws:iam::123456789012:role/REPLACE-ME-ROLE-NAME",
@@ -18,5 +15,9 @@
         "role": "REPLACE_ME"
       }
     ]
+  },
+  "sourceRepositoryName": "MyServerlessAppRepo",
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
   }
 }
