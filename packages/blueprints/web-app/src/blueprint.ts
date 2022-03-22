@@ -33,41 +33,55 @@ export const PROJEN_VERSION = '0.52.18';
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
-  /**
-   * Customize your project's repositiory name.
-   * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
-   * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
-   */
-  repositoryName: string;
 
   /**
-   * Name of the folder for the frontend stack, such as react or ui.
-   * @validationRegex /^[a-zA-Z0-9_-]+$/
-   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
+   * The blueprint will create a new environment used for deployment.
    */
-  reactFolderName: string;
+  stages: StageDefinition[];
 
   /**
-   * Name of the folder for the backend stack, such as node or api.
-   * @validationRegex /^[a-zA-Z0-9_-]+$/
-   * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
-   */
-  nodeFolderName: string;
+    * @displayName Repository and folder names
+    * @collapsed true
+    */
+  webappOptions: {
+    /**
+     * @displayName Source Repository Name
+     * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+     * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
+     */
+    repositoryName: string;
+
+    /**
+     * @displayName Frontend folder
+     * @validationRegex /^[a-zA-Z0-9_-]+$/
+     * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
+     */
+    reactFolderName: string;
+
+    /**
+     * @displayName Backend folder
+     * @validationRegex /^[a-zA-Z0-9_-]+$/
+     * @validationMessage Must contain only alphanumeric characters, underscores (_), and dashes (-)
+     */
+    nodeFolderName: string;
+  };
+
 
   /**
+   * @displayName Lambda function name
    * @collapsed true
    */
   advanced: {
     /**
-     * What would you like to call your lambda function?
+     * Lambda function name must be unique in the AWS account you are deploying to.
+     * @validationRegex /^[a-zA-Z0-9]{1,56}$/
+     * @validationMessage Must contain only alphanumeric characters, underscores (_)
+     * @displayName Lambda function
+     * @defaultEntroy
      */
     lambdaName: string;
   };
 
-  /**
-   * Your blueprint includes default environments for production. You can rename your default environments and connect to your AWS account here.
-   */
-  stages: StageDefinition[];
 
 }
 
@@ -88,7 +102,7 @@ export class Blueprint extends ParentBlueprint {
     super(options_);
     const options = Object.assign(defaults, options_);
     this.options = options;
-    const { repositoryName, reactFolderName, nodeFolderName } = options;
+    const { repositoryName, reactFolderName, nodeFolderName } = options.webappOptions;
     this.repositoryName = makeValidFolder(repositoryName);
     this.reactFolderName = makeValidFolder(reactFolderName);
     this.nodeFolderName = makeValidFolder(nodeFolderName);
