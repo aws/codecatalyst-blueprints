@@ -1,11 +1,11 @@
-import { Environment } from './tmp-env-def/environment-component';
-import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/environment-definition';
+import * as fs from 'fs';
 import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@caws-blueprint-component/caws-workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import defaults from './defaults.json';
+import { Environment } from './tmp-env-def/environment-component';
+import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/environment-definition';
 
-// Sample imports:
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -93,13 +93,22 @@ export class Blueprint extends ParentBlueprint {
 
 
     // add a repository
-    new Environment(this, options.thisIsMyEnvironment);
-
     const repo = new SourceRepository(this, { title: 'code' });
 
     // example showing add files to the repository
     // assets get synth'd from the 'assets' folder. At synth time, the asset folder is a sibling of the blueprint.ts.
     new SourceFile(repo, 'wizard_input.json', JSON.stringify(options, null, 2));
     new Workflow(this, repo, NodeWorkflowDefinitionSamples.build);
+    new Environment(this, options.thisIsMyEnvironment);
+
+
+    // showcase the blueprint's own source files
+    const blueprintInterface = fs.readFileSync('./lib/blueprint.d.ts').toString();
+    const blueprintDefaults = fs.readFileSync('./lib/defaults.json').toString();
+    const blueprintAST = fs.readFileSync('./lib/ast.json').toString();
+
+    new SourceFile(repo, 'blueprint-internal/blueprint.d.ts', blueprintInterface);
+    new SourceFile(repo, 'blueprint-internal/defaults.json', blueprintDefaults);
+    new SourceFile(repo, 'blueprint-internal/ast.json', blueprintAST);
   }
 }
