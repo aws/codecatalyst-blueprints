@@ -77,7 +77,7 @@ export interface Options extends ParentOptions {
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters, underscores (_)
      * @displayName Lambda function
-     * @defaultEntroy
+     * @defaultEntropy
      */
     lambdaName: string;
   };
