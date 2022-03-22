@@ -1,11 +1,10 @@
 import { RuntimeMapping } from './models';
-import { Lambda } from './blueprint';
 import { StageDefinition } from '@caws-blueprint-component/caws-workflows';
 
 export function generateReadmeContents(
   runtimeMapping: RuntimeMapping,
   defaultReleaseBranch: 'main',
-  lambdas: Lambda[],
+  lambdas: {functionName: string}[],
   stages: StageDefinition[],
   cloudFormationStackName: string,
   s3bucketName: string,
