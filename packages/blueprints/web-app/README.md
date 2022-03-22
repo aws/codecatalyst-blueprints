@@ -23,16 +23,20 @@ AWS account resources. The IAM roles for the Web application require the followi
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Effect": "Allow",
             "Action": [
                 "cloudformation:*",
-                "iam:PassRole",
-                "lambda:*",
+                "ecr:*",
+                "ssm:*",
                 "s3:*",
-                "apigateway:*",
+                "iam:PassRole",
+                "iam:GetRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy",
                 "sts:AssumeRole"
             ],
-            "Resource": "*",
-            "Effect": "Allow"
+            "Resource": "*"
         }
     ]
 }
