@@ -1,13 +1,9 @@
 {
   "sourceRepositoryName": "MyServerlessAppRepo",
   "runtime": "Python 3",
-  "lambdas": [
-  {
-    "functionName": "HelloWorld",
-    "description": "This is a lambda function"
-  }
-  ],
-
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
   "workflow": {
     "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
     "s3BucketName": "replace-me-bucket-name",
