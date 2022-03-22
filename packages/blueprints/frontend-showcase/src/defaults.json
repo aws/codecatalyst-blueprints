@@ -1,0 +1,37 @@
+{
+  "thisIsMyEnvironment": {
+    "environmentName": "GET_FROM_WIZARD_STRING",
+    "accountConnections": {
+      "thisIsMyFirstAccountConnection": {
+        "accountId": "GET_FROM_WIZARD_STRING",
+        "accountName": "GET_FROM_WIZARD_STRING",
+        "roles": {
+          "adminRole": {
+            "capability": ["admin","lambda","s3","cloudfront"],
+            "arn": "GET_FROM_WIZARD_STRING"
+          },
+          "lambdaRole": {
+            "capability": ["lambda","s3"],
+            "arn": "GET_FROM_WIZARD_STRING"
+          }
+        }
+      },
+      "thisIsMySecondAccountConnection": {
+        "accountId": "GET_FROM_WIZARD_STRING",
+        "accountName": "GET_FROM_WIZARD_STRING",
+        "anotherAdminRole": {
+          "adminRole": {
+            "capability": ["admin", "dynamodb"],
+            "arn": "GET_FROM_WIZARD_STRING"
+          },
+          "anotherLambdaRole": {
+            "capability": ["lambda", "s3"],
+            "arn": "GET_FROM_WIZARD_STRING"
+          }
+        }
+      }
+    }
+  },
+  "stringInput": "default string input",
+  "numberInput": "default number input"
+}
