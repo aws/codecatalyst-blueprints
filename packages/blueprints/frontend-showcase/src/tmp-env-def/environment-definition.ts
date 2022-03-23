@@ -3,7 +3,7 @@ export interface Role<Capabilities extends any[]> {
    * A list of capabilities that this role has.
    * e.g. ['IAM', 'Lambda', 'S3']
    */
-  capability: Capabilities;
+  capability: Capabilities | any[]; // hack due to typescript bug in
 
   /**
    * Role ARN.
@@ -12,35 +12,32 @@ export interface Role<Capabilities extends any[]> {
   arn: string;
 }
 
-export interface AccountConnection<Roles extends {[key: string]: Role<any>}> {
+export type AccountConnection<T extends {[key: string]: Role<any>}> = T & {
   /**
    * The number of the Account
    */
   accountId: string;
   /**
-   * A human readable name for the Account
-   */
+    * A human readable name for the Account
+    */
   accountName: string;
+};
 
+export type EnvironmentDefinition<T extends {[key: string]: AccountConnection<any>}> = T & {
   /**
-   * Role definitions for the Account
+   * Name of the environment.
    */
-  roles?: Roles;
-}
-
-export interface EnvironmentDefinition<AccountConnections extends {[key: string]: AccountConnection<any>}> {
-  /**
-  * Name of the environment.
-  */
-  environmentName: string;
+  name: string;
 
   /**
-  * Environment description.
-  */
+   * Environment type.
+   * only 'DEVELOPMENT' | 'STAGING' | 'PRODUCTION' are supported.
+   */
+  environmentType: 'DEVELOPMENT' | 'STAGING' | 'PRODUCTION' | string;
+
+  /**
+   * Environment description.
+   */
   description?: string;
 
-  /**
-   * Accounts associated with this environment.
-   */
-  accountConnections?: AccountConnections;
 }

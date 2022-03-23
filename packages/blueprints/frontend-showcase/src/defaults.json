@@ -1,37 +1,20 @@
 {
   "thisIsMyEnvironment": {
-    "environmentName": "default_development_FROM_WIZARD",
-    "accountConnections": {
-      "thisIsMyFirstAccountConnection": {
-        "accountId": "GET_FROM_WIZARD_STRING_ACCOUNT_ID",
-        "accountName": "GET_FROM_WIZARD_STRING_ACCOUNT_NAME",
-        "roles": {
-          "adminRole": {
-            "capability": ["admin","lambda","s3","cloudfront"],
-            "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
-          },
-          "lambdaRole": {
-            "capability": ["lambda","s3"],
-            "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
-          }
-        }
+    "name": "default_development_FROM_WIZARD",
+    "environmentType": "PRODUCTION",
+    "thisIsMyFirstAccountConnection": {
+      "accountId": "GET_FROM_WIZARD_STRING_ACCOUNT_ID",
+      "accountName": "GET_FROM_WIZARD_STRING_ACCOUNT_NAME",
+      "adminRole": {
+        "capability": ["admin","lambda","s3","cloudfront"],
+        "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
       },
-      "thisIsMySecondAccountConnection": {
-        "accountId": "GET_FROM_WIZARD_STRING_ACCOUNT_ID",
-        "accountName": "GET_FROM_WIZARD_STRING_ACCOUNT_NAME",
-        "anotherAdminRole": {
-          "adminRole": {
-            "capability": ["admin", "dynamodb"],
-            "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
-          },
-          "anotherLambdaRole": {
-            "capability": ["lambda", "s3"],
-            "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
-          }
-        }
+      "lambdaRole": {
+        "capability": ["lambda","s3"],
+        "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
       }
     }
   },
   "stringInput": "default string input",
-  "numberInput": "default number input"
+  "numberInput": 12
 }

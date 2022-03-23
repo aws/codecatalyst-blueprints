@@ -20,35 +20,9 @@ export interface Options extends ParentOptions {
    * The name of an environment
    */
   thisIsMyEnvironment: EnvironmentDefinition<{
-    /**
-     * blah blah blah some comments about the account that i'm deploying into
-     * @displayName primaryAccount
-     */
     thisIsMyFirstAccountConnection: AccountConnection<{
-      /**
-       * This role requires read and write access to 'admin'
-       * e.g. here's a copy-pastable policy: [to a link]
-       */
       adminRole: Role<['admin', 'lambda', 's3', 'cloudfront']>;
-      /**
-       * This role requires read and write access to 's3', 'cloudfront'
-       * e.g. here's a copy-pastable policy: [to a link]
-       */
       lambdaRole: Role<['lambda', 's3']>;
-    }>;
-
-    thisIsMySecondAccountConnection: AccountConnection<{
-      /**
-       * This role requires read and write access to 'admin'
-       * e.g. here's a copy-pastable policy: [to a link]
-       * @displayName YetAnotherAdminRole
-       */
-      anotherAdminRole: Role<['admin', 'dynamodb']>;
-      /**
-       * This role requires read and write access to 's3', 'cloudfront'
-       * e.g. here's a copy-pastable policy: [to a link]
-       */
-      anotherLambdaRole: Role<['lambda', 's3']>;
     }>;
   }>;
 
@@ -83,14 +57,15 @@ export interface Options extends ParentOptions {
 export class Blueprint extends ParentBlueprint {
   constructor(options_: Options) {
     super(options_);
-
     console.log(defaults);
-
-    const options = {
+    // typecheck the defaults
+    const typeCheck: Options = {
+      outdir: this.outdir,
       ...defaults,
-      ...options_,
     };
+    const options = Object.assign(typeCheck, options_);
 
+    options.thisIsMyEnvironment.thisIsMyFirstAccountConnection;
 
     // add a repository
     const repo = new SourceRepository(this, { title: 'code' });
@@ -101,14 +76,14 @@ export class Blueprint extends ParentBlueprint {
     new Workflow(this, repo, NodeWorkflowDefinitionSamples.build);
     new Environment(this, options.thisIsMyEnvironment);
 
-
     // showcase the blueprint's own source files
     const blueprintInterface = fs.readFileSync('./lib/blueprint.d.ts').toString();
     const blueprintDefaults = fs.readFileSync('./lib/defaults.json').toString();
     const blueprintAST = fs.readFileSync('./lib/ast.json').toString();
 
-    new SourceFile(repo, 'blueprint-internal/blueprint.d.ts', blueprintInterface);
-    new SourceFile(repo, 'blueprint-internal/defaults.json', blueprintDefaults);
-    new SourceFile(repo, 'blueprint-internal/ast.json', blueprintAST);
+    const internalRepo = new SourceRepository(this, { title: 'showcase-info' });
+    new SourceFile(internalRepo, 'blueprint.d.ts', blueprintInterface);
+    new SourceFile(internalRepo, 'defaults.json', blueprintDefaults);
+    new SourceFile(internalRepo, 'internal/ast.json', blueprintAST);
   }
 }
