@@ -18,8 +18,7 @@ export const buildBlueprint = (originBlueprint: BlueprintIntrospection, originPa
 import defaults from './defaults.json';
 
 // Sample imports:
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { TextFile } from 'projen';
+import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import * as fs from 'fs';
 
 /**
@@ -40,8 +39,17 @@ import * as fs from 'fs';
  export class Blueprint extends ParentBlueprint {
     constructor(options_: Options) {
       super(options_);
-      const options = Object.assign(defaults, options_);
-      console.log(options);
+      console.log(defaults);
+      /**
+       * This is a typecheck to ensure that the defaults passed in are of the correct type.
+       * There are some cases where the typecheck will fail, but the defaults will still be valid, such when using enums.
+       * you can override this ex. myEnum: defaults.myEnum as Options['myEnum'],
+       */
+      const typeCheck: Options = {
+        outdir: this.outdir,
+        ...defaults,
+      };
+      const options = Object.assign(typeCheck, options_);
 
       // add a repository
       const repo = new SourceRepository(this, { title: 'MyRepo' });
@@ -49,10 +57,7 @@ import * as fs from 'fs';
       // example showing add files to the repository
       // assets get synth'd from the 'assets' folder. At synth time, the asset folder is a sibling of the blueprint.ts.
       const filecontent = fs.readFileSync('./assets/put-your-sample-assets-here.txt').toString();
-      new TextFile(this as any, \`\${repo.relativePath}/copied-file.txt\`, {
-        readonly: false,
-        lines: filecontent.split('\\n'),
-      });
+      new SourceFile(repo, 'path/to/copied-file.txt', filecontent);
    }
 }
 `;

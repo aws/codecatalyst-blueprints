@@ -100,8 +100,19 @@ export class Blueprint extends ParentBlueprint {
 
   constructor(options_: Options) {
     super(options_);
-    const options = Object.assign(defaults, options_);
+
+    /**
+     * This is a typecheck to ensure that the defaults passed in are of the correct type.
+     * There are some cases where the typecheck will fail, but the defaults will still be valid, such when using enums.
+     * you can override this ex. myEnum: defaults.myEnum as Options['myEnum'],
+     */
+    const typeCheck: Options = {
+      outdir: this.outdir,
+      ...defaults,
+    };
+    const options = Object.assign(typeCheck, options_);
     this.options = options;
+
     const { repositoryName, reactFolderName, nodeFolderName } = options.webappOptions;
     this.repositoryName = makeValidFolder(repositoryName);
     this.reactFolderName = makeValidFolder(reactFolderName);

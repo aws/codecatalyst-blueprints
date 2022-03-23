@@ -30,8 +30,8 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "*",
-    "@caws-blueprint-util/projen-blueprint": "*",
+    "@caws-blueprint-util/blueprint-cli": "0.0.x",
+    "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@types/node": "^12",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -51,7 +51,7 @@
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
     "@caws-blueprint-component/caws-workflows": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
-    "projen": "0.52.18"
+    "projen": "*"
   },
   "keywords": [
     "no-tag"
