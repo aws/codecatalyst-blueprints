@@ -6,7 +6,6 @@ import defaults from './defaults.json';
 import { Environment } from './tmp-env-def/environment-component';
 import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/environment-definition';
 
-
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard
@@ -20,9 +19,35 @@ export interface Options extends ParentOptions {
    * The name of an environment
    */
   thisIsMyEnvironment: EnvironmentDefinition<{
+    /**
+     * blah blah blah some comments about the account that i'm deploying into
+     */
     thisIsMyFirstAccountConnection: AccountConnection<{
+      /**
+       * Blah blah some information about the role that I expect
+       * e.g. here's a copy-pastable policy: [to a link]
+       */
       adminRole: Role<['admin', 'lambda', 's3', 'cloudfront']>;
+      /**
+       * Blah blah some information about the second role that I expect
+       * e.g. here's a copy-pastable policy: [to a link]
+       */
       lambdaRole: Role<['lambda', 's3']>;
+    }>;
+    /**
+     * blah blah blah some comments about the account that i'm deploying into
+     */
+    thisIsMySecondAccountConnection: AccountConnection<{
+      /**
+         * Blah blah some information about the role that I expect
+         * e.g. here's a copy-pastable policy: [to a link]
+         */
+      secondAdminRole: Role<['admin', 'lambda', 's3', 'cloudfront']>;
+      /**
+         * Blah blah some information about the second role that I expect
+         * e.g. here's a copy-pastable policy: [to a link]
+         */
+      secondLambdaRole: Role<['lambda', 's3']>;
     }>;
   }>;
 

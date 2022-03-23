@@ -13,6 +13,18 @@
         "capability": ["lambda","s3"],
         "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
       }
+    },
+    "thisIsMySecondAccountConnection": {
+      "accountId": "GET_FROM_WIZARD_STRING_ACCOUNT_ID",
+      "accountName": "GET_FROM_WIZARD_STRING_ACCOUNT_NAME",
+      "secondAdminRole": {
+        "capability": ["admin","lambda","s3","cloudfront"],
+        "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
+      },
+      "secondLambdaRole": {
+        "capability": ["lambda","s3"],
+        "arn": "GET_FROM_WIZARD_STRING_ROLE_ARN"
+      }
     }
   },
   "stringInput": "default string input",
