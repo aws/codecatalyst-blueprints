@@ -28,5 +28,9 @@
     }
   },
   "stringInput": "default string input",
-  "numberInput": 12
+  "numberInput": 12,
+  "runtimes": "nodejs",
+  "nestedArea": {
+    "stringInput": "default nested string input"
+  }
 }

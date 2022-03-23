@@ -16,7 +16,9 @@
       }
     ]
   },
-  "sourceRepositoryName": "MyServerlessAppRepo",
+  "code": {
+    "sourceRepositoryName": "MyServerlessAppRepo"
+  },
   "lambda": {
     "functionName": "SamFirstEndpoint"
   }

@@ -10,9 +10,9 @@ your project, you can view the repository, source code, and CI/CD workflow for y
 After your workflow runs successfully, your deployed CDK application URL is available under the
 output for your workflow.
 
-## Configuring the Account Connection
+## Configuring the account connection
 
-You can create a new account connection from the AWS account extension in the Quokka marketplace.
+You can create a new account connection from the AWS Accounts extension in the Quokka marketplace.
 AWS IAM roles added to the account extension can be used to authorize project workflows to access
 AWS account resources. The IAM roles for the Web application require the following permissions:
 
@@ -23,20 +23,18 @@ AWS account resources. The IAM roles for the Web application require the followi
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Effect": "Allow",
             "Action": [
-                "cloudformation:*",
-                "ecr:*",
-                "ssm:*",
-                "s3:*",
+               "cloudformation:*",
+               "ecr:*",
+               "ssm:*",
+               "s3:*",
                 "iam:PassRole",
                 "iam:GetRole",
-                "iam:CreateRole",
+               "iam:CreateRole",
                 "iam:AttachRolePolicy",
-                "iam:PutRolePolicy",
-                "sts:AssumeRole"
+               "iam:PutRolePolicy"
             ],
-            "Resource": "*"
+            "Resource": "*",
         }
     ]
 }
@@ -86,7 +84,7 @@ This project contains the following files and folders in its source repository:
 
   - src - Folder containing React code
 
-- .mde.devfile.yaml - A DevFile that defines developer workspaces or cloud-native development
+- .mde.devfile.yaml - A devfile that defines developer workspaces or cloud-native development
   environments.
 
 This project has created the following Quokka.Codes Resources:
@@ -108,8 +106,8 @@ Guide**
 For more information on environments, see _Organizing deployments using environments_ in the
 **Quokka User Guide**.
 
-- Workspace - A cloud native development environment. A workspace must be manually created with the
-  generated DevFile using the create workspace operation on Quokka.Codes.
+- Workspace - A cloud-based development environment. A workspace must be manually created with the
+  generated devfile using the create workspace operation on Quokka.Codes.
 
 For more information on the create workspace operation and workspaces, see _Working with workspaces_
 in the **Quokka User Guide**.
@@ -141,7 +139,7 @@ status can be viewed in the project's workflow:
   For more information on AWS Lambda, see the
   [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 
-- IAM Role(s) - A resource for securely controlled access to AWS
+- IAM role(s) - A resource for securely controlled access to AWS
 
   For more information on IAM, see the
   [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
@@ -167,7 +165,7 @@ To build your application locally, use the following command in your shell from 
   npm run build-client
 ```
 
-To view the generated cloudformation stacks, use the following command in your shell from your
+To view the generated AWS CloudFormation stacks, use the following command in your shell from your
 workspace root
 
 ```
@@ -175,7 +173,7 @@ cd node
 cdk synth
 ```
 
-The CDK CLI will output any Assets that it will generate the cdk.out folder. For more information
+The CDK CLI will output any assets that it will generate the cdk.out folder. For more information
 about Assets, see the [Assets page](https://docs.aws.amazon.com/cdk/v2/guide/assets.html)
 
 ## Deploying your serverless application

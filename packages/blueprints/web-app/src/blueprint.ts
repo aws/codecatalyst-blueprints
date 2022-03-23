@@ -40,12 +40,12 @@ export interface Options extends ParentOptions {
   stages: StageDefinition[];
 
   /**
-    * @displayName Repository and folder names
+    * @displayName Code Repository and folder names
     * @collapsed true
     */
   webappOptions: {
     /**
-     * @displayName Source Repository Name
+     * @displayName Code Repository Name
      * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
      * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
      */
@@ -73,10 +73,10 @@ export interface Options extends ParentOptions {
    */
   advanced: {
     /**
-     * Lambda function name must be unique in the AWS account you are deploying to.
+     * Lambda function name must be unqiue to the AWS account it's being deployed to.
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters, underscores (_)
-     * @displayName Lambda function
+     * @displayName Lambda function name
      * @defaultEntropy
      */
     lambdaName: string;
