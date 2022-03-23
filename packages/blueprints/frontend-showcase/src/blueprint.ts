@@ -64,6 +64,12 @@ export interface Options extends ParentOptions {
   stringInput: string;
 
   /**
+   * This is a regular enum input field with an override display name.
+   * @displayName 'Runtime Languages'
+   */
+  runtimes: 'nodejs' | 'python' | 'java' | 'dotnetcore' | 'ruby';
+
+  /**
     * This is a regular number input field.
     * 1. It's display has been overriden to 'new numberInput display name' from 'numberInput'
     * 2. It should be a required field
@@ -72,6 +78,19 @@ export interface Options extends ParentOptions {
     * @collapsed
     */
   numberInput: number;
+
+  /**
+   * This is a nested object input field.
+   * collapsed open by default. Not overriding the display name
+   * @collapsed true
+   */
+  nestedArea: {
+    /**
+     * This is a regular string input field.
+     * @displayName 'overriden input display name for nested object'
+     */
+    stringInput: string;
+  };
 }
 
 /**
@@ -83,10 +102,11 @@ export class Blueprint extends ParentBlueprint {
   constructor(options_: Options) {
     super(options_);
     console.log(defaults);
-    // typecheck the defaults
+    // helpful typecheck for defaults
     const typeCheck: Options = {
       outdir: this.outdir,
       ...defaults,
+      runtimes: defaults.runtimes as Options['runtimes'],
     };
     const options = Object.assign(typeCheck, options_);
 

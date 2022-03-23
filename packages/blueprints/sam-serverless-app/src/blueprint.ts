@@ -34,8 +34,8 @@ import { runtimeMappings } from './runtimeMappings';
   runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
 
   /**
-   * @displayName Cloudformation stack same
-   * The name of the AWS CloudFormation stack that will be generated for the blueprint. It must be unqiue to the AWS account it's being deployed to.
+   * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
+   * @displayName CloudFormation stack same
    * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
    * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
    * @defaultEntropy
@@ -79,12 +79,15 @@ import { runtimeMappings } from './runtimeMappings';
   }
 
   /**
-   * @displayName Repository name
+   * @displayName Code Repository name
    * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
    * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
    * @collapsed
    */
-  sourceRepositoryName: string;
+  code: {
+    sourceRepositoryName: string;
+  }
+
 
   /**
    * @displayName Lambda function name
@@ -126,7 +129,7 @@ import { runtimeMappings } from './runtimeMappings';
       this.options = options;
 
       this.repository = new SourceRepository(this, {
-        title: this.options.sourceRepositoryName || 'sam-lambda',
+        title: this.options.code.sourceRepositoryName || 'sam-lambda',
       });
       this.options.lambda = options.lambda;
   }
