@@ -32,8 +32,14 @@ export class Blueprint extends ParentBlueprint {
 
   constructor(options_: Options) {
     super(options_);
-    const options = Object.assign(defaults, options_);
-    console.log(options);
+
+    console.log(defaults);
+    // helpful typecheck for defaults
+    const typeCheck: Options = {
+      outdir: this.outdir,
+      ...defaults,
+    };
+    const options = Object.assign(typeCheck, options_);
 
     const gitRepositoryName = options.gitRepository.split('/').pop()?.replace('.git', '');
     console.log(gitRepositoryName);

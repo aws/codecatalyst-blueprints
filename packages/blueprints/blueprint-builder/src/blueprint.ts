@@ -17,6 +17,7 @@ import * as decamelize from 'decamelize';
 import { TextFile, YamlFile } from 'projen';
 
 import { buildBlueprint } from './build-blueprint';
+import defaults from './defaults.json';
 import { BlueprintIntrospection, introspectBlueprint } from './introspect-blueprint';
 import {
   buildGenerationObject,
@@ -25,7 +26,8 @@ import {
   YamlBlueprint,
 } from './yaml-blueprint';
 
-export interface Options {
+
+export interface Options extends ParentOptions {
   /**
    * Create a new blueprint from an existing blueprint:
    * @displayName Blueprint to extend
@@ -101,9 +103,24 @@ export class Blueprint extends ParentBlueprint {
   protected builderOrganizationName: string;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  constructor(options_: Options & ParentOptions) {
+  constructor(options_: Options) {
     super(options_);
-    this.options = options_;
+    /**
+     * This is a typecheck to ensure that the defaults passed in are of the correct type.
+     * There are some cases where the typecheck will fail, but the defaults will still be valid, such when using enums.
+     * you can override this ex. myEnum: defaults.myEnum as Options['myEnum'],
+     */
+    const typeCheck: Options = {
+      outdir: this.outdir,
+      ...defaults,
+      advancedSettings: {
+        ...defaults.advancedSettings,
+        license: defaults.advancedSettings.license as any,
+        projenVersion: defaults.advancedSettings.projenVersion as any,
+      },
+    };
+    const options = Object.assign(typeCheck, options_);
+    this.options = options;
 
     this.parentIntrospection = this.doIntrospection();
 
@@ -243,10 +260,10 @@ export class Blueprint extends ParentBlueprint {
     const sampleAsset = new TextFile(blueprint, 'assets/put-your-sample-assets-here.txt', { readonly: false });
     sampleAsset.addLine('A LINE OF A SAMPLE ASSET');
 
-    const defaults = new TextFile(blueprint, 'src/defaults.json', {
+    const defaultsJSON = new TextFile(blueprint, 'src/defaults.json', {
       readonly: false,
     });
-    defaults.addLine(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
+    defaultsJSON.addLine(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
     const readmeContentPath = path.join(__dirname, '..', 'assets', '/starter-readme.md');
     const readmeContent = fs.readFileSync(readmeContentPath, 'utf8');

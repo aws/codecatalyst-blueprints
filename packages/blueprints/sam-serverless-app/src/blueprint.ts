@@ -111,7 +111,18 @@ import { runtimeMappings } from './runtimeMappings';
    protected readonly repository: SourceRepository;
     constructor(options_: Options) {
       super(options_);
-      const options = Object.assign(defaults, options_);
+      console.log(defaults);
+      /**
+       * This is a typecheck to ensure that the defaults passed in are of the correct type.
+       * There are some cases where the typecheck will fail, but the defaults will still be valid, such when using enums.
+       * you can override this ex. myEnum: defaults.myEnum as Options['myEnum'],
+       */
+      const typeCheck: Options = {
+        outdir: this.outdir,
+        ...defaults,
+        runtime: defaults.runtime as Options['runtime'],
+      };
+      const options = Object.assign(typeCheck, options_);
       this.options = options;
 
       this.repository = new SourceRepository(this, {
