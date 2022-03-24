@@ -17,15 +17,20 @@ import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/en
 export interface Options extends ParentOptions {
   /**
    * The name of an environment
+   * @displayName This is a Environment Name
+   * @collapsed
    */
   thisIsMyEnvironment: EnvironmentDefinition<{
     /**
      * blah blah blah some comments about the account that i'm deploying into
+     * @displayName This account connection has an overriden name
+     * @collapsed
      */
     thisIsMyFirstAccountConnection: AccountConnection<{
       /**
        * Blah blah some information about the role that I expect
        * e.g. here's a copy-pastable policy: [to a link]
+       * @displayName This role has an overriden name
        */
       adminRole: Role<['admin', 'lambda', 's3', 'cloudfront']>;
       /**
@@ -79,10 +84,12 @@ export interface Options extends ParentOptions {
     */
   numberInput: number;
 
+  optionalNumberInput?: number;
+
   /**
    * This is a nested object input field.
    * collapsed open by default. Not overriding the display name
-   * @collapsed true
+   * @collapsed false
    */
   nestedArea: {
     /**

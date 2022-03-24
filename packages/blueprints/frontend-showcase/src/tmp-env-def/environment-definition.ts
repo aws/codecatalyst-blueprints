@@ -12,7 +12,7 @@ export interface Role<Capabilities extends any[]> {
   arn: string;
 }
 
-export type AccountConnection<T extends {[key: string]: Role<any>}> = T & {
+export type AccountConnection<T extends {[key: string]: Role<any>}> = Partial<T> & {
   /**
    * The number of the Account
    */
@@ -23,7 +23,7 @@ export type AccountConnection<T extends {[key: string]: Role<any>}> = T & {
   accountName: string;
 };
 
-export type EnvironmentDefinition<T extends {[key: string]: AccountConnection<any>}> = T & {
+export type EnvironmentDefinition<T extends {[key: string]: AccountConnection<any>}> = Partial<T> & {
   /**
    * Name of the environment.
    */
