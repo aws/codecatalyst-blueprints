@@ -5,20 +5,11 @@ const project = new ProjenBlueprintComponent({
   name: 'caws-source-repositories',
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: [
-    '@caws-blueprint/blueprints.blueprint',
-    'decamelize',
-    "camelcase",
-  ],
-  peerDeps: [
-    'projen',
-  ],
+  deps: ['@caws-blueprint/blueprints.blueprint', 'decamelize', 'camelcase'],
+  peerDeps: ['projen'],
   description: 'This is a representation of a source repository.',
   packageName: '@caws-blueprint-component/caws-source-repositories',
-  devDeps: [
-    '@caws-blueprint-util/projen-blueprint-component',
-    'ts-node'
-  ],
+  devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node'],
 });
 
 project.synth();

@@ -7,11 +7,7 @@ import { typescript, awscdk, DependencyType } from 'projen';
  *
  * @returns
  */
-export const createLambdaInfra = (
-  project: typescript.TypeScriptAppProject,
-  functionName: string,
-): awscdk.LambdaFunctionOptions => {
-
+export const createLambdaInfra = (project: typescript.TypeScriptAppProject, functionName: string): awscdk.LambdaFunctionOptions => {
   const options: awscdk.LambdaFunctionOptions = {
     entrypoint: `${project.srcdir}/${functionName}.lambda.ts`,
     constructFile: `${project.srcdir}/${getConstructFileName(functionName)}.ts`,
@@ -39,4 +35,4 @@ export function defaultLambdaReturn(): any {
     },
     body: 'hello world from <<lambda backend>>',
   };
-};
+}

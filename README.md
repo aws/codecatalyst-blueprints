@@ -1,10 +1,12 @@
 ## Set Up
 
-We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link
-things properly when using VScode. Although plugins also exist for vimlords. Many gitignored files will be invisible in vim and may cause annoying problems.
+We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
+also exist for vimlords. Many gitignored files will be invisible in vim and may cause annoying problems.
 
 #### Prereq:
+
 Install these globally. This is required for various tooling to work properly
+
 ```
 npm install ts-node -g
 npm install webpack -g
@@ -12,7 +14,6 @@ npm install nvm -g
 npm install yarn -g
 brew install jq
 ```
-
 
 We recommend adding this to your `~/.bash_profile`
 
@@ -33,7 +34,6 @@ blueprints-setup() {
     export PROJEN_DISABLE_POST=1
 }
 ```
-
 
 ## Development
 
@@ -64,28 +64,34 @@ You're done!
 ## Testing Changes
 
 Modify a component
+
 ```
 cd packages/components/<component>
 ```
 
 Rebuild the component
+
 ```
 yarn build
 ```
 
 To see the changes applied in a blueprint run synth
+
 ```
 cd packages/blueprints/<blueprint>
 yarn blueprint:synth
 ```
+
 This generates the blueprint in the `synth` folder
+
 ```
 packages/blueprints/<blueprint>/synth/<timestamp>
 ```
 
 ### Publishing
 
-You must have write access to the 'blueprints' organization in code.aws in order to publish. You'll need to get a `CAWS_COOKIE` and set in in your environment.
+You must have write access to the 'blueprints' organization in code.aws in order to publish. You'll need to get a `CAWS_COOKIE` and set in in your
+environment.
 
 ```
 // paste it into your terminal like so:
@@ -96,13 +102,15 @@ yarn blueprints:publish
 
 ### Clean up:
 
-As you test changes to blueprints locally you will build up alot of projects created in the synth directory of the blueprint, to clean up the synth directory and remove these old projects run:
+As you test changes to blueprints locally you will build up alot of projects created in the synth directory of the blueprint, to clean up the synth
+directory and remove these old projects run:
 
 ```
 yarn clean-synth
 ```
 
-Sometimes you may need to reset this project to a clean repository and remove the node modules, dist, lib, and synth directories. To reset this project to a clean repository run:
+Sometimes you may need to reset this project to a clean repository and remove the node modules, dist, lib, and synth directories. To reset this
+project to a clean repository run:
 
 ```
 yarn clean-all

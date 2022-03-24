@@ -17,13 +17,7 @@ interface PublishingJob {
   uploadUrl: string;
 }
 
-export async function publish(
-  log: pino.BaseLogger,
-  blueprint: string,
-  publisher: string,
-  endpoint: string,
-  cookie?: string,
-): Promise<void> {
+export async function publish(log: pino.BaseLogger, blueprint: string, publisher: string, endpoint: string, cookie?: string): Promise<void> {
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
     process.exit(255);
@@ -48,10 +42,7 @@ export async function publish(
 
   const distributionFolder = path.join(blueprint, 'dist', 'js');
   if (!fs.existsSync(distributionFolder)) {
-    log.error(
-      'package has not yet been published locally, have you run blueprint:synth? expected: %s',
-      distributionFolder,
-    );
+    log.error('package has not yet been published locally, have you run blueprint:synth? expected: %s', distributionFolder);
     process.exit(198);
   }
 
@@ -108,10 +99,7 @@ export async function publish(
   log.info('started publishing job: %s', publishingJob.publishingJobId);
   log.info('started publishing job URI: %s', publishingJob.uploadUrl);
 
-  const uploadResponse = await axios.default.put(
-    publishingJob.uploadUrl,
-    fs.readFileSync(path.join(distributionFolder, packagePath)),
-  );
+  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(path.join(distributionFolder, packagePath)));
   if (uploadResponse.status != 200) {
     log.error('failed to upload template package: %s', uploadResponse.status);
     process.exit(254);

@@ -11,12 +11,7 @@ export interface Options {
 }
 
 export class SourceFile extends ProjenSourceCodeComponent {
-  constructor(
-    protected readonly sourceRepository: SourceRepository,
-    filePath: string,
-    content: string,
-    options?: Options,
-  ) {
+  constructor(protected readonly sourceRepository: SourceRepository, filePath: string, content: string, options?: Options) {
     super(sourceRepository.blueprint, path.join(sourceRepository.relativePath, filePath), {
       readonly: false,
       ...options,

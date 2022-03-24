@@ -44,14 +44,14 @@ export interface Options extends ParentOptions {
      */
     thisIsMySecondAccountConnection: AccountConnection<{
       /**
-         * Blah blah some information about the role that I expect
-         * e.g. here's a copy-pastable policy: [to a link]
-         */
+       * Blah blah some information about the role that I expect
+       * e.g. here's a copy-pastable policy: [to a link]
+       */
       secondAdminRole: Role<['admin', 'lambda', 's3', 'cloudfront']>;
       /**
-         * Blah blah some information about the second role that I expect
-         * e.g. here's a copy-pastable policy: [to a link]
-         */
+       * Blah blah some information about the second role that I expect
+       * e.g. here's a copy-pastable policy: [to a link]
+       */
       secondLambdaRole: Role<['lambda', 's3']>;
     }>;
   }>;
@@ -75,13 +75,13 @@ export interface Options extends ParentOptions {
   runtimes: 'nodejs' | 'python' | 'java' | 'dotnetcore' | 'ruby';
 
   /**
-    * This is a regular number input field.
-    * 1. It's display has been overriden to 'new numberInput display name' from 'numberInput'
-    * 2. It should be a required field
-    * 3. It should be collapsed by default
-    * @displayName 'new input display name'
-    * @collapsed
-    */
+   * This is a regular number input field.
+   * 1. It's display has been overriden to 'new numberInput display name' from 'numberInput'
+   * 2. It should be a required field
+   * 3. It should be collapsed by default
+   * @displayName 'new input display name'
+   * @collapsed
+   */
   numberInput: number;
 
   optionalNumberInput?: number;

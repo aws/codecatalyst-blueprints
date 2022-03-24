@@ -10,11 +10,7 @@ export * from './workspace-definition';
 export * from './samples/index';
 
 export class Workspace extends Component {
-  constructor(
-    blueprint: Blueprint,
-    sourceRepository: SourceRepository,
-    workspace: WorkspaceDefinition,
-  ) {
+  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workspace: WorkspaceDefinition) {
     super(blueprint);
 
     new YamlFile(blueprint, path.join(sourceRepository.relativePath, 'devfile.yaml'), {

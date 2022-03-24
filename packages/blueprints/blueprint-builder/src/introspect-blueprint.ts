@@ -4,7 +4,9 @@ import * as ts from 'typescript';
 import { Parameter, ParameterLeaf, ParameterMapping, ParameterNest } from './yaml-blueprint';
 
 export interface BlueprintIntrospection {
-  imports: string[]; options: OptionsInformation; classInfo: ClassInformation;
+  imports: string[];
+  options: OptionsInformation;
+  classInfo: ClassInformation;
   defaults: any;
   packageJsonContent: any;
   readmeContent: string;
@@ -22,7 +24,7 @@ const resolveNamedImportDeclaration = (importDecl: ts.ImportDeclaration, source:
   return importDecl.getText(source);
 };
 
-const resolveClassDeclaration = (classDecl: ts.ClassDeclaration): ClassInformation | undefined =>{
+const resolveClassDeclaration = (classDecl: ts.ClassDeclaration): ClassInformation | undefined => {
   try {
     if (classDecl.name) {
       return {
@@ -90,7 +92,8 @@ const resolveOptionsNodes = (
   optionsInterfaceAST: ts.InterfaceDeclaration,
   source: ts.SourceFile,
   defaults: any,
-  path: string[]): ParameterMapping => {
+  path: string[],
+): ParameterMapping => {
   const nodes = {};
   optionsInterfaceAST.members.forEach(member => {
     const name = member.name?.getText(source) || '';
@@ -101,10 +104,7 @@ const resolveOptionsNodes = (
   return nodes;
 };
 
-const resolveOptionsInterface = (
-  optionsDecl: ts.InterfaceDeclaration,
-  source: ts.SourceFile,
-  defaults: any): OptionsInformation | undefined => {
+const resolveOptionsInterface = (optionsDecl: ts.InterfaceDeclaration, source: ts.SourceFile, defaults: any): OptionsInformation | undefined => {
   try {
     if (optionsDecl.name.escapedText == 'Options') {
       return {
@@ -124,7 +124,6 @@ export const introspectBlueprint = (params: {
   packageJsonLocation: string;
   readmeLocation: string;
 }): BlueprintIntrospection => {
-
   const { sourceBlueprintLocation, defaultsLocation, packageJsonLocation } = params;
   const result = fs.readFileSync(sourceBlueprintLocation, 'utf-8');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonLocation, 'utf-8'));

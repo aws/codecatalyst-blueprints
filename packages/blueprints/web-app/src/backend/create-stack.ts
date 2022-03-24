@@ -2,11 +2,7 @@ import { basename } from 'path';
 import { awscdk } from 'projen';
 const TYPESCRIPT_EXT = '.ts';
 
-export function getStackDefinition(params: {
-  stackName: string;
-  frontEndFolder: string;
-  lambdaOptions: awscdk.LambdaFunctionOptions[];
-}) {
+export function getStackDefinition(params: { stackName: string; frontEndFolder: string; lambdaOptions: awscdk.LambdaFunctionOptions[] }) {
   const { stackName, frontEndFolder, lambdaOptions } = params;
 
   const s3BucketName = getUniqueS3BucketName(stackName);
@@ -14,10 +10,11 @@ export function getStackDefinition(params: {
   const apiStack: string = `${stackName}Backend`;
 
   const lambdaImports = lambdaOptions.map(lambdaOption => {
-    return `import { ${lambdaOption.constructName} } from './${basename(lambdaOption.constructFile!, TYPESCRIPT_EXT )}';`;
+    return `import { ${lambdaOption.constructName} } from './${basename(lambdaOption.constructFile!, TYPESCRIPT_EXT)}';`;
   });
 
-  return `import { App, Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
+  return (
+    `import { App, Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -61,17 +58,17 @@ export class ${apiStack} extends Stack {
     });
 
     new CfnOutput(this, 'apiurl', { value: api.url });
-    `
-    +
-    lambdaOptions.map(lambdaOption => {
-      return `
+    ` +
+    lambdaOptions
+      .map(lambdaOption => {
+        return `
     // GET https://<CloudFrontURL>/${lambdaOption.constructName?.toLowerCase()}
     attachLambda(api, this, ${lambdaOption.constructName}, 'id-${lambdaOption.constructName}', {
       path: '${lambdaOption.constructName?.toLowerCase()}',
       method: ['GET']
     });`;
-    }).join('\n')
-    +
+      })
+      .join('\n') +
     `
   }
 }
@@ -126,7 +123,8 @@ new ${apiStack}(app, \`${apiStack}\`, { env });
 new ${appStack}(app, \`${appStack}\`, { env });
 
 app.synth();
-`;
+`
+  );
 }
 
 function getUniqueS3BucketName(repositoryName: string) {

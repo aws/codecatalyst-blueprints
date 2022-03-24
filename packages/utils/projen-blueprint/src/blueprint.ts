@@ -23,7 +23,6 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
   readonly overridePackageVersion?: string;
 }
 
-
 /**
  * Blueprint app in TypeScript
  *
@@ -31,7 +30,6 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
  * @pjid blueprint
  */
 export class ProjenBlueprint extends typescript.TypeScriptProject {
-
   constructor(options: ProjenBlueprintOptions) {
     super({
       license: 'MIT',
@@ -63,26 +61,14 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('projen', 'npx projen --no-post');
 
     //make a script for creating asts
-    this.setScript(
-      'blueprint:build-ast',
-      'blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/',
-    );
+    this.setScript('blueprint:build-ast', 'blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/');
 
     //set local synthing
-    this.setScript(
-      'blueprint:synth',
-      'blueprint synth ./ --outdir ./ --options ./src/defaults.json',
-    );
+    this.setScript('blueprint:synth', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json');
 
-    this.setScript(
-      'blueprint:synth:cache',
-      'blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache',
-    );
+    this.setScript('blueprint:synth:cache', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
 
-    this.setScript(
-      'build:cache',
-      'yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache',
-    );
+    this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache');
 
     //ignore synths
     this.gitignore.addPatterns('synth');
@@ -91,10 +77,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // set upload to aws script
     const organization = options.publishingOrganization || 'unknown-organization';
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
-    this.setScript(
-      'blueprint:publish',
-      `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`,
-    );
+    this.setScript('blueprint:publish', `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);

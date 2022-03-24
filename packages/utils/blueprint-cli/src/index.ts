@@ -8,7 +8,6 @@ import { AstOptions, buildAst } from './build-ast';
 import { PublishOptions, publish } from './publish';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 
-
 const log = pino.default({
   prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',

@@ -25,10 +25,7 @@ export class ProjenRCFile extends SourceFile {
   instantiations: classInstantiations[] = [];
   postInstantiations: postInstantiation[] = [];
 
-  constructor(
-    repository: SourceRepository,
-    options?: Options,
-  ) {
+  constructor(repository: SourceRepository, options?: Options) {
     super(repository, path.join(options?.subfolder || '', '.projenrc.ts'), '', {
       readonly: false,
     });
@@ -51,7 +48,7 @@ export class ProjenRCFile extends SourceFile {
     super.synthesize();
     const condencedImports = {} as {
       [key: string]: Set<string>;
-    } ;
+    };
     this.imports.forEach(import_ => {
       if (!condencedImports[import_.from]) {
         condencedImports[import_.from] = new Set();
@@ -59,10 +56,10 @@ export class ProjenRCFile extends SourceFile {
       condencedImports[import_.from].add(import_.import);
     });
 
-    const imports = Object.keys(condencedImports).map(
-      from => `import { ${[...condencedImports[from]].join(',')} } from '${from}';`,
+    const imports = Object.keys(condencedImports).map(from => `import { ${[...condencedImports[from]].join(',')} } from '${from}';`);
+    const instantiations = this.instantiations.map(
+      instantiation => `const ${instantiation.variable} = new ${instantiation.instantiatedClass}(${JSON.stringify(instantiation.options, null, 2)});`,
     );
-    const instantiations = this.instantiations.map(instantiation => `const ${instantiation.variable} = new ${instantiation.instantiatedClass}(${JSON.stringify(instantiation.options, null, 2)});`);
     const postInstantiations = this.postInstantiations.map(postInstantiation => postInstantiation.line);
 
     imports.forEach(line => this.addLine(line));

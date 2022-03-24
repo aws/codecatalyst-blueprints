@@ -9,7 +9,6 @@ const IGNORED_AST_KEYS = new Set(['end', 'endPos', 'pos', 'modifierFlagsCache', 
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getAstJSON = (typescriptDefinitionSource: string): string => {
-
   const sourceFile: Partial<ts.SourceFile> = ts.createSourceFile('temp-ast.d.ts', typescriptDefinitionSource, ts.ScriptTarget.Latest, true);
 
   // Add an ID to every node in the tree to make it easier to identify in

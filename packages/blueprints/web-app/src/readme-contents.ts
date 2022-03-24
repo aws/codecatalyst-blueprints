@@ -1,7 +1,4 @@
-export function generateReadmeContents(
-  reactFolderName: string,
-  nodeFolderName: string,
-) {
+export function generateReadmeContents(reactFolderName: string, nodeFolderName: string) {
   return `## This Project:
 
 This project is a Cloud Development Kit (CDK) Web Application Project generated using the AWS Blueprints system. For more information on blueprints, see [Blueprints User Guide](https://docs.aws.amazon.com/quokka/latest/userguide/projects-blueprints.html). This project contains the source code, supporting files, and Quokka.Codes resources for a CDK application that is deploying using Quokka.Codes workflows.

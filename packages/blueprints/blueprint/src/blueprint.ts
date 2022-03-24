@@ -28,9 +28,7 @@ export class Blueprint extends Project {
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
-        registry:
-          process.env.NPM_CONFIG_REGISTRY ??
-          'https://template-721779663932.d.codeartifact.us-west-2.amazonaws.com/npm/global-templates/',
+        registry: process.env.NPM_CONFIG_REGISTRY ?? 'https://template-721779663932.d.codeartifact.us-west-2.amazonaws.com/npm/global-templates/',
       },
     };
 

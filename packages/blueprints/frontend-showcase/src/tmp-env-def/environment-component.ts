@@ -43,27 +43,19 @@ export class Environment extends Component {
       });
 
     // create the environment file
-    new YamlFile(
-      blueprint,
-      `environments/${stripSpaces(writtenEnvironment.name)}.yaml`,
-      {
-        readonly: false,
-        marker: false,
-        obj: writtenEnvironment,
-      },
-    );
+    new YamlFile(blueprint, `environments/${stripSpaces(writtenEnvironment.name)}.yaml`, {
+      readonly: false,
+      marker: false,
+      obj: writtenEnvironment,
+    });
 
     // create all the linked accounts from the environment
     connectedAccounts.forEach(account => {
-      new YamlFile(
-        blueprint,
-        `aws-account-to-environment/${stripSpaces(account.name)}-${getEntropy(5)}.yaml`,
-        {
-          readonly: false,
-          marker: false,
-          obj: account,
-        },
-      );
+      new YamlFile(blueprint, `aws-account-to-environment/${stripSpaces(account.name)}-${getEntropy(5)}.yaml`, {
+        readonly: false,
+        marker: false,
+        obj: account,
+      });
     });
   }
 }

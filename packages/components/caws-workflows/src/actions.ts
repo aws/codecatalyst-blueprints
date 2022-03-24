@@ -4,7 +4,7 @@ export enum ActionIdentifierAlias {
   test = 'test',
 }
 
-const ACTION_IDENTIFIERS: {[key: string]: {default: string; prod: string}} = {
+const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
   build: {
     default: 'aws-actions/cawsbuildprivate-build@v1',
     prod: 'aws/build@v1',
@@ -19,9 +19,6 @@ const ACTION_IDENTIFIERS: {[key: string]: {default: string; prod: string}} = {
   },
 };
 
-export function getDefaultActionIdentifier(
-  alias: ActionIdentifierAlias,
-  environmentIdentifier: string = 'default',
-): string | undefined {
+export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environmentIdentifier: string = 'default'): string | undefined {
   return ACTION_IDENTIFIERS[alias]?.[environmentIdentifier] ?? ACTION_IDENTIFIERS[alias]?.default;
 }

@@ -13,13 +13,7 @@ export interface SynthesizeOptions extends yargs.Arguments {
   options?: string;
 }
 
-export async function synth(
-  log: pino.BaseLogger,
-  blueprint: string,
-  outdir: string,
-  useCache: boolean,
-  options?: string,
-): Promise<void> {
+export async function synth(log: pino.BaseLogger, blueprint: string, outdir: string, useCache: boolean, options?: string): Promise<void> {
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
     process.exit(255);
@@ -48,17 +42,19 @@ export async function synth(
 
     log.debug('Creating cache from built: %s', buildDirectory);
     log.debug('Creating cache from built blueprint: %s', builtEntryPoint);
-    if (!fs.existsSync(buildDirectory)
-    && !fs.existsSync(path.join(buildDirectory, builtEntryPoint))) {
+    if (!fs.existsSync(buildDirectory) && !fs.existsSync(path.join(buildDirectory, builtEntryPoint))) {
       log.debug('Did you forget to build?');
       log.error('Blueprint entrypoint not found: %s', builtEntryPoint);
       process.exit(255);
     }
 
-    const synthExecutionFile = createCache({
-      buildDirectory,
-      builtEntryPoint,
-    }, log);
+    const synthExecutionFile = createCache(
+      {
+        buildDirectory,
+        builtEntryPoint,
+      },
+      log,
+    );
 
     const command = `npx node ${synthExecutionFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}'`;
     log.debug('generated command: %s', command);
@@ -89,4 +85,3 @@ export async function synth(
     }
   }
 }
-

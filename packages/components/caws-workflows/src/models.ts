@@ -46,11 +46,11 @@ export interface DeployActionConfiguration {
   ActionRoleArn: string;
   DeploymentEnvironment: string;
   Parameters: {
-    name: string;
-    region: string;
+    'name': string;
+    'region': string;
     'role-arn': string;
-    template: string;
-    capabilities: string;
+    'template': string;
+    'capabilities': string;
   };
 }
 

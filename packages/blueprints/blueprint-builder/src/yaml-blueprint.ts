@@ -19,7 +19,9 @@ export interface ParameterNest extends Parameter {
   Nested: ParameterMapping;
 }
 
-interface StringMap {[key: string]: string | StringMap};
+interface StringMap {
+  [key: string]: string | StringMap;
+}
 export interface Generation {
   Parent: string;
   Version: string;
@@ -64,11 +66,7 @@ const mapGenerationParameters = (defaults: ParameterMapping): Generation['Parame
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const buildGenerationObject = (params: {
-  parent: string;
-  version: string;
-  parameters: ParameterMapping;
-}): Generation => {
+export const buildGenerationObject = (params: { parent: string; version: string; parameters: ParameterMapping }): Generation => {
   return {
     Parent: params.parent,
     Version: params.version,
@@ -92,10 +90,7 @@ export const buildParametersObject = (paramters: ParameterMapping): Partial<Para
   return mapping;
 };
 
-export const buildMetaDataObject = (params: {
-  introspection: BlueprintIntrospection;
-  metadata: YAMLMetadata;
-}): YAMLMetadata => {
+export const buildMetaDataObject = (params: { introspection: BlueprintIntrospection; metadata: YAMLMetadata }): YAMLMetadata => {
   const info = {
     ...params.metadata,
     License: params.introspection.packageJsonContent.license || 'Apache-2.0',

@@ -1,15 +1,7 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import {
-  CfnStageDefinition,
-  PullRequestEvent,
-  StageDefinition,
-  Step,
-  WorkflowDefinition,
-  WorkflowRuntimeLanguage as WorkflowRuntimeSdk,
-} from '..';
+import { CfnStageDefinition, PullRequestEvent, StageDefinition, Step, WorkflowDefinition, WorkflowRuntimeLanguage as WorkflowRuntimeSdk } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
 import * as samPython from './sam-python';
-
 
 export function generateWorkflow(
   blueprint: Blueprint,
@@ -24,16 +16,7 @@ export function generateWorkflow(
 ): WorkflowDefinition {
   switch (sdk) {
     case 'sam-python':
-      return samPython.generate(
-        blueprint,
-        defaultBranch,
-        stages,
-        stackName,
-        s3BucketName,
-        buildRoleArn,
-        tests,
-        stackRoleArn!,
-      );
+      return samPython.generate(blueprint, defaultBranch, stages, stackName, s3BucketName, buildRoleArn, tests, stackRoleArn!);
     default:
       throw new Error(`sdk is not supported: ${sdk}`);
   }
@@ -46,11 +29,7 @@ export const emptyWorkflow: WorkflowDefinition = {
 };
 
 //todo: change branches to branch and include optional files changed parameter
-export function addGenericBranchTrigger(
-  workflow: WorkflowDefinition,
-  branches = ['main'],
-  filesChanged?: string[],
-) {
+export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches = ['main'], filesChanged?: string[]) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
@@ -62,12 +41,7 @@ export function addGenericBranchTrigger(
   });
 }
 
-export function addGenericPullRequestTrigger(
-  workflow: WorkflowDefinition,
-  events: PullRequestEvent[],
-  branches = ['main'],
-  filesChanged?: string[],
-) {
+export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]) {
   if (!workflow.Triggers) {
     workflow.Triggers = [];
   }
@@ -88,10 +62,7 @@ export function addGenericBuildAction(
   artifactName: string,
 ) {
   workflow.Actions.Build = {
-    Identifier: getDefaultActionIdentifier(
-      ActionIdentifierAlias.build,
-      blueprint.context.environmentId,
-    ),
+    Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
     OutputArtifacts: [artifactName],
     Configuration: {
       Variables: [
@@ -122,10 +93,7 @@ export function addGenericCloudFormationDeployAction(
 ) {
   workflow.Actions[`Deploy_${stage.environment.title}`] = {
     DependsOn: [dependsOn],
-    Identifier: getDefaultActionIdentifier(
-      ActionIdentifierAlias.deploy,
-      blueprint.context.environmentId,
-    ),
+    Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
     InputArtifacts: [artifactName],
     Configuration: {
       ActionRoleArn: stage.role,
@@ -150,10 +118,7 @@ export function addGenericTestReports(
 ) {
   workflow.Actions.Test = {
     DependsOn: ['Build'],
-    Identifier: getDefaultActionIdentifier(
-      ActionIdentifierAlias.test,
-      blueprint.context.environmentId,
-    ),
+    Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.test, blueprint.context.environmentId),
     OutputArtifacts: [coverageArtifactName, testArtifactName],
     Configuration: {
       Steps: steps,

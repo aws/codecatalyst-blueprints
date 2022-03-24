@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/projen-blueprint'
+import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -18,7 +18,7 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-util/blueprint-utils',
-    '@caws-blueprint-util/projen-blueprint'
+    '@caws-blueprint-util/projen-blueprint',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'Use this to build additional blueprints from existing blueprints.',
@@ -26,15 +26,14 @@ const blueprint = new ProjenBlueprint({
   packageName: '@caws-blueprint/blueprints.blueprint-builder',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: [
-    'ts-node',
-    '@caws-blueprint-util/blueprint-cli'
-  ],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],
   homepage: 'https://aws.amazon.com/',
   /* Add media url links to this project */
-  mediaUrls: ['https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png'],
+  mediaUrls: [
+    'https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png',
+  ],
 });
 blueprint.synth();

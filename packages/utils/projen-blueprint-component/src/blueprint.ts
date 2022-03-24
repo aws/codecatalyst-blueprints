@@ -3,13 +3,11 @@ import * as path from 'path';
 import { typescript } from 'projen';
 
 export interface ProjenComponentBlueprintOptions extends typescript.TypeScriptProjectOptions {
-
   /**
    * Override package version. I hope you know what you're doing.
    */
   readonly overridePackageVersion?: string;
 }
-
 
 /**
  * Blueprint Component app in TypeScript
@@ -18,7 +16,6 @@ export interface ProjenComponentBlueprintOptions extends typescript.TypeScriptPr
  * @pjid blueprint
  */
 export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
-
   constructor(options: ProjenComponentBlueprintOptions) {
     super({
       license: 'MIT',
