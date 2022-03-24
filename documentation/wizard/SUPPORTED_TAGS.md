@@ -45,7 +45,7 @@ usage:
 
 ## @collapsed *boolean (Optional)*
 - **Requires**: N/A
-- **Usage**: Makes option collapsible. Boolean sets if the option should be collapsed by default. Boolean is set to false by default.
+- **Usage**: Boolean. Allows a sub option to be collapsible. If the collapsed annotation is present, it is defaulted to true. Setting `@collapsed false` creates a collapsable section that is initally open.
 - **Example**: `@collapsed true`
 
 ## @displayName *string*
