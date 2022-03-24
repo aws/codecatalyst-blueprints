@@ -6,14 +6,15 @@ import { createLambdaInfra, defaultLambdaReturn } from './create-lambda';
 import { createReadme } from './create-readme';
 import { getStackDefinition, getStackTestDefintion } from './create-stack';
 
-export const createBackend = (options: {
-  repository: SourceRepository;
-  folder: string;
-  frontendfolder: string;
-  stackName: string;
-  lambdas: string[];
-},
-projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
+export const createBackend = (
+  options: {
+    repository: SourceRepository;
+    folder: string;
+    frontendfolder: string;
+    stackName: string;
+    lambdas: string[];
+  },
+  projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
 ): awscdk.AwsCdkTypeScriptApp => {
   const rcvariable = 'backend';
   const { repository, folder, frontendfolder, stackName, lambdas } = options;
@@ -50,11 +51,15 @@ projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
   });
 
   const lambdaOptions = (lambdas || []).map(lambdaName => {
-    new SourceFile(repository, `${folder}/src/${lambdaName}.lambda.ts`, [
-      'exports.handler = async (event: any, context: any) => {',
-      `  return (${defaultLambdaReturn.toString().replace('<<lambda backend>>', lambdaName)})();`,
-      '};',
-    ].join('\n'));
+    new SourceFile(
+      repository,
+      `${folder}/src/${lambdaName}.lambda.ts`,
+      [
+        'exports.handler = async (event: any, context: any) => {',
+        `  return (${defaultLambdaReturn.toString().replace('<<lambda backend>>', lambdaName)})();`,
+        '};',
+      ].join('\n'),
+    );
     return createLambdaInfra(project, lambdaName);
   });
 
@@ -69,11 +74,7 @@ projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
     }),
   );
   // stack test definition
-  new SourceFile(
-    repository,
-    `${folder}/src/main.test.ts`,
-    getStackTestDefintion(project.appEntrypoint, stackName),
-  );
+  new SourceFile(repository, `${folder}/src/main.test.ts`, getStackTestDefintion(project.appEntrypoint, stackName));
 
   new SourceFile(repository, `${folder}/README.md`, createReadme());
   return project;

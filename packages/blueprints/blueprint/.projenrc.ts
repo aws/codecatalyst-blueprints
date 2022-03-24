@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -10,17 +10,12 @@ const blueprint = new ProjenBlueprint({
   /* Runtime dependencies of this blueprint. */
   peerDeps: ['projen'],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
-  description:
-    'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
+  description: 'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: [
-    'ts-node',
-    '@caws-blueprint-util/blueprint-cli',
-    '@caws-blueprint-util/projen-blueprint',
-  ],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],

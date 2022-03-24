@@ -1,4 +1,4 @@
-import {ProjenBlueprint} from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -24,11 +24,7 @@ const blueprint = new ProjenBlueprint({
   packageName: '@caws-blueprint/blueprints.web-app',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: [
-    'ts-node',
-    '@caws-blueprint-util/blueprint-cli',
-    '@caws-blueprint-util/projen-blueprint',
-  ],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint', 'webapp', 'typescript', 'react', 'node'],

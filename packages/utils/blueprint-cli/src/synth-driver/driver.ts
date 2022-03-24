@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 
 export const writeSynthDriver = (fileName: string, entrypoint: string) => {
-
   const content = `const { Blueprint } = require('./${entrypoint}');
 
 // ============================

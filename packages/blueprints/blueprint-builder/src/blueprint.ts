@@ -4,14 +4,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { buildIndex } from '@caws-blueprint-util/blueprint-utils';
-import {
-  ProjenBlueprint,
-  ProjenBlueprintOptions,
-} from '@caws-blueprint-util/projen-blueprint';
-import {
-  Blueprint as ParentBlueprint,
-  Options as ParentOptions,
-} from '@caws-blueprint/blueprints.blueprint';
+import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 
 import * as decamelize from 'decamelize';
 import { TextFile, YamlFile } from 'projen';
@@ -19,13 +13,7 @@ import { TextFile, YamlFile } from 'projen';
 import { buildBlueprint } from './build-blueprint';
 import defaults from './defaults.json';
 import { BlueprintIntrospection, introspectBlueprint } from './introspect-blueprint';
-import {
-  buildGenerationObject,
-  buildMetaDataObject,
-  buildParametersObject,
-  YamlBlueprint,
-} from './yaml-blueprint';
-
+import { buildGenerationObject, buildMetaDataObject, buildParametersObject, YamlBlueprint } from './yaml-blueprint';
 
 export interface Options extends ParentOptions {
   /**
@@ -73,15 +61,7 @@ export interface Options extends ParentOptions {
     /**
      * License for your Blueprint
      */
-    license:
-    | 'MIT'
-    | 'Apache-2.0'
-    | 'BSD-2-Clause'
-    | 'BSD-3-Clause'
-    | 'ISC'
-    | 'MPL-2.0'
-    | 'Unlicense'
-    | 'Public-Domain';
+    license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
 
     /**
      * Projen pinned version. Dont change unless you know what you're doing.
@@ -164,12 +144,7 @@ export class Blueprint extends ParentBlueprint {
       ],
       description: `${this.options.description}`,
 
-      devDeps: [
-        'ts-node',
-        'typescript',
-        '@caws-blueprint-util/projen-blueprint',
-        '@caws-blueprint-util/blueprint-cli',
-      ],
+      devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
       keywords: this.options.tags || ['no-tag'],
       homepage: '',
       mediaUrls: [
@@ -236,9 +211,7 @@ export class Blueprint extends ParentBlueprint {
     const rcfile = new TextFile(blueprint, '.projenrc.ts', { readonly: false });
     rcfile.addLine("import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';");
     rcfile.addLine('');
-    rcfile.addLine(
-      `const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`,
-    );
+    rcfile.addLine(`const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`);
     rcfile.addLine('');
     rcfile.addLine('project.synth();');
 
@@ -257,7 +230,9 @@ export class Blueprint extends ParentBlueprint {
       });
 
     // set up assets sample assets folder:
-    const sampleAsset = new TextFile(blueprint, 'assets/put-your-sample-assets-here.txt', { readonly: false });
+    const sampleAsset = new TextFile(blueprint, 'assets/put-your-sample-assets-here.txt', {
+      readonly: false,
+    });
     sampleAsset.addLine('A LINE OF A SAMPLE ASSET');
 
     const defaultsJSON = new TextFile(blueprint, 'src/defaults.json', {
@@ -288,16 +263,8 @@ export class Blueprint extends ParentBlueprint {
       },
     });
 
-    const sourceBlueprintLocation = path.resolve(
-      parentResolutionDirectory,
-      'package',
-      'lib/blueprint.d.ts',
-    );
-    const defaultsLocation = path.resolve(
-      parentResolutionDirectory,
-      'package',
-      'lib/defaults.json',
-    );
+    const sourceBlueprintLocation = path.resolve(parentResolutionDirectory, 'package', 'lib/blueprint.d.ts');
+    const defaultsLocation = path.resolve(parentResolutionDirectory, 'package', 'lib/defaults.json');
 
     const packageJsonLocation = path.resolve(parentResolutionDirectory, 'package', 'package.json');
 

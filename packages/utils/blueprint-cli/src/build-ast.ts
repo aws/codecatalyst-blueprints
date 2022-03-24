@@ -9,11 +9,7 @@ export interface AstOptions extends yargs.Arguments {
   outdir: string;
 }
 
-export async function buildAst(
-  log: pino.BaseLogger,
-  blueprint: string,
-  outdir: string,
-): Promise<void> {
+export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: string): Promise<void> {
   log.debug('Creating AST from: ' + blueprint);
   const blueprintPath = path.resolve(blueprint);
   const outdirPath = path.resolve(outdir);
@@ -26,7 +22,6 @@ export async function buildAst(
     }
     log.debug(`Writing ast.json to ${outdirPath}`);
     fs.writeFileSync(path.join(outdirPath, 'ast.json'), ast);
-
   } catch (e) {
     log.error('Cannot find blueprint at: %s', blueprintPath);
     process.exit(255);

@@ -18,15 +18,10 @@ const project = new typescript.TypeScriptProject({
   },
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  peerDeps: [
-    "projen",
-  ],
-  description: "This is a projen blueprint component. This defines the project configuration a for a blueprint component project.",
+  peerDeps: ['projen'],
+  description: 'This is a projen blueprint component. This defines the project configuration a for a blueprint component project.',
   packageName: '@caws-blueprint-util/projen-blueprint-component',
-  devDeps: [
-    "projen",
-    'ts-node'
-  ],
+  devDeps: ['projen', 'ts-node'],
 });
 
 // keep consistent versions
@@ -48,6 +43,6 @@ project.package.addField('preferGlobal', true);
 // set custom scripts
 project.setScript('projen', 'npx projen --no-post');
 project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
-project.setScript("npm:push", 'yarn npm publish');
+project.setScript('npm:push', 'yarn npm publish');
 
 project.synth();

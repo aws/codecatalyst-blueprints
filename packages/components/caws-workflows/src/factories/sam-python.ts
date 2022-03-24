@@ -1,13 +1,6 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import {
-  addGenericBranchTrigger,
-  addGenericBuildAction,
-  addGenericCloudFormationDeployAction,
-  addGenericTestReports,
-  emptyWorkflow,
-} from '.';
+import { addGenericBranchTrigger, addGenericBuildAction, addGenericCloudFormationDeployAction, addGenericTestReports, emptyWorkflow } from '.';
 import { CfnStageDefinition, StageDefinition, WorkflowDefinition } from '../models';
-
 
 const DEFAULT_ARTIFACT_NAME = 'MyCustomBuildArtifactName';
 const DEFAULT_COVERAGE_ARTIFACT = 'CoverageArtifact';

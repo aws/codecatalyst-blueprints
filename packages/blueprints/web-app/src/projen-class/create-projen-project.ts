@@ -12,32 +12,23 @@ export interface Options {
   projenVersion?: string;
 
   /*
-  * The following are optional and operate over the constructed 'project' to modify projen options that arent exposed in the constructor
-  * These should operate over the 'project' variable.
-  * e.g. project.gitignore.removePatterns('/build/');
-  */
+   * The following are optional and operate over the constructed 'project' to modify projen options that arent exposed in the constructor
+   * These should operate over the 'project' variable.
+   * e.g. project.gitignore.removePatterns('/build/');
+   */
   postConstructOptions?: string[];
 }
 
 export const createProjenrc = (options: Options) => {
-  const imports = [
-    `import { ${options.import} } from 'projen';`,
-  ];
+  const imports = [`import { ${options.import} } from 'projen';`];
 
   const projectOptions = [
     `const project = new ${options.instantiatedClass}(${JSON.stringify(options.projectOptions, null, 2)});`,
-    ...options.postConstructOptions || [],
+    ...(options.postConstructOptions || []),
   ];
-  const synth = [
-    'project.synth();',
-  ];
+  const synth = ['project.synth();'];
 
-  return [
-    ...imports,
-    [],
-    ...projectOptions,
-    ...synth,
-  ].join('\n');
+  return [...imports, [], ...projectOptions, ...synth].join('\n');
 };
 
 /**
@@ -49,7 +40,7 @@ export const createProjenrc = (options: Options) => {
  */
 export const createProjenProject = <T extends Project>(
   repository: SourceRepository,
-  ProjenProject: (new (options: any) => T),
+  ProjenProject: new (options: any) => T,
   options: Options,
 ): {
   project: T;
@@ -70,7 +61,9 @@ export const createProjenProject = <T extends Project>(
   }
 
   // eslint-disable-next-line
-  project['synthesize'] = () => {project.synth();};
+  project['synthesize'] = () => {
+    project.synth();
+  };
   repository.blueprint._addComponent(project as any);
 
   // create a .projenrc file

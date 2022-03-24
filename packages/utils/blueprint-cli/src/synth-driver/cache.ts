@@ -4,41 +4,37 @@ import * as path from 'path';
 import * as pino from 'pino';
 import { writeSynthDriver } from './driver';
 
-export const createCache = (params: {
-  buildDirectory: string;
-  builtEntryPoint: string;
-}, log: pino.BaseLogger) => {
+export const createCache = (
+  params: {
+    buildDirectory: string;
+    builtEntryPoint: string;
+  },
+  log: pino.BaseLogger,
+) => {
   const cacheFile = 'synth-cache.production.js';
   const synthDriver = 'synth-driver.js';
 
   // cleanup non-build files from previous runs that may or may not exist
-  const cleanup = [
-    'node_modules',
-    'node_modules.tar',
-    'package.json',
-    'package-lock.json',
-    cacheFile,
-    synthDriver,
-  ];
-  cleanup.forEach((file) => {
+  const cleanup = ['node_modules', 'node_modules.tar', 'package.json', 'package-lock.json', cacheFile, synthDriver];
+  cleanup.forEach(file => {
     if (fs.existsSync(path.join(params.buildDirectory, file))) {
       cp.execSync(`rm -rf ${file}`, {
         stdio: 'inherit',
         cwd: params.buildDirectory,
       });
-    };
+    }
   });
 
-  writeSynthDriver(
-    path.join(params.buildDirectory, synthDriver),
-    params.builtEntryPoint,
-  );
+  writeSynthDriver(path.join(params.buildDirectory, synthDriver), params.builtEntryPoint);
 
-  createWebpackedBundle({
-    buildDirectory: params.buildDirectory,
-    exitFile: cacheFile,
-    entryFile: synthDriver,
-  }, log);
+  createWebpackedBundle(
+    {
+      buildDirectory: params.buildDirectory,
+      exitFile: cacheFile,
+      entryFile: synthDriver,
+    },
+    log,
+  );
 
   // clean up the synth driver
   cp.execSync(`rm ${synthDriver}`, {
@@ -49,20 +45,23 @@ export const createCache = (params: {
   return path.join(params.buildDirectory, cacheFile);
 };
 
-const createWebpackedBundle = (params: {
-  buildDirectory: string;
-  exitFile: string;
-  entryFile: string;
-}, log: pino.BaseLogger) => {
-
+const createWebpackedBundle = (
+  params: {
+    buildDirectory: string;
+    exitFile: string;
+    entryFile: string;
+  },
+  log: pino.BaseLogger,
+) => {
   //webpack the blueprint
-  const webpackCommand = `npx webpack --entry ./${params.entryFile}`+
-  ' --target node' +
-  ' --output-path ./' +
-  ` --output-filename ${params.exitFile}` +
-  ' --progress' +
-  ' --mode development' +
-  ' --externals projen';
+  const webpackCommand =
+    `npx webpack --entry ./${params.entryFile}` +
+    ' --target node' +
+    ' --output-path ./' +
+    ` --output-filename ${params.exitFile}` +
+    ' --progress' +
+    ' --mode development' +
+    ' --externals projen';
 
   log.debug('Webpacking with: %s', webpackCommand);
 
@@ -74,9 +73,12 @@ const createWebpackedBundle = (params: {
   // This is a a hack until projen can be properly webpacked
   // ==========================================================================
   // Since projen is external we npm install it and ship with that.
-  const projenVersion = findProjenVersion({
-    nodeModulesPath: path.join(params.buildDirectory, '..', 'node_modules'),
-  }, log);
+  const projenVersion = findProjenVersion(
+    {
+      nodeModulesPath: path.join(params.buildDirectory, '..', 'node_modules'),
+    },
+    log,
+  );
 
   const packageJson = {
     dependencies: {
@@ -84,8 +86,7 @@ const createWebpackedBundle = (params: {
     },
   };
 
-  const projenInstall = `echo '${JSON.stringify(packageJson, null, 2)}' > package.json` +
-  ` && npm install projen@${projenVersion}`;
+  const projenInstall = `echo '${JSON.stringify(packageJson, null, 2)}' > package.json` + ` && npm install projen@${projenVersion}`;
   console.log(projenInstall);
   cp.execSync(projenInstall, {
     stdio: 'inherit',
@@ -106,17 +107,21 @@ const createWebpackedBundle = (params: {
   fs.writeFileSync(exitFilePath, data, 'utf8');
 };
 
-
-const findProjenVersion = (options: {
-  nodeModulesPath: string;
-}, log: pino.BaseLogger) => {
+const findProjenVersion = (
+  options: {
+    nodeModulesPath: string;
+  },
+  log: pino.BaseLogger,
+) => {
   const projenPackageJson = path.join(options.nodeModulesPath, 'projen', 'package.json');
   const packageJson = JSON.parse(fs.readFileSync(projenPackageJson, 'utf8'));
 
   if (packageJson.version) {
-    log.debug(`Found projen, looks like you're using version: ${packageJson.version} in your node modules. Using '${packageJson.version}' to build the cache.`);
+    log.debug(
+      `Found projen, looks like you're using version: ${packageJson.version} in your node modules. Using '${packageJson.version}' to build the cache.`,
+    );
     return packageJson.version;
   }
-  log.debug('Can\'t find a projen version. Using \'*\' to build the cache.');
+  log.debug("Can't find a projen version. Using '*' to build the cache.");
   return '*';
 };

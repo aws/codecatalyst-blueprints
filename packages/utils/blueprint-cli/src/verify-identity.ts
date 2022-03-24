@@ -5,10 +5,7 @@ interface IdentityResponse {
   email: string;
   csrfToken: string;
 }
-export const verifyIdentity = async (options: {
-  endpoint: string;
-  cookie: string;
-}): Promise<IdentityResponse> => {
+export const verifyIdentity = async (options: { endpoint: string; cookie: string }): Promise<IdentityResponse> => {
   const { endpoint, cookie } = options;
   const gqlResponse = await axios.default.post(
     `https://${endpoint}/graphql?`,

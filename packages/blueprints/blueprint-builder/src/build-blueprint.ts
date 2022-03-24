@@ -13,7 +13,6 @@ interface OptionsInformation {
 }
 
 export const buildBlueprint = (originBlueprint: BlueprintIntrospection, originPackage: string): string => {
-
   return `import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
 import defaults from './defaults.json';
 

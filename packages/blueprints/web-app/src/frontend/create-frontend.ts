@@ -21,12 +21,14 @@ export const createFrontend = (
     projenVersion: PROJEN_VERSION,
     projectOptions: options,
   });
-  new SourceFile(repository, `${folder}/src/loader.d.ts`,
+  new SourceFile(
+    repository,
+    `${folder}/src/loader.d.ts`,
     `declare module '*.svg' {
   const content: any;
   export default content;
-}`);
-
+}`,
+  );
 
   // Override the react-scripts test command to generate coverage and test reports
   const reactScriptsTestExec = 'react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit';

@@ -10,15 +10,47 @@ export interface SourceRepositoryDefinition {
   title: string;
 }
 
-export const BAD_SOURCE_CHARACTERS = ['!', '?', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '{', '}', '[', ']', '|', '\\', '/', '>', '<', '~', '\`', '\'', '"', ';', ':', ' '];
-export const makeValidFolder = (name: string, options?: {
-  separator?: string;
-  maxlength?: number;
-  invalidChars?: string[];
-}): string => {
-  const { maxlength = 100, invalidChars = BAD_SOURCE_CHARACTERS } = (options || {});
-  const result = name.replace(new RegExp(`[${invalidChars.join('\\')}]`, 'g'), '')
-    .substring(0, maxlength);
+export const BAD_SOURCE_CHARACTERS = [
+  '!',
+  '?',
+  '@',
+  '#',
+  '$',
+  '%',
+  '^',
+  '&',
+  '*',
+  '(',
+  ')',
+  '+',
+  '=',
+  '{',
+  '}',
+  '[',
+  ']',
+  '|',
+  '\\',
+  '/',
+  '>',
+  '<',
+  '~',
+  '`',
+  "'",
+  '"',
+  ';',
+  ':',
+  ' ',
+];
+export const makeValidFolder = (
+  name: string,
+  options?: {
+    separator?: string;
+    maxlength?: number;
+    invalidChars?: string[];
+  },
+): string => {
+  const { maxlength = 100, invalidChars = BAD_SOURCE_CHARACTERS } = options || {};
+  const result = name.replace(new RegExp(`[${invalidChars.join('\\')}]`, 'g'), '').substring(0, maxlength);
   return result;
 };
 
@@ -28,10 +60,7 @@ export class SourceRepository extends Component {
   public readonly title: string;
   public readonly blueprint: Blueprint;
 
-  constructor(
-    protected readonly blueprint_: Blueprint,
-    protected readonly sourceRepository: SourceRepositoryDefinition,
-  ) {
+  constructor(protected readonly blueprint_: Blueprint, protected readonly sourceRepository: SourceRepositoryDefinition) {
     super(blueprint_);
     this.blueprint = blueprint_;
     this.sourceRepository.title = makeValidFolder(sourceRepository.title);

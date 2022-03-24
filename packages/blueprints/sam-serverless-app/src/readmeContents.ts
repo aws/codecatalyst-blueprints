@@ -4,22 +4,22 @@ import { StageDefinition } from '@caws-blueprint-component/caws-workflows';
 export function generateReadmeContents(
   runtimeMapping: RuntimeMapping,
   defaultReleaseBranch: 'main',
-  lambdas: {functionName: string}[],
+  lambdas: { functionName: string }[],
   stages: StageDefinition[],
   cloudFormationStackName: string,
   s3bucketName: string,
   workflowName: string,
-){
+) {
   //Generate input variables
   let functionNames = '';
   for (let i = 0; i < lambdas.length - 1; i++) {
-    functionNames += `${lambdas[i].functionName}, `
+    functionNames += `${lambdas[i].functionName}, `;
   }
   functionNames += `${lambdas[lambdas.length - 1].functionName}`;
 
   let environments = '';
-  for (const stage of stages){
-    environments += `- \`${stage.environment.title}\` using the cloudformation stack \`${cloudFormationStackName}-${stage.environment.title}\`\n`
+  for (const stage of stages) {
+    environments += `- \`${stage.environment.title}\` using the cloudformation stack \`${cloudFormationStackName}-${stage.environment.title}\`\n`;
   }
 
   const readmeContents = `
@@ -136,6 +136,3 @@ See the Quokka User Guide for additional information on using the features and r
 `;
   return readmeContents;
 }
-
-
-

@@ -15,10 +15,10 @@ const project = new ProjenBlueprint({
   jest: false,
   npmignoreEnabled: true,
   tsconfig: {
-    'compilerOptions': {
-      'esModuleInterop': true,
-      'noImplicitAny': false
-    }
+    compilerOptions: {
+      esModuleInterop: true,
+      noImplicitAny: false,
+    },
   },
   copyrightOwner: 'blueprints',
   deps: [
@@ -26,24 +26,16 @@ const project = new ProjenBlueprint({
     'projen',
     '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-component/caws-source-repositories',
-    '@caws-blueprint-component/caws-environments'
+    '@caws-blueprint-component/caws-environments',
   ],
   description: 'This is a test blueprint used for validating the frontend.',
-  devDeps: [
-    'ts-node',
-    'typescript',
-    '@caws-blueprint-util/projen-blueprint',
-    '@caws-blueprint-util/blueprint-cli'
-  ],
-  keywords: [
-    'no-tag'
-  ],
+  devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
+  keywords: ['no-tag'],
   homepage: '',
   mediaUrls: [
-    'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png'
-  ]
+    'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',
+  ],
 });
-
 
 // ============================================================
 // Orginal Commands
@@ -55,6 +47,9 @@ const project = new ProjenBlueprint({
  */
 project.setScript('blueprint:synth', 'yarn blueprint:synth:cache');
 project.setScript('build:cache', 'yarn blueprint:synth:cache');
-project.setScript('blueprint:synth:cache', 'yarn build && yarn blueprint:build-ast && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
+project.setScript(
+  'blueprint:synth:cache',
+  'yarn build && yarn blueprint:build-ast && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache',
+);
 
 project.synth();

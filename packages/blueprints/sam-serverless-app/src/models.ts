@@ -11,8 +11,6 @@ export interface RuntimeMapping {
   installInstructions: string;
 }
 
-
-
 /**
  * This is so that you can specify which lambdas you want in each api gateway
  */
@@ -23,4 +21,3 @@ interface ApiGateway{
    lambdas: Lambda[];
 }
 */
-
