@@ -38,7 +38,7 @@ export class Environment extends Component {
         const account: AccountConnection<any> = environment[accountkey];
         connectedAccounts.push({
           environmentName: environment.name,
-          name: account.accountName,
+          name: account.name,
         });
       });
 
