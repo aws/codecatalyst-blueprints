@@ -91,8 +91,6 @@ export interface WorkflowDefinition {
   DeployCloudFormationStack?: any;
 }
 
-export type WorkflowRuntimeLanguage = 'sam-python';
-
 export interface StageDefinition {
   environment: EnvironmentDefinition;
   role: string;

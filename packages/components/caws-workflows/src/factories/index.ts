@@ -1,5 +1,5 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { CfnStageDefinition, PullRequestEvent, StageDefinition, Step, WorkflowDefinition, WorkflowRuntimeLanguage as WorkflowRuntimeSdk } from '..';
+import { CfnStageDefinition, PullRequestEvent, Step, WorkflowDefinition } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
 
 export const emptyWorkflow: WorkflowDefinition = {
