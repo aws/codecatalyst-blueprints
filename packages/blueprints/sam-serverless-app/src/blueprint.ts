@@ -35,7 +35,7 @@ export interface Options extends ParentOptions {
 
   /**
    * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
-   * @displayName CloudFormation stack same
+   * @displayName CloudFormation stack name
    * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
    * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
    * @defaultEntropy
