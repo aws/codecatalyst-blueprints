@@ -1,6 +1,6 @@
 {
   "thisIsMyEnvironment": {
-    "name": "default_development_FROM_WIZARD",
+    "name": "DEFAULT_ENVIRONMENT_NAME",
     "environmentType": "PRODUCTION"
   },
   "stringInput": "default string input",

@@ -47,10 +47,11 @@ below for an example. It is sometimes helpful to include this full 'mock' in the
         "name": "myProductionEnvironment",
         "environmentType": "PRODUCTION",
         "thisIsMySecondAccountConnection": {
-            "accountId": "12345678910",
-            "accountName": "my-account-connection-name",
+            "id": "12345678910",
+            "name": "my-account-connection-name",
             "secondAdminRole": {
                 "arn": "arn:aws:iam::12345678910:role/ConnectedQuokkaRole",
+                "name": "ConnectedQuokkaRole",
                 "capabilities": [
                     "lambda",
                     "s3",
@@ -119,9 +120,10 @@ And the full shape:
     "name": "my-production-environment",
     "environmentType": "PRODUCTION",
     "thisIsMySecondAccountConnection": {
-      "accountId": "12345678910",
-      "accountName": "my-connected-account",
+      "id": "12345678910",
+      "name": "my-connected-account",
       "secondAdminRole": {
+        "name": "LambdaQuokkaRole",
         "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
         "capabilities": [
           "admin",
@@ -131,6 +133,7 @@ And the full shape:
         ]
       },
       "secondLambdaRole": {
+        "name": "LambdaQuokkaRole",
         "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
         "capabilities": [
           "lambda",
@@ -139,9 +142,10 @@ And the full shape:
       }
     },
     "thisIsMyFirstAccountConnection": {
-      "accountId": "12345678910",
-      "accountName": "my-connected-account",
+      "id": "12345678910",
+      "name": "my-connected-account",
       "adminRole": {
+        "name": "LambdaQuokkaRole",
         "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
         "capabilities": [
           "admin",
@@ -151,6 +155,7 @@ And the full shape:
         ]
       },
       "lambdaRole": {
+        "name": "LambdaQuokkaRole",
         "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
         "capabilities": [
           "lambda",

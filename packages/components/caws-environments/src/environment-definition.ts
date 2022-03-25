@@ -10,17 +10,22 @@ export interface Role<Capabilities extends any[]> {
    * e.g. arn:aws:iam::123456789012:role/my-role
    */
   arn: string;
+
+  /**
+   * A human readable name for the role
+   */
+  name: string;
 }
 
 export type AccountConnection<T extends { [key: string]: Role<any> }> = Partial<T> & {
   /**
    * The number of the Account
    */
-  accountId: string;
+  id: string;
   /**
    * A human readable name for the Account
    */
-  accountName: string;
+  name: string;
 };
 
 export type EnvironmentDefinition<T extends { [key: string]: AccountConnection<any> }> = Partial<T> & {

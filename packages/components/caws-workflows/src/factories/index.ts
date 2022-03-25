@@ -1,26 +1,27 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { CfnStageDefinition, PullRequestEvent, StageDefinition, Step, WorkflowDefinition, WorkflowRuntimeLanguage as WorkflowRuntimeSdk } from '..';
+import { PullRequestEvent, Step, WorkflowDefinition } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
-import * as samPython from './sam-python';
+// import * as samPython from './sam-python';
 
-export function generateWorkflow(
-  blueprint: Blueprint,
-  sdk: WorkflowRuntimeSdk,
-  defaultBranch = 'main',
-  stages: StageDefinition[] = [],
-  stackName: string,
-  s3BucketName: string,
-  buildRoleArn: string,
-  tests: boolean,
-  stackRoleArn?: string,
-): WorkflowDefinition {
-  switch (sdk) {
-    case 'sam-python':
-      return samPython.generate(blueprint, defaultBranch, stages, stackName, s3BucketName, buildRoleArn, tests, stackRoleArn!);
-    default:
-      throw new Error(`sdk is not supported: ${sdk}`);
-  }
-}
+// export function generateWorkflow(
+//   blueprint: Blueprint,
+//   sdk: WorkflowRuntimeSdk,
+//   defaultBranch = 'main',
+//   stages: any[] = [],
+//   stackName: string,
+//   s3BucketName: string,
+//   buildRoleArn: string,
+//   tests: boolean,
+//   stackRoleArn?: string,
+// ): WorkflowDefinition {
+//   console.log(blueprint, defaultBranch, stages, stackName, s3BucketName, buildRoleArn, tests, stackRoleArn);
+//   switch (sdk) {
+//     case 'sam-python':
+//       return {} as any;
+//     default:
+//       throw new Error(`sdk is not supported: ${sdk}`);
+//   }
+// }
 
 export const emptyWorkflow: WorkflowDefinition = {
   Name: 'build',
@@ -57,18 +58,19 @@ export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, event
 export function addGenericBuildAction(
   blueprint: Blueprint,
   workflow: WorkflowDefinition,
-  buildRoleArn: string,
+  roleArn: string,
   steps: Step[] = [],
   artifactName: string,
-) {
-  workflow.Actions.Build = {
+): string {
+  const actionName = 'Build';
+  workflow.Actions[actionName] = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
     OutputArtifacts: [artifactName],
     Configuration: {
       Variables: [
         {
           Name: 'BUILD_ROLE_ARN',
-          Value: buildRoleArn,
+          Value: roleArn,
         },
       ],
       Steps: steps,
@@ -80,33 +82,39 @@ export function addGenericBuildAction(
       ],
     },
   };
+  return actionName;
 }
 
-export function addGenericCloudFormationDeployAction(
-  blueprint: Blueprint,
-  workflow: WorkflowDefinition,
-  stage: CfnStageDefinition,
-  stackName: string,
-  stackRegion: string,
-  dependsOn: string,
-  artifactName: string,
-) {
-  workflow.Actions[`Deploy_${stage.environment.title}`] = {
+export function addGenericCloudFormationDeployAction(params: {
+  blueprint: Blueprint;
+  workflow: WorkflowDefinition;
+  actionRoleArn: string;
+  stackRoleArn: string;
+  stackName: string;
+  stackRegion: string;
+  dependsOn: string;
+  artifactName: string;
+  actionName: string;
+  environmentName: string;
+}): string {
+  const { blueprint, workflow, actionRoleArn, stackRoleArn, stackName, stackRegion, dependsOn, artifactName, actionName, environmentName } = params;
+  workflow.Actions[actionName] = {
     DependsOn: [dependsOn],
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
     InputArtifacts: [artifactName],
     Configuration: {
-      ActionRoleArn: stage.role,
-      DeploymentEnvironment: stage.environment.title,
+      ActionRoleArn: actionRoleArn,
+      DeploymentEnvironment: environmentName,
       Parameters: {
         'name': stackName,
         'region': stackRegion,
-        'role-arn': stage.stackRoleArn,
+        'role-arn': stackRoleArn,
         'template': './output.yaml',
         'capabilities': 'CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM',
       },
     },
   };
+  return actionName;
 }
 
 export function addGenericTestReports(

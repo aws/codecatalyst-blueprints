@@ -1,12 +1,8 @@
 {
-  "stages": [{
-    "environment": {
-      "title" : "Development"
-    },
-    "role": "arn:aws:iam::123456789012:role/REPLACE-ME-DEPLOY-ROLE-NAME",
-    "accountid": "",
-    "region": "us-west-2"
-  }],
+  "environment": {
+    "name": "deployment_environment",
+    "environmentType": "PRODUCTION"
+  },
   "webappOptions" : {
     "repositoryName": "WebApplication",
     "reactFolderName": "react",

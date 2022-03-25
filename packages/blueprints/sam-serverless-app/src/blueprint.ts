@@ -1,22 +1,20 @@
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import defaults from './defaults.json';
 import { generateReadmeContents } from './readmeContents';
-import { Environment } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
+import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   //generateWorkflow,
   WorkflowDefinition,
   Workflow,
-  addGenericCloudFormationDeployAction,
   addGenericBranchTrigger,
   addGenericBuildAction,
-  StageDefinition,
+  addGenericCloudFormationDeployAction,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleDir, SampleFile } from 'projen';
 import * as cp from 'child_process';
 import * as path from 'path';
-import * as fs from 'fs';
 
 import { RuntimeMapping } from './models';
 import { runtimeMappings } from './runtimeMappings';
@@ -43,14 +41,39 @@ export interface Options extends ParentOptions {
   cloudFormationStackName: string;
 
   /**
+   * This blueprint includes a default environment for production. Rename the default envionment and connect it to an AWS account here.
+   * @displayName Environment
+   * @collapsed false
+   */
+  environment: EnvironmentDefinition<{
+    /**
+     * An AWS account connection is required by the project workflow to deploy to aws.
+     * @displayName AWS account connection
+     * @collapsed false
+     */
+    awsAccountConnection: AccountConnection<{
+      /**
+       * This is the role that will be used to deploy the application. It should have access to deploy all of your resources. See the Readme for more information.
+       * @displayName Deploy role
+       */
+      awsDeployRole: Role<['SAM Deploy']>;
+      /**
+       * This is the role that allows AWS cloudformation to access resources specified in the AWS CloudFormation template.
+       * @displayName Stack role
+       */
+      stackRole: Role<['CloudFormation']>;
+      /**
+       * This is the role that allows build actions to access and write to Amazon S3, wher eyour serverless application package is stored.
+       * @displayName S3 build role
+       */
+      s3BuildRole: Role<['S3']>;
+    }>;
+  }>;
+
+  /**
    * The configurations for your workflow
    */
   workflow: {
-    /**
-     * Configure default environment for this blueprint.
-     */
-    stages: StageDefinition[];
-
     /**
      * Enter the name of the S3 bucket to store build artifacts.
      * Must be an existing S3 bucket
@@ -59,22 +82,6 @@ export interface Options extends ParentOptions {
      * See rules for bucket naming: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
      */
     s3BucketName: string;
-
-    /**
-     * Enter the role ARN to use when deploying your application through CloudFormation
-     * @validationRegex /^arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9+=,.@_-]{1,64}$/
-     * @validationMessage IAM role ARN must match pattern arn:aws:iam::<account ID>:role/<role name>.
-     * Valid role names are up to 64 alphanumeric characters including the following symbols plus (+), equal (=), comma (,), period (.), at (@), underscore (_), and hyphen (-).
-     */
-    stackRoleArn: string;
-
-    /**
-     * Enter the role ARN to use when building your application
-     * @validationRegex /^arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9+=,.@_-]{1,64}$/
-     * @validationMessage IAM role ARN must match pattern arn:aws:iam::<account ID>:role/<role name>.
-     * Valid role names are up to 64 alphanumeric characters including the following symbols plus (+), equal (=), comma (,), period (.), at (@), underscore (_), and hyphen (-).
-     */
-    buildRoleArn: string;
   };
 
   /**
@@ -135,37 +142,33 @@ export class Blueprint extends ParentBlueprint {
     this.options.lambda = options.lambda;
   }
 
-  override synth(): void {
-    //MDE config workspace
-    new Workspace(this, this.repository, SampleWorkspaces.default);
-    //environments
-    for (const stage of this.options.workflow.stages) {
-      // if (stage.environment.title.length < 1){
-      //   throw new Error('Invalid environment title length');
-      // }
-      stage.environment.title = `${stage.environment.title}`;
-    }
-    this.options.workflow.stages.forEach(stage => new Environment(this, stage.environment));
+  createWorkflow(params: {
+    defaultBranch: string;
+    workflowName: string;
+    region: string;
+    artifactName: string;
+    roles: {
+      deployRoleArn: string;
+      stackRoleArn: string;
+      s3BuildRoleArn: string;
+    };
+  }): void {
+    this.addSamInstallScript();
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
-    const defaultReleaseBranch = 'main';
-    const workflowName = 'build-and-release';
+    const { defaultBranch, workflowName, region, artifactName, roles } = params;
+    console.log(defaultBranch, workflowName, region, artifactName, roles);
     //Workflow
     const workflowDefinition: WorkflowDefinition = {
       Name: workflowName,
       Triggers: [],
       Actions: {},
     };
-    //todo: add region selection, when available
-    const region = 'us-west-2';
-    const artifactName = 'MyServerlessAppArtifact';
-    this.addSamInstallScript();
-    addGenericBranchTrigger(workflowDefinition, [defaultReleaseBranch]);
-    addGenericBuildAction(
+
+    addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
+    const buildAction = addGenericBuildAction(
       this,
       workflowDefinition,
-      this.options.workflow.buildRoleArn,
+      roles.s3BuildRoleArn,
       [
         { Run: '. ./.aws/scripts/setup-sam.sh' },
         { Run: 'sam build' },
@@ -175,44 +178,69 @@ export class Blueprint extends ParentBlueprint {
       ],
       artifactName,
     );
-    //each stage should depend on the previous stage
-    let previousStage = 'Build';
-    for (const stage of this.options.workflow.stages) {
-      // Append the environment title to the cloudformation stack name
-      const cfnStackname = `${this.options.cloudFormationStackName}-${stage.environment.title}`;
-      //if (cfnStackname.length > 128) {
-      //! Error message requires doc writer review
-      //throw new Error ('Cloudformation stack name cannot be more than 128 characters')
-      //}
-      const cfnStage = { ...stage, stackRoleArn: this.options.workflow.stackRoleArn };
-      addGenericCloudFormationDeployAction(this, workflowDefinition, cfnStage, cfnStackname, region, previousStage, artifactName);
-      previousStage = `Deploy_${stage.environment.title}`;
-    }
+
+    // Append the environment title to the cloudformation stack name
+    const cfnStackname = `${this.options.cloudFormationStackName}-${this.options.environment.name}`;
+    addGenericCloudFormationDeployAction({
+      blueprint: this,
+      workflow: workflowDefinition,
+      actionRoleArn: roles.deployRoleArn,
+      stackRoleArn: roles.stackRoleArn,
+      stackName: cfnStackname,
+      stackRegion: region,
+      dependsOn: buildAction,
+      artifactName: artifactName,
+      actionName: `Deploy_${this.options.environment.name}`,
+      environmentName: this.options.environment.name,
+    });
+
     new Workflow(this, this.repository, workflowDefinition);
+  }
+
+  override synth(): void {
+    // create an MDE workspace
+    new Workspace(this, this.repository, SampleWorkspaces.default);
+
+    // create the build and release workflow
+    const workflowName = 'build-and-release';
+    this.createWorkflow({
+      defaultBranch: 'main',
+      workflowName: 'build-and-release',
+      region: 'us-west-2',
+      artifactName: 'ServerlessAppArtifact',
+      roles: {
+        deployRoleArn: this.options.environment.awsAccountConnection?.awsDeployRole?.arn || '<<PUT_IAM_ROLE_ARN_HERE>>',
+        stackRoleArn: this.options.environment.awsAccountConnection?.s3BuildRole?.arn || '<<PUT_BUILD_ROLE_ARN_HERE>>',
+        s3BuildRoleArn: this.options.environment.awsAccountConnection?.stackRole?.arn || '<<PUT_STACK_ROLE_ARN_HERE>>',
+      },
+    });
+
+    //environments
+    new Environment(this, this.options.environment);
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
+
+    // create the sam template code
     this.createSamTemplate(runtimeOptions);
 
-    const readmeContents = generateReadmeContents(
-      runtimeOptions,
-      defaultReleaseBranch,
-      [this.options.lambda],
-      this.options.workflow.stages,
-      this.options.cloudFormationStackName,
-      this.options.workflow.s3BucketName,
-      workflowName,
+    // generate the readme
+    new SourceFile(
+      this.repository,
+      'README.md',
+      generateReadmeContents({
+        runtimeMapping: runtimeOptions,
+        defaultReleaseBranch: 'main',
+        lambdas: [this.options.lambda],
+        environment: this.options.environment,
+        cloudFormationStackName: this.options.cloudFormationStackName,
+        s3bucketName: this.options.workflow.s3BucketName,
+        workflowName: workflowName,
+      }),
     );
-    new SampleFile(this, path.join(this.repository.relativePath, 'README.md'), {
-      contents: readmeContents,
-    });
 
     const toDeletePath = this.populateLambdaSourceCode(runtimeOptions);
     super.synth();
-    // verify synth generating source code for each lambda
-    for (const lambdaName of [this.options.lambda?.functionName]) {
-      if (!fs.existsSync(path.join(this.repository.path, lambdaName || ''))) {
-        //! Error message requires doc writer review
-        throw new Error('Unable to synthesize source code for lambda function');
-      }
-    }
     cp.execSync(`rm -rf ${toDeletePath}`);
   }
 
