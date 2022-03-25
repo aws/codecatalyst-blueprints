@@ -1,26 +1,6 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { CfnStageDefinition, PullRequestEvent, StageDefinition, Step, WorkflowDefinition, WorkflowRuntimeLanguage as WorkflowRuntimeSdk } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
-import * as samPython from './sam-python';
-
-export function generateWorkflow(
-  blueprint: Blueprint,
-  sdk: WorkflowRuntimeSdk,
-  defaultBranch = 'main',
-  stages: StageDefinition[] = [],
-  stackName: string,
-  s3BucketName: string,
-  buildRoleArn: string,
-  tests: boolean,
-  stackRoleArn?: string,
-): WorkflowDefinition {
-  switch (sdk) {
-    case 'sam-python':
-      return samPython.generate(blueprint, defaultBranch, stages, stackName, s3BucketName, buildRoleArn, tests, stackRoleArn!);
-    default:
-      throw new Error(`sdk is not supported: ${sdk}`);
-  }
-}
 
 export const emptyWorkflow: WorkflowDefinition = {
   Name: 'build',
