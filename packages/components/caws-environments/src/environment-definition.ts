@@ -3,7 +3,7 @@ export interface Role<Capabilities extends any[]> {
    * A list of capabilities that this role has.
    * e.g. ['IAM', 'Lambda', 'S3']
    */
-  capability: Capabilities | any[]; // hack due to typescript bug in
+  capabilities: Capabilities | any[]; // hack due to typescript bug in
 
   /**
    * Role ARN.
