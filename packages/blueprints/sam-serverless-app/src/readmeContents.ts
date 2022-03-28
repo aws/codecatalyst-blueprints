@@ -1,15 +1,18 @@
 import { RuntimeMapping } from './models';
-import { StageDefinition } from '@caws-blueprint-component/caws-workflows';
+import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 
-export function generateReadmeContents(
-  runtimeMapping: RuntimeMapping,
-  defaultReleaseBranch: 'main',
-  lambdas: { functionName: string }[],
-  stages: StageDefinition[],
-  cloudFormationStackName: string,
-  s3bucketName: string,
-  workflowName: string,
-) {
+export function generateReadmeContents(params: {
+  runtimeMapping: RuntimeMapping;
+  defaultReleaseBranch: 'main';
+  lambdas: { functionName: string }[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  environment: EnvironmentDefinition<any>;
+  cloudFormationStackName: string;
+  s3bucketName: string;
+  workflowName: string;
+}) {
+  const { runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, s3bucketName, workflowName } = params;
+
   //Generate input variables
   let functionNames = '';
   for (let i = 0; i < lambdas.length - 1; i++) {
@@ -17,10 +20,7 @@ export function generateReadmeContents(
   }
   functionNames += `${lambdas[lambdas.length - 1].functionName}`;
 
-  let environments = '';
-  for (const stage of stages) {
-    environments += `- \`${stage.environment.title}\` using the cloudformation stack \`${cloudFormationStackName}-${stage.environment.title}\`\n`;
-  }
+  const environmentContent = `- \`${environment.name}\` using the cloudformation stack \`${cloudFormationStackName}-${environment.name}\`\n`;
 
   const readmeContents = `
 ## This Project:
@@ -36,7 +36,6 @@ This project contains the following files and folder in its source repository:
     - events - Invocation events that you can use to invoke the function
 
     - ${runtimeMapping.testPath} - Unit tests for the Lambda function's code
-
 
   - .aws/workflows/${workflowName}.yaml - The template that defines the project's workflow
 
@@ -127,7 +126,7 @@ The application template uses SAM to define application resources. AWS SAM is an
 ## Deploying your serverless application
 The application is deployed through Quokka.Codes using the workflow defined in \`.aws/workflows/${workflowName}.yaml\`. The workflow is triggered by pushes to the \`${defaultReleaseBranch}\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in \`${s3bucketName}\`, and deploys your application to your project environments in the following order:
 
-  ${environments}
+  ${environmentContent}
 
 For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using workflows_ section in the **Quokka User Guide**.
 

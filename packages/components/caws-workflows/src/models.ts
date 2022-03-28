@@ -1,5 +1,4 @@
-import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
-
+// import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 export interface Variables {
   Name: string;
   Value: string;
@@ -92,15 +91,6 @@ export interface WorkflowDefinition {
 }
 
 export type WorkflowRuntimeLanguage = 'sam-python';
-
-export interface StageDefinition {
-  environment: EnvironmentDefinition;
-  role: string;
-}
-
-export interface CfnStageDefinition extends StageDefinition {
-  stackRoleArn: string;
-}
 
 export enum PullRequestEvent {
   DRAFT = 'draft',

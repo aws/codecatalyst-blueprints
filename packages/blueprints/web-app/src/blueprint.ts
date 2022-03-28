@@ -1,10 +1,9 @@
-import { Environment } from '@caws-blueprint-component/caws-environments';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
   ActionIdentifierAlias,
   BuildActionConfiguration,
   Step,
-  StageDefinition,
   Workflow,
   WorkflowDefinition,
   getDefaultActionIdentifier,
@@ -31,9 +30,24 @@ export const PROJEN_VERSION = '0.52.18';
  */
 export interface Options extends ParentOptions {
   /**
-   * The blueprint will create a new environment used for deployment.
+   * This blueprint includes a default environment for production. Rename the default envionment and connect it to an AWS account here.
+   * @displayName Environment
+   * @collapsed false
    */
-  stages: StageDefinition[];
+  environment: EnvironmentDefinition<{
+    /**
+     * AWS accounts are needed for deployment. You can move forward without adding an AWS account but the web application will not deploy.
+     * @displayName AWS account connection
+     * @collapsed false
+     */
+    awsAccountConnection: AccountConnection<{
+      /**
+       * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources.
+       * @displayName CDK Role
+       */
+      cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+    }>;
+  }>;
 
   /**
    * @displayName Code Repository and folder names
@@ -175,19 +189,20 @@ export class Blueprint extends ParentBlueprint {
     );
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
-    (options.stages || []).forEach((stage, index) => {
-      if (!stage.environment.title) {
-        stage.environment.title = `stage_${index}`;
-      }
-      this.createWorkflow(stage);
-      new Environment(this, stage.environment);
-    });
+    new Environment(this, options.environment);
+    this.createWorkflow(options.environment);
 
     new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
     new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
   }
 
-  private createWorkflow(stage: StageDefinition) {
+  private createWorkflow(
+    environment: EnvironmentDefinition<{
+      awsAccountConnection: AccountConnection<{
+        cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+      }>;
+    }>,
+  ) {
     const workflowDefinition: WorkflowDefinition = {
       Name: 'buildAssets',
       Triggers: [
@@ -199,19 +214,29 @@ export class Blueprint extends ParentBlueprint {
       Actions: {},
     };
 
-    this.createDeployAction(stage, workflowDefinition);
+    this.createDeployAction(environment, workflowDefinition);
     new Workflow(this, this.repository, workflowDefinition);
   }
 
-  private createDeployAction(stage: StageDefinition, workflow: WorkflowDefinition) {
+  private createDeployAction(
+    environment: EnvironmentDefinition<{
+      awsAccountConnection: AccountConnection<{
+        cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+      }>;
+    }>,
+    workflow: WorkflowDefinition,
+  ) {
     const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
 
-    workflow.Actions[`Build_${stage?.environment.title}`] = {
+    const roleARN = environment.awsAccountConnection?.cdkRole?.arn || '<<PUT_YOUR_ROLE_ARN_HERE>>';
+    const accountId = environment.awsAccountConnection?.id || '<<PUT_YOUR_ACCOUNT_NUMBER_HERE>>';
+
+    workflow.Actions[`Build_${environment.name}`] = {
       Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, this.context.environmentId),
       Configuration: {
-        ActionRoleArn: stage.role,
+        ActionRoleArn: roleARN,
         Steps: [
-          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
+          { Run: `export awsAccountId=${accountId}` },
           { Run: 'export awsRegion=us-west-2' },
           {
             Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
@@ -219,7 +244,7 @@ export class Blueprint extends ParentBlueprint {
           { Run: 'npm install -g yarn' },
           { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
           {
-            Run: `npx cdk bootstrap aws://${this.getIdFromArn(stage.role)}/us-west-2`,
+            Run: `npx cdk bootstrap aws://${accountId}/us-west-2`,
           },
           {
             Run: 'yarn deploy:copy-config',
@@ -248,9 +273,5 @@ export class Blueprint extends ParentBlueprint {
       } as BuildActionConfiguration,
       OutputArtifacts: [AUTO_DISCOVERY_ARTIFACT_NAME],
     };
-  }
-
-  private getIdFromArn(arnRole: string) {
-    return arnRole.split(':')[4] || 'REPLACE_ME_AWS_ACCOUNT_NUMBER';
   }
 }

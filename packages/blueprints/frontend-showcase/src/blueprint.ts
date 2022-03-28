@@ -1,10 +1,9 @@
 import * as fs from 'fs';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@caws-blueprint-component/caws-workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import defaults from './defaults.json';
-import { Environment } from './tmp-env-def/environment-component';
-import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/environment-definition';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -16,8 +15,8 @@ import { EnvironmentDefinition, AccountConnection, Role } from './tmp-env-def/en
  */
 export interface Options extends ParentOptions {
   /**
-   * The name of an environment
-   * @displayName This is a Environment Name
+   * This is some information about what type of environment and what in the world an environment is.
+   * @displayName This is the Environment Title Area
    * @collapsed
    */
   thisIsMyEnvironment: EnvironmentDefinition<{
