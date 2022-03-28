@@ -1,11 +1,29 @@
-// import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
-export interface Variables {
-  Name: string;
-  Value: string;
+import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
+
+export type WorkflowRuntimeLanguage = 'sam-python';
+
+export type SourceType = 'SOURCE_REPOSITORY';
+
+export type EnvironmentConnectionType = 'aws';
+
+export enum PullRequestEvent {
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+  MERGED = 'MERGED',
+  REVISION = 'REVISION',
 }
 
-export interface OutputVariables {
-  Name: string;
+export enum RunModeDefiniton {
+  PARALLEL = 'PARALLEL',
+  QUEUED = 'QUEUED',
+  SUPERSEDED = 'SUPERSEDED',
+}
+
+export enum TriggerType {
+  MANUAL = 'MANUAL',
+  PUSH = 'PUSH',
+  PULLREQUEST = 'PULLREQUEST',
 }
 
 export interface Step {
@@ -17,28 +35,9 @@ export interface Artifacts {
   Files: string[];
 }
 
-export interface TestResult {
-  ReferenceArtifact: string;
-  Format: string;
-  SuccessThresholds?: {
-    PassRate: number;
-  };
-}
-
-export interface Reports {
-  Name: string;
-  AutoDiscover?: boolean;
-  TestResults: TestResult[];
-}
-
 export interface BuildActionConfiguration {
   ActionRoleArn?: string;
-  Variables?: Variables[];
   Steps?: Step[];
-  Artifacts?: Artifacts[];
-  Reports?: Reports[];
-  Uses?: ActionUses;
-  OutputVariables?: OutputVariables[];
 }
 
 export interface DeployActionConfiguration {
@@ -53,36 +52,27 @@ export interface DeployActionConfiguration {
   };
 }
 
-export interface ActionUses {
-  Compute?: string;
-  Environment: string;
-  Connections?: EnvironmentConnection[];
-}
-
-export type EnvironmentConnectionType = 'aws';
-
-export interface EnvironmentConnection {
-  Name: string;
-  Type: EnvironmentConnectionType;
-  Role: string;
-}
-
 export interface ActionDefiniton {
-  DependsOn?: string[];
   Identifier?: string;
-  InputArtifacts?: string[];
-  OutputArtifacts?: string[];
   Configuration?: BuildActionConfiguration | DeployActionConfiguration;
+  DependsOn?: string[];
+  Inputs?: InputsDefinition;
+  Outputs?: OutputDefinition;
+  Environment?: Environment;
 }
 
 export interface TriggerDefiniton {
-  Type: string;
+  Type: TriggerType;
   Branches?: string[];
-  Events?: string[];
+  Events?: PullRequestEvent[];
+  SourceName?: string;
 }
 
 export interface WorkflowDefinition {
-  Name: string;
+  Name?: string;
+  SchemaVersion?: string;
+  RunMode?: RunModeDefiniton;
+  Sources?: SourceDefiniton;
   Triggers?: TriggerDefiniton[];
   Actions: {
     [id: string]: ActionDefiniton;
@@ -90,12 +80,47 @@ export interface WorkflowDefinition {
   DeployCloudFormationStack?: any;
 }
 
-export type WorkflowRuntimeLanguage = 'sam-python';
+export interface SourceDefiniton {
+  Type: SourceType;
+  RepositoryName: string;
+  branch: string;
+}
 
-export enum PullRequestEvent {
-  DRAFT = 'draft',
-  OPEN = 'open',
-  CLOSED = 'closed',
-  MERGED = 'merged',
-  REVISION = 'revision',
+export interface InputVariable {
+  Name: string;
+  Value: string;
+}
+
+export interface InputsDefinition {
+  Sources?: string[];
+  Variables?: InputVariable[];
+  Artifacts?: string[];
+}
+
+export interface Artifact {
+  Name: string;
+  Files: string;
+}
+
+export interface AutoDiscoverReportDefinition {
+  Enabled?: boolean;
+  ReportNamePrefix?: string;
+  IncludePaths?: string;
+}
+
+export interface OutputDefinition {
+  Artifacts?: Artifact[];
+  Reports?: string[];
+  AutoDiscoverReports?: AutoDiscoverReportDefinition[];
+  Variables?: string[];
+}
+
+export interface ConnectionDefinition {
+  Name: string;
+  Role: string;
+}
+
+export interface Environment {
+  Name: string;
+  Connections: ConnectionDefinition[];
 }

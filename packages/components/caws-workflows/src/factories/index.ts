@@ -1,27 +1,6 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { PullRequestEvent, Step, WorkflowDefinition } from '..';
+import { PullRequestEvent, Step, WorkflowDefinition, TriggerType } from '..';
 import { ActionIdentifierAlias, getDefaultActionIdentifier } from '../actions';
-// import * as samPython from './sam-python';
-
-// export function generateWorkflow(
-//   blueprint: Blueprint,
-//   sdk: WorkflowRuntimeSdk,
-//   defaultBranch = 'main',
-//   stages: any[] = [],
-//   stackName: string,
-//   s3BucketName: string,
-//   buildRoleArn: string,
-//   tests: boolean,
-//   stackRoleArn?: string,
-// ): WorkflowDefinition {
-//   console.log(blueprint, defaultBranch, stages, stackName, s3BucketName, buildRoleArn, tests, stackRoleArn);
-//   switch (sdk) {
-//     case 'sam-python':
-//       return {} as any;
-//     default:
-//       throw new Error(`sdk is not supported: ${sdk}`);
-//   }
-// }
 
 export const emptyWorkflow: WorkflowDefinition = {
   Name: 'build',
@@ -36,7 +15,7 @@ export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches =
   }
 
   workflow.Triggers.push({
-    Type: 'Push',
+    Type: TriggerType.PUSH,
     Branches: branches,
     ...(filesChanged && { FileChanged: filesChanged }),
   });
@@ -48,7 +27,7 @@ export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, event
   }
 
   workflow.Triggers.push({
-    Type: 'PullRequest',
+    Type: TriggerType.PULLREQUEST,
     Events: events,
     Branches: branches,
     ...(filesChanged && { FileChanged: filesChanged }),
@@ -65,21 +44,33 @@ export function addGenericBuildAction(
   const actionName = 'Build';
   workflow.Actions[actionName] = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
-    OutputArtifacts: [artifactName],
-    Configuration: {
+    Inputs: {
       Variables: [
         {
           Name: 'BUILD_ROLE_ARN',
           Value: roleArn,
         },
       ],
-      Steps: steps,
+      Sources: ['WorkfloSource'],
+    },
+    Outputs: {
       Artifacts: [
         {
           Name: artifactName,
-          Files: ['output.yaml'],
+          Files: 'output.yaml',
         },
       ],
+
+      AutoDiscoverReports: [
+        {
+          Enabled: true,
+          ReportNamePrefix: 'AutoDiscovered',
+          IncludePaths: '**/*',
+        },
+      ],
+    },
+    Configuration: {
+      Steps: steps,
     },
   };
   return actionName;
@@ -92,16 +83,29 @@ export function addGenericCloudFormationDeployAction(params: {
   stackRoleArn: string;
   stackName: string;
   stackRegion: string;
-  dependsOn: string;
+  dependsOn: string[];
   artifactName: string;
   actionName: string;
   environmentName: string;
 }): string {
   const { blueprint, workflow, actionRoleArn, stackRoleArn, stackName, stackRegion, dependsOn, artifactName, actionName, environmentName } = params;
   workflow.Actions[actionName] = {
-    DependsOn: [dependsOn],
+    DependsOn: dependsOn,
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
-    InputArtifacts: [artifactName],
+    Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
+    Inputs: {
+      Artifacts: [artifactName],
+      Variables: [
+        {
+          Name: 'Account Id',
+          Value: stage.accountid,
+        },
+        {
+          Name: 'Region',
+          Value: stage.region,
+        },
+      ],
+    },
     Configuration: {
       ActionRoleArn: actionRoleArn,
       DeploymentEnvironment: environmentName,
@@ -113,53 +117,47 @@ export function addGenericCloudFormationDeployAction(params: {
         'capabilities': 'CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM',
       },
     },
+    Environment: {
+      Name: stage.environment.title,
+      Connections: [
+        {
+          Name: stage.accountid,
+          Role: stage.role,
+        },
+      ],
+    },
   };
   return actionName;
 }
 
-export function addGenericTestReports(
-  blueprint: Blueprint,
-  workflow: WorkflowDefinition,
-  steps: Step[],
-  coverageArtifactName: string,
-  testArtifactName: string,
-) {
-  workflow.Actions.Test = {
-    DependsOn: ['Build'],
+export function addGenericTestReports(params: {
+  blueprint: Blueprint;
+  workflow: WorkflowDefinition;
+  steps: Step[];
+  coverageArtifactName: string;
+  testArtifactName: string;
+  dependsOn: string[];
+}) {
+  const { blueprint, workflow, steps, coverageArtifactName, testArtifactName, dependsOn } = params;
+  const actionName = 'Test';
+  workflow.Actions[actionName] = {
+    DependsOn: dependsOn,
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.test, blueprint.context.environmentId),
-    OutputArtifacts: [coverageArtifactName, testArtifactName],
-    Configuration: {
-      Steps: steps,
+    Outputs: {
       Artifacts: [
         {
           Name: coverageArtifactName,
-          Files: ['reports/cov.xml'],
+          Files: 'reports/cov.xml',
         },
         {
           Name: testArtifactName,
-          Files: ['reports/report.xml'],
+          Files: 'reports/report.xml',
         },
       ],
-      Reports: [
-        {
-          Name: coverageArtifactName,
-          TestResults: [
-            {
-              ReferenceArtifact: coverageArtifactName,
-              Format: 'CoberturaXml',
-            },
-          ],
-        },
-        {
-          Name: testArtifactName,
-          TestResults: [
-            {
-              ReferenceArtifact: testArtifactName,
-              Format: 'JunitXml',
-            },
-          ],
-        },
-      ],
+      Reports: [coverageArtifactName, testArtifactName],
+    },
+    Configuration: {
+      Steps: steps,
     },
   };
 }

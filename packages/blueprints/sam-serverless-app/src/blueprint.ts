@@ -218,8 +218,50 @@ export class Blueprint extends ParentBlueprint {
     //environments
     new Environment(this, this.options.environment);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
+    const defaultReleaseBranch = 'main';
+    const workflowName = 'build-and-release';
+    const SCHEMA_VERSION = '1.0';
+    //Workflow
+    const workflowDefinition: WorkflowDefinition = {
+      Name: workflowName,
+      SchemaVersion: SCHEMA_VERSION,
+      Triggers: [],
+      Actions: {},
+    };
+    //todo: add region selection, when available
+    const region = 'us-west-2';
+    const artifactName = 'MyServerlessAppArtifact';
+    this.addSamInstallScript();
+    addGenericBranchTrigger(workflowDefinition, [defaultReleaseBranch]);
+    addGenericBuildAction(
+      this,
+      workflowDefinition,
+      this.options.workflow.buildRoleArn,
+      [
+        { Run: '. ./.aws/scripts/setup-sam.sh' },
+        { Run: 'sam build' },
+        {
+          Run: `sam package --template-file ./.aws-sam/build/template.yaml --s3-bucket ${this.options.workflow.s3BucketName} --output-template-file output.yaml --region ${region}`,
+        },
+      ],
+      artifactName,
+    );
+    //each stage should depend on the previous stage
+    let previousStage = 'Build';
+    for (const stage of this.options.workflow.stages) {
+      // Append the environment title to the cloudformation stack name
+      const cfnStackname = `${this.options.workflow.cloudFormationStackName}-${stage.environment.title}`;
+      //if (cfnStackname.length > 128) {
+      //! Error message requires doc writer review
+      //throw new Error ('Cloudformation stack name cannot be more than 128 characters')
+      //}
+      const cfnStage = { ...stage, stackRoleArn: this.options.workflow.stackRoleArn };
+      addGenericCloudFormationDeployAction(this, workflowDefinition, cfnStage, cfnStackname, region, previousStage, artifactName);
+      previousStage = `Deploy_${stage.environment.title}`;
+    }
+    new Workflow(this, this.repository, workflowDefinition);
+    this.createSamTemplate(runtimeOptions);
 
     // create the sam template code
     this.createSamTemplate(runtimeOptions);
