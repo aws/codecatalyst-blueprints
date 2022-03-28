@@ -36,10 +36,10 @@
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
-    "eslint-import-resolver-node": "*",
-    "eslint-import-resolver-typescript": "*",
-    "eslint-plugin-import": "*",
-    "json-schema": "*",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
     "projen": "0.52.18",
     "standard-version": "^9",
@@ -51,7 +51,7 @@
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
     "@caws-blueprint-component/caws-workflows": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
-    "projen": "*"
+    "projen": "^0.52.18"
   },
   "keywords": [
     "no-tag"
@@ -59,7 +59,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png"
