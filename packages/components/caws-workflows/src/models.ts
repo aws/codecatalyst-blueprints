@@ -1,9 +1,4 @@
-import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
-
-export type WorkflowRuntimeLanguage = 'sam-python';
-
 export type SourceType = 'SOURCE_REPOSITORY';
-
 export type EnvironmentConnectionType = 'aws';
 
 export enum PullRequestEvent {
@@ -41,14 +36,13 @@ export interface BuildActionConfiguration {
 }
 
 export interface DeployActionConfiguration {
-  ActionRoleArn: string;
-  DeploymentEnvironment: string;
+  Environment?: Environment;
   Parameters: {
-    'name': string;
-    'region': string;
-    'role-arn': string;
-    'template': string;
-    'capabilities': string;
+    [key: string]: string;
+    name: string;
+    region: string;
+    template: string;
+    capabilities: string;
   };
 }
 
@@ -59,6 +53,7 @@ export interface ActionDefiniton {
   Inputs?: InputsDefinition;
   Outputs?: OutputDefinition;
   Environment?: Environment;
+  compute?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
 }
 
 export interface TriggerDefiniton {
@@ -77,7 +72,6 @@ export interface WorkflowDefinition {
   Actions: {
     [id: string]: ActionDefiniton;
   };
-  DeployCloudFormationStack?: any;
 }
 
 export interface SourceDefiniton {
@@ -105,13 +99,13 @@ export interface Artifact {
 export interface AutoDiscoverReportDefinition {
   Enabled?: boolean;
   ReportNamePrefix?: string;
-  IncludePaths?: string;
+  IncludePaths?: string[];
 }
 
 export interface OutputDefinition {
   Artifacts?: Artifact[];
   Reports?: string[];
-  AutoDiscoverReports?: AutoDiscoverReportDefinition[];
+  AutoDiscoverReports?: AutoDiscoverReportDefinition;
   Variables?: string[];
 }
 

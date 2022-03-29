@@ -6,7 +6,6 @@ export class NodeWorkflowDefinitionSamples {
     Triggers: [
       {
         Type: TriggerType.PUSH,
-
         Branches: ['main'],
       },
     ],
