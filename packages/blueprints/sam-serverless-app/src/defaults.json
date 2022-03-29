@@ -5,9 +5,6 @@
     "name": "deployment_environment",
     "environmentType": "PRODUCTION"
   },
-  "workflow": {
-    "s3BucketName": "replace-me-bucket-name"
-  },
   "code": {
     "sourceRepositoryName": "MyServerlessAppRepo"
   },
