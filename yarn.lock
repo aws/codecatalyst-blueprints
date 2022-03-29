@@ -457,10 +457,10 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    json-schema: "*"
+    eslint-import-resolver-node: ^0.3.6
+    eslint-import-resolver-typescript: ^2.5.0
+    eslint-plugin-import: ^2.25.4
+    json-schema: ^0.4.0
     npm-check-updates: ^12
     projen: 0.52.18
     standard-version: ^9
@@ -2622,6 +2622,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debug@npm:^4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdebug%2F-%2Fdebug-4.3.4.tgz"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  languageName: node
+  linkType: hard
+
 "decamelize-keys@npm:^1.1.0":
   version: 1.1.0
   resolution: "decamelize-keys@npm:1.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdecamelize-keys%2F-%2Fdecamelize-keys-1.1.0.tgz"
@@ -3095,6 +3107,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-import-resolver-typescript@npm:^2.5.0":
+  version: 2.7.0
+  resolution: "eslint-import-resolver-typescript@npm:2.7.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-import-resolver-typescript%2F-%2Feslint-import-resolver-typescript-2.7.0.tgz"
+  dependencies:
+    debug: ^4.3.4
+    glob: ^7.2.0
+    is-glob: ^4.0.3
+    resolve: ^1.22.0
+    tsconfig-paths: ^3.14.1
+  peerDependencies:
+    eslint: "*"
+    eslint-plugin-import: "*"
+  checksum: 6f1ec8018c06e5ec9f3d38f324520df98d5642fc22b6233584794c124dc8f0a92bdcf37d82aa168bf7b981840ac86cb381ffc25db10cbe4dc24482ea1bef17e8
+  languageName: node
+  linkType: hard
+
 "eslint-module-utils@npm:^2.7.2":
   version: 2.7.3
   resolution: "eslint-module-utils@npm:2.7.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-module-utils%2F-%2Feslint-module-utils-2.7.3.tgz"
@@ -3128,7 +3156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:*, eslint-plugin-import@npm:^2.14.0, eslint-plugin-import@npm:^2.22.1":
+"eslint-plugin-import@npm:*, eslint-plugin-import@npm:^2.14.0, eslint-plugin-import@npm:^2.22.1, eslint-plugin-import@npm:^2.25.4":
   version: 2.25.4
   resolution: "eslint-plugin-import@npm:2.25.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Feslint-plugin-import%2F-%2Feslint-plugin-import-2.25.4.tgz"
   dependencies:
@@ -4049,7 +4077,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7, glob@npm:^7.0.0, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.1.7":
+"glob@npm:^7, glob@npm:^7.0.0, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.1.7, glob@npm:^7.2.0":
   version: 7.2.0
   resolution: "glob@npm:7.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fglob%2F-%2Fglob-7.2.0.tgz"
   dependencies:
@@ -4922,7 +4950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema@npm:*":
+"json-schema@npm:*, json-schema@npm:^0.4.0":
   version: 0.4.0
   resolution: "json-schema@npm:0.4.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjson-schema%2F-%2Fjson-schema-0.4.0.tgz"
   checksum: 66389434c3469e698da0df2e7ac5a3281bcff75e797a5c127db7c5b56270e01ae13d9afa3c03344f76e32e81678337a8c912bdbb75101c62e487dc3778461d72
@@ -5424,6 +5452,13 @@ __metadata:
   version: 1.2.5
   resolution: "minimist@npm:1.2.5::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimist%2F-%2Fminimist-1.2.5.tgz"
   checksum: 86706ce5b36c16bfc35c5fe3dbb01d5acdc9a22f2b6cc810b6680656a1d2c0e44a0159c9a3ba51fb072bb5c203e49e10b51dcd0eec39c481f4c42086719bae52
+  languageName: node
+  linkType: hard
+
+"minimist@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "minimist@npm:1.2.6::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimist%2F-%2Fminimist-1.2.6.tgz"
+  checksum: d15428cd1e11eb14e1233bcfb88ae07ed7a147de251441d61158619dfb32c4d7e9061d09cab4825fdee18ecd6fce323228c8c47b5ba7cd20af378ca4048fb3fb
   languageName: node
   linkType: hard
 
@@ -6787,7 +6822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.0.0, resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.10.1, resolve@npm:^1.12.0, resolve@npm:^1.20.0, resolve@npm:^1.9.0":
+"resolve@npm:^1.0.0, resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.10.1, resolve@npm:^1.12.0, resolve@npm:^1.20.0, resolve@npm:^1.22.0, resolve@npm:^1.9.0":
   version: 1.22.0
   resolution: "resolve@npm:1.22.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fresolve%2F-%2Fresolve-1.22.0.tgz"
   dependencies:
@@ -6810,7 +6845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.0.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.0.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
   version: 1.22.0
   resolution: "resolve@patch:resolve@npm%3A1.22.0%3A%3A__archiveUrl=https%253A%252F%252Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%253A443%252Fnpm%252Fglobal-templates%252Fresolve%252F-%252Fresolve-1.22.0.tgz#~builtin<compat/resolve>::version=1.22.0&hash=07638b"
   dependencies:
@@ -7861,6 +7896,18 @@ __metadata:
     minimist: ^1.2.0
     strip-bom: ^3.0.0
   checksum: 4999ec6cd1c7cc06750a460dbc0d39fe3595a4308cb5f1d0d0a8283009cf9c0a30d5a156508c28fe3a47760508af5263ab288fc23d71e9762779674257a95d3b
+  languageName: node
+  linkType: hard
+
+"tsconfig-paths@npm:^3.14.1":
+  version: 3.14.1
+  resolution: "tsconfig-paths@npm:3.14.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftsconfig-paths%2F-%2Ftsconfig-paths-3.14.1.tgz"
+  dependencies:
+    "@types/json5": ^0.0.29
+    json5: ^1.0.1
+    minimist: ^1.2.6
+    strip-bom: ^3.0.0
+  checksum: 8afa01c673ebb4782ba53d3a12df97fa837ce524f8ad38ee4e2b2fd57f5ac79abc21c574e9e9eb014d93efe7fe8214001b96233b5c6ea75bd1ea82afe17a4c6d
   languageName: node
   linkType: hard
 
