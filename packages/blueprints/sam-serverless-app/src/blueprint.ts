@@ -57,13 +57,13 @@ export interface Options extends ParentOptions {
        * This is the role that will be used to deploy the application. It should have access to deploy all of your resources. See the Readme for more information.
        * @displayName Deploy role
        */
-      awsDeployRole: Role<['SAM Deploy']>;
+      deployRole: Role<['SAM Deploy']>;
 
       /**
        * This is the role that allows build actions to access and write to Amazon S3, where your serverless application package is stored.
-       * @displayName S3 build role
+       * @displayName Build role
        */
-      s3BuildRole: Role<['S3']>;
+      buildRole: Role<['SAM Build']>;
     }>;
   }>;
 
@@ -136,6 +136,7 @@ export class Blueprint extends ParentBlueprint {
     const workflowName = 'build-and-release';
     this.createWorkflow({
       name: 'build-and-release',
+      outputArtifactName: 'build-result',
     });
 
     // create the sam template code
@@ -162,14 +163,13 @@ export class Blueprint extends ParentBlueprint {
     cp.execSync(`rm -rf ${toDeletePath}`);
   }
 
-  createWorkflow(params: { name: string }): void {
+  createWorkflow(params: { name: string; outputArtifactName: string }): void {
     const { name } = params;
     this.addSamInstallScript();
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
     const defaultBranch = 'main';
     const region = 'us-west-2';
-    const artifactName = 'ServerlessAppArtifact';
     const SCHEMA_VERSION = '1.0';
 
     //Workflow
@@ -179,7 +179,7 @@ export class Blueprint extends ParentBlueprint {
       Name: name,
     };
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
-    const buildActionName = `Build_${stripSpaces(this.options.environment.name)}`;
+    const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
@@ -189,16 +189,21 @@ export class Blueprint extends ParentBlueprint {
         Connections: [
           {
             Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
-            Role: this.options.environment.awsAccountConnection?.s3BuildRole?.name || '<<PUT_YOUR_CONNECTION_BUILD_ROLE_NAME_HERE>>',
+            Role: this.options.environment.awsAccountConnection?.buildRole?.name || '<<PUT_YOUR_CONNECTION_BUILD_ROLE_NAME_HERE>>',
           },
         ],
       },
       input: {
-        sources: ['WorkFlowSource'],
+        Sources: ['WorkflowSource'],
       },
       output: {
-        autoDiscoverReports: true,
-        variables: [artifactName],
+        AutoDiscoverReports: true,
+        Artifacts: [
+          {
+            Name: params.outputArtifactName,
+            Files: ['**/*'],
+          },
+        ],
       },
       steps: [
         '. ./.aws/scripts/setup-sam.sh',
@@ -207,25 +212,32 @@ export class Blueprint extends ParentBlueprint {
       ],
     });
 
-    const deployActionName = `Deploy_${stripSpaces(this.options.environment.name)}`;
+    const deployActionName = `deploy_to_${stripSpaces(this.options.environment.name)}`;
     addGenericCloudFormationDeployAction({
-      actionName: deployActionName,
       blueprint: this,
       workflow: workflowDefinition,
-      stackName: this.options.cloudFormationStackName,
-      region,
-      pathToCfnTemplate: './template.yaml',
+      actionName: deployActionName,
+      inputs: {
+        Artifacts: [params.outputArtifactName],
+      },
+      configuration: {
+        parameters: {
+          region,
+          'name': this.options.cloudFormationStackName,
+          'template': 'packaged.yaml',
+          'no-fail-on-empty-changeset': '1',
+        },
+      },
       environment: {
         Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
         Connections: [
           {
             Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
-            Role: this.options.environment.awsAccountConnection?.awsDeployRole?.name || '<<PUT_YOUR_CONNECTION_DEPLOY_ROLE_NAME_HERE>>',
+            Role: this.options.environment.awsAccountConnection?.deployRole?.name || '<<PUT_YOUR_CONNECTION_DEPLOY_ROLE_NAME_HERE>>',
           },
         ],
       },
     });
-
     new Workflow(this, this.repository, workflowDefinition);
   }
 

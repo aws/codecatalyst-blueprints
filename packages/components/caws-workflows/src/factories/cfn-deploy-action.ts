@@ -1,52 +1,63 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { WorkflowDefinition, getDefaultActionIdentifier, ActionIdentifierAlias, DeployActionConfiguration } from '..';
+import { WorkflowDefinition, getDefaultActionIdentifier, ActionIdentifierAlias, DeployActionConfiguration, ActionDefiniton } from '..';
 import { EnvironmentConfiguration, generateEnvironment } from './build-action';
+
+export interface DeployInputConfiguration {
+  Artifacts: string[];
+  Sources?: string[];
+  [key: string]: any;
+}
 
 export function addGenericCloudFormationDeployAction(params: {
   blueprint: Blueprint;
   workflow: WorkflowDefinition;
-  stackName: string;
-  region: string;
-  pathToCfnTemplate: string;
+  inputs: DeployInputConfiguration;
   environment: EnvironmentConfiguration;
-
-  compute?: string;
-  actionName?: string;
-  InputArtifacts?: string[];
-  capabilities?: string[];
-  Configuration?: {
-    'tags'?: string;
-    'notification-arns'?: string;
-    'monitor-alarm-arns'?: string;
-    'parameter-overrides'?: string;
-    'role-arn'?: string;
-    'monitor-timeout-in-minutes'?: string;
-    'timeout-in-minutes'?: string;
-    'termination-protection'?: string;
-    'disable-rollback': string;
-    'no-fail-on-empty-changeset'?: string;
-    'no-delete-failed-changeset'?: string;
-    'no-execute-changeset'?: string;
+  configuration: {
+    computeName?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
+    parameters: {
+      /**
+       * stackName
+       */
+      name: string;
+      region: string;
+      /**
+       * pathToCfnTemplate
+       */
+      template: string;
+      capabilities?: string[];
+    } & Partial<{
+      'tags'?: string;
+      'notification-arns'?: string;
+      'monitor-alarm-arns'?: string;
+      'parameter-overrides'?: string;
+      'role-arn'?: string;
+      'monitor-timeout-in-minutes'?: string;
+      'timeout-in-minutes'?: string;
+      'termination-protection'?: string;
+      'disable-rollback': string;
+      'no-fail-on-empty-changeset'?: string;
+      'no-delete-failed-changeset'?: string;
+      'no-execute-changeset'?: string;
+    }>;
   };
+  actionName?: string;
 }): string {
-  const { blueprint, workflow, stackName, region, pathToCfnTemplate } = params;
+  const { blueprint, workflow, inputs, environment, configuration } = params;
   const actionName = params.actionName || 'DeployCloudFormationStack';
-  const InputArtifacts = params.InputArtifacts || ['AutoDiscoveryArtifact'];
+  const capabilities = (configuration.parameters.capabilities || ['CAPABILITY_IAM', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_AUTO_EXPAND']).join(',');
+  const ComputeName = configuration.computeName;
   const cfnDeployActionConfig: DeployActionConfiguration = {
     Parameters: {
-      region: region,
-      template: pathToCfnTemplate,
-      name: stackName,
-      capabilities: (params.capabilities || ['CAPABILITY_IAM', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_AUTO_EXPAND']).join(','),
-      ...params.Configuration,
+      ...configuration.parameters,
+      capabilities: capabilities,
     },
-    Environment: generateEnvironment(params.environment),
+    ComputeName,
   };
-
-  const cfnDeployAction = {
+  const cfnDeployAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
-    compute: params.compute || 'Linux.x86-64.Large',
-    InputArtifacts,
+    Inputs: inputs,
+    Environment: generateEnvironment(environment),
     Configuration: cfnDeployActionConfig,
   };
   workflow.Actions[actionName] = cfnDeployAction;

@@ -21,13 +21,32 @@ export interface Connection {
   Role: string;
 }
 
-export const generateOutput = (params: { outputVariables?: string[]; autoDiscoverReports?: boolean }): OutputDefinition => {
-  const { outputVariables, autoDiscoverReports } = params;
-  const outputs: OutputDefinition = {};
-  if (outputVariables) {
-    outputs.Variables = outputVariables;
-  }
-  if (autoDiscoverReports) {
+export interface BuildInputConfiguration {
+  Sources: string[];
+  Variables?: { [key: string]: string };
+  Artifacts?: string[];
+  // [key: string]: any;
+}
+export interface BuildOutputConfiguration {
+  AutoDiscoverReports: boolean;
+  Variables?: string[];
+  Artifacts?: {
+    Name: string;
+    Files: string[];
+  }[];
+  // [key: string]: any;
+}
+export interface EnvironmentConfiguration {
+  Name: string;
+  Connections: Connection[];
+}
+
+export const generateOutput = (params: BuildOutputConfiguration): OutputDefinition => {
+  const outputs: OutputDefinition = {
+    ...params,
+    AutoDiscoverReports: undefined,
+  };
+  if (params.AutoDiscoverReports) {
     outputs.AutoDiscoverReports = {
       ReportNamePrefix: 'AutoDiscovered',
       IncludePaths: ['**/*'],
@@ -37,17 +56,17 @@ export const generateOutput = (params: { outputVariables?: string[]; autoDiscove
   return outputs;
 };
 
-export const generateInputs = (params: { sources: string[]; variables: { [key: string]: string } }): InputsDefinition => {
-  const { sources, variables } = params;
-  const Variables = Object.keys(variables || {}).map(key => {
+export const generateInputs = (params: BuildInputConfiguration): InputsDefinition => {
+  const inputs: InputsDefinition = {
+    ...params,
+    Variables: undefined,
+  };
+  const Variables = Object.keys(params.Variables || {}).map(key => {
     return {
       Name: key,
-      Value: variables[key],
+      Value: (params.Variables || {})[key],
     };
   });
-  const inputs: InputsDefinition = {
-    Sources: sources,
-  };
   if (Variables.length) {
     inputs.Variables = Variables;
   }
@@ -67,20 +86,6 @@ export const generateEnvironment = (params: { Name: string; Connections: Connect
   };
 };
 
-export interface BuildInputConfiguration {
-  sources: string[];
-  variables?: { [key: string]: string };
-  artifacts?: string[];
-}
-export interface BuildOutputConfiguration {
-  autoDiscoverReports: boolean;
-  variables?: string[];
-}
-export interface EnvironmentConfiguration {
-  Name: string;
-  Connections: Connection[];
-}
-
 export const addGenericBuildAction = (params: {
   blueprint: Blueprint;
   workflow: WorkflowDefinition;
@@ -91,18 +96,12 @@ export const addGenericBuildAction = (params: {
   actionName?: string;
   dependsOn?: string[];
 }): string => {
-  const { blueprint, workflow, steps } = params;
+  const { blueprint, workflow, steps, input, output } = params;
 
   const buildAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
-    Inputs: generateInputs({
-      sources: params.input.sources,
-      variables: params.input.variables || {},
-    }),
-    Outputs: generateOutput({
-      outputVariables: params.output.variables,
-      autoDiscoverReports: params.output.autoDiscoverReports,
-    }),
+    Inputs: generateInputs(input),
+    Outputs: generateOutput(output),
     Configuration: {
       Steps: steps.map(step => {
         return {

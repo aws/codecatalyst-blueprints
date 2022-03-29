@@ -19,11 +19,11 @@ export const addGenericTestReports = (params: {
       Artifacts: [
         {
           Name: coverageArtifactName,
-          Files: 'reports/cov.xml',
+          Files: ['reports/cov.xml'],
         },
         {
           Name: testArtifactName,
-          Files: 'reports/report.xml',
+          Files: ['reports/report.xml'],
         },
       ],
       Reports: [coverageArtifactName, testArtifactName],

@@ -218,9 +218,13 @@ export class Blueprint extends ParentBlueprint {
   ) {
     const roleARN = environment.awsAccountConnection?.cdkRole?.arn || '<<PUT_YOUR_ROLE_ARN_HERE>>';
     const accountId = environment.awsAccountConnection?.id || '<<PUT_YOUR_ACCOUNT_NUMBER_HERE>>';
-    const actionName = `Build_Deploy_${environment.name}`;
+    const actionName = `build_and_deploy_into_${environment.name}`;
 
     addGenericBranchTrigger(workflow, ['main']);
+
+    /**
+     * In this case we do a deployment directly from a build action rather than calling cdk synth and then deploying the cloudformation template in another action. This is optional and just done for convienence.
+     */
     addGenericBuildAction({
       blueprint: this,
       workflow,
@@ -235,31 +239,33 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       input: {
-        sources: ['WorkFlowSource'],
-        variables: {
-          AWSAccountId: accountId,
-          RoleArn: roleARN,
-          Region: 'us-west-2',
+        Sources: ['WorkflowSource'],
+        Variables: {
+          CONNECTED_ACCOUNT_ID: accountId,
+          CONNECTED_ROLE_ARN: roleARN,
+          REGION: 'us-west-2',
         },
       },
       output: {
-        autoDiscoverReports: true,
-        variables: ['CloudFrontURL'],
+        AutoDiscoverReports: true,
+        Variables: ['CloudFrontURL'],
       },
       steps: [
-        `export awsAccountId=\${${actionName}.AWSAccountId}`,
-        `export roleArn=\${${actionName}.RoleArn}`,
-        `export region=\${${actionName}.Region}`,
+        `export awsAccountId=\${${actionName}.CONNECTED_ACCOUNT_ID}`,
+        `export roleArn=\${${actionName}.CONNECTED_ROLE_ARN}`,
+        `export region=\${${actionName}.REGION}`,
         `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
         'npm install -g yarn',
         `cd ./${this.nodeFolderName} && yarn && yarn build`,
-        `npx cdk bootstrap aws://\${${actionName}.AWSAccountId}/us-west-2`,
+        `npx cdk bootstrap aws://\${${actionName}.CONNECTED_ACCOUNT_ID}/us-west-2`,
         'yarn deploy:copy-config',
         'cd ..',
         `cd ./${this.reactFolderName} && yarn && yarn build`,
         'cd ..',
         `cd ./${this.nodeFolderName}`,
         `npx cdk deploy ${this.stackName}Frontend --require-approval never --outputs-file config.json`,
+
+        // this step is a hack to get the cloudfront url from the cdk output
         `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
       ],
     });

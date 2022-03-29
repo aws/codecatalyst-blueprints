@@ -36,7 +36,7 @@ export interface BuildActionConfiguration {
 }
 
 export interface DeployActionConfiguration {
-  Environment?: Environment;
+  ComputeName?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
   Parameters: {
     [key: string]: string;
     name: string;
@@ -53,7 +53,6 @@ export interface ActionDefiniton {
   Inputs?: InputsDefinition;
   Outputs?: OutputDefinition;
   Environment?: Environment;
-  compute?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
 }
 
 export interface TriggerDefiniton {
@@ -86,6 +85,7 @@ export interface InputVariable {
 }
 
 export interface InputsDefinition {
+  [key: string]: any;
   Sources?: string[];
   Variables?: InputVariable[];
   Artifacts?: string[];
@@ -93,7 +93,7 @@ export interface InputsDefinition {
 
 export interface Artifact {
   Name: string;
-  Files: string;
+  Files: string[];
 }
 
 export interface AutoDiscoverReportDefinition {
@@ -103,6 +103,7 @@ export interface AutoDiscoverReportDefinition {
 }
 
 export interface OutputDefinition {
+  [key: string]: any;
   Artifacts?: Artifact[];
   Reports?: string[];
   AutoDiscoverReports?: AutoDiscoverReportDefinition;

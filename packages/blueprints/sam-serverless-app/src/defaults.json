@@ -2,7 +2,7 @@
   "runtime": "Python 3",
   "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
   "environment": {
-    "name": "deployment_environment",
+    "name": "default_environment",
     "environmentType": "PRODUCTION"
   },
   "code": {
