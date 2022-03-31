@@ -1,12 +1,12 @@
 {
   "runtime": "Python 3",
-  "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
+  "cloudFormationStackName": "sam-stack-",
   "environment": {
     "name": "default_environment",
     "environmentType": "PRODUCTION"
   },
   "code": {
-    "sourceRepositoryName": "MyServerlessAppRepo"
+    "sourceRepositoryName": "ServerlessAppRepo"
   },
   "lambda": {
     "functionName": "SamFirstEndpoint"

@@ -11,7 +11,7 @@ export const addGenericTestReports = (params: {
   actionName?: string;
 }) => {
   const { blueprint, workflow, steps, coverageArtifactName, testArtifactName, dependsOn } = params;
-  const actionName = params.actionName || 'Test';
+  const actionName = (params.actionName || 'Test').replace(new RegExp('-', 'g'), '_');
   workflow.Actions[actionName] = {
     DependsOn: dependsOn,
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.test, blueprint.context.environmentId),

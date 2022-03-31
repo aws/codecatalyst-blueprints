@@ -44,7 +44,8 @@ export function addGenericCloudFormationDeployAction(params: {
   actionName?: string;
 }): string {
   const { blueprint, workflow, inputs, environment, configuration } = params;
-  const actionName = params.actionName || 'DeployCloudFormationStack';
+  const actionName = (params.actionName || 'DeployCloudFormationStack').replace(new RegExp('-', 'g'), '_');
+
   const capabilities = (configuration.parameters.capabilities || ['CAPABILITY_IAM', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_AUTO_EXPAND']).join(',');
   const ComputeName = configuration.computeName;
   const cfnDeployActionConfig: DeployActionConfiguration = {

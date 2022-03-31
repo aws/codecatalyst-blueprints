@@ -116,7 +116,8 @@ export const addGenericBuildAction = (params: {
   if (params.dependsOn) {
     buildAction.DependsOn = params.dependsOn;
   }
-  const actionName = params.actionName || 'Build';
+
+  const actionName = (params.actionName || 'Build').replace(new RegExp('-', 'g'), '_');
   workflow.Actions[actionName] = buildAction;
   return actionName;
 };

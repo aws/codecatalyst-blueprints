@@ -37,7 +37,7 @@ export interface Options extends ParentOptions {
    * @displayName CloudFormation stack name
    * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
    * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-   * @defaultEntropy
+   * @defaultEntropy 5
    */
   cloudFormationStackName: string;
 
@@ -88,6 +88,7 @@ export interface Options extends ParentOptions {
     /**
      * Lambda function name must be unqiue to the AWS account it's being deployed to.
      * @displayName Lambda function name
+     * @defaultEntropy 5
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters and be up to 56 characters in length
      */
