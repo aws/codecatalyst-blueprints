@@ -36,7 +36,7 @@
       "name": "bump:preview",
       "steps": [
         {
-          "exec": "npm version prerelease --preid preview"
+          "exec": "npm version prerelease --preid preview -no-git-tag-version"
         }
       ]
     },
