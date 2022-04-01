@@ -89,7 +89,12 @@ environment.
 // paste it into your terminal like so:
 export CAWS_COOKIE='session-blhahBlahblahBlah'
 // run from the root
-yarn blueprint:publish
+
+// this publishes a preview version of the blueprint designed development.
+yarn blueprint:preview
+
+// this publishes a release version of the blueprint designed for wide consumption.
+yarn blueprint:release
 ```
 
 By default the blueprint will only show up in your organization. Contact the blueprint organization to flag your blueprints as public access.

@@ -57,6 +57,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       exec: 'npm version patch -no-git-tag-version',
     });
 
+    this.addTask('bump:preview', {
+      exec: 'npm version prerelease --preid preview -no-git-tag-version',
+    });
+
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
 
@@ -75,9 +79,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.npmignore?.addPatterns('synth');
 
     // set upload to aws script
-    const organization = options.publishingOrganization || 'unknown-organization';
+    const organization = options.publishingOrganization || '<<replace-organization>>';
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
-    this.setScript('blueprint:publish', `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
+    this.setScript('blueprint:preview', `yarn bump:preview && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
+    this.setScript('blueprint:release', `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);
