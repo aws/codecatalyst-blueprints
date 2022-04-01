@@ -32,6 +32,14 @@
         }
       ]
     },
+    "bump:preview": {
+      "name": "bump:preview",
+      "steps": [
+        {
+          "exec": "npm version prerelease --preid preview -no-git-tag-version"
+        }
+      ]
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
