@@ -69,7 +69,7 @@ export interface Options extends ParentOptions {
 
   /**
    * @displayName Code Repository name
-   * @collapsed
+   * @collapsed true
    */
   code: {
     /**
@@ -82,7 +82,7 @@ export interface Options extends ParentOptions {
 
   /**
    * @displayName Lambda function name
-   * @collapsed
+   * @collapsed true
    */
   lambda: {
     /**
@@ -137,7 +137,7 @@ export class Blueprint extends ParentBlueprint {
     const workflowName = 'build-and-release';
     this.createWorkflow({
       name: 'build-and-release',
-      outputArtifactName: 'build-result',
+      outputArtifactName: 'build_result',
     });
 
     // create the sam template code

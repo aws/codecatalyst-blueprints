@@ -27,7 +27,6 @@ export const PROJEN_VERSION = '0.52.18';
  */
 export interface Options extends ParentOptions {
   /**
-   * This blueprint includes a default environment for production. Rename the default envionment and connect it to an AWS account here.
    * @displayName Environment
    * @collapsed false
    */
@@ -83,7 +82,7 @@ export interface Options extends ParentOptions {
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters, underscores (_)
      * @displayName Lambda function name
-     * @defaultEntropy
+     * @defaultEntropy 5
      */
     lambdaName: string;
   };
