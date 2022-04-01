@@ -4,6 +4,7 @@
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
+    "bump:preview": "npx projen bump:preview",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",

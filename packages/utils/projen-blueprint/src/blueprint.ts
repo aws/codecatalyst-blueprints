@@ -57,6 +57,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       exec: 'npm version patch -no-git-tag-version',
     });
 
+    this.addTask('bump:preview', {
+      exec: 'npm version prerelease --preid preview',
+    });
+
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
 
