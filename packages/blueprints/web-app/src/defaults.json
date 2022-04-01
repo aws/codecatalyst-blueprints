@@ -1,6 +1,6 @@
 {
   "environment": {
-    "name": "deployment_environment",
+    "name": "default_environment",
     "environmentType": "PRODUCTION"
   },
   "webappOptions" : {

@@ -1,15 +1,12 @@
 {
   "runtime": "Python 3",
-  "cloudFormationStackName": "REPLACE-ME-STACK-NAME",
+  "cloudFormationStackName": "sam-stack-",
   "environment": {
-    "name": "deployment_environment",
+    "name": "default_environment",
     "environmentType": "PRODUCTION"
   },
-  "workflow": {
-    "s3BucketName": "replace-me-bucket-name"
-  },
   "code": {
-    "sourceRepositoryName": "MyServerlessAppRepo"
+    "sourceRepositoryName": "ServerlessAppRepo"
   },
   "lambda": {
     "functionName": "SamFirstEndpoint"

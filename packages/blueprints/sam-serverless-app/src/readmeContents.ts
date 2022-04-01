@@ -8,10 +8,9 @@ export function generateReadmeContents(params: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   environment: EnvironmentDefinition<any>;
   cloudFormationStackName: string;
-  s3bucketName: string;
   workflowName: string;
 }) {
-  const { runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, s3bucketName, workflowName } = params;
+  const { runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, workflowName } = params;
 
   //Generate input variables
   let functionNames = '';
@@ -124,7 +123,7 @@ The SAM CLI reads the application template to determine the API's routes and the
 The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
 
 ## Deploying your serverless application
-The application is deployed through Quokka.Codes using the workflow defined in \`.aws/workflows/${workflowName}.yaml\`. The workflow is triggered by pushes to the \`${defaultReleaseBranch}\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in \`${s3bucketName}\`, and deploys your application to your project environments in the following order:
+The application is deployed through Quokka.Codes using the workflow defined in \`.aws/workflows/${workflowName}.yaml\`. The workflow is triggered by pushes to the \`${defaultReleaseBranch}\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in a generated s3 bucket, and deploys your application to your project environments in the following order:
 
   ${environmentContent}
 

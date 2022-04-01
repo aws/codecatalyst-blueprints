@@ -1,14 +1,11 @@
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
-  ActionIdentifierAlias,
-  BuildActionConfiguration,
-  Step,
+  emptyWorkflow,
   Workflow,
   WorkflowDefinition,
-  getDefaultActionIdentifier,
-  Artifacts,
-  Reports,
+  addGenericBuildAction,
+  addGenericBranchTrigger,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
@@ -30,7 +27,6 @@ export const PROJEN_VERSION = '0.52.18';
  */
 export interface Options extends ParentOptions {
   /**
-   * This blueprint includes a default environment for production. Rename the default envionment and connect it to an AWS account here.
    * @displayName Environment
    * @collapsed false
    */
@@ -86,7 +82,7 @@ export interface Options extends ParentOptions {
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters, underscores (_)
      * @displayName Lambda function name
-     * @defaultEntropy
+     * @defaultEntropy 5
      */
     lambdaName: string;
   };
@@ -204,16 +200,9 @@ export class Blueprint extends ParentBlueprint {
     }>,
   ) {
     const workflowDefinition: WorkflowDefinition = {
+      ...emptyWorkflow,
       Name: 'buildAssets',
-      Triggers: [
-        {
-          Type: 'push',
-          Branches: ['main'],
-        },
-      ],
-      Actions: {},
     };
-
     this.createDeployAction(environment, workflowDefinition);
     new Workflow(this, this.repository, workflowDefinition);
   }
@@ -226,52 +215,58 @@ export class Blueprint extends ParentBlueprint {
     }>,
     workflow: WorkflowDefinition,
   ) {
-    const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
-
     const roleARN = environment.awsAccountConnection?.cdkRole?.arn || '<<PUT_YOUR_ROLE_ARN_HERE>>';
     const accountId = environment.awsAccountConnection?.id || '<<PUT_YOUR_ACCOUNT_NUMBER_HERE>>';
+    const actionName = `build_and_deploy_into_${environment.name}`;
 
-    workflow.Actions[`Build_${environment.name}`] = {
-      Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, this.context.environmentId),
-      Configuration: {
-        ActionRoleArn: roleARN,
-        Steps: [
-          { Run: `export awsAccountId=${accountId}` },
-          { Run: 'export awsRegion=us-west-2' },
+    addGenericBranchTrigger(workflow, ['main']);
+
+    /**
+     * In this case we do a deployment directly from a build action rather than calling cdk synth and then deploying the cloudformation template in another action. This is optional and just done for convienence.
+     */
+    addGenericBuildAction({
+      blueprint: this,
+      workflow,
+      actionName,
+      environment: {
+        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
+        Connections: [
           {
-            Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
+            Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
+            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || '<<PUT_YOUR_CONNECTION_ROLE_NAME_HERE>>',
           },
-          { Run: 'npm install -g yarn' },
-          { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
-          {
-            Run: `npx cdk bootstrap aws://${accountId}/us-west-2`,
-          },
-          {
-            Run: 'yarn deploy:copy-config',
-          },
-          { Run: 'cd ..' },
-          { Run: `cd ./${this.reactFolderName} && yarn && yarn build` },
-          { Run: 'cd ..' },
-          { Run: `cd ./${this.nodeFolderName}` },
-          {
-            Run: `npx cdk deploy ${this.stackName}Frontend --require-approval never --outputs-file config.json`,
-          },
-          // TODO - a hack to get the cloudformation url to show up under build outputs
-          {
-            Run: `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
-          },
-        ] as Step[],
-        Artifacts: [{ Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] }] as Artifacts[],
-        Reports: [
-          {
-            Name: 'AutoDiscovered',
-            AutoDiscover: true,
-            TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }],
-          },
-        ] as unknown as Reports[],
-        OutputVariables: [{ Name: 'CloudFrontURL' }],
-      } as BuildActionConfiguration,
-      OutputArtifacts: [AUTO_DISCOVERY_ARTIFACT_NAME],
-    };
+        ],
+      },
+      input: {
+        Sources: ['WorkflowSource'],
+        Variables: {
+          CONNECTED_ACCOUNT_ID: accountId,
+          CONNECTED_ROLE_ARN: roleARN,
+          REGION: 'us-west-2',
+        },
+      },
+      output: {
+        AutoDiscoverReports: true,
+        Variables: ['CloudFrontURL'],
+      },
+      steps: [
+        'export awsAccountId=${CONNECTED_ACCOUNT_ID}',
+        'export roleArn=${CONNECTED_ROLE_ARN}',
+        'export region=${REGION}',
+        `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
+        'npm install -g yarn',
+        `cd ./${this.nodeFolderName} && yarn && yarn build`,
+        'npx cdk bootstrap aws://${CONNECTED_ACCOUNT_ID}/us-west-2',
+        'yarn deploy:copy-config',
+        'cd ..',
+        `cd ./${this.reactFolderName} && yarn && yarn build`,
+        'cd ..',
+        `cd ./${this.nodeFolderName}`,
+        `npx cdk deploy ${this.stackName}Frontend --require-approval never --outputs-file config.json`,
+
+        // this step is a hack to get the cloudfront url from the cdk output
+        `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
+      ],
+    });
   }
 }
