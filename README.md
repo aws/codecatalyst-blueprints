@@ -8,11 +8,9 @@ also exist for vimlords. Many gitignored files will be invisible in vim and may 
 Install these globally. This is required for various tooling to work properly
 
 ```
-npm install ts-node -g
-npm install webpack -g
-npm install webpack-cli -g
-npm install nvm -g
-npm install yarn -g
+#install nvm https://nvm.sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 ```
 
