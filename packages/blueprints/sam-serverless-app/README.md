@@ -39,6 +39,8 @@ The SAM application uses multiple IAM roles to build and deploy the application,
 
 ### Deploy role policy
 
+Create a role based on the trust policy above, and then add the following inline policy:
+
 ```
 {
     "Version": "2012-10-17",
@@ -55,7 +57,10 @@ The SAM application uses multiple IAM roles to build and deploy the application,
                 "cloudformation:SetStackPolicy",
                 "cloudformation:ValidateTemplate",
                 "cloudformation:List*",
-                "iam:PassRole"
+                "iam:PassRole",
+                "iam:CreateRole",
+                "iam:TagRole",
+                "s3:PutObject"
             ],
             "Resource": "*",
             "Effect": "Allow"
@@ -64,27 +69,9 @@ The SAM application uses multiple IAM roles to build and deploy the application,
 }
 ```
 
-### S3 build role policy
+### Build role policy
 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "s3:PutObject",
-                "iam:PassRole"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        }
-    ]
-}
-```
-
-### Stack role policy
-
-Create a role based on the AWS CloudFormation service, and then add the following policies:
+Create a role based on the trust policy above, and then add the following managed policies:
 
 - **AWSCloudFormationFullAccess**
 - **IAMFullAccess**
