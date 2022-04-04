@@ -15,48 +15,44 @@ npm install yarn -g
 brew install jq
 ```
 
-We recommend adding this to your `~/.bash_profile`
+Add this to your `~/.bash_profile`.
 
 ```
+set-blueprints-npm-repo() {
+  # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
+  ada credentials update --once --account 721779663932 --role codeartifact-readonly --profile=codeartifact-readonly
+
+  # Set NPM config to also be the same repository (needed for some synths to work properly)
+  aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
+
+  #set the repositories in your workspace as an environment variable
+  export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm --profile=codeartifact-readonly | jq -r '.repositoryEndpoint'`
+  echo 'NPM_REPO set to: '$NPM_REPO
+  export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --profile=codeartifact-readonly --output text`
+}
+
+# setup the blueprints repo for use
 blueprints-setup() {
-    # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
-    ada credentials update --once --account 721779663932 --role codeartifact-readonly --profile=codeartifact-readonly
+  # The blueprints repo uses yarn2 which doesn't support projen's --check-post-synthesis flag 
+  # Disable projen post synthesis
+  export PROJEN_DISABLE_POST=1
 
-    # Set NPM config to also be the same repository (needed for some synths to work properly)
-    aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
-
-    #set the repositories in your workspace
-    export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm --profile=codeartifact-readonly | jq -r '.repositoryEndpoint'`
-    echo 'NPM_REPO set to: '$NPM_REPO
-    export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --profile=codeartifact-readonly --output text`
-
-    #disable projen post synthesis
-    export PROJEN_DISABLE_POST=1
+  # Blueprints are currently published to a private codeartifact repository until the public launch of code.aws. 
+  # You'll need to ask the blueprints team for access.
+  set-blueprints-npm-repo
 }
 ```
 
 ## Development
-
-git clone
+Run these commands to get started building blueprints. THe first time set-up may take a minute or two. 
 
 ```
 git clone https://github.com/aws/caws-blueprints
-```
-
-Run yarn. This will link everything. The first time workspace setup may take a minute or two.
-
-```
 cd caws-blueprints
 nvm use
 source ~/.bash_profile
 blueprints-setup
-yarn
-```
-
-Run a build
-
-```
-yarn build
+yarn && yarn build
 ```
 
 You're done!
