@@ -28,6 +28,11 @@ export interface Options extends ParentOptions {
   blueprintName: string;
 
   /**
+   * Override the publishing organization. Dont change unless you know what you're doing.
+   */
+  organizationOverride: string;
+
+  /**
    * Add a description for your new blueprint.
    */
   description?: string;
@@ -43,10 +48,6 @@ export interface Options extends ParentOptions {
    * @collapsed true
    */
   advancedSettings?: {
-    /**
-     * Would you like to build this as yaml?
-     */
-    yaml?: boolean;
 
     /**
      * Blueprint Version?
@@ -62,11 +63,6 @@ export interface Options extends ParentOptions {
      * Projen pinned version. Dont change unless you know what you're doing.
      */
     projenVersion: '0.52.18';
-
-    /**
-     * Override the publishing organization. Dont change unless you know what you're doing.
-     */
-    organizationOverride?: string;
   };
 }
 
@@ -99,6 +95,8 @@ export class Blueprint extends ParentBlueprint {
 
     this.parentIntrospection = this.doIntrospection();
 
+    const YAML_ENABLED = false;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dashName = decamelize.default(this.options.blueprintName.toString()).replace(/_/g, '-');
 
@@ -107,7 +105,7 @@ export class Blueprint extends ParentBlueprint {
     });
     console.log('repository:', this.repository.path);
 
-    this.builderOrganizationName = this.options.advancedSettings?.organizationOverride || this.context.organizationName || '<<unknown-organization>>';
+    this.builderOrganizationName = this.options.organizationOverride || this.context.organizationName || '<<unknown-organization>>';
     const packageName = `@caws-blueprint/${this.builderOrganizationName}.${dashName}`;
 
     this.newBlueprintOptions = {
@@ -148,7 +146,7 @@ export class Blueprint extends ParentBlueprint {
     };
     console.log('New blueprint options:', JSON.stringify(this.newBlueprintOptions, null, 2));
 
-    if (this.options.advancedSettings?.yaml) {
+    if (YAML_ENABLED) {
       this.buildYamlComponents();
     } else {
       this.buildTypescriptComponents();

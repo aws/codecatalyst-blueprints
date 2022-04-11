@@ -8,5 +8,6 @@
   "runtimes": "nodejs",
   "nestedArea": {
     "stringInput": "default nested string input"
-  }
+  },
+  "trueCheckbox": true
 }
