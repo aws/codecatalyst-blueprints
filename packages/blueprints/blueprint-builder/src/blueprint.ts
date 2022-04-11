@@ -40,11 +40,6 @@ export interface Options extends ParentOptions {
   authorName: string;
 
   /**
-   * Tags for your Blueprint:
-   */
-  tags?: string[];
-
-  /**
    * @collapsed true
    */
   advancedSettings?: {
@@ -145,7 +140,7 @@ export class Blueprint extends ParentBlueprint {
       description: `${this.options.description}`,
 
       devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
-      keywords: this.options.tags || ['no-tag'],
+      keywords: ['<<tags>>'],
       homepage: '',
       mediaUrls: [
         'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',
