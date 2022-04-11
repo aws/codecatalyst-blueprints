@@ -97,6 +97,11 @@ export interface Options extends ParentOptions {
      */
     stringInput: string;
   };
+
+  /**
+   * String list input
+   */
+  stringListInput?: string[];
 }
 
 /**
