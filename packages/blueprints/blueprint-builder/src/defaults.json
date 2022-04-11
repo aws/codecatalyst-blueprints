@@ -1,5 +1,6 @@
 {
   "blueprintToExtend": "@caws-blueprint/blueprints.blueprint",
+  "organizationOverride": "<<unknown-organization>>",
   "blueprintName": "my-new-blueprint",
   "description": "This is a new blueprint.",
   "authorName": "none",

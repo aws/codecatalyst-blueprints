@@ -102,6 +102,11 @@ export interface Options extends ParentOptions {
    * String list input
    */
   stringListInput?: string[];
+
+  /**
+   * This should be checked by default
+   */
+  trueCheckbox: boolean;
 }
 
 /**
