@@ -54,15 +54,6 @@ export const makeValidFolder = (
   return result;
 };
 
-// str length must be greater than suffix length
-export const applySuffix = (str: string, suffix: string, maxLength: number): string => {
-  const stringLength = str.length + suffix.length;
-  if (stringLength <= maxLength) {
-    return str + suffix;
-  }
-  return str.slice(0, -(stringLength - maxLength)) + suffix;
-};
-
 export class SourceRepository extends Component {
   public readonly relativePath: string;
   public readonly path: string;
