@@ -9,6 +9,9 @@
     "nodeFolderName": "node"
   },
   "advanced": {
-    "lambdaName": "WebApplicationFirstEndpoint"
+    "lambdaName": "WebApplicationFirstEndpoint",
+    "frontendStackName": "WebApplicationFrontend",
+    "backendStackName": "WebApplicationBackend",
+    "s3BucketName": "web-app-bucket"
   }
 }
