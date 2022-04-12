@@ -2,12 +2,18 @@ import { basename } from 'path';
 import { awscdk } from 'projen';
 const TYPESCRIPT_EXT = '.ts';
 
-export function getStackDefinition(params: { stackName: string; frontEndFolder: string; lambdaOptions: awscdk.LambdaFunctionOptions[] }) {
-  const { stackName, frontEndFolder, lambdaOptions } = params;
+export function getStackDefinition(params: {
+  backendStackName: string;
+  frontendStackName: string;
+  bucketName: string;
+  frontEndFolder: string;
+  lambdaOptions: awscdk.LambdaFunctionOptions[];
+}) {
+  const { backendStackName, frontendStackName, bucketName, frontEndFolder, lambdaOptions } = params;
 
-  const s3BucketName = getUniqueS3BucketName(stackName);
-  const appStack: string = `${stackName}Frontend`;
-  const apiStack: string = `${stackName}Backend`;
+  const s3BucketName = getUniqueS3BucketName(bucketName);
+  const appStack: string = frontendStackName;
+  const apiStack: string = backendStackName;
 
   const lambdaImports = lambdaOptions.map(lambdaOption => {
     return `import { ${lambdaOption.constructName} } from './${basename(lambdaOption.constructFile!, TYPESCRIPT_EXT)}';`;
@@ -45,12 +51,12 @@ const attachLambda = (
 export class ${apiStack} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
-    const api = new apigateway.LambdaRestApi(this, '${stackName}.ApiGateway', {
-      restApiName: '${stackName}ApiStackApiGateway',
+    const api = new apigateway.LambdaRestApi(this, '${backendStackName}.ApiGateway', {
+      restApiName: '${backendStackName}ApiStackApiGateway',
       // using ${lambdaOptions[0].constructName} as the default handler.
       handler: new ${lambdaOptions[0].constructName}(this, 'default-handler'),
       proxy: false,
-      description: 'API gateway for ${stackName}Stack',
+      description: 'API gateway for ${backendStackName}Stack',
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS
@@ -119,8 +125,8 @@ const env = {
 
 const app = new App();
 
-new ${apiStack}(app, \`${apiStack}\`, { env });
-new ${appStack}(app, \`${appStack}\`, { env });
+new ${apiStack}(app, \`${apiStack}\`, { env, stackName: \`${apiStack}\` });
+new ${appStack}(app, \`${appStack}\`, { env, stackName: \`${appStack}\` });
 
 app.synth();
 `
@@ -135,9 +141,9 @@ function getSecondSinceEpoch() {
   return Math.floor(Date.now() / 1000);
 }
 
-export function getStackTestDefintion(appEntrypoint: string, stackName: string) {
-  const appStack: string = `${stackName}Backend`;
-  const apiStack: string = `${stackName}Frontend`;
+export function getStackTestDefintion(appEntrypoint: string, backendStackName: string, frontendStackName: string) {
+  const appStack: string = backendStackName;
+  const apiStack: string = frontendStackName;
 
   return `import { App } from \'@aws-cdk/core\';
 import '@aws-cdk/assert/jest';
