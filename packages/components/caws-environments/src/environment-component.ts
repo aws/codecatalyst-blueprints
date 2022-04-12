@@ -2,7 +2,7 @@ import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 import { AccountConnection, EnvironmentDefinition } from './environment-definition';
 
-const stripSpaces = (str: string) => str.replace(/\s/g, '');
+const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
 /**
  * Generates an extropy string of a max 5 length
@@ -43,7 +43,7 @@ export class Environment extends Component {
       });
 
     // create the environment file
-    new YamlFile(blueprint, `environments/${stripSpaces(writtenEnvironment.name)}.yaml`, {
+    new YamlFile(blueprint, `environments/${stripSpaces(writtenEnvironment.name || 'env')}-${getEntropy(5)}.yaml`, {
       readonly: false,
       marker: false,
       obj: writtenEnvironment,
@@ -51,7 +51,7 @@ export class Environment extends Component {
 
     // create all the linked accounts from the environment
     connectedAccounts.forEach(account => {
-      new YamlFile(blueprint, `aws-account-to-environment/${stripSpaces(account.name)}-${getEntropy(5)}.yaml`, {
+      new YamlFile(blueprint, `aws-account-to-environment/${stripSpaces(account.name || 'account')}-${getEntropy(5)}.yaml`, {
         readonly: false,
         marker: false,
         obj: account,

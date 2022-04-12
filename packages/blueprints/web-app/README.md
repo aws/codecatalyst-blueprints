@@ -19,18 +19,19 @@ used to authorize project workflows to access AWS account resources. The IAM rol
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Effect": "Allow",
             "Action": [
-               "cloudformation:*",
-               "ecr:*",
-               "ssm:*",
-               "s3:*",
+                "cloudformation:*",
+                "ecr:*",
+                "ssm:*",
+                "s3:*",
                 "iam:PassRole",
                 "iam:GetRole",
-               "iam:CreateRole",
+                "iam:CreateRole",
                 "iam:AttachRolePolicy",
-               "iam:PutRolePolicy"
+                "iam:PutRolePolicy"
             ],
-            "Resource": "*",
+            "Resource": "*"
         }
     ]
 }

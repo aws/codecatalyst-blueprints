@@ -31,6 +31,13 @@ export const verifyIdentity = async (options: { endpoint: string; cookie: string
       },
     },
   );
+
+  if (!gqlResponse.data.data.verifySession) {
+    console.error('Could not verify identity!');
+    console.log(gqlResponse.data);
+    process.exit(1);
+  }
+
   return {
     email: gqlResponse.data.data.verifySession.self.primaryEmail.email,
     name: gqlResponse.data.data.verifySession.self.displayName,

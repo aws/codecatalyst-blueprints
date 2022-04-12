@@ -39,61 +39,55 @@ The SAM application uses multiple IAM roles to build and deploy the application,
 
 ### Deploy role policy
 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "cloudformation:CreateStack",
-                "cloudformation:DeleteStack",
-                "cloudformation:Describe*",
-                "cloudformation:UpdateStack",
-                "cloudformation:CreateChangeSet",
-                "cloudformation:DeleteChangeSet",
-                "cloudformation:ExecuteChangeSet",
-                "cloudformation:SetStackPolicy",
-                "cloudformation:ValidateTemplate",
-                "cloudformation:List*",
-                "iam:PassRole"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        }
-    ]
-}
-```
-
-### S3 build role policy
+Create a role based on the trust policy above, and then add the following inline policy:
 
 ```
 {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Effect": "Allow",
             "Action": [
                 "s3:PutObject",
-                "iam:PassRole"
+                "s3:GetObject",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:TagRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "cloudformation:*",
+                "lambda:*",
+                "apigateway:*"
             ],
-            "Resource": "*",
-            "Effect": "Allow"
+            "Resource": "*"
         }
     ]
 }
 ```
 
-### Stack role policy
-
-Create a role based on the AWS CloudFormation service, and then add the following policies:
-
-- **AWSCloudFormationFullAccess**
-- **IAMFullAccess**
-- **AWSLambda_FullAccess**
-- **AmazonAPIGatewayAdministrator**
-- **AmazonS3FullAccess**
-- **AmazonEC2ContainerRegistryFullAccess**
-
 _Note: If you add more resources, you will need to update the policy_
+
+### Build role policy
+
+Create a role based on the trust policy above, and then add the following inline policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
 
 ## Project details
 

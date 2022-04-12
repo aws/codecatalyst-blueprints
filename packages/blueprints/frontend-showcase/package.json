@@ -4,6 +4,7 @@
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
+    "bump:preview": "npx projen bump:preview",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
@@ -23,7 +24,8 @@
     "blueprint:synth": "yarn blueprint:synth:cache",
     "blueprint:synth:cache": "yarn build && yarn blueprint:build-ast && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "build:cache": "yarn blueprint:synth:cache",
-    "blueprint:publish": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
+    "blueprint:preview": "yarn bump:preview && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints",
+    "blueprint:release": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
   },
   "author": {
     "name": "blueprints",
@@ -59,7 +61,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "",
-  "version": "0.0.20",
+  "version": "0.0.46",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png"

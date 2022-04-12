@@ -1,15 +1,11 @@
-import { Environment } from '@caws-blueprint-component/caws-environments';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
-  ActionIdentifierAlias,
-  BuildActionConfiguration,
-  Step,
-  StageDefinition,
+  emptyWorkflow,
   Workflow,
   WorkflowDefinition,
-  getDefaultActionIdentifier,
-  Artifacts,
-  Reports,
+  addGenericBuildAction,
+  addGenericBranchTrigger,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
@@ -31,9 +27,23 @@ export const PROJEN_VERSION = '0.52.18';
  */
 export interface Options extends ParentOptions {
   /**
-   * The blueprint will create a new environment used for deployment.
+   * @displayName Environment
+   * @collapsed false
    */
-  stages: StageDefinition[];
+  environment: EnvironmentDefinition<{
+    /**
+     * AWS accounts are needed for deployment. You can move forward without adding an AWS account but the web application will not deploy.
+     * @displayName AWS account connection
+     * @collapsed false
+     */
+    awsAccountConnection: AccountConnection<{
+      /**
+       * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources.
+       * @displayName CDK Role
+       */
+      cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+    }>;
+  }>;
 
   /**
    * @displayName Code Repository and folder names
@@ -63,7 +73,7 @@ export interface Options extends ParentOptions {
   };
 
   /**
-   * @displayName Lambda function name
+   * @displayName Advanced
    * @collapsed true
    */
   advanced: {
@@ -72,9 +82,18 @@ export interface Options extends ParentOptions {
      * @validationRegex /^[a-zA-Z0-9]{1,56}$/
      * @validationMessage Must contain only alphanumeric characters, underscores (_)
      * @displayName Lambda function name
-     * @defaultEntropy
+     * @defaultEntropy 5
      */
     lambdaName: string;
+
+    /**
+     * The name of the Cloudformation stack to deploy the application's resources
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,128}$/
+     * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
+     * @displayName Cloudformation stack name
+     * @defaultEntropy 5
+     */
+    stackName: string;
   };
 }
 
@@ -86,7 +105,8 @@ export interface Options extends ParentOptions {
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
   protected readonly repositoryName: string;
-  protected readonly stackName: string;
+  protected readonly frontendStackName: string;
+  protected readonly backendStackName: string;
   protected readonly reactFolderName: string;
   protected readonly nodeFolderName: string;
   protected readonly repository: SourceRepository;
@@ -111,8 +131,10 @@ export class Blueprint extends ParentBlueprint {
     this.reactFolderName = makeValidFolder(reactFolderName);
     this.nodeFolderName = makeValidFolder(nodeFolderName);
 
-    this.stackName = makeValidFolder(this.repositoryName.toLowerCase(), { invalidChars: ['-'] });
-    this.stackName = this.stackName.charAt(0).toUpperCase() + this.stackName.slice(1) + 'Stack';
+    const stackNameBase = options.advanced.stackName.charAt(0).toUpperCase() + options.advanced.stackName.slice(1);
+    this.frontendStackName = this.applySuffix(stackNameBase, 'FrontendStack', 128);
+    this.backendStackName = this.applySuffix(stackNameBase, 'BackendStack', 128);
+    const s3BucketName = options.advanced.stackName.toLowerCase();
 
     let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
     lambdaNames = lambdaNames.map(lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`);
@@ -121,7 +143,7 @@ export class Blueprint extends ParentBlueprint {
       title: this.repositoryName,
     });
 
-    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.stackName, {
+    createFrontend(this.repository, this.reactFolderName, lambdaNames, stackNameBase, {
       name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
@@ -145,7 +167,10 @@ export class Blueprint extends ParentBlueprint {
         repository: this.repository,
         folder: this.nodeFolderName,
         frontendfolder: this.reactFolderName,
-        stackName: this.stackName,
+        stackNameBase: stackNameBase,
+        backendStackName: this.backendStackName,
+        frontendStackName: this.frontendStackName,
+        s3BucketName: s3BucketName,
         lambdas: lambdaNames,
       },
       {
@@ -175,82 +200,96 @@ export class Blueprint extends ParentBlueprint {
     );
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
-    (options.stages || []).forEach((stage, index) => {
-      if (!stage.environment.title) {
-        stage.environment.title = `stage_${index}`;
-      }
-      this.createWorkflow(stage);
-      new Environment(this, stage.environment);
-    });
+    new Environment(this, options.environment);
+    this.createWorkflow(options.environment);
 
     new SourceFile(this.repository, 'README.md', generateReadmeContents(this.reactFolderName, this.nodeFolderName));
     new SourceFile(this.repository, 'GETTING_STARTED.md', 'How to get started with this web application');
   }
 
-  private createWorkflow(stage: StageDefinition) {
+  private createWorkflow(
+    environment: EnvironmentDefinition<{
+      awsAccountConnection: AccountConnection<{
+        cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+      }>;
+    }>,
+  ) {
     const workflowDefinition: WorkflowDefinition = {
+      ...emptyWorkflow,
       Name: 'buildAssets',
-      Triggers: [
-        {
-          Type: 'push',
-          Branches: ['main'],
-        },
-      ],
-      Actions: {},
     };
-
-    this.createDeployAction(stage, workflowDefinition);
+    this.createDeployAction(environment, workflowDefinition);
     new Workflow(this, this.repository, workflowDefinition);
   }
 
-  private createDeployAction(stage: StageDefinition, workflow: WorkflowDefinition) {
-    const AUTO_DISCOVERY_ARTIFACT_NAME = 'AutoDiscoveryArtifact';
+  private createDeployAction(
+    environment: EnvironmentDefinition<{
+      awsAccountConnection: AccountConnection<{
+        cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+      }>;
+    }>,
+    workflow: WorkflowDefinition,
+  ) {
+    const roleARN = environment.awsAccountConnection?.cdkRole?.arn || '<<PUT_YOUR_ROLE_ARN_HERE>>';
+    const accountId = environment.awsAccountConnection?.id || '<<PUT_YOUR_ACCOUNT_NUMBER_HERE>>';
+    const actionName = `build_and_deploy_into_${environment.name}`;
 
-    workflow.Actions[`Build_${stage?.environment.title}`] = {
-      Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, this.context.environmentId),
-      Configuration: {
-        ActionRoleArn: stage.role,
-        Steps: [
-          { Run: `export awsAccountId=${this.getIdFromArn(stage.role)}` },
-          { Run: 'export awsRegion=us-west-2' },
+    addGenericBranchTrigger(workflow, ['main']);
+
+    /**
+     * In this case we do a deployment directly from a build action rather than calling cdk synth and then deploying the cloudformation template in another action. This is optional and just done for convienence.
+     */
+    addGenericBuildAction({
+      blueprint: this,
+      workflow,
+      actionName,
+      environment: {
+        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
+        Connections: [
           {
-            Run: `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
+            Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
+            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || '<<PUT_YOUR_CONNECTION_ROLE_NAME_HERE>>',
           },
-          { Run: 'npm install -g yarn' },
-          { Run: `cd ./${this.nodeFolderName} && yarn && yarn build` },
-          {
-            Run: `npx cdk bootstrap aws://${this.getIdFromArn(stage.role)}/us-west-2`,
-          },
-          {
-            Run: 'yarn deploy:copy-config',
-          },
-          { Run: 'cd ..' },
-          { Run: `cd ./${this.reactFolderName} && yarn && yarn build` },
-          { Run: 'cd ..' },
-          { Run: `cd ./${this.nodeFolderName}` },
-          {
-            Run: `npx cdk deploy ${this.stackName}Frontend --require-approval never --outputs-file config.json`,
-          },
-          // TODO - a hack to get the cloudformation url to show up under build outputs
-          {
-            Run: `eval $(jq -r \'.${this.stackName}Frontend | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
-          },
-        ] as Step[],
-        Artifacts: [{ Name: AUTO_DISCOVERY_ARTIFACT_NAME, Files: ['**/*'] }] as Artifacts[],
-        Reports: [
-          {
-            Name: 'AutoDiscovered',
-            AutoDiscover: true,
-            TestResults: [{ ReferenceArtifact: AUTO_DISCOVERY_ARTIFACT_NAME }],
-          },
-        ] as unknown as Reports[],
-        OutputVariables: [{ Name: 'CloudFrontURL' }],
-      } as BuildActionConfiguration,
-      OutputArtifacts: [AUTO_DISCOVERY_ARTIFACT_NAME],
-    };
+        ],
+      },
+      input: {
+        Sources: ['WorkflowSource'],
+        Variables: {
+          CONNECTED_ACCOUNT_ID: accountId,
+          CONNECTED_ROLE_ARN: roleARN,
+          REGION: 'us-west-2',
+        },
+      },
+      output: {
+        AutoDiscoverReports: true,
+        Variables: ['CloudFrontURL'],
+      },
+      steps: [
+        'export awsAccountId=${CONNECTED_ACCOUNT_ID}',
+        'export roleArn=${CONNECTED_ROLE_ARN}',
+        'export region=${REGION}',
+        `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
+        'npm install -g yarn',
+        `cd ./${this.nodeFolderName} && yarn && yarn build`,
+        'npx cdk bootstrap aws://${CONNECTED_ACCOUNT_ID}/us-west-2',
+        'yarn deploy:copy-config',
+        'cd ..',
+        `cd ./${this.reactFolderName} && yarn && yarn build`,
+        'cd ..',
+        `cd ./${this.nodeFolderName}`,
+        `npx cdk deploy ${this.frontendStackName} --require-approval never --outputs-file config.json`,
+
+        // this step is a hack to get the cloudfront url from the cdk output
+        `eval $(jq -r \'.${this.frontendStackName} | to_entries | .[] | .key + "=" + (.value | @sh) \' \'config.json\')`,
+      ],
+    });
   }
 
-  private getIdFromArn(arnRole: string) {
-    return arnRole.split(':')[4] || 'REPLACE_ME_AWS_ACCOUNT_NUMBER';
+  applySuffix(str: string, suffix: string, maxLength: number): string {
+    const stringLength = str.length + suffix.length;
+    if (stringLength <= maxLength) {
+      return str + suffix;
+    }
+    return str.slice(0, -(stringLength - maxLength)) + suffix;
   }
 }
