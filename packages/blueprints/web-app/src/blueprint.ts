@@ -105,8 +105,7 @@ export interface Options extends ParentOptions {
     backendStackName: string;
 
     /**
-     * Enter the name of the S3 bucket to store build artifacts.
-     * Must be an existing S3 bucket
+     * Enter the name of the S3 bucket to store cloudfront distribution
      * @validationRegex /^(?!xn--)^(?!([0-9]{1,3}.){3}[0-9]{1,3}$)([a-z0-9][a-z0-9.-]{1,61}[a-z0-9])(?<!-s3alias)$/
      * @validationMessage SBucket names must only contain lowercase letters, numbers, and dashes.
      * See rules for bucket naming: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
