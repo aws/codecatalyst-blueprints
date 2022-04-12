@@ -166,7 +166,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@caws-blueprint-component/caws-environments@*, @caws-blueprint-component/caws-environments@0.0.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
+"@caws-blueprint-component/caws-environments@0.0.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
@@ -214,7 +214,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-source-repositories@*, @caws-blueprint-component/caws-source-repositories@0.0.x, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
+"@caws-blueprint-component/caws-source-repositories@0.0.x, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
   dependencies:
@@ -240,7 +240,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-workflows@*, @caws-blueprint-component/caws-workflows@0.0.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
+"@caws-blueprint-component/caws-workflows@0.0.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
   dependencies:
@@ -291,7 +291,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/blueprint-cli@*, @caws-blueprint-util/blueprint-cli@0.0.x, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
+"@caws-blueprint-util/blueprint-cli@0.0.x, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
   dependencies:
@@ -368,7 +368,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/projen-blueprint@*, @caws-blueprint-util/projen-blueprint@0.0.x, @caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint":
+"@caws-blueprint-util/projen-blueprint@0.0.x, @caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint"
   dependencies:
@@ -389,31 +389,6 @@ __metadata:
   peerDependencies:
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
-
-"@caws-blueprint/blueprints-tester.deploy-test-blueprint@workspace:packages/testing-blueprints/deploy-test":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints-tester.deploy-test-blueprint@workspace:packages/testing-blueprints/deploy-test"
-  dependencies:
-    "@caws-blueprint-component/caws-environments": "*"
-    "@caws-blueprint-component/caws-source-repositories": "*"
-    "@caws-blueprint-component/caws-workflows": "*"
-    "@caws-blueprint-util/blueprint-cli": "*"
-    "@caws-blueprint-util/projen-blueprint": "*"
-    "@caws-blueprint/blueprints.blueprint": "*"
-    "@types/node": ^12
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    json-schema: "*"
-    npm-check-updates: ^12
-    projen: 0.52.18
-    ts-node: ^9
-    typescript: "*"
   languageName: unknown
   linkType: soft
 
@@ -444,7 +419,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.blueprint@*, @caws-blueprint/blueprints.blueprint@0.0.x, @caws-blueprint/blueprints.blueprint@^0.0.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/blueprints.blueprint@0.0.x, @caws-blueprint/blueprints.blueprint@^0.0.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
