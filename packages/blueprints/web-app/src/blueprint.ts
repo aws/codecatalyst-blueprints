@@ -1,5 +1,5 @@
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
+import { applySuffix, SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
   emptyWorkflow,
   Workflow,
@@ -87,30 +87,13 @@ export interface Options extends ParentOptions {
     lambdaName: string;
 
     /**
-     * The name of the Cloudformation stack to deploy the application's frontend resources
-     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
+     * The name of the Cloudformation stack to deploy the application's resources
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,128}$/
      * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-     * @displayName Frontend Cloudformation stack name
+     * @displayName Cloudformation stack name
      * @defaultEntropy 5
      */
-    frontendStackName: string;
-
-    /**
-     * The name of the Cloudformation stack to deploy the application's backend resources
-     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
-     * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-     * @displayName Backend Cloudformation stack name
-     * @defaultEntropy 5
-     */
-    backendStackName: string;
-
-    /**
-     * Enter the name of the S3 bucket to store cloudfront distribution
-     * @validationRegex /^(?!xn--)^(?!([0-9]{1,3}.){3}[0-9]{1,3}$)([a-z0-9][a-z0-9.-]{1,61}[a-z0-9])(?<!-s3alias)$/
-     * @validationMessage SBucket names must only contain lowercase letters, numbers, and dashes.
-     * See rules for bucket naming: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-     */
-    s3BucketName: string;
+    stackName: string;
   };
 }
 
@@ -122,6 +105,7 @@ export interface Options extends ParentOptions {
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
   protected readonly repositoryName: string;
+  protected readonly stackNameBase: string;
   protected readonly frontendStackName: string;
   protected readonly backendStackName: string;
   protected readonly reactFolderName: string;
@@ -148,13 +132,10 @@ export class Blueprint extends ParentBlueprint {
     this.repositoryName = makeValidFolder(repositoryName);
     this.reactFolderName = makeValidFolder(reactFolderName);
     this.nodeFolderName = makeValidFolder(nodeFolderName);
-    const frontEndStackName = options.advanced.frontendStackName;
-    this.frontendStackName = makeValidFolder(frontEndStackName.toLowerCase(), { invalidChars: ['-'] });
-    this.frontendStackName = this.frontendStackName.charAt(0).toUpperCase() + this.frontendStackName.slice(1) + 'Stack';
-    const backEndStackName = options.advanced.backendStackName;
-    this.backendStackName = makeValidFolder(backEndStackName.toLowerCase(), { invalidChars: ['-'] });
-    this.backendStackName = this.backendStackName.charAt(0).toUpperCase() + this.backendStackName.slice(1) + 'Stack';
-    this.s3BucketName = options.advanced.s3BucketName.toLowerCase();
+    this.stackNameBase = options.advanced.stackName.charAt(0).toUpperCase() + options.advanced.stackName.slice(1);
+    this.frontendStackName = applySuffix(this.stackNameBase, 'FrontendStack', 128);
+    this.backendStackName = applySuffix(this.stackNameBase, 'BackendStack', 128);
+    this.s3BucketName = options.advanced.stackName.toLowerCase();
 
     let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
     lambdaNames = lambdaNames.map(lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`);
@@ -163,7 +144,7 @@ export class Blueprint extends ParentBlueprint {
       title: this.repositoryName,
     });
 
-    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.frontendStackName, {
+    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.stackNameBase, {
       name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
@@ -187,6 +168,7 @@ export class Blueprint extends ParentBlueprint {
         repository: this.repository,
         folder: this.nodeFolderName,
         frontendfolder: this.reactFolderName,
+        stackNameBase: this.stackNameBase,
         backendStackName: this.backendStackName,
         frontendStackName: this.frontendStackName,
         s3BucketName: this.s3BucketName,

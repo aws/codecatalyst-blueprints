@@ -3,13 +3,14 @@ import { awscdk } from 'projen';
 const TYPESCRIPT_EXT = '.ts';
 
 export function getStackDefinition(params: {
+  stackNameBase: string;
   backendStackName: string;
   frontendStackName: string;
   bucketName: string;
   frontEndFolder: string;
   lambdaOptions: awscdk.LambdaFunctionOptions[];
 }) {
-  const { backendStackName, frontendStackName, bucketName, frontEndFolder, lambdaOptions } = params;
+  const { stackNameBase, backendStackName, frontendStackName, bucketName, frontEndFolder, lambdaOptions } = params;
 
   const s3BucketName = getUniqueS3BucketName(bucketName);
   const appStack: string = frontendStackName;
@@ -51,12 +52,12 @@ const attachLambda = (
 export class ${apiStack} extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
-    const api = new apigateway.LambdaRestApi(this, '${backendStackName}.ApiGateway', {
-      restApiName: '${backendStackName}ApiStackApiGateway',
+    const api = new apigateway.LambdaRestApi(this, '${stackNameBase}.ApiGateway', {
+      restApiName: '${stackNameBase}ApiGateway',
       // using ${lambdaOptions[0].constructName} as the default handler.
       handler: new ${lambdaOptions[0].constructName}(this, 'default-handler'),
       proxy: false,
-      description: 'API gateway for ${backendStackName}Stack',
+      description: 'API gateway for ${backendStackName}',
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS
@@ -91,7 +92,7 @@ export class ${appStack} extends Stack {
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
-      \'${appStack}OriginAccessIdentity\'
+      \'${stackNameBase}OriginAccessIdentity\'
     );
     mySiteBucket.grantRead(originAccessIdentity);
 

@@ -11,6 +11,7 @@ export const createBackend = (
     repository: SourceRepository;
     folder: string;
     frontendfolder: string;
+    stackNameBase: string;
     backendStackName: string;
     frontendStackName: string;
     s3BucketName: string;
@@ -19,7 +20,7 @@ export const createBackend = (
   projectOptions: awscdk.AwsCdkTypeScriptAppOptions,
 ): awscdk.AwsCdkTypeScriptApp => {
   const rcvariable = 'backend';
-  const { repository, folder, frontendfolder, backendStackName, frontendStackName, s3BucketName, lambdas } = options;
+  const { repository, folder, frontendfolder, stackNameBase, backendStackName, frontendStackName, s3BucketName, lambdas } = options;
   const { project, projenrc } = createProjenProject(repository, awscdk.AwsCdkTypeScriptApp, {
     subfolder: folder,
     rcvariable: rcvariable,
@@ -70,6 +71,7 @@ export const createBackend = (
     repository,
     `${folder}/src/main.ts`,
     getStackDefinition({
+      stackNameBase: stackNameBase,
       backendStackName: backendStackName,
       frontendStackName: frontendStackName,
       bucketName: s3BucketName,
