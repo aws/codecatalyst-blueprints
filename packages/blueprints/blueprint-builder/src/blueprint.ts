@@ -2,7 +2,7 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
 import { buildIndex } from '@caws-blueprint-util/blueprint-utils';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
@@ -17,18 +17,12 @@ import { buildGenerationObject, buildMetaDataObject, buildParametersObject, Yaml
 
 export interface Options extends ParentOptions {
   /**
-   * Create a new blueprint from an existing blueprint:
-   * @displayName Blueprint to extend
-   */
-  blueprintToExtend: string;
-
-  /**
    * What do you want to call your new blueprint?
    */
   blueprintName: string;
 
   /**
-   * Override the publishing organization. Dont change unless you know what you're doing.
+   * Override the publishing organization. This is probably your code.aws organization's name.
    */
   organizationOverride: string;
 
@@ -45,10 +39,15 @@ export interface Options extends ParentOptions {
   authorName: string;
 
   /**
+   * Create a new blueprint from an existing blueprint:
+   * @displayName Blueprint to extend
+   */
+  blueprintToExtend: string;
+
+  /**
    * @collapsed true
    */
   advancedSettings?: {
-
     /**
      * Blueprint Version?
      */
@@ -62,7 +61,7 @@ export interface Options extends ParentOptions {
     /**
      * Projen pinned version. Dont change unless you know what you're doing.
      */
-    projenVersion: '0.52.18';
+    projenVersion: string;
   };
 }
 
@@ -233,12 +232,13 @@ export class Blueprint extends ParentBlueprint {
     });
     defaultsJSON.addLine(`${JSON.stringify(this.parentIntrospection.defaults, null, 2)}`);
 
+    const gettingStartedContentPath = path.join(__dirname, '..', 'assets', '/getting-started.md');
+    const gettingStartedContent = fs.readFileSync(gettingStartedContentPath, 'utf8');
+    new SourceFile(this.repository, 'GETTING_STARTED.md', gettingStartedContent);
+
     const readmeContentPath = path.join(__dirname, '..', 'assets', '/starter-readme.md');
     const readmeContent = fs.readFileSync(readmeContentPath, 'utf8');
-    new TextFile(blueprint, path.join('README.md'), {
-      readonly: false,
-      lines: [...readmeContent.split('\n'), ...this.parentIntrospection.readmeContent.split('\n')],
-    });
+    new SourceFile(this.repository, 'README.md', readmeContent);
   }
 
   private doIntrospection(): BlueprintIntrospection {
