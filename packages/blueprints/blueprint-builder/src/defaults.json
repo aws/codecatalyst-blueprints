@@ -1,11 +1,10 @@
 {
-  "blueprintToExtend": "@caws-blueprint/blueprints.blueprint",
+  "blueprintName": "create-empty-application",
   "organizationOverride": "<<unknown-organization>>",
-  "blueprintName": "my-new-blueprint",
-  "description": "This is a new blueprint.",
+  "blueprintToExtend": "@caws-blueprint/blueprints.blueprint",
+  "description": "This blueprint creates an empty application.",
   "authorName": "none",
   "advancedSettings": {
-    "yaml": false,
     "version": "latest",
     "license": "MIT",
     "projenVersion": "0.52.18"
