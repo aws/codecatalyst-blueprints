@@ -36,10 +36,12 @@ export class Environment extends Component {
       .filter(key => !nonAccountKeys.has(key))
       .forEach(accountkey => {
         const account: AccountConnection<any> = environment[accountkey];
-        connectedAccounts.push({
-          environmentName: environment.name,
-          name: account.name,
-        });
+        if (account.name && environment.name) {
+          connectedAccounts.push({
+            environmentName: environment.name,
+            name: account.name,
+          });
+        }
       });
 
     // create the environment file
