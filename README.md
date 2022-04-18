@@ -43,7 +43,7 @@ blueprints-setup() {
 ```
 
 ## Development
-Run these commands to get started building blueprints. THe first time set-up may take a minute or two. 
+Run these commands to get started building blueprints. The first time set-up may take a minute or two. 
 
 ```
 git clone https://github.com/aws/caws-blueprints
@@ -92,7 +92,7 @@ environment.
 // paste it into your terminal like so:
 export CAWS_COOKIE='session-blhahBlahblahBlah'
 // run from the root
-yarn blueprints:publish
+yarn blueprints:release
 ```
 
 ### Clean up:
