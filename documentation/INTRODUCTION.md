@@ -14,7 +14,7 @@ process locally in any blueprint by running:
 yarn blueprint:synth
 ```
 
-You’ll see the blueprint execute itself by calling the main blueprint.ts class with whatever is in the `defaults.json`. It’ll generate a new project
+Authors will see the blueprint execute itself by calling the main blueprint.ts class with whatever is in the `defaults.json`. It’ll generate a new project
 bundle under the synth/ folder. Whatever ends up here is the project that a blueprint generates. This is exactly what the wizard does when it
 generates a new project too! Except the wizard will overwrite some sections of the defaults.json with user input (if it's entered).
 
