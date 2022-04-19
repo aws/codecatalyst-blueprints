@@ -1,7 +1,7 @@
 ## Introduction
 
 Blueprints generate code.aws projects. They are constructs that take some user input and use that to synthesize a project. This repository contains
-blueprints components that are published by the code.aws team, anyone will eventually be able to create and publish their own blueprints by using the
+blueprints and blueprint components that are published by the code.aws team, anyone will eventually be able to create and publish their own blueprints by using the
 blueprint-builder.
 
 ## What are Blueprints?
