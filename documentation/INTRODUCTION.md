@@ -68,7 +68,7 @@ Authors can (and should!) use this user input to change how and what code they g
 
 ## What is a project bundle?
 
-Blueprints write out “project bundles” as part of which are really just folders to help code.aws determine which resources go where. For example,
+Blueprints write out “project bundles” as the result of a successful synthesis. A "bundle" is really just folders to help code.aws determine which resources go where. For example,
 under ‘src/’ you might find stuff that gets deployed as source code or under ‘environments’ you might find yaml representations of environments.
 Authors generally don’t have to know this format if they are using blueprint components - each component will write to the proper place in the bundle.
 Under the hood, the bundle is used by the code.aws deployment system to create and seed various code.aws resources from the blueprint.
