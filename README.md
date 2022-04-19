@@ -5,7 +5,7 @@ also exist for vimlords. Many gitignored files will be invisible in vim and may 
 
 #### Prereq:
 
-Install these globally. This is required for various tooling to work properly
+Install these globally. Requirement for various tooling to work properly and are available from public npm.
 
 ```
 #install nvm https://nvm.sh
@@ -32,18 +32,19 @@ set-blueprints-npm-repo() {
 
 # setup the blueprints repo for use
 blueprints-setup() {
-  # The blueprints repo uses yarn2 which doesn't support projen's --check-post-synthesis flag 
+  # The blueprints repo uses yarn2 which doesn't support projen's --check-post-synthesis flag
   # Disable projen post synthesis
   export PROJEN_DISABLE_POST=1
 
-  # Blueprints are currently published to a private codeartifact repository until the public launch of code.aws. 
+  # Blueprints are currently published to a private codeartifact repository until the public launch of code.aws.
   # You'll need to ask the blueprints team for access.
   set-blueprints-npm-repo
 }
 ```
 
 ## Development
-Run these commands to get started building blueprints. The first time set-up may take a minute or two. 
+
+Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 
 ```
 git clone https://github.com/aws/caws-blueprints

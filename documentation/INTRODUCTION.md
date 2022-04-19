@@ -20,10 +20,10 @@ generates a new project too! Except the wizard will overwrite some sections of t
 
 ## What can be generated with a Blueprint?
 
-Blueprints can ask users for a variety of inputs and generate almost any code.aws resource. This includes asking for things like aws acccount
-connections and generating things like environments, source code, issues, etc. They are fully capable of generating code in any language too. By
-combining these components, blueprints can - for example - set up a web application project that contains a CDK stack and code.aws workflows that
-auto-deploy it into a customer aws account.
+Blueprints can ask users for a variety of inputs and generate almost any code.aws resource. Blueprints can ask users for many different types of
+input, like aws account connections and can generate most code.aws resources such as environments, source code, issues, etc. They are fully capable of
+generating code in any language too. By combining these components, blueprints can - for example - set up a web application project that contains a
+CDK stack and code.aws workflows that auto-deploy it into a customer aws account.
 
 ## Development Flow
 
@@ -36,8 +36,8 @@ This can be done by publishing a `preview` version by running.
 yarn blueprint:preview
 ```
 
-In the process of development authors will probably use several components. Consult the documentation for a full API spec. For example, the repository
-component will create a new repository in a generated project
+In the process of development authors should use components to help them build blueprints quickly. Consult the documentation for a full API spec,
+these components can be found in this codebase. For example, the repository component will create a new repository in a generated project.
 
 ```
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';

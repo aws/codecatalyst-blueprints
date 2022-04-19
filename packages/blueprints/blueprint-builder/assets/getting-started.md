@@ -8,9 +8,9 @@ project as they evolve. You'll have to make updates to the `projenrc.ts` as your
 
 ## Set Up
 
-We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
-also exist for vimlords. Many gitignored files will be invisible in vim and may cause annoying problems. We highly recommend you develop on mac or a
-cloud desktop running linux. This guide assumes you are using a mac and are using `yarn`, the same commands work with `npm`.
+We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Many gitignored
+files will be invisible in vim and may cause problems. We recommend you develop on mac or a cloud desktop running linux. This guide assumes you are
+using a mac and are using `yarn`, the same commands work with `npm`.
 
 ### Make sure you have
 
@@ -22,7 +22,7 @@ The blueprints team should have given you:
 
 ### Prereq:
 
-Install these globally. This is required for various tooling to work properly. These can be gotten from public npm.
+Install these globally. They are a requirement for various tooling to work properly and are available from public npm.
 
 ```
 #install nvm https://nvm.sh
