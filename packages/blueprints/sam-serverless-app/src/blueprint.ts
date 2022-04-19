@@ -74,7 +74,7 @@ export interface Options extends ParentOptions {
   code: {
     /**
      * @displayName Code Repository name
-     * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+     * @validationRegex /(?!.*\.git$)^[a-zA-Z0-9_.-]{1,100}$/
      * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
      */
     sourceRepositoryName: string;
