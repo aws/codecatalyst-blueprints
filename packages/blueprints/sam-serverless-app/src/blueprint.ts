@@ -181,6 +181,7 @@ export class Blueprint extends ParentBlueprint {
     };
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
+
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
@@ -201,7 +202,6 @@ export class Blueprint extends ParentBlueprint {
         AutoDiscoverReports: {
           ReportNamePrefix: 'AutoDiscovered',
           IncludePaths: ['**/*'],
-          ExcludePaths: ['*/node_modules/**/*'],
           Enabled: true,
         },
         Artifacts: [
