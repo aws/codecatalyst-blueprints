@@ -7,6 +7,7 @@ import {
   ActionIdentifierAlias,
   ActionDefiniton,
   Environment,
+  AutoDiscoverReportDefinition,
 } from '..';
 
 export interface Connection {
@@ -29,7 +30,7 @@ export interface BuildInputConfiguration {
 }
 
 export interface BuildOutputConfiguration {
-  AutoDiscoverReports: boolean;
+  AutoDiscoverReports: AutoDiscoverReportDefinition;
   Variables?: string[];
   Artifacts?: {
     Name: string;
@@ -45,16 +46,7 @@ export interface EnvironmentConfiguration {
 export const generateOutput = (params: BuildOutputConfiguration): OutputDefinition => {
   const outputs: OutputDefinition = {
     ...params,
-    AutoDiscoverReports: undefined,
   };
-  if (params.AutoDiscoverReports) {
-    outputs.AutoDiscoverReports = {
-      ReportNamePrefix: 'AutoDiscovered',
-      IncludePaths: ['**/*'],
-      ExcludePaths: ['node_modules/**/*'],
-      Enabled: true,
-    };
-  }
   return outputs;
 };
 

@@ -198,7 +198,12 @@ export class Blueprint extends ParentBlueprint {
         Sources: ['WorkflowSource'],
       },
       output: {
-        AutoDiscoverReports: true,
+        AutoDiscoverReports: {
+          ReportNamePrefix: 'AutoDiscovered',
+          IncludePaths: ['**/*'],
+          ExcludePaths: ['*/node_modules/**/*'],
+          Enabled: true,
+        },
         Artifacts: [
           {
             Name: params.outputArtifactName,
