@@ -99,6 +99,7 @@ export interface Artifact {
 export interface AutoDiscoverReportDefinition {
   Enabled?: boolean;
   ReportNamePrefix?: string;
+  ExcludePaths?: string[];
   IncludePaths?: string[];
 }
 
