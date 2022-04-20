@@ -27,6 +27,7 @@ export interface BuildInputConfiguration {
   Artifacts?: string[];
   // [key: string]: any;
 }
+
 export interface BuildOutputConfiguration {
   AutoDiscoverReports: boolean;
   Variables?: string[];
@@ -50,6 +51,7 @@ export const generateOutput = (params: BuildOutputConfiguration): OutputDefiniti
     outputs.AutoDiscoverReports = {
       ReportNamePrefix: 'AutoDiscovered',
       IncludePaths: ['**/*'],
+      ExcludePaths: ['node_modules/**/*'],
       Enabled: true,
     };
   }
