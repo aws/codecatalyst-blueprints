@@ -13,12 +13,11 @@ interface OptionsInformation {
 }
 
 export const buildBlueprint = (originBlueprint: BlueprintIntrospection, originPackage: string): string => {
-  return `import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
+  return `
+import { SourceRepository, SourceFile, StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
+import { emptyWorkflow, WorkflowDefinition, Workflow, addGenericBranchTrigger, addGenericBuildAction } from '@caws-blueprint-component/caws-workflows';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '${originPackage}';
 import defaults from './defaults.json';
-
-// Sample imports:
-import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
-import * as fs from 'fs';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -54,10 +53,46 @@ export class Blueprint extends ParentBlueprint {
     // add a repository
     const repo = new SourceRepository(this, { title: 'MyRepo' });
 
-    // example showing add files to the repository
-    // assets get synth'd from the 'assets' folder. At synth time, the asset folder is a sibling of the blueprint.ts.
-    const filecontent = fs.readFileSync('./assets/put-your-sample-assets-here.txt').toString();
-    new SourceFile(repo, 'path/to/copied-file.txt', filecontent);
+    // copy all files in the static-assets folder, and add them to the repo as source files
+    StaticAsset.findAll('**/*').forEach(staticCode => {
+      new SourceFile(repo, staticCode.path(), staticCode.toString());
+    });
+
+    // authors can also use mustache subsitution with SubsitutionAsset
+    // specifically target main.py and subsitute some values
+    const mainpy = new SubstitionAsset('static-assets/main.py');
+    new SourceFile(repo, 'main.py', mainpy.subsitite({
+      helloValue: 'My newly generated project',
+    }));
+
+    /**
+     * Create a workflow that runs when code gets pushed to the 'main' branch of the repo
+     * Docs: https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/workflows-concepts.html
+     */
+    const workflow: WorkflowDefinition = {
+      ...emptyWorkflow,
+      Name: 'example-workflow',
+    };
+    addGenericBranchTrigger(workflow, ['main']);
+    addGenericBuildAction({
+      workflow,
+      blueprint: this,
+      actionName: 'execute-cli-commands-build',
+      input: {
+        // denotes that the input is source code
+        Sources: ['WorkflowSource'],
+        // input variables to the build action
+        Variables: {
+          HELLO_MESSAGE: 'hello from a workflow',
+        },
+      },
+      // command line executions
+      steps: [
+        'echo "\${HELLO_MESSAGE}"',
+      ],
+    });
+
+    new Workflow(this, repo, workflow);
   }
 }
 `;
