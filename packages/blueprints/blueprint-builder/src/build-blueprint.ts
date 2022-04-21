@@ -60,7 +60,7 @@ export class Blueprint extends ParentBlueprint {
 
     // authors can also use mustache subsitution with SubsitutionAsset
     // specifically target main.py and subsitute some values
-    const mainpy = new SubstitionAsset('static-assets/main.py');
+    const mainpy = new SubstitionAsset('main.py');
     new SourceFile(repo, 'main.py', mainpy.subsitite({
       helloValue: 'My newly generated project',
     }));
