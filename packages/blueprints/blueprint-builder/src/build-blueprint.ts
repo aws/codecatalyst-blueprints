@@ -86,6 +86,14 @@ export class Blueprint extends ParentBlueprint {
           HELLO_MESSAGE: 'hello from a workflow',
         },
       },
+      output: {
+        AutoDiscoverReports: {
+          IncludePaths: ['**/*'],
+          ExcludePaths: ['*/.aws/workflows/*'],
+          ReportNamePrefix: 'AutoDiscovered',
+          Enabled: true,
+        },
+      },
       // command line executions
       steps: [
         'echo "\${HELLO_MESSAGE}"',
