@@ -43,8 +43,11 @@
   },
   "dependencies": {
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "@types/glob": "*",
     "camelcase": "5.3.x",
-    "decamelize": "5.0.x"
+    "decamelize": "5.0.x",
+    "glob": "*",
+    "mustache": "*"
   },
   "main": "lib/index.js",
   "license": "MIT",
