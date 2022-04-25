@@ -70,7 +70,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     //set local synthing
     this.setScript('blueprint:synth', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json');
 
-    this.setScript('blueprint:synth:cache', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
+    this.setScript('blueprint:synth:cache', 'yarn build && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
 
     this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache');
 
