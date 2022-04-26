@@ -25,7 +25,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
 
   cookie = cookie ?? process.env.CAWS_COOKIE;
   if (!cookie) {
-    log.error('caws cookie was not provided by cli or environment');
+    log.error('CAWS_COOKIE was not provided by cli or environment');
     process.exit(200);
   }
 
