@@ -6,8 +6,13 @@
   "stringInput": "default string input",
   "numberInput": 12,
   "runtimes": "nodejs",
+  "stringList": [
+    "first item",
+    "second item"
+  ],
   "nestedArea": {
-    "stringInput": "default nested string input"
+    "stringInput": "default nested string input",
+    "emptyInput": ""
   },
   "trueCheckbox": true
 }
