@@ -96,6 +96,7 @@ export interface Options extends ParentOptions {
      * @displayName 'overriden input display name for nested object'
      */
     stringInput: string;
+    emptyInput: string;
   };
 
   /**
