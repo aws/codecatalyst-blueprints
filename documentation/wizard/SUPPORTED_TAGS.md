@@ -38,7 +38,7 @@ Here are the following JSDOC tags that a blueprint's Options will support in the
 
 - **Requires**: option to be a string
 - **Usage**: performs input validation on the option using the given regex expression and display @validationMessage
-- **Example**: `@valeiifccvjrceebltlkvuigbndbkklbeedcvllijulnuki idationRegex /^[a-zA-Z0-9_]+$/`
+- **Example**: `@validationRegex /^[a-zA-Z0-9_]+$/`
 - **Recommended**: to use with @validationMessage, validation message is empty by default
 
 ## @validationMessage _string_
