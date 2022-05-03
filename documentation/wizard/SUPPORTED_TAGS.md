@@ -70,5 +70,5 @@ Here are the following JSDOC tags that a blueprint's Options will support in the
 ## @placeholder _string (Optional)_
 
 - **Requires**: N/A
-- **Usage**: Change text field defualt placeholder.
+- **Usage**: Change text field default placeholder.
 - **Example**: `@placeholder type project name here`
