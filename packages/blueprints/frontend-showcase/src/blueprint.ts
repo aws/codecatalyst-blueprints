@@ -15,6 +15,38 @@ import defaults from './defaults.json';
  */
 export interface Options extends ParentOptions {
   /**
+   * all the list input fields
+   */
+  listInputs?: {
+    /**
+     * @validationRegex /^[a-zA-Z0-9]{1,56}$/
+     * @validationMessage Must contain only alphanumeric characters, underscores (_)
+     * @defaultEntropy 6
+     */
+    stringlist: string[];
+    numberlist: number[];
+    booleanlist: boolean[];
+    objectlist: { string: string }[];
+    listOflist: string[][];
+
+    /**
+     * This is a list of objects.
+     * @displayName overriden input display name annotated list
+     */
+    annotatedlist: {
+      /**
+       * This is a regular string input field.
+       * @displayName 'overriden input display name for nested object'
+       */
+      stringinput1: string;
+
+      nunberListInput: number[];
+
+      stringinput2: string;
+    }[];
+  };
+
+  /**
    * This is some information about what type of environment and what in the world an environment is.
    * @displayName This is the Environment Title Area
    * @collapsed
