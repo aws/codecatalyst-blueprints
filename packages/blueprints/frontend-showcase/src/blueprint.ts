@@ -39,6 +39,9 @@ export interface Options extends ParentOptions {
        * @displayName 'overriden input display name for nested object'
        */
       stringinput1: string;
+      // aListOfSize2: [string, string];
+      // aStringAndNumberTouple: [string, Number];
+      // aListofStringAndNumberTouple: [string, Number][];
 
       nunberListInput: number[];
 
