@@ -6,7 +6,7 @@
   "stringInput": "default string input",
   "numberInput": 12,
   "runtimes": "nodejs",
-  "stringList": [
+  "stringListInput": [
     "first item",
     "second item"
   ],
