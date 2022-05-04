@@ -11,7 +11,7 @@ const STATIC_ASSET_DIRECTORY = 'static-assets';
 export class StaticAsset {
   static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: glob.IOptions): T[] {
     return glob
-      .sync(pathing.join(STATIC_ASSET_DIRECTORY, globPath || '**/*'), {
+      .sync(pathing.join(globPath ?? '**/*'), {
         cwd: STATIC_ASSET_DIRECTORY,
         nodir: true,
         dot: true,
