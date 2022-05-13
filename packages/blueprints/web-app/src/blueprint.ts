@@ -1,5 +1,5 @@
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, makeValidFolder, SourceFile, StaticAsset } from '@caws-blueprint-component/caws-source-repositories';
 import {
   emptyWorkflow,
   Workflow,
@@ -161,6 +161,7 @@ export class Blueprint extends ParentBlueprint {
         },
       },
     });
+    new SourceFile(this.repository, `${this.reactFolderName}/package-lock.json`, new StaticAsset('frontend/package-lock.json').toString());
 
     createBackend(
       {
@@ -198,6 +199,7 @@ export class Blueprint extends ParentBlueprint {
         defaultReleaseBranch: 'main',
       },
     );
+    new SourceFile(this.repository, `${this.nodeFolderName}/package-lock.json`, new StaticAsset('backend/package-lock.json').toString());
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
     new Environment(this, options.environment);
