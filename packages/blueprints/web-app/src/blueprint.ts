@@ -143,7 +143,7 @@ export class Blueprint extends ParentBlueprint {
       title: this.repositoryName,
     });
 
-    createFrontend(this.repository, this.reactFolderName, lambdaNames, stackNameBase, {
+    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.backendStackName, {
       name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',

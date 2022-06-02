@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const lambdas = ${JSON.stringify(lambdas)};
-  const endpoint = (config['${stackName}Backend'] || {}).apiurl;
+  const endpoint = (config['${stackName}'] || {}).apiurl;
   const state = [];
   const [result, setResult] = useState(state);
 
