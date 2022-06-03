@@ -57,6 +57,8 @@ yarn && yarn build
 
 You're done!
 
+Unless you have access to the blueprints organization in quokka, you will not be able to publsih preview versions of these blueprints.
+
 ## Testing Changes
 
 Modify a component
