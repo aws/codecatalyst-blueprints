@@ -200,6 +200,7 @@ export class Blueprint extends ParentBlueprint {
         "import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';",
         '',
         `const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`,
+        "project.package.addDevDeps('ts-node@^10');",
         '',
         'project.synth();',
       ].join('\n'),
