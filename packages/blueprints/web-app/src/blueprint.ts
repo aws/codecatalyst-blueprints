@@ -132,9 +132,9 @@ export class Blueprint extends ParentBlueprint {
     this.nodeFolderName = makeValidFolder(nodeFolderName);
 
     const stackNameBase = options.advanced.stackName.charAt(0).toUpperCase() + options.advanced.stackName.slice(1);
-    this.frontendStackName = this.applySuffix(stackNameBase, 'FrontendStack', 128);
-    this.backendStackName = this.applySuffix(stackNameBase, 'BackendStack', 128);
-    const s3BucketName = options.advanced.stackName.toLowerCase();
+    this.frontendStackName = this.applySuffix(stackNameBase, 128, 'FrontendStack');
+    this.backendStackName = this.applySuffix(stackNameBase, 128, 'BackendStack');
+    const s3BucketName = this.applySuffix(options.advanced.stackName.toLowerCase(), 30);
 
     let lambdaNames: string[] = [options.advanced.lambdaName || 'defaultLambdaHandler'];
     lambdaNames = lambdaNames.map(lambdaName => `${lambdaName[0].toUpperCase()}${lambdaName.slice(1)}`);
@@ -292,11 +292,12 @@ export class Blueprint extends ParentBlueprint {
     });
   }
 
-  applySuffix(str: string, suffix: string, maxLength: number): string {
-    const stringLength = str.length + suffix.length;
+  applySuffix(str: string, maxLength: number, suffix?: string): string {
+    const _suffix = suffix ?? '';
+    const stringLength = str.length + _suffix.length;
     if (stringLength <= maxLength) {
-      return str + suffix;
+      return str + _suffix;
     }
-    return str.slice(0, -(stringLength - maxLength)) + suffix;
+    return str.slice(0, -(stringLength - maxLength)) + _suffix;
   }
 }

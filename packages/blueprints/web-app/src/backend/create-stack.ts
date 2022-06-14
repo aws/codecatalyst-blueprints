@@ -1,5 +1,6 @@
 import { basename } from 'path';
 import { awscdk } from 'projen';
+import { v4 as uuidv4 } from 'uuid'; // eslint-disable-line import/no-extraneous-dependencies
 const TYPESCRIPT_EXT = '.ts';
 
 export function getStackDefinition(params: {
@@ -134,12 +135,8 @@ app.synth();
   );
 }
 
-function getUniqueS3BucketName(repositoryName: string) {
-  return `${repositoryName.toLowerCase()}-${getSecondSinceEpoch()}`;
-}
-
-function getSecondSinceEpoch() {
-  return Math.floor(Date.now() / 1000);
+function getUniqueS3BucketName(bucketName: string) {
+  return `${bucketName.toLowerCase()}-${uuidv4().toString().slice(0, 16)}`;
 }
 
 export function getStackTestDefintion(appEntrypoint: string, backendStackName: string, frontendStackName: string) {

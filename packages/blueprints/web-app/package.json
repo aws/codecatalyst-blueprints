@@ -35,6 +35,7 @@
     "@caws-blueprint-util/blueprint-cli": "0.0.x",
     "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@types/node": "^12",
+    "@types/uuid": "*",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -46,7 +47,8 @@
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^9",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "uuid": "*"
   },
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
@@ -67,7 +69,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.191",
+  "version": "0.0.192-preview.2",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"
