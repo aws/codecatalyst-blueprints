@@ -35,6 +35,7 @@
     "@caws-blueprint-util/blueprint-cli": "0.0.x",
     "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@types/node": "^12",
+    "@types/uuid": "*",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -55,7 +56,8 @@
     "@caws-blueprint-component/caws-workspaces": "0.0.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "^0.0.x",
-    "projen": "*"
+    "projen": "*",
+    "uuid": "8.3.2"
   },
   "keywords": [
     "blueprint",
