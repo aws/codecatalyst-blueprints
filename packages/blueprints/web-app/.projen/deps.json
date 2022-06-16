@@ -14,6 +14,10 @@
       "type": "build"
     },
     {
+      "name": "@types/uuid",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"
@@ -93,6 +97,11 @@
     },
     {
       "name": "projen",
+      "type": "runtime"
+    },
+    {
+      "name": "uuid",
+      "version": "8.3.2",
       "type": "runtime"
     }
   ],

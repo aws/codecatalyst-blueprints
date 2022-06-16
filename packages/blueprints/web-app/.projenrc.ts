@@ -17,6 +17,7 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-component/caws-environments',
     '@caws-blueprint-component/caws-workspaces',
+    'uuid@8.3.2',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This blueprint creates and deploys a web application.',
@@ -24,7 +25,7 @@ const blueprint = new ProjenBlueprint({
   packageName: '@caws-blueprint/blueprints.web-app',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint'],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/uuid'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint', 'webapp', 'typescript', 'react', 'node'],
