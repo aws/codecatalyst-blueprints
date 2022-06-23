@@ -72,11 +72,23 @@
       "type": "runtime"
     },
     {
+      "name": "@types/glob",
+      "type": "runtime"
+    },
+    {
       "name": "camelcase",
       "type": "runtime"
     },
     {
       "name": "decamelize",
+      "type": "runtime"
+    },
+    {
+      "name": "glob",
+      "type": "runtime"
+    },
+    {
+      "name": "mustache",
       "type": "runtime"
     }
   ],

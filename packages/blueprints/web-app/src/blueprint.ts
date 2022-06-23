@@ -1,5 +1,5 @@
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, makeValidFolder, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, makeValidFolder, SourceFile, StaticAsset } from '@caws-blueprint-component/caws-source-repositories';
 import {
   emptyWorkflow,
   Workflow,
@@ -52,7 +52,7 @@ export interface Options extends ParentOptions {
   webappOptions: {
     /**
      * @displayName Code Repository Name
-     * @validationRegex /^[a-zA-Z0-9_.-]{1,100}$(?<!.git$)/
+     * @validationRegex /(?!.*\.git$)^[a-zA-Z0-9_.-]{1,100}$/
      * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be up to 100 characters in length. Cannot end in .git or contain spaces
      */
     repositoryName: string;
@@ -143,7 +143,7 @@ export class Blueprint extends ParentBlueprint {
       title: this.repositoryName,
     });
 
-    createFrontend(this.repository, this.reactFolderName, lambdaNames, stackNameBase, {
+    createFrontend(this.repository, this.reactFolderName, lambdaNames, this.backendStackName, {
       name: this.reactFolderName,
       authorEmail: 'caws@amazon.com',
       authorName: 'codeaws',
@@ -161,6 +161,7 @@ export class Blueprint extends ParentBlueprint {
         },
       },
     });
+    new SourceFile(this.repository, `${this.reactFolderName}/package-lock.json`, new StaticAsset('frontend/package-lock.json').toString());
 
     createBackend(
       {
@@ -198,6 +199,7 @@ export class Blueprint extends ParentBlueprint {
         defaultReleaseBranch: 'main',
       },
     );
+    new SourceFile(this.repository, `${this.nodeFolderName}/package-lock.json`, new StaticAsset('backend/package-lock.json').toString());
 
     new Workspace(this, this.repository, SampleWorkspaces.default);
     new Environment(this, options.environment);
@@ -261,20 +263,25 @@ export class Blueprint extends ParentBlueprint {
         },
       },
       output: {
-        AutoDiscoverReports: true,
+        AutoDiscoverReports: {
+          ReportNamePrefix: 'AutoDiscovered',
+          IncludePaths: ['**/*'],
+          Enabled: true,
+          ExcludePaths: ['*/node_modules/**/*'],
+        },
         Variables: ['CloudFrontURL'],
       },
       steps: [
         'export awsAccountId=${CONNECTED_ACCOUNT_ID}',
         'export roleArn=${CONNECTED_ROLE_ARN}',
         'export region=${REGION}',
+        'export PROJEN_DISABLE_POST=1',
         `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
-        'npm install -g yarn',
-        `cd ./${this.nodeFolderName} && yarn && yarn build`,
+        `cd ./${this.nodeFolderName} && npm install && npm run build`,
         'npx cdk bootstrap aws://${CONNECTED_ACCOUNT_ID}/us-west-2',
-        'yarn deploy:copy-config',
+        'npm run deploy:copy-config',
         'cd ..',
-        `cd ./${this.reactFolderName} && yarn && yarn build`,
+        `cd ./${this.reactFolderName} && npm install && npm run build`,
         'cd ..',
         `cd ./${this.nodeFolderName}`,
         `npx cdk deploy ${this.frontendStackName} --require-approval never --outputs-file config.json`,

@@ -22,7 +22,7 @@
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
-    "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
+    "blueprint:synth:cache": "yarn build && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
     "blueprint:preview": "yarn bump:preview && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints",
     "blueprint:release": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
@@ -35,6 +35,7 @@
     "@caws-blueprint-util/blueprint-cli": "0.0.x",
     "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@types/node": "^12",
+    "@types/uuid": "*",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -55,7 +56,8 @@
     "@caws-blueprint-component/caws-workspaces": "0.0.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "^0.0.x",
-    "projen": "*"
+    "projen": "*",
+    "uuid": "8.3.2"
   },
   "keywords": [
     "blueprint",
@@ -67,7 +69,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.170",
+  "version": "0.0.192",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

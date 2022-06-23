@@ -40,6 +40,8 @@ set-blueprints-npm-repo() {
 
   # Set NPM config to also be the same repository (needed for some synths to work properly)
   aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
+
+  npm config set always-auth true
 }
 
 # setup the blueprints repo for use
