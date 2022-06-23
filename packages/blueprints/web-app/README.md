@@ -138,12 +138,16 @@ use the CDK CLI and NPM, you will need the following tools in your workspace.
 To work on the sample generated code, you will need to clone your project's repository to your local computer. You can find instructions in the _Clone
 a source repository_ section in the **Quokka User Guide**
 
-To build your application locally, use the following command in your shell from your workspace root
+To run your application locally, you will need to deploy the backend aws resources of your application then run the frontend on your localhost
 
 ```
-  npm run build-server
+<cd to your backend folder and switch into your aws account>
 
-  npm run build-client
+<Deploy the backend aws resource and copy over the output of the deployed stack into the front end config.json>
+npm run deploy:copy-config
+
+<To run the frontend, cd into the frontend folder and run the frontend on your localhost>
+npm run dev
 ```
 
 To view the generated AWS CloudFormation stacks, use the following command in your shell from your workspace root
