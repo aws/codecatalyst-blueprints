@@ -140,13 +140,16 @@ a source repository_ section in the **Quokka User Guide**
 
 To run your application locally, you will need to deploy the backend aws resources of your application then run the frontend on your localhost
 
+To deploy the backend aws resources and copy over the output of the deployed stack into the front end config.json, cd to your backend folder and
+switch into your aws account
+
 ```
-<cd to your backend folder and switch into your aws account>
-
-<Deploy the backend aws resource and copy over the output of the deployed stack into the front end config.json>
 npm run deploy:copy-config
+```
 
-<To run the frontend, cd into the frontend folder and run the frontend on your localhost>
+To run the frontend, cd into the frontend folder and run the frontend on your localhost
+
+```
 npm run dev
 ```
 
