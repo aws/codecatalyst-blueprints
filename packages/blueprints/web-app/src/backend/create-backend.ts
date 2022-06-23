@@ -30,20 +30,6 @@ export const createBackend = (
     projectOptions,
   });
 
-  // add autodeploy task
-  const autoDeployTaskName = 'autodeploy';
-  const autoDeployTask = {
-    exec: 'cdk watch',
-    description: 'Builds, and autodeploys the project for easy development',
-  };
-  projenrc.addPostInstantiation({
-    line: '// after a deploy to the backend stack, copy the output to the frontend so it knowsthe backend url.',
-  });
-  projenrc.addPostInstantiation({
-    line: `${rcvariable}.addTask("${autoDeployTaskName}", ${JSON.stringify(autoDeployTask, null, 2)});`,
-  });
-  project.addTask(autoDeployTaskName, autoDeployTask);
-
   // add copy-config task
   const copyConfigTaskName = 'deploy:copy-config';
   const copyConfigTask = `cdk deploy ${backendStackName} --outputs-file ../${frontendfolder}/src/config.json --require-approval never`;

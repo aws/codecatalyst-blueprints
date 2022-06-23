@@ -6,31 +6,24 @@ This react application is a projen project. You should use projen to manage the 
 
 install dependencies and rebuild project configuration with projen:
 \`\`\`
-yarn && yarn projen && yarn build
+npm install && npm run projen && npm run build
 \`\`\`
 
 ## Running the front end
-Usually, you'll want to run the front end and the backend together. Otherwise the frontend will not be able to fetch anything from the backend. You can configure where the front-end is pointed by changing the url in the configuration file \`src/config.json\`
+To properly run the frontend you will need to deploy the backend first, otherwise the frontend will not be able to fetch anything from the backend. You can configure where the front-end is pointed by changing the url in the configuration file \`src/config.json\`
 \`\`\`
 # switch into your aws account
 <switch into aws account>
 # switch into backend folder
-yarn deploy:copy-config
+npm run deploy:copy-config
 \`\`\`
 
-or just update the configuration file \`src/config.json\`
+## Run the front end locally.
 \`\`\`
-{
-    "<<my-stack-name>>" : {
-        apiurl: "<<my API Url>>"
-    }
-}
+npm run dev
 \`\`\`
 
-### isolated front-end
-Run just the front end locally.
-\`\`\`
-yarn react-scripts start
-\`\`\`
+The frontend should be hosted at http://localhost:*port-number*
+
 `;
 };

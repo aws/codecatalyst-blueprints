@@ -6,19 +6,16 @@ export const createReadme = (): string => {
 
   install dependencies and rebuild project configuration with projen:
   \`\`\`
-  yarn && yarn projen && yarn build
+  npm install && npm run projen && npm run build
   \`\`\`
 
-  ### Running the back-end
-  Deploy the backend in watch mode.
+  ## Deploying the back-end
+  To properly run the application you will need to deploy the backend first, otherwise the frontend will not be able to fetch anything from the backend.
   \`\`\`
   # switch into your aws account
-
-  # deploy the backend the first time. Copy over the output of the deployed stack into the front end
-  deploy:copy-config
-
-  # watch the backend stack and deploy it whenever it changes
-  yarn autodeploy
+  <switch into aws account>
+  # Deploy the backend aws resource and copy over the output of the deployed stack into the front end config.json
+  npm run deploy:copy-config
   \`\`\`
   `;
 };
