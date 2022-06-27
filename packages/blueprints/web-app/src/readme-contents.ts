@@ -75,7 +75,7 @@ To work on the sample generated code, you will need to clone your project's repo
 To run your application locally, you will need to deploy the backend aws resources of your application then run the frontend on your localhost
 
 To deploy the backend aws resources and copy over the output of the deployed stack into the front end config.json,
-cd to your backend folder and switch into your aws account
+cd to your backend folder and [configure your aws credentials to your aws account](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 \`\`\`
 npm run deploy:copy-config

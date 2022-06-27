@@ -11,9 +11,8 @@ export const createReadme = (): string => {
 
   ## Deploying the back-end
   To properly run the application you will need to deploy the backend first, otherwise the frontend will not be able to fetch anything from the backend.
+  Firstly, [configure your aws credentials to your aws account](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) then:
   \`\`\`
-  # switch into your aws account
-  <switch into aws account>
   # Deploy the backend aws resource and copy over the output of the deployed stack into the front end config.json
   npm run deploy:copy-config
   \`\`\`
