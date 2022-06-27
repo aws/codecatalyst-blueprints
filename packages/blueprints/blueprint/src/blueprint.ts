@@ -36,4 +36,37 @@ export class Blueprint extends Project {
       component.synthesize = () => {};
     }
   }
+  override synth(): void {
+    super.synth();
+  }
+
+  throwSynthesisError(message: string) {
+    throw new BlueprintSynthesisError(message);
+  }
+}
+
+export enum BlueprintSynthesisErrorTypes {
+  ValidationError = 'ValidationError',
+  ConflictError = 'ConflictError',
+  NotFoundError = 'NotFoundError',
+  UndefinedSynthesisError = 'UndefinedSynthesisError',
+}
+
+export class BlueprintSynthesisError extends Error {
+  constructor(message: string, type?: string) {
+    super(message);
+    switch (type) {
+      case BlueprintSynthesisErrorTypes.ValidationError:
+        this.name = type;
+        break;
+      case BlueprintSynthesisErrorTypes.ConflictError:
+        this.name = type;
+        break;
+      case BlueprintSynthesisErrorTypes.NotFoundError:
+        this.name = type;
+        break;
+      default:
+        this.name = BlueprintSynthesisErrorTypes.UndefinedSynthesisError;
+    }
+  }
 }
