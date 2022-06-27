@@ -36,9 +36,6 @@ export class Blueprint extends Project {
       component.synthesize = () => {};
     }
   }
-  override synth(): void {
-    super.synth();
-  }
 
   throwSynthesisError(message: string) {
     throw new BlueprintSynthesisError(message);
