@@ -37,8 +37,8 @@ export class Blueprint extends Project {
     }
   }
 
-  throwSynthesisError(message: string) {
-    throw new BlueprintSynthesisError(message);
+  throwSynthesisError(error: BlueprintSynthesisError) {
+    throw error;
   }
 }
 
@@ -50,7 +50,8 @@ export enum BlueprintSynthesisErrorTypes {
 }
 
 export class BlueprintSynthesisError extends Error {
-  constructor(message: string, type?: string) {
+  constructor(options: { message: string; type?: BlueprintSynthesisErrorTypes }) {
+    const { message, type } = options;
     super(message);
     switch (type) {
       case BlueprintSynthesisErrorTypes.ValidationError:
