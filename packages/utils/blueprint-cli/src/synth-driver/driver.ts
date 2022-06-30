@@ -11,7 +11,7 @@ export const writeSynthDriver = (fileName: string, entrypoint: string) => {
   // node cached-synth.js '{options-selected}' 'outputDirectory'
   const options = JSON.parse(process.argv[2]);
   const outputdir = process.argv[3];
-  const timestamp = process.argv[4];
+  const timestamp = process.argv[4] ? process.argv[4] : '';
 
   console.log("===== Starting synthesis ===== ");
   console.log("options: ", options);
