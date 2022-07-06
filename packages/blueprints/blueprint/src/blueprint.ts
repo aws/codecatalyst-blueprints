@@ -43,10 +43,11 @@ export class Blueprint extends Project {
 }
 
 export enum BlueprintSynthesisErrorTypes {
-  ValidationError = 'ValidationError',
-  ConflictError = 'ConflictError',
-  NotFoundError = 'NotFoundError',
-  UndefinedSynthesisError = 'UndefinedSynthesisError',
+  BlueprintSynthesisError = 'BlueprintSynthesisError',
+  ConflictError = 'BlueprintSynthesisConflictError',
+  NotFoundError = 'BlueprintSynthesisNotFoundError',
+  UndefinedSynthesisError = 'UndefinedBlueprintSynthesisError',
+  ValidationError = 'BlueprintSynthesisValidationError',
 }
 
 export class BlueprintSynthesisError extends Error {
@@ -54,13 +55,16 @@ export class BlueprintSynthesisError extends Error {
     const { message, type } = options;
     super(message);
     switch (type) {
-      case BlueprintSynthesisErrorTypes.ValidationError:
+      case BlueprintSynthesisErrorTypes.BlueprintSynthesisError:
         this.name = type;
         break;
       case BlueprintSynthesisErrorTypes.ConflictError:
         this.name = type;
         break;
       case BlueprintSynthesisErrorTypes.NotFoundError:
+        this.name = type;
+        break;
+      case BlueprintSynthesisErrorTypes.ValidationError:
         this.name = type;
         break;
       default:
