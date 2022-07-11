@@ -96,11 +96,22 @@ export interface Artifact {
   Files: string[];
 }
 
+export interface SuccessCriteriaDefinition {
+  PassRate?: number;
+  LineCoverage?: number;
+  BranchCoverage?: number;
+  Vulnerabilities?: {
+    Severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFORMATIONAL';
+    Number: number;
+  };
+}
+
 export interface AutoDiscoverReportDefinition {
   Enabled?: boolean;
   ReportNamePrefix?: string;
   ExcludePaths?: string[];
   IncludePaths?: string[];
+  SuccessCriteria?: SuccessCriteriaDefinition;
 }
 
 export interface OutputDefinition {
