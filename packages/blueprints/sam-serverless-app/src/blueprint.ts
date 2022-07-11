@@ -316,7 +316,7 @@ $VENV/bin/pip install -r requirements-dev.txt
       contents: `#!/bin/bash
 
 echo "Running unit tests..."
-(cd ${this.options.lambda?.functionName ?? '.'} && PYTHONPATH=. pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. .)`,
+PYTHONPATH=${this.options.lambda?.functionName ?? '.'} pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. .`,
     });
   }
 
