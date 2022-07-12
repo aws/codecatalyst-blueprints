@@ -6,11 +6,11 @@ export enum ActionIdentifierAlias {
 
 const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
   build: {
-    default: 'aws-actions/cawsbuildprivate-build@v1',
+    default: 'aws/build-beta@v1',
     prod: 'aws/build@v1',
   },
   test: {
-    default: 'aws-actions/cawstestbeta-test@v1',
+    default: 'aws/managed-test-gamma@v1',
     prod: 'aws/managed-test@v1',
   },
   deploy: {
