@@ -44,7 +44,7 @@ export class Blueprint extends Project {
 
 export enum BlueprintSynthesisErrorTypes {
   /**
-   * Throw for generic synthesis error
+   * Throw for generic synthesis error not defined in BlueprintSynthesisErrorTypes
    */
   BlueprintSynthesisError = 'BlueprintSynthesisError',
   /**
@@ -57,10 +57,6 @@ export enum BlueprintSynthesisErrorTypes {
    * Ex: Git repository not found when cloning, unable to find image imported from the web
    */
   NotFoundError = 'BlueprintSynthesisNotFoundError',
-  /**
-   * Throw for undefined error in synth
-   */
-  UndefinedSynthesisError = 'UndefinedBlueprintSynthesisError',
   /**
    * Throw when resource fails validation in synth
    * Ex: Filename fails regex validation, X required if Y is not given

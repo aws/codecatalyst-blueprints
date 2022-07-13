@@ -80,13 +80,16 @@ export class Blueprint extends ParentBlueprint {
         }),
       );
     }
-
+    const gitHistoryPath = path.join(this.repo.path, '.git');
+    if (fs.existsSync(gitHistoryPath)) {
+      fs.rmdirSync(gitHistoryPath, { recursive: true });
+    }
     try {
       const repoSize = this.getRepoSize();
       if (repoSize > MAX_REPO_SIZE) {
         this.throwSynthesisError(
           new SynthError({
-            message: `Repository size is greater than max allowed of ${max_repo_mb} MB`,
+            message: `Repository size is greater than max allowed of ${max_repo_mb} MB. Refer to the Importing Large Repositories section of the README for instructions on using repositories larger than ${max_repo_mb} MB on Quokka.Codes`,
             type: SynthErrorTypes.ValidationError,
           }),
         );
