@@ -43,28 +43,31 @@ export class Blueprint extends Project {
 }
 
 export enum BlueprintSynthesisErrorTypes {
-  ValidationError = 'ValidationError',
-  ConflictError = 'ConflictError',
-  NotFoundError = 'NotFoundError',
-  UndefinedSynthesisError = 'UndefinedSynthesisError',
+  /**
+   * Throw for generic synthesis error not defined in BlueprintSynthesisErrorTypes
+   */
+  BlueprintSynthesisError = 'BlueprintSynthesisError',
+  /**
+   * Throw when there is a conflict with a resource in synth
+   * Ex: Folder with name X already exists, a workspace already exists for repository X
+   */
+  ConflictError = 'BlueprintSynthesisConflictError',
+  /**
+   * Throw when unable to find resource in synth
+   * Ex: Git repository not found when cloning, unable to find image imported from the web
+   */
+  NotFoundError = 'BlueprintSynthesisNotFoundError',
+  /**
+   * Throw when resource fails validation in synth
+   * Ex: Filename fails regex validation, X required if Y is not given
+   */
+  ValidationError = 'BlueprintSynthesisValidationError',
 }
 
 export class BlueprintSynthesisError extends Error {
-  constructor(options: { message: string; type?: BlueprintSynthesisErrorTypes }) {
+  constructor(options: { message: string; type: BlueprintSynthesisErrorTypes }) {
     const { message, type } = options;
     super(message);
-    switch (type) {
-      case BlueprintSynthesisErrorTypes.ValidationError:
-        this.name = type;
-        break;
-      case BlueprintSynthesisErrorTypes.ConflictError:
-        this.name = type;
-        break;
-      case BlueprintSynthesisErrorTypes.NotFoundError:
-        this.name = type;
-        break;
-      default:
-        this.name = BlueprintSynthesisErrorTypes.UndefinedSynthesisError;
-    }
+    this.name = type;
   }
 }

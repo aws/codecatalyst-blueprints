@@ -19,7 +19,9 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
     process.exit(255);
   }
 
-  let synthDirectory = path.resolve(path.join(outdir, 'synth', String(Math.floor(Date.now() / 100))));
+  const synthEntropy = String(Math.floor(Date.now() / 100));
+  const synthDirectory = path.resolve(path.join(outdir, 'synth', synthEntropy));
+
   cp.execSync(`mkdir -p ${synthDirectory}`, {
     stdio: 'inherit',
     cwd: outdir,
@@ -39,7 +41,6 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
   if (useCache) {
     const buildDirectory = path.join(blueprint, 'lib');
     const builtEntryPoint = './index.js';
-
     log.debug('Creating cache from built: %s', buildDirectory);
     log.debug('Creating cache from built blueprint: %s', builtEntryPoint);
     if (!fs.existsSync(buildDirectory) && !fs.existsSync(path.join(buildDirectory, builtEntryPoint))) {
@@ -56,7 +57,7 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
       log,
     );
 
-    const command = `npx node ${synthExecutionFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}'`;
+    const command = `npx node ${synthExecutionFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}' '${synthEntropy}'`;
     log.debug('generated command: %s', command);
     cp.execSync(command, {
       stdio: 'inherit',
@@ -67,7 +68,7 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
     console.log(driverFile);
     try {
       writeSynthDriver(driverFile, path.join(blueprint, 'src', 'index.ts'));
-      const command = `npx ts-node ${driverFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}'`;
+      const command = `npx ts-node ${driverFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}' '${synthEntropy}'`;
 
       log.debug('generated command: %s', command);
       cp.execSync(command, {
