@@ -1,7 +1,7 @@
 import * as cp from 'child_process';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import * as fs from 'fs';
 import * as path from 'path';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import {
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
