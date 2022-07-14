@@ -213,7 +213,8 @@ export class Blueprint extends ParentBlueprint {
       },
       steps: [
         '. ./.aws/scripts/setup-sam.sh',
-        'sam build',
+        'sam build --template-file template.yaml',
+        'cd .aws-sam/build/',
         `sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region ${region}`,
       ],
     });
@@ -230,7 +231,7 @@ export class Blueprint extends ParentBlueprint {
         parameters: {
           region,
           'name': this.options.cloudFormationStackName,
-          'template': 'packaged.yaml',
+          'template': '.aws-sam/build/packaged.yaml',
           'no-fail-on-empty-changeset': '1',
         },
       },
