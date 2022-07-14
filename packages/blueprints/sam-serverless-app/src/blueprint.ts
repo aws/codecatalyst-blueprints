@@ -166,10 +166,14 @@ export class Blueprint extends ParentBlueprint {
 
   createWorkflow(params: { name: string; outputArtifactName: string }): void {
     const { name } = params;
-    this.addBootstrapScript();
     this.addSamInstallScript();
-    this.addRequirementsDevTxt();
-    this.addTestScript();
+
+    if (this.options.runtime === 'Python 3') {
+      this.addRequirementsDevTxt();
+      this.addPythonBootstrapScript();
+      this.addPytestTestScript();
+    }
+
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
     const defaultBranch = 'main';
@@ -220,9 +224,8 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       steps: [
-        '. ./.aws/scripts/bootstrap.sh',
+        ...(this.options.runtime === 'Python 3' ? ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'] : []),
         '. ./.aws/scripts/setup-sam.sh',
-        '. ./.aws/scripts/run-tests.sh',
         'sam build',
         `sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region ${region}`,
       ],
@@ -298,7 +301,7 @@ pytest-mock
     });
   }
 
-  protected addBootstrapScript() {
+  protected addPythonBootstrapScript() {
     new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'bootstrap.sh'), {
       contents: `#!/bin/bash
 
@@ -311,7 +314,7 @@ $VENV/bin/pip install -r requirements-dev.txt
     });
   }
 
-  protected addTestScript() {
+  protected addPytestTestScript() {
     new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'run-tests.sh'), {
       contents: `#!/bin/bash
 
