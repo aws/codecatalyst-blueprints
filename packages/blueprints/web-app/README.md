@@ -93,7 +93,7 @@ For more information on source repositories, see _Working with source repositori
 For more information on workflows, see _Build, test, and deploy with workflows_ in the **Quokka User Guide**
 
 - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into
-  a development, staging, or production environment.
+  a production or non-production environment.
 
 For more information on environments, see _Organizing deployments using environments_ in the **Quokka User Guide**.
 

@@ -33,7 +33,7 @@ This project has created the following Quokka.Codes Resources:
 
   For more information on workflows, see _Build, test, and deploy with workflows_ in the **Quokka User Guide**
 
-  - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into a development, staging, or production environment.
+  - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into a production or non-production environment
 
   For more information on environments, see _Organizing deployments using environments_ in the **Quokka User Guide**.
 

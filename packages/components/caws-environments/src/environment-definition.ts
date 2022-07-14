@@ -36,9 +36,9 @@ export type EnvironmentDefinition<T extends { [key: string]: AccountConnection<a
 
   /**
    * Environment type.
-   * only 'DEVELOPMENT' | 'STAGING' | 'PRODUCTION' are supported.
+   * only 'DEVELOPMENT' | 'PRODUCTION' are supported.
    */
-  environmentType: 'DEVELOPMENT' | 'STAGING' | 'PRODUCTION' | string;
+  environmentType: 'DEVELOPMENT' | 'PRODUCTION' | string;
 
   /**
    * Environment description.
