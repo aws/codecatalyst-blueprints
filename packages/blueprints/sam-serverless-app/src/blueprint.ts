@@ -167,6 +167,13 @@ export class Blueprint extends ParentBlueprint {
   createWorkflow(params: { name: string; outputArtifactName: string }): void {
     const { name } = params;
     this.addSamInstallScript();
+
+    if (this.options.runtime === 'Python 3') {
+      this.addRequirementsDevTxt();
+      this.addPythonBootstrapScript();
+      this.addPytestTestScript();
+    }
+
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
     const defaultBranch = 'main';
@@ -203,6 +210,11 @@ export class Blueprint extends ParentBlueprint {
           ReportNamePrefix: 'AutoDiscovered',
           IncludePaths: ['**/*'],
           Enabled: true,
+          SuccessCriteria: {
+            PassRate: 100,
+            LineCoverage: 70,
+            BranchCoverage: 50,
+          },
         },
         Artifacts: [
           {
@@ -212,6 +224,7 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       steps: [
+        ...(this.options.runtime === 'Python 3' ? ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'] : []),
         '. ./.aws/scripts/setup-sam.sh',
         'sam build --template-file template.yaml',
         'cd .aws-sam/build/',
@@ -257,13 +270,11 @@ export class Blueprint extends ParentBlueprint {
     const runtime = runtimeOptions?.runtime;
     const gitSrcPath = runtimeOptions?.gitSrcPath;
 
-    cp.execSync(`svn checkout https://github.com/aws/aws-sam-cli-app-templates/trunk/${runtime}/${gitSrcPath}/\{\{cookiecutter.project_name\}\} ${sourceDir}; \
+    cp.execSync(`svn checkout https://github.com/aws/aws-sam-cli-app-templates/trunk/${runtime}/${gitSrcPath}/{{cookiecutter.project_name}} ${sourceDir}; \
       rm -rf ${sourceDir}/.svn ${sourceDir}/.gitignore ${sourceDir}/README.md ${sourceDir}/template.yaml`);
 
-    for (const lambda of [this.options.lambda?.functionName]) {
-      const newLambdaPath = path.join(this.repository.relativePath, lambda || '');
-      new SampleDir(this, newLambdaPath, { sourceDir });
-    }
+    const newLambdaPath = path.join(this.repository.relativePath, this.options.lambda?.functionName ?? '');
+    new SampleDir(this, newLambdaPath, { sourceDir });
     return sourceDir;
   }
 
@@ -279,6 +290,37 @@ unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
 
 ./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
 `,
+    });
+  }
+
+  protected addRequirementsDevTxt() {
+    new SampleFile(this, path.join(this.repository.relativePath, 'requirements-dev.txt'), {
+      contents: `pytest
+pytest-cov
+pytest-mock
+`,
+    });
+  }
+
+  protected addPythonBootstrapScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'bootstrap.sh'), {
+      contents: `#!/bin/bash
+
+VENV="venv"
+
+test -d $VENV || python3 -m venv $VENV || return
+$VENV/bin/pip install -r requirements-dev.txt
+
+. $VENV/bin/activate`,
+    });
+  }
+
+  protected addPytestTestScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'run-tests.sh'), {
+      contents: `#!/bin/bash
+
+echo "Running unit tests..."
+PYTHONPATH=${this.options.lambda?.functionName ?? '.'} pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. .`,
     });
   }
 
@@ -317,7 +359,7 @@ Globals:
 # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   ${lambda}Api:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/${lambda}/\"
+    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/${lambda}/"
   ${lambda}Function:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt ${lambda}Function.Arn
