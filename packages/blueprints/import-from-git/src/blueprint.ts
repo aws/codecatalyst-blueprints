@@ -75,7 +75,7 @@ export class Blueprint extends ParentBlueprint {
     } catch (e) {
       this.throwSynthesisError(
         new SynthError({
-          message: `The project can't be created because the repository you want to import ${this.giturl} was not found.`,
+          message: `The project can't be created because the repository you specified was not found at the URL you provided. Repository URL:  ${this.giturl}`,
           type: SynthErrorTypes.NotFoundError,
         }),
       );
@@ -89,7 +89,7 @@ export class Blueprint extends ParentBlueprint {
       if (repoSize > MAX_REPO_SIZE) {
         this.throwSynthesisError(
           new SynthError({
-            message: `The project can't be created because the repository you want to import exceeds the maximum size of ${max_repo_mb} MB. To use this repository, you'll need to create a project using another blueprint and then link the repository to that project. For more information, see the documentation`,
+            message: `The project can't be created because the Git repository you specified for import exceeds the maximum size allowed. Maximum size: ${max_repo_mb}. You can create a project using another blueprint, and then link the Git repository you wanted to import to that project. For more information, see the documentation.`,
             type: SynthErrorTypes.ValidationError,
           }),
         );
