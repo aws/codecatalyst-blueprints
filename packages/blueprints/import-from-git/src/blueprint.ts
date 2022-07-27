@@ -75,7 +75,7 @@ export class Blueprint extends ParentBlueprint {
     } catch (e) {
       this.throwSynthesisError(
         new SynthError({
-          message: `Repository ${this.giturl} not found`,
+          message: `The project can't be created because the repository you specified was not found at the URL you provided. Repository URL:  ${this.giturl}`,
           type: SynthErrorTypes.NotFoundError,
         }),
       );
@@ -89,7 +89,7 @@ export class Blueprint extends ParentBlueprint {
       if (repoSize > MAX_REPO_SIZE) {
         this.throwSynthesisError(
           new SynthError({
-            message: `Repository size is greater than max allowed of ${max_repo_mb} MB. Refer to the Importing Large Repositories section of the README for instructions on using repositories larger than ${max_repo_mb} MB on Quokka.Codes`,
+            message: `The project can't be created because the Git repository you specified for import exceeds the maximum size allowed. Maximum size: ${max_repo_mb}. You can create a project using another blueprint, and then link the Git repository you wanted to import to that project. For more information, see the documentation.`,
             type: SynthErrorTypes.ValidationError,
           }),
         );
