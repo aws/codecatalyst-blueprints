@@ -197,8 +197,8 @@ export class Blueprint extends ParentBlueprint {
         Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
         Connections: [
           {
-            Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
-            Role: this.options.environment.awsAccountConnection?.buildRole?.name || '<<PUT_YOUR_CONNECTION_BUILD_ROLE_NAME_HERE>>',
+            Name: this.options.environment.awsAccountConnection?.name || ' ',
+            Role: this.options.environment.awsAccountConnection?.buildRole?.name || ' ',
           },
         ],
       },
@@ -249,11 +249,11 @@ export class Blueprint extends ParentBlueprint {
         },
       },
       environment: {
-        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
+        Name: this.options.environment.name || ' ',
         Connections: [
           {
-            Name: this.options.environment.awsAccountConnection?.name || '<<PUT_YOUR_ACCOUNT_CONNECTION_NAME_HERE>>',
-            Role: this.options.environment.awsAccountConnection?.deployRole?.name || '<<PUT_YOUR_CONNECTION_DEPLOY_ROLE_NAME_HERE>>',
+            Name: this.options.environment.awsAccountConnection?.name || ' ',
+            Role: this.options.environment.awsAccountConnection?.deployRole?.name || ' ',
           },
         ],
       },
