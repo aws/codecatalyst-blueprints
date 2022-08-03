@@ -232,8 +232,6 @@ export class Blueprint extends ParentBlueprint {
     }>,
     workflow: WorkflowDefinition,
   ) {
-    const roleARN = environment.awsAccountConnection?.cdkRole?.arn || '<<PUT_YOUR_ROLE_ARN_HERE>>';
-    const accountId = environment.awsAccountConnection?.id || '<<PUT_YOUR_ACCOUNT_NUMBER_HERE>>';
     const actionName = `build_and_deploy_into_${environment.name}`;
 
     addGenericBranchTrigger(workflow, ['main']);
@@ -246,21 +244,16 @@ export class Blueprint extends ParentBlueprint {
       workflow,
       actionName,
       environment: {
-        Name: this.options.environment.name || ' ',
+        Name: this.options.environment.name || '',
         Connections: [
           {
-            Name: this.options.environment.awsAccountConnection?.name || ' ',
-            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || ' ',
+            Name: this.options.environment.awsAccountConnection?.name || '',
+            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || '',
           },
         ],
       },
       input: {
         Sources: ['WorkflowSource'],
-        Variables: {
-          CONNECTED_ACCOUNT_ID: accountId,
-          CONNECTED_ROLE_ARN: roleARN,
-          REGION: 'us-west-2',
-        },
       },
       output: {
         AutoDiscoverReports: {
@@ -272,19 +265,13 @@ export class Blueprint extends ParentBlueprint {
         Variables: ['CloudFrontURL'],
       },
       steps: [
-        // 'export awsAccountId=${CONNECTED_ACCOUNT_ID}',
-        // 'export roleArn=${CONNECTED_ROLE_ARN}',
-        // 'export region=${REGION}',
         'export PROJEN_DISABLE_POST=1',
-        // `mkdir -p ./${this.reactFolderName}/build && touch ./${this.reactFolderName}/build/.keep`,
-        `cd ./${this.nodeFolderName} && npm install && npm run build`,
+        'root=$(pwd)',
+        `cd $root/${this.nodeFolderName} && npm install && npm run build`,
         'npx cdk bootstrap',
-        // 'npx cdk bootstrap aws://${CONNECTED_ACCOUNT_ID}/us-west-2',
         'npm run deploy:copy-config',
-        'cd ..',
-        `cd ./${this.reactFolderName} && npm install && npm run build`,
-        'cd ..',
-        `cd ./${this.nodeFolderName}`,
+        `cd $root/${this.reactFolderName} && npm install && npm run build`,
+        `cd $root/${this.nodeFolderName}`,
         `npx cdk deploy ${this.frontendStackName} --require-approval never --outputs-file config.json`,
 
         // this step is a hack to get the cloudfront url from the cdk output
