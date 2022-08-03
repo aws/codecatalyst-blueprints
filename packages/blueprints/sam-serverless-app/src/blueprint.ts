@@ -30,7 +30,7 @@ export interface Options extends ParentOptions {
   /**
    * @displayName Runtime Language
    */
-  runtime: 'Python 3' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
+  runtime: 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
 
   /**
    * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
@@ -168,11 +168,11 @@ export class Blueprint extends ParentBlueprint {
     const { name } = params;
     this.addSamInstallScript();
 
-    if (this.options.runtime === 'Python 3') {
-      this.addRequirementsDevTxt();
-      this.addPythonBootstrapScript();
-      this.addPytestTestScript();
-    }
+    // if (this.options.runtime === 'Python 3') {
+    //   this.addRequirementsDevTxt();
+    //   this.addPythonBootstrapScript();
+    //   this.addPytestTestScript();
+    // }
 
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
@@ -224,7 +224,7 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       steps: [
-        ...(this.options.runtime === 'Python 3' ? ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'] : []),
+        // ...(this.options.runtime === 'Python 3' ? ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'] : []),
         '. ./.aws/scripts/setup-sam.sh',
         'sam build --template-file template.yaml',
         'cd .aws-sam/build/',
