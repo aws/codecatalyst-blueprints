@@ -47,7 +47,7 @@ export const createFrontend = (
   new SourceFile(repository, `${folder}/.env`, 'SKIP_PREFLIGHT_CHECK=true');
 
   // Need to create a /build directory with an empty .keep file
-  new SourceFile(repository, `${folder}/build/.keep`, '');
+  new SourceFile(repository, `${folder}/build/.keep`, '   ');
 
   // update the index.tsx file to include the replacement app
   new SourceFile(repository, `${folder}/src/App.tsx`, createReplacementFrontend(stackName, lambdas));
