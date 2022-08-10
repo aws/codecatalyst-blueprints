@@ -89,7 +89,7 @@ export class Blueprint extends ParentBlueprint {
       if (repoSize > MAX_REPO_SIZE) {
         this.throwSynthesisError(
           new SynthError({
-            message: `The project can't be created because the Git repository you specified for import exceeds the maximum size allowed. Maximum size: ${max_repo_mb}. You can create a project using another blueprint, and then link the Git repository you wanted to import to that project. For more information, see the documentation.`,
+            message: `The project can't be created because the Git repository you specified for import exceeds the maximum size allowed. Maximum size: ${max_repo_mb} MB. You can create a project using another blueprint, and then link the Git repository you wanted to import to that project.`,
             type: SynthErrorTypes.ValidationError,
           }),
         );
