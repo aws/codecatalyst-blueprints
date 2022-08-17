@@ -118,6 +118,7 @@ export class Blueprint extends ParentBlueprint {
       runtime: defaults.runtime as Options['runtime'],
     };
     const options = Object.assign(typeCheck, options_);
+    options.code.sourceRepositoryName = sanatizePath(options.code.sourceRepositoryName);
     this.options = options;
 
     this.repository = new SourceRepository(this, {
@@ -372,4 +373,12 @@ Globals:
     const template = header + resources + '\n' + outputs;
     new SampleFile(this, destinationPath, { contents: template });
   }
+}
+/**
+ * removes all '.' '/' and ' ' characters
+ * @param path
+ * @returns
+ */
+function sanatizePath(path: string) {
+  return path.replace(/\.|\/| /g, '');
 }

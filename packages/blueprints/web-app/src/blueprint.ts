@@ -124,6 +124,9 @@ export class Blueprint extends ParentBlueprint {
       ...defaults,
     };
     const options = Object.assign(typeCheck, options_);
+    options.webappOptions.repositoryName = sanatizePath(options.webappOptions.repositoryName);
+    options.webappOptions.nodeFolderName = sanatizePath(options.webappOptions.nodeFolderName);
+    options.webappOptions.reactFolderName = sanatizePath(options.webappOptions.reactFolderName);
     this.options = options;
 
     const { repositoryName, reactFolderName, nodeFolderName } = options.webappOptions;
@@ -287,4 +290,13 @@ export class Blueprint extends ParentBlueprint {
     }
     return str.slice(0, -(stringLength - maxLength)) + suffix;
   }
+}
+
+/**
+ * removes all '.' '/' and ' ' characters
+ * @param path
+ * @returns
+ */
+function sanatizePath(path: string) {
+  return path.replace(/\.|\/| /g, '');
 }
