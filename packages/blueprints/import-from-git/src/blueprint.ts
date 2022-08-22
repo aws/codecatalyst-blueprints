@@ -7,6 +7,7 @@ import {
   Options as ParentOptions,
   BlueprintSynthesisError as SynthError,
   BlueprintSynthesisErrorTypes as SynthErrorTypes,
+  BlueprintSynthesisErrorTypes,
 } from '@caws-blueprint/blueprints.blueprint';
 
 import defaults from './defaults.json';
@@ -26,7 +27,7 @@ const MAX_REPO_SIZE = max_repo_mb * (1024 * 1024);
 export interface Options extends ParentOptions {
   /**
    * Which Git repository do we clone? This should be a https URL.
-   * @validationRegex /^https://[a-zA-Z0-9_/.-]+$/
+   * @validationRegex /^https:\/\/[a-zA-Z0-9_\/.-]+$/
    * @validationMessage Git repository URL must start with https:// and contain only alphanumeric characters, dashes (-), periods (.), underscores, and forward slashes (/).
    */
   gitRepository: string;
@@ -51,6 +52,16 @@ export class Blueprint extends ParentBlueprint {
       ...defaults,
     };
     const options = Object.assign(typeCheck, options_);
+
+    //Do regex check that import-from-git input is a http: url
+    //^https:\/\/[a-zA-Z0-9_\/.-]+$
+    const httpRegex = new RegExp(/^https:\/\/[a-zA-Z0-9_\/.-]+$/);
+    if (!httpRegex.test(options.gitRepository)) {
+      this.throwSynthesisError({
+        name: BlueprintSynthesisErrorTypes.ValidationError,
+        message: 'Invalid input',
+      });
+    }
 
     const gitRepositoryName = options.gitRepository.split('/').pop()?.replace('.git', '');
     console.log(gitRepositoryName);
