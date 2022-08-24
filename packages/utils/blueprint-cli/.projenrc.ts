@@ -22,6 +22,7 @@ const project = new ProjenBlueprintComponent({
   bin: {
     blueprint: 'lib/index.js',
   },
+  jest: true,
 });
 
 project.synth();
