@@ -1,3 +1,4 @@
+import { JsDoc } from './extract-js-doc';
 import {
   handleArrayType,
   handleBooleanKeyword,
@@ -9,12 +10,7 @@ import {
   handleTypeLiteral,
   handleTypeReference,
   handleUnionType,
-} from './handleDeclaration';
-
-export interface JsDoc {
-  description?: string;
-  tags?: { [key: string]: string };
-}
+} from './handle-declaration';
 
 export interface Node {
   /**
@@ -33,7 +29,14 @@ export interface Node {
   name: string;
 
   /**
-   * Default value of the node (if there is one)
+   * jmesPath expression to the location of this element in a standard JSON representation of the underlying type
+   * See: https://jmespath.org/
+   */
+  path: string;
+
+  /**
+   * The value this node has taken
+   * Typically this does not come from the AST (except for literal types)
    */
   value?: string;
 
@@ -43,7 +46,7 @@ export interface Node {
 }
 
 export const extractProperties = (
-  ast_: any,
+  ast_: string,
   options?: {
     /**
      * The type of the type we're looking for
@@ -68,7 +71,7 @@ export const extractProperties = (
   (ast.statements || []).forEach((statement: any) => {
     if (statement.kind == search.searchType && statement.name?.escapedText == search.searchName) {
       // Found the AST entry property we're looking for
-      const node = convertToNode(statement);
+      const node = convertToNode(statement, '');
       node && nodes.push(node);
     }
   });
@@ -97,30 +100,30 @@ export enum SupportedTypes {
   'LiteralType' = 'LiteralType',
 }
 
-export const convertToNode = (property: any): Node => {
+export const convertToNode = (property: any, path: string): Node => {
   // attempt to get the type of the node
   const nodeType = property.type?.kind || property.kind;
   switch (nodeType) {
     case SupportedTypes.InterfaceDeclaration:
-      return handleInterfaceDeclaration(property);
+      return handleInterfaceDeclaration(property, path);
     case SupportedTypes.TypeLiteral:
-      return handleTypeLiteral(property);
+      return handleTypeLiteral(property, path);
     case SupportedTypes.TypeReference:
-      return handleTypeReference(property);
+      return handleTypeReference(property, path);
     case SupportedTypes.StringKeyword:
-      return handleStringKeyword(property);
+      return handleStringKeyword(property, path);
     case SupportedTypes.NumberKeyword:
-      return handleNumberKeyword(property);
+      return handleNumberKeyword(property, path);
     case SupportedTypes.UnionType:
-      return handleUnionType(property);
+      return handleUnionType(property, path);
     case SupportedTypes.ArrayType:
-      return handleArrayType(property);
+      return handleArrayType(property, path);
     case SupportedTypes.BooleanKeyword:
-      return handleBooleanKeyword(property);
+      return handleBooleanKeyword(property, path);
     case SupportedTypes.TupleType:
-      return handleTupleType(property);
+      return handleTupleType(property, path);
     case SupportedTypes.LiteralType:
-      return handleLiteralType(property);
+      return handleLiteralType(property, path);
     default:
       throw `unsupported kind ${property.kind}; ${JSON.stringify(property)}`;
       break;
