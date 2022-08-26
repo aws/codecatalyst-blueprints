@@ -28,7 +28,7 @@ describe('Basic AST type property extraction', () => {
 
       const item = extraction[0].members![0];
       expect(item.kind).toBe(SupportedKind.StringKeyword);
-      expect(item.name).toBe('stringfield');
+      expect(item.name).toBe('stringInput');
       expect(item.path).toBe(item.name);
     });
   });

@@ -1,5 +1,3 @@
-// import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
-// import * as astStringArray from '../asts/arrays/ast-array-string.json';
 import * as astNestedObject from '../asts/objects/ast-object-nested.json';
 import * as astTupleLiteral from '../asts/objects/ast-tuple-literial.json';
 import * as astTupleStringNumber from '../asts/objects/ast-tuple-string-number.json';
