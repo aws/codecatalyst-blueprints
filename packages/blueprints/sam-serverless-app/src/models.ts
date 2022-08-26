@@ -1,3 +1,5 @@
+import { WriteFileOptions } from 'projen/lib/util';
+
 export interface RuntimeMapping {
   runtime: string;
   codeUri: string;
@@ -12,6 +14,7 @@ export interface RuntimeMapping {
   stepsToRunUnitTests: Array<string>;
   filesToCreate: Array<FileTemplate>;
   filesToOverride: Array<FileTemplate>;
+  filesToChangePermissionsFor: Array<FilePermissionChange>;
 }
 
 export interface FileTemplate {
@@ -22,6 +25,11 @@ export interface FileTemplate {
 export interface FileTemplateContext {
   repositoryRelativePath: string;
   lambdaFunctionName: string;
+}
+
+export interface FilePermissionChange {
+  resolvePath: (context: FileTemplateContext) => string;
+  newPermissions: WriteFileOptions;
 }
 
 /**

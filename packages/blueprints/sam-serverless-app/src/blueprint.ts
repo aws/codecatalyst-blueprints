@@ -19,7 +19,8 @@ import * as path from 'path';
 import { runtimeMappings } from './runtimeMappings';
 import dedent from 'dedent';
 import { FileTemplate, FileTemplateContext } from './models';
-import { writeFile } from 'projen/lib/util';
+import { getFilePermissions, writeFile } from 'projen/lib/util';
+import * as fs from 'fs';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -184,8 +185,19 @@ export class Blueprint extends ParentBlueprint {
       gitSrcPath: runtimeOptions.gitSrcPath,
       filesToOverride: runtimeOptions.filesToOverride,
     });
+
     super.synth();
+
     cp.execSync(`rm -rf ${toDeletePath}`);
+
+    // update permissions
+    const permissionChangeContext: FileTemplateContext = {
+      repositoryRelativePath: path.join(this.outdir, this.repository.relativePath),
+      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+    };
+    for (const filePermissionChange of runtimeOptions.filesToChangePermissionsFor) {
+      fs.chmodSync(filePermissionChange.resolvePath(permissionChangeContext), getFilePermissions(filePermissionChange.newPermissions));
+    }
   }
 
   createWorkflow(params: { name: string; outputArtifactName: string; stepsToRunUnitTests: Array<string> }): void {
@@ -293,12 +305,12 @@ export class Blueprint extends ParentBlueprint {
       rm -rf ${sourceDir}/.svn ${sourceDir}/.gitignore ${sourceDir}/README.md ${sourceDir}/template.yaml`);
 
     // override any files that need to be overridden
-    const context: FileTemplateContext = {
+    const overrideContext: FileTemplateContext = {
       repositoryRelativePath: sourceDir,
       lambdaFunctionName: this.options.lambda?.functionName ?? '.',
     };
     for (const fileTemplate of params.filesToOverride) {
-      writeFile(fileTemplate.resolvePath(context), fileTemplate.resolveContent(context));
+      writeFile(fileTemplate.resolvePath(overrideContext), fileTemplate.resolveContent(overrideContext));
     }
 
     // copy the lambda to the new path

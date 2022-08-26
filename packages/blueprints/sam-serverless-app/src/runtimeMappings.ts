@@ -21,6 +21,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       stepsToRunUnitTests: [],
       filesToCreate: [],
       filesToOverride: [],
+      filesToChangePermissionsFor: [],
     },
   ],
   [
@@ -46,10 +47,9 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           resolveContent(context: FileTemplateContext): string {
             return dedent`#!/usr/bin/env bash
 
-                          cd ${context.lambdaFunctionName}/HelloWorldFunction
-
                           echo "Running unit tests..."
-                          ./gradlew test`;
+                          GRADLE_DIR=${context.lambdaFunctionName}/HelloWorldFunction
+                          ./$GRADLE_DIR/gradlew test -p $GRADLE_DIR`;
           },
         },
       ],
@@ -97,6 +97,14 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           },
         },
       ],
+      filesToChangePermissionsFor: [
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, context.lambdaFunctionName, 'HelloWorldFunction', 'gradlew');
+          },
+          newPermissions: { executable: true },
+        },
+      ],
     },
   ],
   [
@@ -116,6 +124,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       stepsToRunUnitTests: [],
       filesToCreate: [],
       filesToOverride: [],
+      filesToChangePermissionsFor: [],
     },
   ],
   [
@@ -172,6 +181,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
         },
       ],
       filesToOverride: [],
+      filesToChangePermissionsFor: [],
     },
   ],
 ]);
