@@ -30,6 +30,7 @@
   "devDependencies": {
     "@caws-blueprint-util/projen-blueprint-component": "*",
     "@types/jest": "26.0.24",
+    "@types/jmespath": "*",
     "@types/node": "^14",
     "@types/pino": "^6.3.12",
     "@types/yargs": "17.0.8",
@@ -53,6 +54,7 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "jmespath": "*",
     "pino": "^6.13.4",
     "pino-pretty": "^4.8.0",
     "ts-node": "^10.5.0",

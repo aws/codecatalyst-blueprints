@@ -19,17 +19,17 @@ export interface Node {
   kind: SupportedTypes;
 
   /**
-   * The underlying type information
+   * The underlying type information. Typically is or is a specification on the kind.
    */
   type: string;
 
   /**
-   * The name of the node in the interface
+   * The name of the node in the interface. Not all types have names, e.g. inline types
    */
-  name: string;
+  name?: string;
 
   /**
-   * jmesPath expression to the location of this element in a standard JSON representation of the underlying type
+   * jmesPath expression to the location of this element in a valid JSON representation of the underlying type
    * See: https://jmespath.org/
    */
   path: string;

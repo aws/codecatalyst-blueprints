@@ -22,15 +22,15 @@ export const handleArrayType = (property, path: string): Node => {
 
 export const handleTupleType = (property, path: string): Node => {
   const node: Node = {
-    kind: property.kind,
-    type: property.kind,
+    kind: property.type?.kind || property.kind,
+    type: property.type?.kind || property.kind,
     name: property.name?.escapedText,
     optional: property.questionToken ?? false,
     jsDoc: extractJsdoc(property.jsDoc),
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
 
-  node.members = (property.elements || []).map(element => convertToNode(element, path));
+  node.members = (property.elements || property.type?.elements || []).map((element, index) => convertToNode(element, `${node.path}[${index}]`));
   return node;
 };
 

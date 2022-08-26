@@ -9,6 +9,10 @@
       "type": "build"
     },
     {
+      "name": "@types/jmespath",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14",
       "type": "build"
@@ -98,6 +102,10 @@
     },
     {
       "name": "axios",
+      "type": "runtime"
+    },
+    {
+      "name": "jmespath",
       "type": "runtime"
     },
     {

@@ -198,7 +198,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @caws-blueprint-util/projen-blueprint-component @types/jest @types/node @types/pino @types/yargs @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates pino-pretty standard-version ts-jest ts-loader ts-node typescript axios pino pino-pretty ts-node typescript yargs"
+          "exec": "yarn upgrade @caws-blueprint-util/projen-blueprint-component @types/jest @types/jmespath @types/node @types/pino @types/yargs @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates pino-pretty standard-version ts-jest ts-loader ts-node typescript axios jmespath pino pino-pretty ts-node typescript yargs"
         },
         {
           "exec": "npx projen"

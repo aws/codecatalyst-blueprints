@@ -18,9 +18,7 @@ export const extractJsdoc = (jsDocs: any[]): JsDoc | undefined => {
         documentation.lines.push(docElement.comment);
       }
       (docElement.tags || []).forEach(tag => {
-        const name = tag.tagName?.escapedText;
-        const comment = tag.comment;
-        documentation.tags[name] = comment;
+        documentation.tags[tag.tagName!.escapedText] = tag.comment;
       });
     }
   });

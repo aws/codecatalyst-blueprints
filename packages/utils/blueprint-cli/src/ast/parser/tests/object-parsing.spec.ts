@@ -1,56 +1,135 @@
-import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
-import * as astStringArray from '../asts/arrays/ast-array-string.json';
+// import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
+// import * as astStringArray from '../asts/arrays/ast-array-string.json';
+import * as astNestedObject from '../asts/objects/ast-object-nested.json';
+import * as astTupleLiteral from '../asts/objects/ast-tuple-literial.json';
+import * as astTupleStringNumber from '../asts/objects/ast-tuple-string-number.json';
+import * as astTypeReference from '../asts/objects/ast-typereference.json';
 
 import { extractProperties, SupportedTypes } from '../parser';
 
-describe('Arrays AST type property extraction', () => {
-  describe('String Array AST', () => {
+describe('Object AST type property extraction', () => {
+  describe('Nested Object AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astStringArray));
+      const extraction = extractProperties(JSON.stringify(astNestedObject));
       expect(extraction[0].members?.length).toBe(1);
-      const item = extraction[0].members![0];
-      expect(item.kind).toBe(SupportedTypes.ArrayType);
-      expect(item.type).toBe('StringKeyword');
-      expect(item.name).toBe('stringArray');
-      expect(item.path).toBe('stringArray[*]');
-      expect(item.jsDoc).toBeDefined();
 
-      expect(item.members?.length).toBe(1);
-      expect(item.members![0].kind).toBe(SupportedTypes.StringKeyword);
-      expect(item.members![0].path).toBe('stringArray[*]');
-      expect(item.members![0].jsDoc).toBeDefined();
+      const item = extraction[0].members![0];
+      expect(item.kind).toBe(SupportedTypes.TypeLiteral);
+      expect(item.name).toBe('nested');
+      expect(item.path).toBe(item.name);
+      expect(item.members?.length).toBe(4);
+
+      //expect the last member to be yet another nested element
+      const lastElement = item.members![3];
+      expect(lastElement.kind).toBe(SupportedTypes.TypeLiteral);
+      expect(lastElement.name).toBe('nestedNest');
+      expect(lastElement.path).toBe([item.path, lastElement.name].join('.'));
+      expect(lastElement.members?.length).toBe(2);
+
+      const subNestedString = lastElement.members![0];
+      expect(subNestedString.kind).toBe(SupportedTypes.StringKeyword);
+      expect(subNestedString.name).toBe('stringField');
+      expect(lastElement.path).toBe([lastElement.path, subNestedString.name].join('.'));
     });
   });
 
-  describe('Complex Array AST', () => {
+  describe('String Tuple of literials AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astComplexArray));
+      const extraction = extractProperties(JSON.stringify(astTupleLiteral));
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];
-
-      expect(item.kind).toBe(SupportedTypes.ArrayType);
-      expect(item.type).toBe(SupportedTypes.TypeLiteral);
-      expect(item.name).toBe('complexArray');
+      expect(item.kind).toBe(SupportedTypes.TupleType);
+      expect(item.name).toBe('literialTuple');
+      expect(item.path).toBe(item.name);
       expect(item.jsDoc).toBeDefined();
-      expect(item.path).toBe('complexArray[*]');
-      expect(item.members?.length).toBe(1);
+      expect(item.members?.length).toBe(2);
 
-      const arrayType = item.members![0];
-      expect(arrayType.kind).toBe(SupportedTypes.TypeLiteral);
-      expect(arrayType.jsDoc).toBe(item.jsDoc);
+      for (const element of item.members!) {
+        expect(element.kind).toBe(SupportedTypes.LiteralType);
+        expect(element.type).toBe('StringLiteral');
+        expect(element.value).toBeDefined();
+      }
+    });
+  });
 
-      expect(arrayType.members?.length).toBe(2);
+  describe.only('Tuple of objects AST', () => {
+    it('should have the expected properties on the first member', () => {
+      const extraction = extractProperties(JSON.stringify(astTupleStringNumber));
+      expect(extraction[0].members?.length).toBe(1);
 
-      const stringfield = arrayType.members![0]!;
-      expect(stringfield.kind).toBe(SupportedTypes.StringKeyword);
-      expect(stringfield.name).toBe('aStringField');
-      expect(stringfield.path).toBe('complexArray[*].aStringField');
+      const item = extraction[0].members![0];
+      console.log(item);
+      expect(item.kind).toBe(SupportedTypes.TupleType);
+      expect(item.name).toBe('stringNumberTuple');
+      expect(item.path).toBe(item.name);
+      expect(item.jsDoc).toBeDefined();
+      expect(item.members?.length).toBe(2);
 
-      const numberfield = arrayType.members![1];
-      expect(numberfield.kind).toBe(SupportedTypes.NumberKeyword);
-      expect(numberfield.name).toBe('aNumberField');
-      expect(numberfield.path).toBe('complexArray[*].aNumberField');
+      const stringElement = item.members![0];
+      expect(stringElement.kind).toBe(SupportedTypes.StringKeyword);
+      expect(stringElement.type).toBe(SupportedTypes.StringKeyword);
+      expect(stringElement.name).toBe(undefined);
+      expect(stringElement.path).toBe('stringNumberTuple[0]');
+
+      const numberElement = item.members![1];
+      expect(numberElement.kind).toBe(SupportedTypes.NumberKeyword);
+      expect(numberElement.type).toBe(SupportedTypes.NumberKeyword);
+      expect(stringElement.name).toBe(undefined);
+      expect(stringElement.path).toBe('stringNumberTuple[0]');
+    });
+  });
+
+  describe.only('Tuple of objects AST', () => {
+    it('should have the expected properties on the first member', () => {
+      const extraction = extractProperties(JSON.stringify(astTupleStringNumber));
+      expect(extraction[0].members?.length).toBe(1);
+
+      const item = extraction[0].members![0];
+      expect(item.kind).toBe(SupportedTypes.TupleType);
+      expect(item.name).toBe('stringNumberTuple');
+      expect(item.path).toBe(item.name);
+      expect(item.jsDoc).toBeDefined();
+      expect(item.members?.length).toBe(2);
+
+      const stringElement = item.members![0];
+      expect(stringElement.kind).toBe(SupportedTypes.StringKeyword);
+      expect(stringElement.type).toBe(SupportedTypes.StringKeyword);
+      expect(stringElement.name).toBe(undefined);
+      expect(stringElement.path).toBe('stringNumberTuple[0]');
+
+      const numberElement = item.members![1];
+      expect(numberElement.kind).toBe(SupportedTypes.NumberKeyword);
+      expect(numberElement.type).toBe(SupportedTypes.NumberKeyword);
+      expect(stringElement.name).toBe(undefined);
+      expect(stringElement.path).toBe('stringNumberTuple[0]');
+    });
+  });
+
+  describe.only('Typereference object AST', () => {
+    it('should have the expected properties on the first member', () => {
+      const extraction = extractProperties(JSON.stringify(astTypeReference));
+      expect(extraction[0].members?.length).toBe(1);
+
+      const item = extraction[0].members![0];
+      console.log(item);
+      // expect(item.kind).toBe(SupportedTypes.TupleType);
+      // expect(item.name).toBe('stringNumberTuple');
+      // expect(item.path).toBe(item.name);
+      // expect(item.jsDoc).toBeDefined();
+      // expect(item.members?.length).toBe(2);
+
+      // const stringElement = item.members![0];
+      // expect(stringElement.kind).toBe(SupportedTypes.StringKeyword);
+      // expect(stringElement.type).toBe(SupportedTypes.StringKeyword);
+      // expect(stringElement.name).toBe(undefined);
+      // expect(stringElement.path).toBe('stringNumberTuple[0]');
+
+      // const numberElement = item.members![1];
+      // expect(numberElement.kind).toBe(SupportedTypes.NumberKeyword);
+      // expect(numberElement.type).toBe(SupportedTypes.NumberKeyword);
+      // expect(stringElement.name).toBe(undefined);
+      // expect(stringElement.path).toBe('stringNumberTuple[0]');
     });
   });
 });
