@@ -50,17 +50,27 @@ describe('Verifies that properties on an AST pass the @validation regex', () => 
   });
 
   describe('Example blueprint frontend-showcase', () => {
-    it('should have no errors', () => {
+    it('should have one warning message and one error message', () => {
       const errors = validateOptions(JSON.stringify(astShowcase), astShowcaseDefaults);
-      console.log(errors);
-      expect(errors.length).toBe(0);
+
+      // should have one warning about could not find element
+      expect(errors.length).toBe(2);
+
+      // there's no value for a possibly empty object
+      expect(errors[0].level).toBe('WARNING');
+      expect(errors[0].location).toBe('nestedArea.emptyInput');
+      expect(errors[0].validationMessage).toBe('Could not find an element at nestedArea.emptyInput');
+
+      // there's no validation message on a string array
+      expect(errors[1].level).toBe('ERROR');
+      expect(errors[1].location).toBe('stringListInput[*]');
+      expect(errors[1].validationMessage).toBe('StringKeyword at stringListInput[*] should have a @validationRegex annotation.');
     });
   });
 
   describe('Example blueprint web app', () => {
     it('should have no errors', () => {
       const errors = validateOptions(JSON.stringify(astWebApp), astWebAppDefaults);
-      console.log(errors);
       expect(errors.length).toBe(0);
     });
   });
