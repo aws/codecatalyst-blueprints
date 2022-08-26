@@ -1,7 +1,7 @@
-import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
-import * as astStringArray from '../asts/arrays/ast-array-string.json';
+// import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
+// import * as astStringArray from '../asts/arrays/ast-array-string.json';
 
-import { extractProperties, SupportedTypes } from '../parser';
+// import { extractProperties, SupportedKind } from '../parser';
 
 describe('Verifies that properties on an AST pass the @validation regex', () => {
   describe('Strings that pass validation', () => {

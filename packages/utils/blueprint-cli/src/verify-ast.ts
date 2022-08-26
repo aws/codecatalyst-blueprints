@@ -1,5 +1,5 @@
 import * as jmesPath from 'jmespath';
-import { extractProperties, Node, SupportedTypes } from './ast/parser/parser';
+import { extractProperties, Node, SupportedKind } from './ast/parser/parser';
 import { walk } from './ast/parser/walk';
 
 export interface ValiationError {
@@ -69,12 +69,12 @@ function validateNode(node: Node, value: any, regex: string): ValiationError | u
   // The types that we support regex validation over
   if (
     // support regex validation on string
-    node.kind == SupportedTypes.StringKeyword ||
+    node.kind == SupportedKind.StringKeyword ||
     // support regex validation on string[]
-    (node.kind == SupportedTypes.ArrayType && node.type == SupportedTypes.StringKeyword)
+    (node.kind == SupportedKind.ArrayType && node.type == SupportedKind.StringKeyword)
   ) {
     const elements = [];
-    if (node.kind == SupportedTypes.StringKeyword) {
+    if (node.kind == SupportedKind.StringKeyword) {
       if (!new RegExp(regex).test(value)) {
         return {
           ...error,

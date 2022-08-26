@@ -16,7 +16,7 @@ export interface Node {
   /**
    * The kind of AST Node
    */
-  kind: SupportedTypes;
+  kind: SupportedKind;
 
   /**
    * The underlying type information. Typically is or is a specification on the kind.
@@ -52,7 +52,7 @@ export const extractProperties = (
      * The type of the type we're looking for
      * e.g. 'InterfaceDeclaration'
      */
-    searchType?: SupportedTypes;
+    searchType?: SupportedKind;
     /**
      * The name of the type we;re looking for
      * e.g. 'Options'
@@ -61,7 +61,7 @@ export const extractProperties = (
   },
 ): Node[] => {
   const search = {
-    searchType: SupportedTypes.InterfaceDeclaration.toString(),
+    searchType: SupportedKind.InterfaceDeclaration.toString(),
     searchName: 'Options',
     ...options,
   };
@@ -79,14 +79,10 @@ export const extractProperties = (
   return nodes;
 };
 
-// export const joinDefaults = (ast: any, defaults: any): Node[] => {
-//   return [];
-// };
-
 /**
  * Types we've build parsing support for
  */
-export enum SupportedTypes {
+export enum SupportedKind {
   'InterfaceDeclaration' = 'InterfaceDeclaration',
 
   'TypeLiteral' = 'TypeLiteral',
@@ -104,29 +100,27 @@ export const convertToNode = (property: any, path: string): Node => {
   // attempt to get the type of the node
   const nodeType = property.type?.kind || property.kind;
   switch (nodeType) {
-    case SupportedTypes.InterfaceDeclaration:
+    case SupportedKind.InterfaceDeclaration:
       return handleInterfaceDeclaration(property, path);
-    case SupportedTypes.TypeLiteral:
+    case SupportedKind.TypeLiteral:
       return handleTypeLiteral(property, path);
-    case SupportedTypes.TypeReference:
+    case SupportedKind.TypeReference:
       return handleTypeReference(property, path);
-    case SupportedTypes.StringKeyword:
+    case SupportedKind.StringKeyword:
       return handleStringKeyword(property, path);
-    case SupportedTypes.NumberKeyword:
+    case SupportedKind.NumberKeyword:
       return handleNumberKeyword(property, path);
-    case SupportedTypes.UnionType:
+    case SupportedKind.UnionType:
       return handleUnionType(property, path);
-    case SupportedTypes.ArrayType:
+    case SupportedKind.ArrayType:
       return handleArrayType(property, path);
-    case SupportedTypes.BooleanKeyword:
+    case SupportedKind.BooleanKeyword:
       return handleBooleanKeyword(property, path);
-    case SupportedTypes.TupleType:
+    case SupportedKind.TupleType:
       return handleTupleType(property, path);
-    case SupportedTypes.LiteralType:
+    case SupportedKind.LiteralType:
       return handleLiteralType(property, path);
     default:
       throw `unsupported kind ${property.kind}; ${JSON.stringify(property)}`;
-      break;
   }
-  return {} as Node;
 };

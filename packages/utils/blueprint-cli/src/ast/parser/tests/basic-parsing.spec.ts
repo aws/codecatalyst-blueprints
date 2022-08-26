@@ -4,7 +4,7 @@ import * as astNumber from '../asts/basic/ast-number.json';
 import * as astString from '../asts/basic/ast-string.json';
 import * as astUnion from '../asts/basic/ast-union.json';
 
-import { extractProperties, SupportedTypes } from '../parser';
+import { extractProperties, SupportedKind } from '../parser';
 
 describe('Basic AST type property extraction', () => {
   describe('Boolean AST', () => {
@@ -14,7 +14,7 @@ describe('Basic AST type property extraction', () => {
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];
-      expect(item.kind).toBe(SupportedTypes.BooleanKeyword);
+      expect(item.kind).toBe(SupportedKind.BooleanKeyword);
       expect(item.name).toBe('trueCheckbox');
       expect(item.path).toBe(item.name);
     });
@@ -27,7 +27,7 @@ describe('Basic AST type property extraction', () => {
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];
-      expect(item.kind).toBe(SupportedTypes.StringKeyword);
+      expect(item.kind).toBe(SupportedKind.StringKeyword);
       expect(item.name).toBe('stringfield');
       expect(item.path).toBe(item.name);
     });
@@ -39,7 +39,7 @@ describe('Basic AST type property extraction', () => {
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];
-      expect(item.kind).toBe(SupportedTypes.NumberKeyword);
+      expect(item.kind).toBe(SupportedKind.NumberKeyword);
       expect(item.name).toBe('numberfield');
       expect(item.path).toBe(item.name);
 
@@ -53,7 +53,7 @@ describe('Basic AST type property extraction', () => {
       expect(extraction[0].members?.length).toBe(1);
       const item = extraction[0].members![0];
       // console.log(item);
-      expect(item.kind).toBe(SupportedTypes.LiteralType);
+      expect(item.kind).toBe(SupportedKind.LiteralType);
       expect(item.name).toBe('literial');
       expect(item.path).toBe(item.name);
       expect(item.jsDoc).toBeDefined();
@@ -66,13 +66,13 @@ describe('Basic AST type property extraction', () => {
       expect(extraction[0].members?.length).toBe(1);
 
       const union = extraction[0].members![0];
-      expect(union.kind).toBe(SupportedTypes.UnionType);
+      expect(union.kind).toBe(SupportedKind.UnionType);
       expect(union.name).toBe('unionfield');
       expect(union.path).toBe(union.name);
 
       expect(union.members?.length).toBe(3);
       for (const member of union.members!) {
-        expect(member.kind).toBe(SupportedTypes.LiteralType);
+        expect(member.kind).toBe(SupportedKind.LiteralType);
         expect(member.jsDoc).toBeUndefined();
       }
 

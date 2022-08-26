@@ -1,12 +1,16 @@
 import { extractJsdoc } from './extract-js-doc';
 import { convertToNode, Node } from './parser';
 
+const isOptional = (property): boolean => {
+  return property.questionToken ? true : false;
+};
+
 export const handleArrayType = (property, path: string): Node => {
   const node: Node = {
     kind: property.type?.kind,
     type: property.type?.elementType?.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: `${[path, property.name?.escapedText].filter(i => i?.length).join('.')}[*]`,
   };
@@ -25,7 +29,7 @@ export const handleTupleType = (property, path: string): Node => {
     kind: property.type?.kind || property.kind,
     type: property.type?.kind || property.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
@@ -49,7 +53,7 @@ export const handleLiteralType = (property, path: string): Node => {
       type: property.literal?.kind,
       name: property.name?.escapedText,
       value: property.literal?.text,
-      optional: property.questionToken ?? false,
+      optional: isOptional(property),
       jsDoc: extractJsdoc(property.jsDoc),
       path,
     };
@@ -64,7 +68,7 @@ export const handleInterfaceDeclaration = (property, path: string): Node => {
     kind: property.kind,
     type: property.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: path,
   };
@@ -77,7 +81,7 @@ export const handleTypeReference = (property, path: string): Node => {
     kind: property.type?.kind,
     type: property.type?.typeName?.escapedText,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
@@ -93,7 +97,7 @@ export const handleUnionType = (property, path: string): Node => {
     kind: property.type?.kind,
     type: property.type?.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
@@ -112,7 +116,7 @@ export const handleTypeLiteral = (property, path: string): Node => {
     kind: property.type?.kind || property.kind,
     type: property.type?.kind || property.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
@@ -126,7 +130,7 @@ export const handleStringKeyword = (property, path: string): Node => {
     kind: property.type?.kind || property.kind,
     type: property.type?.kind || property.kind,
     name: property.name?.escapedText,
-    optional: property.questionToken ?? false,
+    optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
     path: '',
   };
