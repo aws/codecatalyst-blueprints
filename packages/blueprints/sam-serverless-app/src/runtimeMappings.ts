@@ -1,7 +1,7 @@
 import { java11, python36, nodejs14 } from './templateContents';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
-import dedent from 'dedent';
+import dedent from 'ts-dedent';
 
 export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
   [

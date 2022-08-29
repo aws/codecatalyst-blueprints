@@ -171,7 +171,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @caws-blueprint-util/blueprint-cli @caws-blueprint-util/projen-blueprint @types/node npm-check-updates standard-version ts-node typescript @caws-blueprint-component/caws-environments @caws-blueprint-component/caws-source-repositories @caws-blueprint-component/caws-workflows @caws-blueprint-component/caws-workspaces @caws-blueprint/blueprints.blueprint"
+          "exec": "yarn upgrade @caws-blueprint-util/blueprint-cli @caws-blueprint-util/projen-blueprint @types/node npm-check-updates standard-version ts-node typescript @caws-blueprint-component/caws-environments @caws-blueprint-component/caws-source-repositories @caws-blueprint-component/caws-workflows @caws-blueprint-component/caws-workspaces @caws-blueprint/blueprints.blueprint ts-dedent"
         },
         {
           "exec": "npx projen"

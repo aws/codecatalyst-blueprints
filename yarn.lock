@@ -512,6 +512,7 @@ __metadata:
     npm-check-updates: ^12
     projen: "*"
     standard-version: ^9
+    ts-dedent: "*"
     ts-node: ^9
     typescript: "*"
   languageName: unknown
@@ -7834,6 +7835,13 @@ __metadata:
   version: 3.0.1
   resolution: "trim-newlines@npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftrim-newlines%2F-%2Ftrim-newlines-3.0.1.tgz"
   checksum: b530f3fadf78e570cf3c761fb74fef655beff6b0f84b29209bac6c9622db75ad1417f4a7b5d54c96605dcd72734ad44526fef9f396807b90839449eb543c6206
+  languageName: node
+  linkType: hard
+
+"ts-dedent@npm:*":
+  version: 2.2.0
+  resolution: "ts-dedent@npm:2.2.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-dedent%2F-%2Fts-dedent-2.2.0.tgz"
+  checksum: 93ed8f7878b6d5ed3c08d99b740010eede6bccfe64bce61c5a4da06a2c17d6ddbb80a8c49c2d15251de7594a4f93ffa21dd10e7be75ef66a4dc9951b4a94e2af
   languageName: node
   linkType: hard
 

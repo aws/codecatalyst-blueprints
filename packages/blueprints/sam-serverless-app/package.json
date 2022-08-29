@@ -45,7 +45,8 @@
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
     "@caws-blueprint-component/caws-workflows": "0.0.x",
     "@caws-blueprint-component/caws-workspaces": "0.0.x",
-    "@caws-blueprint/blueprints.blueprint": "0.0.x"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "ts-dedent": "*"
   },
   "keywords": [
     "blueprint",

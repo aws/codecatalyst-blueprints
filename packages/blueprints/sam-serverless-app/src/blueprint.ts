@@ -17,7 +17,7 @@ import * as cp from 'child_process';
 import * as path from 'path';
 
 import { runtimeMappings } from './runtimeMappings';
-import dedent from 'dedent';
+import dedent from 'ts-dedent';
 import { FileTemplate, FileTemplateContext } from './models';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import * as fs from 'fs';
