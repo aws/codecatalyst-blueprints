@@ -49,7 +49,7 @@ project.setScript('blueprint:synth', 'yarn blueprint:synth:cache');
 project.setScript('build:cache', 'yarn blueprint:synth:cache');
 project.setScript(
   'blueprint:synth:cache',
-  'yarn build && yarn blueprint:build-ast && blueprint:validate-options && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache',
+  'yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache',
 );
 
 project.synth();

@@ -24,7 +24,7 @@
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:cache": "yarn blueprint:synth:cache",
     "blueprint:synth": "yarn blueprint:synth:cache",
-    "blueprint:synth:cache": "yarn build && yarn blueprint:build-ast && blueprint:validate-options && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
+    "blueprint:synth:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "blueprint:preview": "yarn bump:preview && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints",
     "blueprint:release": "yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher blueprints"
   },

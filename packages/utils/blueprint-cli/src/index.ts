@@ -124,8 +124,9 @@ yargs
         log.warn(JSON.stringify(warnings, null, 2));
       }
       if (errors.length) {
+        log.error('ERROR: The AST and options do not validate');
         log.error(JSON.stringify(errors, null, 2));
-        throw new Error('The AST and options do not validate');
+        process.exit(1);
       }
       process.exit(0);
     },

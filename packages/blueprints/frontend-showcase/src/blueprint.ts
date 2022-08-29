@@ -62,6 +62,7 @@ export interface Options extends ParentOptions {
    * 3. It should be collapsed by default
    * 4. The default value should have entropy of length 5 appended to it
    * @displayName 'new input display name'
+   * @validationRegex .*
    * @collapsed
    * @defaultEntropy 5
    */
@@ -94,13 +95,19 @@ export interface Options extends ParentOptions {
     /**
      * This is a regular string input field.
      * @displayName 'overriden input display name for nested object'
+     * @validationRegex .*
      */
     stringInput: string;
+
+    /**
+     * @validationRegex .*
+     */
     emptyInput: string;
   };
 
   /**
    * String list input
+   * @validationRegex .*
    */
   stringListInput?: string[];
 

@@ -116,11 +116,13 @@ function validateNode(node: Node, values: string[], regex: string): ValiationErr
 export const doOptionValidation = (astPath: string, optionPath: any): ValiationError[] => {
   const AST = fs.readFileSync(astPath).toString();
   if (!AST) {
-    throw new Error(`could not find an AST at ${astPath}`);
+    console.error(`could not find an AST at ${astPath}`);
+    process.exit(1);
   }
   const options = JSON.parse(fs.readFileSync(optionPath).toString());
   if (!options) {
-    throw new Error(`could not find an options.json at ${optionPath}`);
+    console.error(`could not find an options.json at ${optionPath}`);
+    process.exit(1);
   }
   return validateOptions(AST, options);
 };

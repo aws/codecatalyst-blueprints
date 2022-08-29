@@ -17,16 +17,20 @@ import { buildGenerationObject, buildMetaDataObject, buildParametersObject, Yaml
 export interface Options extends ParentOptions {
   /**
    * What do you want to call your new blueprint?
+   * @validationRegex /^[a-z-]+$/
+   * @validationMessage Can only contain lowercase alphabetic characters or '-'
    */
   blueprintName: string;
 
   /**
    * Override the publishing organization. This is probably your code.aws organization's name.
+   * @validationRegex .*
    */
   organizationOverride: string;
 
   /**
    * Add a description for your new blueprint.
+   * @validationRegex .*
    */
   description?: string;
 
@@ -39,6 +43,7 @@ export interface Options extends ParentOptions {
 
   /**
    * Create a new blueprint from an existing blueprint:
+   * @validationRegex .*
    * @displayName Blueprint to extend
    */
   blueprintToExtend: string;
@@ -49,6 +54,7 @@ export interface Options extends ParentOptions {
   advancedSettings?: {
     /**
      * Blueprint Version?
+     * @validationRegex .*
      */
     version?: string;
 
@@ -59,6 +65,7 @@ export interface Options extends ParentOptions {
 
     /**
      * Projen pinned version. Dont change unless you know what you're doing.
+     * @validationRegex .*
      */
     projenVersion: string;
   };
