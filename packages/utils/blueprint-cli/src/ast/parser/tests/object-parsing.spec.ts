@@ -3,11 +3,12 @@ import * as astTupleLiteral from '../asts/objects/ast-tuple-literial.json';
 import * as astTupleStringNumber from '../asts/objects/ast-tuple-string-number.json';
 import * as astTypeReference from '../asts/objects/ast-typereference.json';
 
-import { extractProperties, SupportedKind } from '../parser';
+import { SupportedKind } from '../node';
+import { parse } from '../parse';
 
 describe('Object AST type property extraction', () => {
   describe('Nested Object AST', () => {
-    const extraction = extractProperties(JSON.stringify(astNestedObject));
+    const extraction = parse(JSON.stringify(astNestedObject));
 
     it('should have the expected properties on the first member', () => {
       expect(extraction[0].members?.length).toBe(1);
@@ -33,7 +34,7 @@ describe('Object AST type property extraction', () => {
   });
 
   describe('String Tuple of literials AST', () => {
-    const extraction = extractProperties(JSON.stringify(astTupleLiteral));
+    const extraction = parse(JSON.stringify(astTupleLiteral));
 
     it('should have the expected properties on the first member', () => {
       expect(extraction[0].members?.length).toBe(1);
@@ -56,7 +57,7 @@ describe('Object AST type property extraction', () => {
   });
 
   describe('Tuple of objects AST', () => {
-    const extraction = extractProperties(JSON.stringify(astTupleStringNumber));
+    const extraction = parse(JSON.stringify(astTupleStringNumber));
 
     it('should have the expected properties on the first member', () => {
       expect(extraction[0].members?.length).toBe(1);
@@ -86,7 +87,7 @@ describe('Object AST type property extraction', () => {
   });
 
   describe('Typereference object AST', () => {
-    const extraction = extractProperties(JSON.stringify(astTypeReference));
+    const extraction = parse(JSON.stringify(astTypeReference));
 
     it('should have the expected properties on the first member', () => {
       expect(extraction[0].members?.length).toBe(1);

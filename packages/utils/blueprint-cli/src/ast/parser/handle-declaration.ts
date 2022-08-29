@@ -1,5 +1,6 @@
 import { extractJsdoc } from './extract-js-doc';
-import { convertToNode, Node } from './parser';
+import { Node } from './node';
+import { convertToNode } from './parse';
 
 const isOptional = (property): boolean => {
   return property.questionToken ? true : false;

@@ -1,4 +1,4 @@
-import { Node } from './parser';
+import { Node } from './node';
 
 /**
  * Implements a visitor pattern to walk all the nodes in a node tree depth first.

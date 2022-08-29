@@ -1,5 +1,6 @@
 import * as jmesPath from 'jmespath';
-import { extractProperties, Node, SupportedKind } from './ast/parser/parser';
+import { Node, SupportedKind } from './ast/parser/node';
+import { parse } from './ast/parser/parse';
 import { walk } from './ast/parser/walk';
 
 export interface ValiationError {
@@ -38,7 +39,7 @@ const VALIDATION_MESSAGE_TAG = 'validationMessage';
  * @returns ValiationError[]: a list of validation errors (if any)
  */
 export const validateOptions = (inputAst_: string, options: any): ValiationError[] => {
-  const properties = extractProperties(inputAst_);
+  const properties = parse(inputAst_);
 
   let errors: ValiationError[] = [];
 

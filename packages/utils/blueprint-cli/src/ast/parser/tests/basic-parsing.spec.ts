@@ -4,12 +4,13 @@ import * as astNumber from '../asts/basic/ast-number.json';
 import * as astString from '../asts/basic/ast-string.json';
 import * as astUnion from '../asts/basic/ast-union.json';
 
-import { extractProperties, SupportedKind } from '../parser';
+import { SupportedKind } from '../node';
+import { parse } from '../parse';
 
 describe('Basic AST type property extraction', () => {
   describe('Boolean AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astBoolean));
+      const extraction = parse(JSON.stringify(astBoolean));
 
       expect(extraction[0].members?.length).toBe(1);
 
@@ -22,7 +23,7 @@ describe('Basic AST type property extraction', () => {
 
   describe('String AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astString));
+      const extraction = parse(JSON.stringify(astString));
 
       expect(extraction[0].members?.length).toBe(1);
 
@@ -35,7 +36,7 @@ describe('Basic AST type property extraction', () => {
 
   describe('Number AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astNumber));
+      const extraction = parse(JSON.stringify(astNumber));
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];
@@ -49,7 +50,7 @@ describe('Basic AST type property extraction', () => {
 
   describe('Literial AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astLiterial));
+      const extraction = parse(JSON.stringify(astLiterial));
       expect(extraction[0].members?.length).toBe(1);
       const item = extraction[0].members![0];
       // console.log(item);
@@ -62,7 +63,7 @@ describe('Basic AST type property extraction', () => {
 
   describe('Union AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astUnion));
+      const extraction = parse(JSON.stringify(astUnion));
       expect(extraction[0].members?.length).toBe(1);
 
       const union = extraction[0].members![0];

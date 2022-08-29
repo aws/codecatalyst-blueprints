@@ -2,11 +2,12 @@ import * as astShowcase from '../asts/blueprint-ex/ast-frontend-showcase.json';
 import * as astImportFromGit from '../asts/blueprint-ex/ast-import-from-git.json';
 import * as astWebApp from '../asts/blueprint-ex/ast-web-app.json';
 
-import { extractProperties, SupportedKind } from '../parser';
+import { SupportedKind } from '../node';
+import { parse } from '../parse';
 
 describe('Blueprint AST property extraction', () => {
   describe('proper AST of a frontend showcase sample', () => {
-    const extractedProperties = extractProperties(JSON.stringify(astShowcase));
+    const extractedProperties = parse(JSON.stringify(astShowcase));
 
     it('should have nine top level options', () => {
       const blueprintInterface = extractedProperties[0];
@@ -32,7 +33,7 @@ describe('Blueprint AST property extraction', () => {
   });
 
   describe('proper AST of a import-from-git sample', () => {
-    const extractedProperties = extractProperties(JSON.stringify(astImportFromGit));
+    const extractedProperties = parse(JSON.stringify(astImportFromGit));
 
     it('should have one top level options interface', () => {
       const blueprintInterface = extractedProperties[0];
@@ -51,7 +52,7 @@ describe('Blueprint AST property extraction', () => {
   });
 
   describe.only('proper AST of a web application sample', () => {
-    const extractedProperties = extractProperties(JSON.stringify(astWebApp));
+    const extractedProperties = parse(JSON.stringify(astWebApp));
     const blueprintInterface = extractedProperties[0];
 
     it('should have three top level options', () => {

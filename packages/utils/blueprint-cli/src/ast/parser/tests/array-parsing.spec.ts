@@ -1,12 +1,13 @@
 import * as astComplexArray from '../asts/arrays/ast-array-complex.json';
 import * as astStringArray from '../asts/arrays/ast-array-string.json';
 
-import { extractProperties, SupportedKind } from '../parser';
+import { SupportedKind } from '../node';
+import { parse } from '../parse';
 
 describe('Arrays AST type property extraction', () => {
   describe('String Array AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astStringArray));
+      const extraction = parse(JSON.stringify(astStringArray));
       expect(extraction[0].members?.length).toBe(1);
       const item = extraction[0].members![0];
       expect(item.kind).toBe(SupportedKind.ArrayType);
@@ -24,7 +25,7 @@ describe('Arrays AST type property extraction', () => {
 
   describe('Complex Array AST', () => {
     it('should have the expected properties on the first member', () => {
-      const extraction = extractProperties(JSON.stringify(astComplexArray));
+      const extraction = parse(JSON.stringify(astComplexArray));
       expect(extraction[0].members?.length).toBe(1);
 
       const item = extraction[0].members![0];

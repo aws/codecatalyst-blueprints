@@ -13,7 +13,7 @@ import * as astimportGit from './ast/parser/asts/blueprint-ex/ast-import-from-gi
 import * as astWebAppDefaults from './ast/parser/asts/blueprint-ex/ast-web-app-defaults.json';
 import * as astWebApp from './ast/parser/asts/blueprint-ex/ast-web-app.json';
 
-import { validateOptions } from './validate-ast';
+import { validateOptions } from './validate-options';
 
 describe('Verifies that properties on an AST pass the @validation regex', () => {
   describe('Strings that pass validation', () => {

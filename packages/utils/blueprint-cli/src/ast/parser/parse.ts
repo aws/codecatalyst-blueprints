@@ -1,4 +1,3 @@
-import { JsDoc } from './extract-js-doc';
 import {
   handleArrayType,
   handleBooleanKeyword,
@@ -11,41 +10,9 @@ import {
   handleTypeReference,
   handleUnionType,
 } from './handle-declaration';
+import { Node, SupportedKind } from './node';
 
-export interface Node {
-  /**
-   * The kind of AST Node
-   */
-  kind: SupportedKind;
-
-  /**
-   * The underlying type information. Typically is or is a specification on the kind.
-   */
-  type: string;
-
-  /**
-   * The name of the node in the interface. Not all types have names, e.g. inline types
-   */
-  name?: string;
-
-  /**
-   * jmesPath expression to the location of this element in a valid JSON representation of the underlying type
-   * See: https://jmespath.org/
-   */
-  path: string;
-
-  /**
-   * The value this node has taken
-   * Typically this does not come from the AST (except for literal types)
-   */
-  value?: string;
-
-  optional: boolean;
-  jsDoc?: JsDoc;
-  members?: Node[];
-}
-
-export const extractProperties = (
+export const parse = (
   ast_: string,
   options?: {
     /**
@@ -78,23 +45,6 @@ export const extractProperties = (
   // AST has no interface matching what we're looking for
   return nodes;
 };
-
-/**
- * Types we've build parsing support for
- */
-export enum SupportedKind {
-  'InterfaceDeclaration' = 'InterfaceDeclaration',
-
-  'TypeLiteral' = 'TypeLiteral',
-  'TypeReference' = 'TypeReference',
-  'StringKeyword' = 'StringKeyword',
-  'NumberKeyword' = 'NumberKeyword',
-  'UnionType' = 'UnionType',
-  'ArrayType' = 'ArrayType',
-  'BooleanKeyword' = 'BooleanKeyword',
-  'TupleType' = 'TupleType',
-  'LiteralType' = 'LiteralType',
-}
 
 export const convertToNode = (property: any, path: string): Node => {
   // attempt to get the type of the node
