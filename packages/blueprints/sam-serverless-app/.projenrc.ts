@@ -22,6 +22,7 @@ const project = new ProjenBlueprint({
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-component/caws-workspaces',
     '@caws-blueprint-component/caws-environments',
+    'ts-dedent'
   ],
   description:
     'This blueprint generates a serverless application model (SAM) project. The project will contain source code and configuration files to build and deploy your SAM application',
