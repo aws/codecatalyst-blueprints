@@ -5,7 +5,6 @@ import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@ca
 import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
-  //generateWorkflow,
   WorkflowDefinition,
   Workflow,
   addGenericBranchTrigger,
@@ -17,8 +16,11 @@ import { SampleDir, SampleFile } from 'projen';
 import * as cp from 'child_process';
 import * as path from 'path';
 
-import { RuntimeMapping } from './models';
 import { runtimeMappings } from './runtimeMappings';
+import dedent from 'dedent';
+import { FileTemplate, FileTemplateContext } from './models';
+import { getFilePermissions, writeFile } from 'projen/lib/util';
+import * as fs from 'fs';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -118,7 +120,7 @@ export class Blueprint extends ParentBlueprint {
       runtime: defaults.runtime as Options['runtime'],
     };
     const options = Object.assign(typeCheck, options_);
-    options.code.sourceRepositoryName = sanatizePath(options.code.sourceRepositoryName);
+    options.code.sourceRepositoryName = sanitizePath(options.code.sourceRepositoryName);
     this.options = options;
 
     this.repository = new SourceRepository(this, {
@@ -128,23 +130,40 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
+
     // create an MDE workspace
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
-    // ceate an environment
+    // create an environment
     new Environment(this, this.options.environment);
+
+    // create SAM template and installation scripts
+    this.createSamTemplate({
+      runtime: runtimeOptions.runtime,
+      codeUri: runtimeOptions.codeUri,
+      handler: runtimeOptions.handler,
+      templateProps: runtimeOptions.templateProps,
+    });
+    this.createSamInstallScript();
+
+    // create additional files required for this runtime
+    const context: FileTemplateContext = {
+      repositoryRelativePath: this.repository.relativePath,
+      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+    };
+    for (const fileTemplate of runtimeOptions.filesToCreate) {
+      new SampleFile(this, fileTemplate.resolvePath(context), { contents: fileTemplate.resolveContent(context) });
+    }
 
     // create the build and release workflow
     const workflowName = 'build-and-release';
     this.createWorkflow({
       name: 'build-and-release',
       outputArtifactName: 'build_result',
+      stepsToRunUnitTests: runtimeOptions.stepsToRunUnitTests,
     });
-
-    // create the sam template code
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
-    this.createSamTemplate(runtimeOptions);
 
     // generate the readme
     new SourceFile(
@@ -160,36 +179,44 @@ export class Blueprint extends ParentBlueprint {
       }),
     );
 
-    const toDeletePath = this.populateLambdaSourceCode(runtimeOptions);
+    const toDeletePath = this.populateLambdaSourceCode({
+      runtime: runtimeOptions.runtime,
+      cacheDir: runtimeOptions.cacheDir,
+      gitSrcPath: runtimeOptions.gitSrcPath,
+      filesToOverride: runtimeOptions.filesToOverride,
+    });
+
     super.synth();
+
     cp.execSync(`rm -rf ${toDeletePath}`);
+
+    // update permissions
+    const permissionChangeContext: FileTemplateContext = {
+      repositoryRelativePath: path.join(this.outdir, this.repository.relativePath),
+      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+    };
+    for (const filePermissionChange of runtimeOptions.filesToChangePermissionsFor) {
+      fs.chmodSync(filePermissionChange.resolvePath(permissionChangeContext), getFilePermissions(filePermissionChange.newPermissions));
+    }
   }
 
-  createWorkflow(params: { name: string; outputArtifactName: string }): void {
+  createWorkflow(params: { name: string; outputArtifactName: string; stepsToRunUnitTests: Array<string> }): void {
     const { name } = params;
-    this.addSamInstallScript();
-
-    // if (this.options.runtime === 'Python 3') {
-    //   this.addRequirementsDevTxt();
-    //   this.addPythonBootstrapScript();
-    //   this.addPytestTestScript();
-    // }
 
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
     const defaultBranch = 'main';
     const region = 'us-west-2';
-    const SCHEMA_VERSION = '1.0';
+    const schemaVersion = '1.0';
 
-    //Workflow
     const workflowDefinition: WorkflowDefinition = {
       ...emptyWorkflow,
-      SchemaVersion: SCHEMA_VERSION,
+      SchemaVersion: schemaVersion,
       Name: name,
     };
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
-    const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
 
+    const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
@@ -225,7 +252,7 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       steps: [
-        // ...(this.options.runtime === 'Python 3' ? ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'] : []),
+        ...params.stepsToRunUnitTests,
         '. ./.aws/scripts/setup-sam.sh',
         'sam build --template-file template.yaml',
         'cd .aws-sam/build/',
@@ -266,69 +293,47 @@ export class Blueprint extends ParentBlueprint {
    * Populates source code for lambda functions.
    * Source code is checked out from sam templates
    */
-  protected populateLambdaSourceCode(runtimeOptions: RuntimeMapping): string {
-    const sourceDir = path.join('/tmp/sam-lambdas', runtimeOptions?.cacheDir);
-    const runtime = runtimeOptions?.runtime;
-    const gitSrcPath = runtimeOptions?.gitSrcPath;
+  protected populateLambdaSourceCode(params: {
+    runtime: string;
+    cacheDir: string;
+    gitSrcPath: string;
+    filesToOverride: Array<FileTemplate>;
+  }): string {
+    const sourceDir = path.join('/tmp/sam-lambdas', params.cacheDir);
 
-    cp.execSync(`svn checkout https://github.com/aws/aws-sam-cli-app-templates/trunk/${runtime}/${gitSrcPath}/{{cookiecutter.project_name}} ${sourceDir}; \
+    cp.execSync(`svn checkout https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}} ${sourceDir}; \
       rm -rf ${sourceDir}/.svn ${sourceDir}/.gitignore ${sourceDir}/README.md ${sourceDir}/template.yaml`);
 
+    // override any files that need to be overridden
+    const overrideContext: FileTemplateContext = {
+      repositoryRelativePath: sourceDir,
+      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+    };
+    for (const fileTemplate of params.filesToOverride) {
+      writeFile(fileTemplate.resolvePath(overrideContext), fileTemplate.resolveContent(overrideContext));
+    }
+
+    // copy the lambda to the new path
     const newLambdaPath = path.join(this.repository.relativePath, this.options.lambda?.functionName ?? '');
     new SampleDir(this, newLambdaPath, { sourceDir });
     return sourceDir;
   }
 
-  protected addSamInstallScript() {
+  protected createSamInstallScript() {
     new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
-      contents: `#!/usr/bin/env bash
-echo "Setting up sam"
+      contents: dedent`#!/usr/bin/env bash
+                       echo "Setting up sam"
 
-yum install unzip -y
+                       yum install unzip -y
 
-curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
+                       curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+                       unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
 
-./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2
-`,
+                       ./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2s`,
     });
   }
 
-  protected addRequirementsDevTxt() {
-    new SampleFile(this, path.join(this.repository.relativePath, 'requirements-dev.txt'), {
-      contents: `pytest
-pytest-cov
-pytest-mock
-`,
-    });
-  }
-
-  protected addPythonBootstrapScript() {
-    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'bootstrap.sh'), {
-      contents: `#!/bin/bash
-
-VENV="venv"
-
-test -d $VENV || python3 -m venv $VENV || return
-$VENV/bin/pip install -r requirements-dev.txt
-$VENV/bin/pip install -r ${this.options.lambda.functionName}/hello_world/requirements.txt
-. $VENV/bin/activate`,
-    });
-  }
-
-  protected addPytestTestScript() {
-    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'run-tests.sh'), {
-      contents: `#!/bin/bash
-
-echo "Running unit tests..."
-PYTHONPATH=${this.options.lambda?.functionName ?? '.'} pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. .`,
-    });
-  }
-
-  /**
-   * Generate Sam Template
-   */
-  protected createSamTemplate(runtimeOptions: RuntimeMapping): void {
+  protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string }): void {
     const header = `Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -341,9 +346,9 @@ Globals:
   ${lambda}Function:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ${lambda}/${runtimeOptions?.codeUri}
-      Runtime: ${runtimeOptions?.runtime}
-      Handler: ${runtimeOptions?.handler}
+      CodeUri: ${lambda}/${params.codeUri}
+      Runtime: ${params.runtime}
+      Handler: ${params.handler}
       Description: ${lambda}
       Events:
           ${lambda}:
@@ -352,7 +357,7 @@ Globals:
                 Path: /${lambda}
                 Method: get`;
       //Append additional template properties
-      resources += runtimeOptions?.templateProps;
+      resources += params.templateProps;
 
       outputs += `
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -374,11 +379,10 @@ Globals:
     new SampleFile(this, destinationPath, { contents: template });
   }
 }
+
 /**
  * removes all '.' '/' and ' ' characters
- * @param path
- * @returns
  */
-function sanatizePath(path: string) {
+function sanitizePath(path: string) {
   return path.replace(/\.|\/| /g, '');
 }
