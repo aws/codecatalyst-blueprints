@@ -9,6 +9,10 @@
       "type": "build"
     },
     {
+      "name": "@types/jmespath",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14",
       "type": "build"
@@ -46,6 +50,15 @@
     {
       "name": "eslint",
       "version": "^8",
+      "type": "build"
+    },
+    {
+      "name": "jest",
+      "type": "build"
+    },
+    {
+      "name": "jest-junit",
+      "version": "^13",
       "type": "build"
     },
     {
@@ -89,6 +102,10 @@
     },
     {
       "name": "axios",
+      "type": "runtime"
+    },
+    {
+      "name": "jmespath",
       "type": "runtime"
     },
     {

@@ -5,7 +5,7 @@ const project = new ProjenBlueprintComponent({
   name: 'blueprint-cli',
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: ['pino', 'yargs', 'ts-node', 'axios', 'pino-pretty', 'typescript'],
+  deps: ['pino', 'yargs', 'ts-node', 'axios', 'pino-pretty', 'typescript', 'jmespath'],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',
   packageName: '@caws-blueprint-util/blueprint-cli',
@@ -14,6 +14,7 @@ const project = new ProjenBlueprintComponent({
     '@types/jest',
     '@types/pino',
     '@types/yargs',
+    '@types/jmespath',
     'pino-pretty',
     'ts-jest',
     'ts-loader',
@@ -22,6 +23,7 @@ const project = new ProjenBlueprintComponent({
   bin: {
     blueprint: 'lib/index.js',
   },
+  jest: true,
 });
 
 project.synth();

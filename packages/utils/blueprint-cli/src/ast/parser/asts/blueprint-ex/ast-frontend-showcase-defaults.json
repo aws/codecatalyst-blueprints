@@ -1,0 +1,17 @@
+{
+  "thisIsMyEnvironment": {
+    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "environmentType": "PRODUCTION"
+  },
+  "stringInput": "default string input",
+  "numberInput": 12,
+  "runtimes": "nodejs",
+  "stringListInput": [
+    "first item",
+    "second item"
+  ],
+  "nestedArea": {
+    "stringInput": "default nested string input"
+  },
+  "trueCheckbox": true
+}

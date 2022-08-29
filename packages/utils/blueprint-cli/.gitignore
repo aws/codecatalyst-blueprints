@@ -30,6 +30,9 @@ jspm_packages/
 .yarn-integrity
 .cache
 !/.projenrc.js
+/test-reports/
+junit.xml
+/coverage/
 /dist/changelog.md
 /dist/version.txt
 !/test/
