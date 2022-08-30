@@ -12,13 +12,44 @@ We highly recommend you use [vscode](https://code.visualstudio.com/). This repo 
 files will be invisible in vim and may cause problems. We recommend you develop on mac or a cloud desktop running linux. This guide assumes you are
 using a mac and are using `yarn`, the same commands work with `npm`.
 
-### Make sure you have
+### Get access as a builder:
 
 The blueprints team should have given you:
 
-- Access to account `721779663932` and role `codeartifact-readonly`.
+- Access to account `721779663932` and role `codeartifact-readonly` through isengard.
 - Publishing access. If you can see the blueprint builder you probably have publishing access.
 - Information on how to get and set the proper `CAWS_COOKIE` for authentication.
+
+### Authenticate to the private npm repository
+
+Recommended: Add this to your `~/.bash_profile`.
+
+```
+set-blueprints-npm-repo-readonly() {
+  # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
+  ada credentials update --once --account 721779663932 --role codeartifact-readonly --profile=codeartifact-readonly
+
+  # Set NPM config to also be the same repository (needed for some synths to work properly)
+  export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm --profile=codeartifact-readonly | jq -r '.repositoryEndpoint'`
+  echo 'NPM_REPO set to: '$NPM_REPO
+
+  npm config set registry $NPM_REPO
+  npm config set always-auth true
+
+  yarn config set registry $NPM_REPO
+  yarn config set always-auth true
+}
+
+# setup the blueprints repo for use
+blueprints-setup-readonly() {
+  # Disable projen post synthesis
+  export PROJEN_DISABLE_POST=1
+
+  # Blueprints are currently published to a private codeartifact repository until the public launch of code.aws.
+  # You'll need to ask the blueprints team for access.
+  set-blueprints-npm-repo-readonly
+}
+```
 
 ### Prereq:
 
@@ -29,30 +60,6 @@ Install these globally. They are a requirement for various tooling to work prope
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
-```
-
-Add this to your `~/.bash_profile`.
-
-```
-set-blueprints-npm-repo() {
-  # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
-  ada credentials update --once --account 721779663932 --role codeartifact-readonly --profile=codeartifact-readonly
-
-  # Set NPM config to also be the same repository (needed for some synths to work properly)
-  aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
-
-  npm config set always-auth true
-}
-
-# setup the blueprints repo for use
-blueprints-setup() {
-  # Disable projen post synthesis
-  export PROJEN_DISABLE_POST=1
-
-  # Blueprints are currently published to a private codeartifact repository until the public launch of code.aws.
-  # You'll need to ask the blueprints team for access.
-  set-blueprints-npm-repo
-}
 ```
 
 ### Public Blueprints
@@ -75,7 +82,7 @@ Run yarn. This will link everything. The first time workspace setup may take a m
 
 ```
 cd /<blueprint>
-blueprints-setup
+blueprints-setup-readonly
 yarn
 yarn projen
 ```
@@ -84,6 +91,24 @@ Run a build
 
 ```
 yarn build
+```
+
+Run a synthesis
+
+```
+# development quick synthesis
+
+yarn blueprint:synth
+
+# production (executes a synthesis across a built cache). This is the command the wizard executes, but it might take longer because it needs to build that cache first
+
+yarn blueprint:synth:cache
+```
+
+Publish a preview version
+
+```
+yarn blueprint:preview
 ```
 
 You're done!
