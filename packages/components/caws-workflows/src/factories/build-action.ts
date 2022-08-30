@@ -1,4 +1,5 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { EnvironmentDefinition } '@caws-blueprint-component/caws-environments';
 import {
   WorkflowDefinition,
   InputsDefinition,
@@ -38,6 +39,7 @@ export interface BuildOutputConfiguration {
   }[];
   // [key: string]: any;
 }
+
 export interface EnvironmentConfiguration {
   Name: string;
   Connections: Connection[];
