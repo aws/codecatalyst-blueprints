@@ -1,5 +1,4 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { EnvironmentDefinition } '@caws-blueprint-component/caws-environments';
 import {
   WorkflowDefinition,
   InputsDefinition,
