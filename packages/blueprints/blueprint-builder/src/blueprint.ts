@@ -59,6 +59,13 @@ export interface Options extends ParentOptions {
     version?: string;
 
     /**
+     * Blueprint Tags. These get added to the package.json
+     * @validationRegex /^[a-zA-Z0-9_ ]+$/
+     * @validationMessage Must contain only upper and lowercase letters, numbers, underscores and spaces
+     */
+    tags?: string[];
+
+    /**
      * License for your Blueprint
      */
     license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
@@ -143,7 +150,7 @@ export class Blueprint extends ParentBlueprint {
       description: `${this.options.description}`,
 
       devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
-      keywords: ['<<tags>>'],
+      keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
       mediaUrls: [
         'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',

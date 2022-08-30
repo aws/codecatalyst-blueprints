@@ -38,6 +38,7 @@ export interface BuildOutputConfiguration {
   }[];
   // [key: string]: any;
 }
+
 export interface EnvironmentConfiguration {
   Name: string;
   Connections: Connection[];

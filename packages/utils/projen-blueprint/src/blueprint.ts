@@ -81,8 +81,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // set upload to aws script
     const organization = options.publishingOrganization || '<<replace-organization>>';
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
-    this.setScript('blueprint:preview', `yarn bump:preview && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
-    this.setScript('blueprint:release', `yarn bump && yarn build:cache && yarn package && blueprint publish ./ --publisher ${organization}`);
+    this.setScript(
+      'blueprint:preview',
+      `yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher ${organization}`,
+    );
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);

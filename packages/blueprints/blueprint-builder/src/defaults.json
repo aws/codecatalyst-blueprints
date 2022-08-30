@@ -7,6 +7,7 @@
   "advancedSettings": {
     "version": "latest",
     "license": "MIT",
-    "projenVersion": "0.52.18"
+    "projenVersion": "0.52.18",
+    "tags": ["blueprint"]
   }
 }
