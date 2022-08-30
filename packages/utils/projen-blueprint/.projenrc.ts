@@ -21,7 +21,7 @@ const project = new typescript.TypeScriptProject({
   peerDeps: ['projen', '@caws-blueprint-util/blueprint-cli'],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
   packageName: '@caws-blueprint-util/projen-blueprint',
-  devDeps: ['projen', 'ts-node'],
+  devDeps: ['projen', 'ts-node@^10'],
 });
 
 // keep consistent versions

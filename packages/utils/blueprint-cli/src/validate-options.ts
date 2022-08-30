@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as jmesPath from 'jmespath';
 import { Node, SupportedKind } from './ast/parser/node';
 import { parse } from './ast/parser/parse';
@@ -111,3 +112,17 @@ function validateNode(node: Node, values: string[], regex: string): ValiationErr
   }
   return errors;
 }
+
+export const doOptionValidation = (astPath: string, optionPath: any): ValiationError[] => {
+  const AST = fs.readFileSync(astPath).toString();
+  if (!AST) {
+    console.error(`could not find an AST at ${astPath}`);
+    process.exit(1);
+  }
+  const options = JSON.parse(fs.readFileSync(optionPath).toString());
+  if (!options) {
+    console.error(`could not find an options.json at ${optionPath}`);
+    process.exit(1);
+  }
+  return validateOptions(AST, options);
+};

@@ -9,13 +9,13 @@
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
-    "components:publish": "yarn workspaces foreach -v --include '@caws-blueprint-component/*' run npm:publish",
-    "utils:publish": "yarn workspaces foreach -v --include '@caws-blueprint-util/*' run npm:publish",
-    "blueprints:preview": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:preview",
-    "blueprints:release:gamma": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:release",
-    "blueprints:release:prod": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:release --endpoint public.api.quokka.codes",
-    "blueprints:synth": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:synth",
-    "blueprints:synth:cache": "yarn workspaces foreach -v --include '@caws-blueprint/*' run blueprint:synth:cache"
+    "components:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-component/*' run npm:publish",
+    "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
+    "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview",
+    "blueprints:release:gamma": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release",
+    "blueprints:release:prod": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release --endpoint public.api.quokka.codes",
+    "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth",
+    "blueprints:synth:cache": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth:cache"
   },
   "packageManager": "yarn@3.1.0",
   "workspaces": {

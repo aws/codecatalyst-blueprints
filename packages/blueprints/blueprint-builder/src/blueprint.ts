@@ -17,16 +17,20 @@ import { buildGenerationObject, buildMetaDataObject, buildParametersObject, Yaml
 export interface Options extends ParentOptions {
   /**
    * What do you want to call your new blueprint?
+   * @validationRegex /^[a-z-]+$/
+   * @validationMessage Can only contain lowercase alphabetic characters or '-'
    */
   blueprintName: string;
 
   /**
    * Override the publishing organization. This is probably your code.aws organization's name.
+   * @validationRegex .*
    */
   organizationOverride: string;
 
   /**
    * Add a description for your new blueprint.
+   * @validationRegex .*
    */
   description?: string;
 
@@ -39,6 +43,7 @@ export interface Options extends ParentOptions {
 
   /**
    * Create a new blueprint from an existing blueprint:
+   * @validationRegex .*
    * @displayName Blueprint to extend
    */
   blueprintToExtend: string;
@@ -49,6 +54,7 @@ export interface Options extends ParentOptions {
   advancedSettings?: {
     /**
      * Blueprint Version?
+     * @validationRegex .*
      */
     version?: string;
 
@@ -59,6 +65,7 @@ export interface Options extends ParentOptions {
 
     /**
      * Projen pinned version. Dont change unless you know what you're doing.
+     * @validationRegex .*
      */
     projenVersion: string;
   };
@@ -182,6 +189,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private buildTypescriptComponents(): void {
+    const tsNodeVersion = 'ts-node@^10';
     const blueprint = new ProjenBlueprint({
       outdir: this.repository.relativePath,
       parent: this,
@@ -192,6 +200,7 @@ export class Blueprint extends ParentBlueprint {
       overridePackageVersion: '0.0.0',
     });
     blueprint.addDevDeps(`projen@${this.options.advancedSettings?.projenVersion}`);
+    blueprint.addDevDeps(tsNodeVersion);
     // create the projenrc.ts
     new SourceFile(
       this.repository,
@@ -200,7 +209,7 @@ export class Blueprint extends ParentBlueprint {
         "import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';",
         '',
         `const project = new ProjenBlueprint(${JSON.stringify(this.newBlueprintOptions, null, 2)});`,
-        "project.package.addDevDeps('ts-node@^10');",
+        `project.package.addDevDeps('${tsNodeVersion}');`,
         '',
         'project.synth();',
       ].join('\n'),
@@ -216,6 +225,8 @@ export class Blueprint extends ParentBlueprint {
     // set up assets sample assets folder:
     const mainpy = new StaticAsset('starter-assets/main.py');
     new SourceFile(this.repository, 'static-assets/main.py', mainpy.toString());
+
+    new SourceFile(this.repository, '.nvmrc', 'v14.18.0');
 
     const gettingStarted = new StaticAsset('getting-started.md');
     new SourceFile(this.repository, 'GETTING_STARTED.md', gettingStarted.toString());

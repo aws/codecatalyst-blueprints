@@ -66,13 +66,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     //make a script for creating asts
     this.setScript('blueprint:build-ast', 'blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/');
+    this.setScript('blueprint:validate-options', 'blueprint validate-options ./lib/ast.json ./lib/defaults.json');
 
     //set local synthing
+    this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options');
+
     this.setScript('blueprint:synth', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json');
-
-    this.setScript('blueprint:synth:cache', 'yarn build && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
-
-    this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache');
+    this.setScript('blueprint:synth:cache', 'yarn build:cache && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
 
     //ignore synths
     this.gitignore.addPatterns('synth');

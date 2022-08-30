@@ -7,13 +7,12 @@ import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { PublishOptions, publish } from './publish';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
+import { doOptionValidation } from './validate-options';
 
 const log = pino.default({
   prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',
 });
-
-log.info('started');
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 yargs
@@ -98,6 +97,37 @@ yargs
     },
     handler: async (argv: AstOptions): Promise<void> => {
       await buildAst(log, argv.blueprint, argv.outdir);
+      process.exit(0);
+    },
+  })
+  .command({
+    command: 'validate-options <ast> <options>',
+    describe: 'builds a blueprint ast',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .positional('ast', {
+          describe: 'path to the blueprint ast',
+          type: 'string',
+          demandOption: true,
+        })
+        .positional('options', {
+          describe: 'path to the blueprint options',
+          type: 'string',
+          demandOption: true,
+        });
+    },
+    handler: async (argv: { ast: string; options: string }): Promise<void> => {
+      const validation = doOptionValidation(argv.ast, argv.options);
+      const warnings = validation.filter(error => error.level === 'WARNING');
+      const errors = validation.filter(error => error.level === 'ERROR');
+      if (warnings.length) {
+        log.warn(JSON.stringify(warnings, null, 2));
+      }
+      if (errors.length) {
+        log.error('ERROR: The AST and options do not validate');
+        log.error(JSON.stringify(errors, null, 2));
+        process.exit(1);
+      }
       process.exit(0);
     },
   })

@@ -64,7 +64,7 @@ export class Blueprint extends ParentBlueprint {
     }));
 
     // write the wizard options to the repo for easy debugging
-    new SourceFile(repo, 'selected-options.json', JSON.stringify(defaults, null, 2));
+    new SourceFile(repo, 'selected-options.json', JSON.stringify(options, null, 2));
 
     /**
      * Create a workflow that runs when code gets pushed to the 'main' branch of the repo
