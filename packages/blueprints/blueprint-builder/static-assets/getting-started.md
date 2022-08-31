@@ -29,6 +29,8 @@ set-blueprints-npm-repo-readonly() {
   # sign into the aws account that contains the proper codeartifact repository. Ask the blueprints team for access
   ada credentials update --once --account 721779663932 --role codeartifact-readonly --profile=codeartifact-readonly
 
+  aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
+
   # Set NPM config to also be the same repository (needed for some synths to work properly)
   export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm --profile=codeartifact-readonly | jq -r '.repositoryEndpoint'`
   echo 'NPM_REPO set to: '$NPM_REPO
