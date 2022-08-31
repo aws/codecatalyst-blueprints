@@ -20,7 +20,7 @@ export interface WorkflowDefinition {
   RunMode?: RunModeDefiniton;
   Sources?: SourceDefiniton;
   Triggers?: TriggerDefiniton[];
-  Actions: {
+  Actions?: {
     [id: string]: any;
   };
 }

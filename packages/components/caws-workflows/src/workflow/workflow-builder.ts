@@ -1,4 +1,5 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
@@ -24,6 +25,11 @@ export class WorkflowBuilder {
   setDefinition(definition: WorkflowDefinition): void {
     this.definition = definition;
   }
+
+  addTrigger(trigger: TriggerDefiniton) {
+    this.definition.Triggers = this.definition.Triggers || [];
+    this.definition.Triggers.push(trigger);
+  };
 
   addBranchTrigger(branches = ['main'], filesChanged?: string[]) {
     addGenericBranchTrigger(this.definition, branches, filesChanged);
