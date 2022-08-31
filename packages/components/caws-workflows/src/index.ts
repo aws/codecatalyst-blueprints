@@ -1,27 +1,14 @@
-import * as path from 'path';
+export * from './workflow/workflow';
+export * from './workflow/workflow-builder';
+export * from './workflow/sources';
+export * from './workflow/triggers';
 
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { Component, YamlFile } from 'projen';
-import { WorkflowDefinition } from './models';
-
-export * from './actions';
-export * from './models';
+export * from './samples/empty';
 export * from './samples/node';
-export * from './factories/index';
-export * from './factories/build-action';
-export * from './factories/cfn-deploy-action';
-export * from './factories/test-reports-action';
 
-export class Workflow extends Component {
-  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition) {
-    super(blueprint);
+export * from './environment/workflow-environment';
 
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, `.aws/workflows/${workflow.Name}.yaml`), {
-      marker: false,
-      obj: {
-        ...workflow,
-      },
-    });
-  }
-}
+export * from './actions/action';
+export * from './actions/action-build';
+export * from './actions/action-cfn-deploy';
+export * from './actions/action-test-reports';

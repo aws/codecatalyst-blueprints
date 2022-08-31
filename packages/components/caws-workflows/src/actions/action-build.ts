@@ -1,27 +1,23 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import {
-  WorkflowDefinition,
-  InputsDefinition,
-  OutputDefinition,
-  getDefaultActionIdentifier,
-  ActionIdentifierAlias,
-  ActionDefiniton,
-  Environment,
-  AutoDiscoverReportDefinition,
-} from '..';
+import { WorkflowEnvironment } from '../environment/workflow-environment';
+import { WorkflowDefinition } from '../workflow/workflow';
+import { ActionDefiniton, ActionIdentifierAlias, AutoDiscoverReportDefinition, getDefaultActionIdentifier, InputsDefinition, OutputDefinition } from './action';
 
-export interface Connection {
-  /**
-   * The name of the account connection.
-   */
-  Name: string;
-
-  /**
-   * The name of the role in the account connection.
-   */
-  Role: string;
+export interface BuildActionConfiguration {
+  ActionRoleArn?: string;
+  Steps?: Step[];
+}
+interface Step {
+  Run: string;
 }
 
+export interface BuildActionConfiguration {
+  Steps?: Step[];
+}
+
+/**
+ * The input of a build action
+ */
 export interface BuildInputConfiguration {
   Sources: string[];
   Variables?: { [key: string]: string };
@@ -29,6 +25,9 @@ export interface BuildInputConfiguration {
   // [key: string]: any;
 }
 
+/**
+ * The output of a build action
+ */
 export interface BuildOutputConfiguration {
   AutoDiscoverReports: AutoDiscoverReportDefinition;
   Variables?: string[];
@@ -37,11 +36,6 @@ export interface BuildOutputConfiguration {
     Files: string[];
   }[];
   // [key: string]: any;
-}
-
-export interface EnvironmentConfiguration {
-  Name: string;
-  Connections: Connection[];
 }
 
 export const generateOutput = (params: BuildOutputConfiguration): OutputDefinition => {
@@ -68,28 +62,18 @@ export const generateInputs = (params: BuildInputConfiguration): InputsDefinitio
   return inputs;
 };
 
-export const generateEnvironment = (params: { Name: string; Connections: Connection[] }): Environment => {
-  const { Name, Connections } = params;
-  return {
-    Name,
-    Connections: Connections.map(connection => {
-      return {
-        Name: connection.Name,
-        Role: connection.Role,
-      };
-    }),
-  };
-};
-
-export const addGenericBuildAction = (params: {
-  blueprint: Blueprint;
-  workflow: WorkflowDefinition;
+export interface BuildActionParameters {
   input: BuildInputConfiguration;
   output: BuildOutputConfiguration;
   steps: string[];
-  environment?: EnvironmentConfiguration;
-  actionName?: string;
+  actionName: string;
+  environment?: WorkflowEnvironment;
   dependsOn?: string[];
+}
+
+export const addGenericBuildAction = (params: BuildActionParameters & {
+  blueprint: Blueprint;
+  workflow: WorkflowDefinition;
 }): string => {
   const { blueprint, workflow, steps, input, output } = params;
 
@@ -106,7 +90,7 @@ export const addGenericBuildAction = (params: {
     },
   };
   if (params.environment) {
-    buildAction.Environment = generateEnvironment(params.environment);
+    buildAction.Environment = params.environment;
   }
   if (params.dependsOn) {
     buildAction.DependsOn = params.dependsOn;

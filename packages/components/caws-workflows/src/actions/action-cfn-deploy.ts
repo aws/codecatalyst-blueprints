@@ -1,6 +1,7 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { WorkflowDefinition, getDefaultActionIdentifier, ActionIdentifierAlias, DeployActionConfiguration, ActionDefiniton } from '..';
-import { EnvironmentConfiguration, generateEnvironment } from './build-action';
+import { WorkflowEnvironment } from '../environment/workflow-environment';
+import { WorkflowDefinition } from '../workflow/workflow';
+import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
 
 export interface DeployInputConfiguration {
   Artifacts: string[];
@@ -8,11 +9,20 @@ export interface DeployInputConfiguration {
   [key: string]: any;
 }
 
-export function addGenericCloudFormationDeployAction(params: {
-  blueprint: Blueprint;
-  workflow: WorkflowDefinition;
+export interface CfnDeployActionConfiguration {
+  ComputeName?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
+  Parameters: {
+    [key: string]: string;
+    name: string;
+    region: string;
+    template: string;
+    capabilities: string;
+  };
+}
+
+export interface CfnDeployActionParameters {
   inputs: DeployInputConfiguration;
-  environment: EnvironmentConfiguration;
+  environment: WorkflowEnvironment;
   configuration: {
     computeName?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
     parameters: {
@@ -41,14 +51,20 @@ export function addGenericCloudFormationDeployAction(params: {
       'no-execute-changeset'?: string;
     }>;
   };
-  actionName?: string;
+  actionName: string;
+}
+
+export function addGenericCloudFormationDeployAction(params: CfnDeployActionParameters & {
+  blueprint: Blueprint;
+  workflow: WorkflowDefinition;
+
 }): string {
   const { blueprint, workflow, inputs, environment, configuration } = params;
   const actionName = (params.actionName || 'DeployCloudFormationStack').replace(new RegExp('-', 'g'), '_');
 
   const capabilities = (configuration.parameters.capabilities || ['CAPABILITY_IAM', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_AUTO_EXPAND']).join(',');
   const ComputeName = configuration.computeName;
-  const cfnDeployActionConfig: DeployActionConfiguration = {
+  const cfnDeployActionConfig: CfnDeployActionConfiguration = {
     Parameters: {
       ...configuration.parameters,
       capabilities: capabilities,
@@ -58,7 +74,7 @@ export function addGenericCloudFormationDeployAction(params: {
   const cfnDeployAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.deploy, blueprint.context.environmentId),
     Inputs: inputs,
-    Environment: generateEnvironment(environment),
+    Environment: environment,
     Configuration: cfnDeployActionConfig,
   };
   workflow.Actions[actionName] = cfnDeployAction;

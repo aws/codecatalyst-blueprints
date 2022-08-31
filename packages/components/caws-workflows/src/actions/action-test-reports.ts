@@ -1,18 +1,30 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { WorkflowDefinition, Step, getDefaultActionIdentifier, ActionIdentifierAlias } from '..';
+import { WorkflowDefinition } from '../workflow/workflow';
+import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
 
-export const addGenericTestReports = (params: {
-  blueprint: Blueprint;
-  workflow: WorkflowDefinition;
+export interface TestReportActionParameters {
   steps: Step[];
   coverageArtifactName: string;
   testArtifactName: string;
   dependsOn: string[];
   actionName?: string;
+}
+
+export interface TestActionConfiguration {
+  Steps: Step[];
+}
+interface Step {
+  Run: string;
+}
+
+export const addGenericTestReports = (params: TestReportActionParameters & {
+  blueprint: Blueprint;
+  workflow: WorkflowDefinition;
+
 }) => {
   const { blueprint, workflow, steps, coverageArtifactName, testArtifactName, dependsOn } = params;
   const actionName = (params.actionName || 'Test').replace(new RegExp('-', 'g'), '_');
-  workflow.Actions[actionName] = {
+  const testAction: ActionDefiniton = {
     DependsOn: dependsOn,
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.test, blueprint.context.environmentId),
     Outputs: {
@@ -32,5 +44,6 @@ export const addGenericTestReports = (params: {
       Steps: steps,
     },
   };
+  workflow.Actions[actionName] = testAction;
   return actionName;
 };
