@@ -97,6 +97,7 @@ export const addGenericBuildAction = (params: BuildActionParameters & {
   }
 
   const actionName = (params.actionName || 'Build').replace(new RegExp('-', 'g'), '_');
+  workflow.Actions = workflow.Actions || {};
   workflow.Actions[actionName] = buildAction;
   return actionName;
 };

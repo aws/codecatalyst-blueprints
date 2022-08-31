@@ -44,6 +44,7 @@ export const addGenericTestReports = (params: TestReportActionParameters & {
       Steps: steps,
     },
   };
+  workflow.Actions = workflow.Actions || {};
   workflow.Actions[actionName] = testAction;
   return actionName;
 };

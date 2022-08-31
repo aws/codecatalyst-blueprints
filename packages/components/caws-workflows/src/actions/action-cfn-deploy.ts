@@ -77,6 +77,7 @@ export function addGenericCloudFormationDeployAction(params: CfnDeployActionPara
     Environment: environment,
     Configuration: cfnDeployActionConfig,
   };
+  workflow.Actions = workflow.Actions || {};
   workflow.Actions[actionName] = cfnDeployAction;
   return actionName;
 }
