@@ -2,7 +2,7 @@
 
 A workflow is used by code.aws projects to execute some actions based off triggers. The blueprints team exposes some helpful
 workflows components that are meant to help in building and putting together workflow `.yaml` files. Full
-[workflow schema documentation](https://w.amazon.com/bin/view/CAWS/Workflows/WorkflowSchemaReference_1_0) is provided by the workflow team. See [public documentation](https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/workflow-reference.html).
+[workflow schema documentation](https://w.amazon.com/bin/view/CAWS/Workflows/WorkflowSchemaReference_1_0) is provided by the workflow team. See [public documentation](https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/workflow-reference.html) for general use.
 
 ```
 import { WorkflowBuilder, Workflow } from '@caws-blueprint-component/caws-workflows'
