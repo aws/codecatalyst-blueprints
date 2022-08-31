@@ -98,7 +98,7 @@ export CAWS_COOKIE='session-blhahBlahblahBlah'
 yarn blueprints:release
 ```
 
-### Clean up:
+### Clean up
 
 As you test changes to blueprints locally you will build up alot of projects created in the synth directory of the blueprint, to clean up the synth
 directory and remove these old projects run:
