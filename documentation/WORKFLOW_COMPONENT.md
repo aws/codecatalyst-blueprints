@@ -46,7 +46,7 @@ workflowBuilder.addBuildAction({
     'echo hello-world',
   ],
   // add an account connection to the workflow
-  environment: convertToWorkflowEnvironment(environment as Environment),
+  environment: convertToWorkflowEnvironment(myEnv),
 });
 
 ```
@@ -85,5 +85,13 @@ const myEnv = new Environment(...);
 
 // can be passed into a workflow constructor
 const workflowEnvironment = convertToWorkflowEnvironment(myEnv);
+
+
+// add a build action
+workflowBuilder.addBuildAction({
+  ...
+  // add an account connection to the workflow
+  environment: convertToWorkflowEnvironment(myEnv),
+});
 
 ```
