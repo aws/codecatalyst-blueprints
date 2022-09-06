@@ -15,7 +15,7 @@ import { createFrontend } from './frontend/create-frontend';
 import { generateReadmeContents } from './readme-contents';
 
 // Projen version string used when creating the webapp
-export const PROJEN_VERSION = '0.52.18';
+export const PROJEN_VERSION = '0.61.44';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -192,7 +192,7 @@ export class Blueprint extends ParentBlueprint {
           '@aws-cdk/aws-cloudfront',
           '@aws-cdk/core',
         ],
-        devDeps: ['cdk-assets', 'projen@0.52.18'],
+        devDeps: ['cdk-assets', 'projen@0.61.44'],
         context: {
           '@aws-cdk/core:newStyleStackSynthesis': 'true',
         },
