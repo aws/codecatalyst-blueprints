@@ -15,13 +15,13 @@ const getEntropy = (length?: number) => (Math.random() + 1).toString(36).slice(2
 export class Environment extends Component {
   definition: EnvironmentDefinition<any>;
   name: string;
-  accountNames: string[];
+  accountKeys: string[];
 
   constructor(blueprint: Blueprint, environment: EnvironmentDefinition<any>) {
     super(blueprint);
     this.name = environment.name;
     this.definition = environment;
-    this.accountNames = [];
+    this.accountKeys = [];
 
     const writtenEnvironment = {
       name: environment.name,
@@ -43,9 +43,9 @@ export class Environment extends Component {
     Object.keys(environment)
       .filter(key => !nonAccountKeys.has(key))
       .forEach(accountkey => {
+        this.accountKeys.push(accountkey);
         const account: AccountConnection<any> = environment[accountkey];
         if (account.name && environment.name) {
-          this.accountNames.push(account.name);
           connectedAccounts.push({
             environmentName: environment.name,
             name: account.name,
@@ -70,21 +70,20 @@ export class Environment extends Component {
     });
   }
 
-  getRoles(accountName: string): Role<any>[] {
-    const accountConnection: AccountConnection<any> = this.definition[accountName];
+  getRoles(accountKey: string): Role<any>[] {
+    const account: AccountConnection<any> = this.definition[accountKey];
     const roles: Role<any>[] = [];
     /**
-   * keys of the accountConnection that dont represent a role
-   */
+     * keys of the accountConnection that dont represent a role
+     */
     const nonRoleKeys = new Set(['id', 'name']);
 
     // find all the account connections on the environment
-    Object.keys(accountConnection)
+    Object.keys(account)
       .filter(key => !nonRoleKeys.has(key))
       .forEach(roleKey => {
-        roles.push(accountConnection[roleKey]);
+        roles.push(account[roleKey]);
       });
-
     return roles;
   }
 }
