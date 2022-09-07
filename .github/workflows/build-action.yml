@@ -20,6 +20,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
-      - run: yarn
+      - run: yarn set version classic && yarn -v && yarn
       - run: yarn build
       - run: yarn blueprints:synth:cache
