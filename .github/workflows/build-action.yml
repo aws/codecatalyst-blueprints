@@ -1,0 +1,25 @@
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+name: Build
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  NPM_REPO: ''
+  NPM_REPO_AUTH_TOKEN: ''
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - run: yarn set version classic && yarn -v && yarn
+      - run: yarn build
+      - run: yarn blueprints:synth:cache
