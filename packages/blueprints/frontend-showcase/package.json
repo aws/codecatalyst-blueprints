@@ -25,7 +25,8 @@
     "build:cache": "yarn blueprint:synth:cache",
     "blueprint:synth": "yarn blueprint:synth:cache",
     "blueprint:synth:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints"
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints",
+    "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes"
   },
   "author": {
     "name": "blueprints",
