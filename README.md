@@ -5,7 +5,7 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 #### Prereq:
 
-Install these globally. Requirement for various tooling to work properly and are available from public npm.
+Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
 #install nvm https://nvm.sh
