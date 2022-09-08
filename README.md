@@ -1,3 +1,5 @@
+![Build](https://github.com/aws/caws-blueprints/actions/workflows/build-action.yml/badge.svg)
+
 ## Set Up
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins

@@ -106,7 +106,6 @@ export class Blueprint extends ParentBlueprint {
     this.options = options;
 
     this.parentIntrospection = this.doIntrospection();
-
     const YAML_ENABLED = false;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -243,6 +242,21 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private doIntrospection(): BlueprintIntrospection {
+    if (!this.context.npmConfiguration.token || !this.context.npmConfiguration.registry) {
+      return <BlueprintIntrospection>{
+        classInfo: {
+          name: '',
+        },
+        defaults: {},
+        imports: [],
+        options: {
+          fullSource: '',
+          nodes: {},
+        },
+        packageJsonContent: '',
+        readmeContent: '',
+      };
+    }
     const unpack = 'tar -xzf *.tgz';
     const parentResolutionDirectory = 'temp';
     cp.execSync(`mkdir -p ${parentResolutionDirectory}`);
@@ -268,6 +282,7 @@ export class Blueprint extends ParentBlueprint {
       packageJsonLocation,
       readmeLocation,
     });
+
     cp.execSync(`rm -rf ${parentResolutionDirectory}`);
     return introspection;
   }
