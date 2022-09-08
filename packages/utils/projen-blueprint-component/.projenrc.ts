@@ -1,5 +1,5 @@
-import { typescript } from 'projen';
 import * as fs from 'fs';
+import { typescript } from 'projen';
 
 const project = new typescript.TypeScriptProject({
   defaultReleaseBranch: 'main',

@@ -49,6 +49,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
     this.package.addVersion(version || '0.0.0');
+    this.addDevDeps('ts-node@^10');
 
     // modify bumping tasks
     this.removeTask('release');
