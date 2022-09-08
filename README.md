@@ -16,7 +16,7 @@ npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 ```
 
-Add this to your `~/.bash_profile`.
+Add this to your `~/.bash_profile`:
 
 ```
 set-blueprints-npm-repo() {
