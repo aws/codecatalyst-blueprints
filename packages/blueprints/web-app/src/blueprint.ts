@@ -153,6 +153,7 @@ export class Blueprint extends ParentBlueprint {
       defaultReleaseBranch: 'main',
       deps: ['axios'],
       github: false,
+      eslint: false,
       devDeps: ['jest-junit'],
       gitignore: ['junit.xml'],
       tsconfig: {

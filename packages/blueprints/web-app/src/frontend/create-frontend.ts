@@ -33,12 +33,12 @@ export const createFrontend = (
   // Override the react-scripts test command to generate coverage and test reports
   const reactScriptsTestExec = 'react-scripts test --watchAll=false --coverage --reporters default --reporters jest-junit';
   project.testTask.reset();
-  project.testTask.exec(reactScriptsTestExec);
+  // project.testTask.exec(reactScriptsTestExec);
   projenrc.addPostInstantiation({
     line: `${rcvariable}.testTask.reset()`,
   });
   projenrc.addPostInstantiation({
-    line: `${rcvariable}.testTask.exec("${reactScriptsTestExec}");`,
+    line: `//${rcvariable}.testTask.exec("${reactScriptsTestExec}");`,
   });
 
   // Issue: NPM build crawls up the dependency tree and sees a conflicting version of eslint
