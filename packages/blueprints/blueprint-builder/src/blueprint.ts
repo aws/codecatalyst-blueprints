@@ -242,12 +242,7 @@ export class Blueprint extends ParentBlueprint {
   }
 
   private doIntrospection(): BlueprintIntrospection {
-    console.log('XXX');
-    console.log(this.context.npmConfiguration.token);
-    console.log('XXX');
-    console.log(this.context.npmConfiguration.registry);
-
-    if (!this.context.npmConfiguration.token && !this.context.npmConfiguration.registry) {
+    if (!this.context.npmConfiguration.token || !this.context.npmConfiguration.registry) {
       return <BlueprintIntrospection>{
         classInfo: {
           name: '',
