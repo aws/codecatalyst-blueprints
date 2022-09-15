@@ -10,13 +10,18 @@ export interface Options {
   readonly?: boolean;
 }
 
-export class SourceFile extends ProjenSourceCodeComponent {
+export class SourceFile {
+  path: string;
+  projenSourceCodeComponent: ProjenSourceCodeComponent;
+
   constructor(protected readonly sourceRepository: SourceRepository, filePath: string, content: string, options?: Options) {
-    super(sourceRepository.blueprint, path.join(sourceRepository.relativePath, filePath), {
+    this.path = path.join(sourceRepository.relativePath, filePath);
+    sourceRepository.project.tryRemoveFile(this.path);
+
+    this.projenSourceCodeComponent = new ProjenSourceCodeComponent(sourceRepository.blueprint, path.join(sourceRepository.relativePath, filePath), {
       readonly: false,
       ...options,
     });
-    sourceRepository.blueprint.tryRemoveFile(this.path);
-    content.split('\n').forEach(line => this.addLine(line));
+    content.split('\n').forEach(line => this.projenSourceCodeComponent.addLine(line));
   }
 }
