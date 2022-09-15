@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { TextFile } from 'projen';
 
 export interface imports {
   import: string;
@@ -20,13 +21,13 @@ export interface Options {
   subfolder?: string;
 }
 
-export class ProjenRCFile extends SourceFile {
+export class ProjenRCFile extends TextFile {
   imports: imports[] = [];
   instantiations: classInstantiations[] = [];
   postInstantiations: postInstantiation[] = [];
 
   constructor(repository: SourceRepository, options?: Options) {
-    super(repository, path.join(options?.subfolder || '', '.projenrc.ts'), '', {
+    super(repository.blueprint, path.join(repository.relativePath, options?.subfolder || '', '.projenrc.ts'), {
       readonly: false,
     });
     repository.blueprint._addComponent(this);

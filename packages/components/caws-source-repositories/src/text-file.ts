@@ -24,4 +24,8 @@ export class SourceFile {
     });
     content.split('\n').forEach(line => this.projenSourceCodeComponent.addLine(line));
   }
+
+  addLine(line: string) {
+    this.projenSourceCodeComponent.addLine(line);
+  }
 }
