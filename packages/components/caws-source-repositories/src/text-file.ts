@@ -16,6 +16,7 @@ export class SourceFile extends ProjenSourceCodeComponent {
       readonly: false,
       ...options,
     });
+    sourceRepository.blueprint.tryRemoveFile(this.path);
     content.split('\n').forEach(line => this.addLine(line));
   }
 }
