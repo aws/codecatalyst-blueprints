@@ -208,14 +208,6 @@ export class Blueprint extends ParentBlueprint {
     blueprint.addDevDeps(`projen@${this.options.advancedSettings?.projenVersion}`);
     blueprint.addDevDeps(tsNodeVersion);
 
-    StaticAsset.findAll('**/*').forEach(asset => {
-      new SourceFile(this.repository, asset.path(), asset.toString());
-    });
-
-    StaticAsset.findAll('**/*').forEach(asset => {
-      new SourceFile(this.repository, asset.path(), asset.toString());
-    });
-
     // create the projenrc.ts
     new SourceFile(
       this.repository,
