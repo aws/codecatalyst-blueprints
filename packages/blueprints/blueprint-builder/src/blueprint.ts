@@ -207,6 +207,7 @@ export class Blueprint extends ParentBlueprint {
     });
     blueprint.addDevDeps(`projen@${this.options.advancedSettings?.projenVersion}`);
     blueprint.addDevDeps(tsNodeVersion);
+
     // create the projenrc.ts
     new SourceFile(
       this.repository,
