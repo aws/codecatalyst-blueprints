@@ -36,6 +36,7 @@ workflowBuilder.addBuildAction({
   output: {
     AutoDiscoverReports: {
       Enabled: true,
+      ReportNamePrefix: AutoDiscovered,
       IncludePaths: ['**/*'],
       ExcludePaths: ['*/node_modules/**/*'],
     },
