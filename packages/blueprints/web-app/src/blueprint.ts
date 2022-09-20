@@ -27,6 +27,7 @@ export const PROJEN_VERSION = '0.61.44';
  */
 export interface Options extends ParentOptions {
   /**
+   * Name for your deployment environment. You can add more environments once the project is created
    * @displayName Environment
    * @collapsed false
    */
