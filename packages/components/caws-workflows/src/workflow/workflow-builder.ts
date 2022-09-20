@@ -11,7 +11,7 @@ export class WorkflowBuilder {
   definition: WorkflowDefinition;
   blueprint: Blueprint;
 
-  constructor(blueprint: Blueprint, workflowdefinition: WorkflowDefinition) {
+  constructor(blueprint: Blueprint, workflowdefinition?: WorkflowDefinition) {
     this.definition = {
       ...emptyWorkflow,
       ...workflowdefinition,
@@ -29,7 +29,7 @@ export class WorkflowBuilder {
   addTrigger(trigger: TriggerDefiniton) {
     this.definition.Triggers = this.definition.Triggers || [];
     this.definition.Triggers.push(trigger);
-  };
+  }
 
   addBranchTrigger(branches = ['main'], filesChanged?: string[]) {
     addGenericBranchTrigger(this.definition, branches, filesChanged);
