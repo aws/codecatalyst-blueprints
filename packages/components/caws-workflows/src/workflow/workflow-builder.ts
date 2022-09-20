@@ -3,7 +3,6 @@ import { TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
-import { emptyWorkflow } from '../samples/empty';
 import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
 import { WorkflowDefinition } from './workflow';
 
@@ -11,12 +10,19 @@ export class WorkflowBuilder {
   definition: WorkflowDefinition;
   blueprint: Blueprint;
 
-  constructor(blueprint: Blueprint, workflowdefinition: WorkflowDefinition) {
+  constructor(blueprint: Blueprint, workflowdefinition?: WorkflowDefinition) {
     this.definition = {
-      ...emptyWorkflow,
+      Name: 'build',
+      SchemaVersion: '1.0',
+      Triggers: [],
+      Actions: {},
       ...workflowdefinition,
     };
     this.blueprint = blueprint;
+  }
+
+  setName(name: string) {
+    this.definition.Name = name;
   }
 
   getDefinition(): WorkflowDefinition {
@@ -29,7 +35,7 @@ export class WorkflowBuilder {
   addTrigger(trigger: TriggerDefiniton) {
     this.definition.Triggers = this.definition.Triggers || [];
     this.definition.Triggers.push(trigger);
-  };
+  }
 
   addBranchTrigger(branches = ['main'], filesChanged?: string[]) {
     addGenericBranchTrigger(this.definition, branches, filesChanged);
