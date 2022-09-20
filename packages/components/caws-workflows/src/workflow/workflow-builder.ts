@@ -3,7 +3,6 @@ import { TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
-import { emptyWorkflow } from '../samples/empty';
 import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
 import { WorkflowDefinition } from './workflow';
 
