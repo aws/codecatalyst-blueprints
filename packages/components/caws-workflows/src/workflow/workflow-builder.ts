@@ -13,10 +13,17 @@ export class WorkflowBuilder {
 
   constructor(blueprint: Blueprint, workflowdefinition?: WorkflowDefinition) {
     this.definition = {
-      ...emptyWorkflow,
+      Name: 'build',
+      SchemaVersion: '1.0',
+      Triggers: [],
+      Actions: {},
       ...workflowdefinition,
     };
     this.blueprint = blueprint;
+  }
+
+  setName(name: string) {
+    this.definition.Name = name;
   }
 
   getDefinition(): WorkflowDefinition {
