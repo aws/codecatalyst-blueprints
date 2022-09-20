@@ -35,6 +35,8 @@ workflowBuilder.addBuildAction({
   // the output attempts to autodiscover test reports, but not in the node modules
   output: {
     AutoDiscoverReports: {
+      Enabled: true,
+      ReportNamePrefix: AutoDiscovered,
       IncludePaths: ['**/*'],
       ExcludePaths: ['*/node_modules/**/*'],
     },
