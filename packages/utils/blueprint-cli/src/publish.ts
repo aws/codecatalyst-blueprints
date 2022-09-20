@@ -1,5 +1,8 @@
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as stream from 'stream';
+import * as util from 'util';
 import * as axios from 'axios';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
@@ -50,19 +53,33 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
     .readdirSync(distributionFolder, { withFileTypes: true })
     .filter(entry => entry.isFile() && entry.name.endsWith('.tgz'))
     .map(entry => entry.name)[0];
+
+  const fullPackagePath = path.join(distributionFolder, packagePath);
   if (!packagePath) {
     log.error(
-      'package has not yet been published locally, have you run blueprint:synth? expected something at: %s/*.tgz`',
+      'package has not yet been published locally, have you run blueprint:synth? expected something at: %s/*.tgz or ' + fullPackagePath,
       distributionFolder,
       version,
     );
     process.exit(199);
   }
 
-  log.info('verifying identity');
+  // get the signature of the package
+  const pipeline = util.promisify(stream.pipeline);
+  const hash = crypto.createHash('sha384').setEncoding('hex');
+  await pipeline(fs.createReadStream(fullPackagePath), hash);
+  const packageSignature = hash.read();
+
+  log.info(`Signature: [${packageSignature}]`);
+  if (!packageSignature) {
+    log.error('Unable to compute package signature');
+    process.exit(254);
+  }
+
+  log.info('Verifying identity...');
   const indentity = await verifyIdentity({ endpoint, cookie });
   log.info(`Publishing as ${indentity.name} at ${indentity.email}`);
-  log.info('using endpoint: %s', endpoint);
+  log.info('Against endpoint: %s', endpoint);
 
   const gqlResponse = await axios.default.post(
     `https://${endpoint}/graphql?`,
@@ -71,6 +88,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
         createBlueprintUploadUrl(input: {
           organizationName: "${publisher}",
           publisher: "${publisher}",
+          packageSignature: "${packageSignature}",
           name: "${friendlyBlueprintName}",
           versionId: "${version}" }) {
             uploadUrl, publishingJobId }
@@ -96,14 +114,13 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
   }
 
   const publishingJob = gqlResponse.data.data.createBlueprintUploadUrl as PublishingJob;
-  log.info('started publishing job: %s', publishingJob.publishingJobId);
-  log.info('started publishing job URI: %s', publishingJob.uploadUrl);
+  log.info('Starting publishing job id: %s', publishingJob.publishingJobId);
 
-  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(path.join(distributionFolder, packagePath)));
+  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(fullPackagePath));
   if (uploadResponse.status != 200) {
     log.error('failed to upload template package: %s', uploadResponse.status);
     process.exit(254);
   }
 
-  log.info('uploaded package for processing');
+  log.info('Uploaded package for processing!');
 }
