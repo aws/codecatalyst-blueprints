@@ -2,7 +2,7 @@ import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-bl
 import defaults from './defaults.json';
 import { generateReadmeContents } from './readmeContents';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { StaticAsset, SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   WorkflowDefinition,
@@ -11,13 +11,13 @@ import {
   addGenericBuildAction,
   addGenericCloudFormationDeployAction,
   emptyWorkflow,
+  AutoDiscoverReportDefinition,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleDir, SampleFile } from 'projen';
 import * as cp from 'child_process';
 import * as path from 'path';
 
 import { runtimeMappings } from './runtimeMappings';
-import dedent from 'ts-dedent';
 import { FileTemplate, FileTemplateContext } from './models';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import * as fs from 'fs';
@@ -163,6 +163,7 @@ export class Blueprint extends ParentBlueprint {
       name: 'build-and-release',
       outputArtifactName: 'build_result',
       stepsToRunUnitTests: runtimeOptions.stepsToRunUnitTests,
+      autoDiscoveryOverride: runtimeOptions.autoDiscoveryOverride,
     });
 
     // generate the readme
@@ -200,7 +201,12 @@ export class Blueprint extends ParentBlueprint {
     }
   }
 
-  createWorkflow(params: { name: string; outputArtifactName: string; stepsToRunUnitTests: Array<string> }): void {
+  createWorkflow(params: {
+    name: string;
+    outputArtifactName: string;
+    stepsToRunUnitTests: Array<string>;
+    autoDiscoveryOverride?: AutoDiscoverReportDefinition;
+  }): void {
     const { name } = params;
 
     const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
@@ -234,7 +240,7 @@ export class Blueprint extends ParentBlueprint {
         Sources: ['WorkflowSource'],
       },
       output: {
-        AutoDiscoverReports: {
+        AutoDiscoverReports: params.autoDiscoveryOverride ?? {
           ReportNamePrefix: 'AutoDiscovered',
           IncludePaths: ['**/*'],
           Enabled: true,
@@ -321,15 +327,7 @@ export class Blueprint extends ParentBlueprint {
 
   protected createSamInstallScript() {
     new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
-      contents: dedent`#!/usr/bin/env bash
-                       echo "Setting up sam"
-
-                       yum install unzip -y
-
-                       curl -LO https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-                       unzip -qq aws-sam-cli-linux-x86_64.zip -d sam-installation-directory
-
-                       ./sam-installation-directory/install; export AWS_DEFAULT_REGION=us-west-2s`,
+      contents: new StaticAsset('setup-sam.sh').toString(),
     });
   }
 
