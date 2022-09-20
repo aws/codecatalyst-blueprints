@@ -1,4 +1,5 @@
 import { WriteFileOptions } from 'projen/lib/util';
+import {AutoDiscoverReportDefinition} from "@caws-blueprint-component/caws-workflows";
 
 export interface RuntimeMapping {
   runtime: string;
@@ -15,6 +16,7 @@ export interface RuntimeMapping {
   filesToCreate: Array<FileTemplate>;
   filesToOverride: Array<FileTemplate>;
   filesToChangePermissionsFor: Array<FilePermissionChange>;
+  autoDiscoveryOverride?: AutoDiscoverReportDefinition;
 }
 
 export interface FileTemplate {
