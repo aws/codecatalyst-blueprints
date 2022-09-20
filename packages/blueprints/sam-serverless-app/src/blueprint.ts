@@ -44,7 +44,7 @@ export interface Options extends ParentOptions {
   cloudFormationStackName: string;
 
   /**
-   * This blueprint includes a default environment for production. Rename the default envionment and connect it to an AWS account here.
+   * Name for your deployment environment. You can add more environments once the project is created
    * @displayName Environment
    * @collapsed false
    */

@@ -1,7 +1,14 @@
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
 name: Build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
+    branches:
+      - main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
