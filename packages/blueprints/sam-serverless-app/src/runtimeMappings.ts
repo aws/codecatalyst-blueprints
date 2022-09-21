@@ -1,7 +1,7 @@
 import { java11, python36, nodejs14 } from './templateContents';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
-import dedent from 'ts-dedent';
+import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
 
 export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
   [
@@ -45,11 +45,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
             return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'run-tests.sh');
           },
           resolveContent(context: FileTemplateContext): string {
-            return dedent`#!/usr/bin/env bash
-
-                          echo "Running unit tests..."
-                          GRADLE_DIR=${context.lambdaFunctionName}/HelloWorldFunction
-                          ./$GRADLE_DIR/gradlew test -p $GRADLE_DIR`;
+            return new SubstitionAsset('gradle/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
           },
         },
       ],
@@ -60,40 +56,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           },
           // @ts-ignore
           resolveContent(context: FileTemplateContext): string {
-            return dedent`plugins {
-                              id 'java'
-                              id 'jacoco'
-                          }
-
-                          repositories {
-                              mavenCentral()
-                          }
-
-                          dependencies {
-                              implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
-                              implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
-                              testImplementation 'junit:junit:4.13.2'
-                          }
-
-                          test {
-                              finalizedBy jacocoTestReport // report is always generated after tests run
-                          }
-
-                          jacocoTestReport {
-                              dependsOn test // tests are required to run before generating the report
-
-                              reports {
-                                  xml.required = true
-                              }
-                          }
-
-                          jacoco {
-                              toolVersion = "0.8.8"
-                              reportsDirectory = layout.buildDirectory.dir('coverage-reports')
-                          }
-
-                          sourceCompatibility = 11
-                          targetCompatibility = 11`;
+            return new StaticAsset('gradle/build.gradle').toString();
           },
         },
       ],
@@ -121,10 +84,40 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       dependenciesFilePath: 'package.json',
       installInstructions:
         'Install [Python 3](https://www.python.org/downloads/)\n * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)',
-      stepsToRunUnitTests: [],
-      filesToCreate: [],
-      filesToOverride: [],
+      stepsToRunUnitTests: ['. ./.aws/scripts/run-tests.sh'],
+      filesToCreate: [
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'run-tests.sh');
+          },
+          resolveContent(context: FileTemplateContext): string {
+            return new SubstitionAsset('nodejs/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+          },
+        },
+      ],
+      filesToOverride: [
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, 'hello-world', 'package.json');
+          },
+          // @ts-ignore
+          resolveContent(context: FileTemplateContext): string {
+            return new StaticAsset('nodejs/package.json').toString();
+          },
+        },
+      ],
       filesToChangePermissionsFor: [],
+      autoDiscoveryOverride: {
+        ReportNamePrefix: 'AutoDiscovered',
+        IncludePaths: ['**/*'],
+        ExcludePaths: ['.aws-sam/**/*'],
+        Enabled: true,
+        SuccessCriteria: {
+          PassRate: 100,
+          LineCoverage: 65,
+          BranchCoverage: 50,
+        },
+      },
     },
   ],
   [
@@ -148,9 +141,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           },
           // @ts-ignore
           resolveContent(context: FileTemplateContext): string {
-            return dedent`pytest
-                          pytest-cov
-                          pytest-mock`;
+            return new StaticAsset('python/requirements-dev.txt').toString();
           },
         },
         {
@@ -158,14 +149,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
             return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'bootstrap.sh');
           },
           resolveContent(context: FileTemplateContext): string {
-            return dedent`#!/bin/bash
-
-                          VENV="venv"
-
-                          test -d $VENV || python3 -m venv $VENV || return
-                          $VENV/bin/pip install -r requirements-dev.txt
-                          $VENV/bin/pip install -r ${context.lambdaFunctionName}/hello_world/requirements.txt
-                          . $VENV/bin/activate`;
+            return new SubstitionAsset('python/bootstrap.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
           },
         },
         {
@@ -173,10 +157,7 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
             return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'run-tests.sh');
           },
           resolveContent(context: FileTemplateContext): string {
-            return dedent`#!/bin/bash
-
-                          echo "Running unit tests..."
-                          PYTHONPATH=${context.lambdaFunctionName} pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. .`;
+            return new SubstitionAsset('python/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
           },
         },
       ],
