@@ -71,12 +71,18 @@ function validateNode(node: Node, values: string[], regex: string): ValiationErr
     validationRegex: regex,
   };
   if (!regex) {
+    const validationMessage = [
+      `${SupportedKind.StringKeyword} at ${node.path} should have a @${VALIDATION_TAG} annotation.`,
+      'Example: alpha numeric 5-50 character regex',
+      `[@${VALIDATION_TAG} /^[a-zA-Z0-9]{1,50}$/]`,
+      '[@validationMessage Must contain only alphanumeric characters and be up to 50 characters in length]',
+    ].join(' - ');
     return [
       {
         ...error,
         level: 'ERROR',
         value: '',
-        validationMessage: `${SupportedKind.StringKeyword} at ${node.path} should have a @${VALIDATION_TAG} annotation.`,
+        validationMessage,
       },
     ];
   }
