@@ -1,4 +1,4 @@
-import { java11, python36, nodejs14 } from './templateContents';
+import { java11, python39, nodejs14 } from './templateContents';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
 import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
@@ -22,6 +22,14 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       filesToCreate: [],
       filesToOverride: [],
       filesToChangePermissionsFor: [],
+      readmeTestSection: `
+## Tests
+Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
+\`\`\`
+$ cd HelloWorldFunction
+$ mvn test
+\`\`\`
+`,
     },
   ],
   [
@@ -68,6 +76,15 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           newPermissions: { executable: true },
         },
       ],
+
+      readmeTestSection: `
+## Tests
+Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
+\`\`\`
+$ cd HelloWorldFunction
+$ gradle test
+\`\`\`
+`,
     },
   ],
   [
@@ -118,32 +135,32 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           BranchCoverage: 50,
         },
       },
+      readmeTestSection: `
+## Tests
+Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
+\`\`\`
+$ cd hello-world
+$ npm install
+$ npm run test
+\`\`\`
+`,
     },
   ],
   [
     'Python 3',
     {
-      runtime: 'python3.6',
+      runtime: 'python3.9',
       codeUri: 'hello_world/',
       srcCodePath: 'hello_world',
       testPath: 'tests',
       handler: 'app.lambda_handler',
-      templateProps: python36,
-      cacheDir: 'python36',
+      templateProps: python39,
+      cacheDir: 'python39',
       gitSrcPath: 'cookiecutter-aws-sam-hello-python',
       dependenciesFilePath: 'requirements.txt',
-      installInstructions: 'Install [Python3.6](https://www.python.org/downloads/)',
+      installInstructions: 'Install [Python3.9](https://www.python.org/downloads/)',
       stepsToRunUnitTests: ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'],
       filesToCreate: [
-        {
-          resolvePath(context: FileTemplateContext) {
-            return path.join(context.repositoryRelativePath, 'requirements-dev.txt');
-          },
-          // @ts-ignore
-          resolveContent(context: FileTemplateContext): string {
-            return new StaticAsset('python/requirements-dev.txt').toString();
-          },
-        },
         {
           resolvePath(context: FileTemplateContext) {
             return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'bootstrap.sh');
@@ -160,9 +177,42 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
             return new SubstitionAsset('python/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
           },
         },
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, '.coveragerc');
+          },
+          resolveContent(context: FileTemplateContext): string {
+            return new SubstitionAsset('python/.coveragerc').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+          },
+        },
       ],
-      filesToOverride: [],
+      filesToOverride: [
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, 'tests/requirements.txt');
+          },
+          // @ts-ignore
+          resolveContent(context: FileTemplateContext): string {
+            return new StaticAsset('python/requirements-dev.txt').toString();
+          },
+        },
+      ],
       filesToChangePermissionsFor: [],
+      samBuildImage: 'amazon/aws-sam-cli-build-image-python3.9',
+      readmeTestSection: `
+## Tests
+Tests are defined in the \`tests\` folder in this project. Use PIP to install the test dependencies and run tests.
+\`\`\`
+$ pip install -r tests/requirements.txt
+
+# unit test
+$ python -m pytest tests/unit -v
+
+# integration test, requires deploying the stack first.
+# Create the environment variable AWS_SAM_STACK_NAME with the name of the stack to test
+$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
+\`\`\`
+`,
     },
   ],
 ]);

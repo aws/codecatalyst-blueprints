@@ -1,5 +1,5 @@
 {
-  "runtime": "Java 11 Gradle",
+  "runtime": "Python 3",
   "cloudFormationStackName": "sam-stack-",
   "environment": {
     "name": "default_environment",
