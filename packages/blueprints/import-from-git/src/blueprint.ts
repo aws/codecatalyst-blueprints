@@ -27,6 +27,7 @@ const MAX_REPO_SIZE = max_repo_mb * (1024 * 1024);
 export interface Options extends ParentOptions {
   /**
    * Which Git repository do we clone? This should be a https URL.
+   * @displayName Public Git Repository
    * @validationRegex /^https:\/\/[a-zA-Z0-9_\/.-]+$/
    * @validationMessage Git repository URL must start with https:// and contain only alphanumeric characters, dashes (-), periods (.), underscores, and forward slashes (/).
    */
