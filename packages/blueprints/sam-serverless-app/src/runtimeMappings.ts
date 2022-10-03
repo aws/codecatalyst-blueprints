@@ -147,7 +147,7 @@ $ npm run test
     },
   ],
   [
-    'Python 3',
+    'Python 3.9',
     {
       runtime: 'python3.9',
       codeUri: 'hello_world/',
