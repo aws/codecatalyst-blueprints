@@ -18,7 +18,6 @@ export interface RuntimeMapping {
   filesToChangePermissionsFor: Array<FilePermissionChange>;
   autoDiscoveryOverride?: AutoDiscoverReportDefinition;
   samBuildImage?: string;
-  readmeTestSection?: string;
 }
 
 export interface FileTemplate {

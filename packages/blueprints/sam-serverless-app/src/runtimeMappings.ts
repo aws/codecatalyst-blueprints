@@ -22,14 +22,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       filesToCreate: [],
       filesToOverride: [],
       filesToChangePermissionsFor: [],
-      readmeTestSection: `
-## Tests
-Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
-\`\`\`
-$ cd HelloWorldFunction
-$ mvn test
-\`\`\`
-`,
     },
   ],
   [
@@ -76,15 +68,6 @@ $ mvn test
           newPermissions: { executable: true },
         },
       ],
-
-      readmeTestSection: `
-## Tests
-Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
-\`\`\`
-$ cd HelloWorldFunction
-$ gradle test
-\`\`\`
-`,
     },
   ],
   [
@@ -135,15 +118,6 @@ $ gradle test
           BranchCoverage: 50,
         },
       },
-      readmeTestSection: `
-## Tests
-Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
-\`\`\`
-$ cd hello-world
-$ npm install
-$ npm run test
-\`\`\`
-`,
     },
   ],
   [
@@ -199,20 +173,6 @@ $ npm run test
       ],
       filesToChangePermissionsFor: [],
       samBuildImage: 'amazon/aws-sam-cli-build-image-python3.9',
-      readmeTestSection: `
-## Tests
-Tests are defined in the \`tests\` folder in this project. Use PIP to install the test dependencies and run tests.
-\`\`\`
-$ pip install -r tests/requirements.txt
-
-# unit test
-$ python -m pytest tests/unit -v
-
-# integration test, requires deploying the stack first.
-# Create the environment variable AWS_SAM_STACK_NAME with the name of the stack to test
-$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
-\`\`\`
-`,
     },
   ],
 ]);

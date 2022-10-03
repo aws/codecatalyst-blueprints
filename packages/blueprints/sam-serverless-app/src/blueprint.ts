@@ -131,8 +131,9 @@ export class Blueprint extends ParentBlueprint {
 
   override synth(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
-
+    const runtime = this.options.runtime!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const runtimeOptions = runtimeMappings.get(runtime)!;
     // create an MDE workspace
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
@@ -172,6 +173,7 @@ export class Blueprint extends ParentBlueprint {
       this.repository,
       'README.md',
       generateReadmeContents({
+        runtime,
         runtimeMapping: runtimeOptions,
         defaultReleaseBranch: 'main',
         lambdas: [this.options.lambda],
