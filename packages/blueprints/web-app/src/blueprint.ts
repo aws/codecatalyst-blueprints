@@ -39,7 +39,7 @@ export interface Options extends ParentOptions {
      */
     awsAccountConnection: AccountConnection<{
       /**
-       * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources.
+       * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources. See readme in right panel for permissions and trust policy.
        * @displayName CDK Role
        */
       cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
