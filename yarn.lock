@@ -709,9 +709,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.frontend-showcase@workspace:packages/blueprints/frontend-showcase":
+"@caws-blueprint/blueprints.deploy-test@workspace:packages/blueprints/deploy-test":
   version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.frontend-showcase@workspace:packages/blueprints/frontend-showcase"
+  resolution: "@caws-blueprint/blueprints.deploy-test@workspace:packages/blueprints/deploy-test"
   dependencies:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x

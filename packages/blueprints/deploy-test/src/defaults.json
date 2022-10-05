@@ -1,0 +1,8 @@
+{
+
+  "testEnvironment": {
+    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "environmentType": "PRODUCTION"
+
+  }
+}
