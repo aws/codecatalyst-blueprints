@@ -44,7 +44,7 @@ export class Blueprint extends ParentBlueprint {
     options.testEnvironment.testAccountConnection;
 
     // add a repository
-    const repo = new SourceRepository(this, { title: 'code' });
+    const repo = new SourceRepository(this, { title: 'deployApiTestRepo' });
 
     // example showing add files to the repository
     new SourceFile(repo, 'testfile.txt', 'this is a line of text');

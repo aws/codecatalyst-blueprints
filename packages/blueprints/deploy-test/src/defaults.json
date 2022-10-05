@@ -1,7 +1,7 @@
 {
 
   "testEnvironment": {
-    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "name": "deployApiTestEnvironment",
     "environmentType": "PRODUCTION"
 
   }
