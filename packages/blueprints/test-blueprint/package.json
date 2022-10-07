@@ -1,6 +1,6 @@
 {
-  "name": "@caws-blueprint/blueprints.frontend-showcase",
-  "description": "This is a test blueprint used for validating the frontend.",
+  "name": "@caws-blueprint/blueprints.test-blueprint",
+  "description": "This is a test blueprint used for testing various blueprint systems",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -66,7 +66,7 @@
   "mediaUrls": [
     "https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png"
   ],
-  "displayName": "Frontend Showcase Blueprint [Internal]",
+  "displayName": "Test Blueprint [Internal]",
   "resolutions": {
     "@types/responselike": "1.0.0",
     "got": "12.3.1"
