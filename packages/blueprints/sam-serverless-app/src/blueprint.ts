@@ -18,7 +18,7 @@ import * as cp from 'child_process';
 import * as path from 'path';
 
 import { runtimeMappings } from './runtimeMappings';
-import { FileTemplate, FileTemplateContext } from './models';
+import { FileTemplate, FileTemplateContext, RuntimeMapping } from './models';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import * as fs from 'fs';
 
@@ -32,7 +32,7 @@ export interface Options extends ParentOptions {
   /**
    * @displayName Runtime Language
    */
-  runtime: 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
+  runtime: 'Python 3.9' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
 
   /**
    * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
@@ -131,8 +131,9 @@ export class Blueprint extends ParentBlueprint {
 
   override synth(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtimeOptions = runtimeMappings.get(this.options.runtime)!;
-
+    const runtime = this.options.runtime!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const runtimeOptions = runtimeMappings.get(runtime)!;
     // create an MDE workspace
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
@@ -164,6 +165,7 @@ export class Blueprint extends ParentBlueprint {
       outputArtifactName: 'build_result',
       stepsToRunUnitTests: runtimeOptions.stepsToRunUnitTests,
       autoDiscoveryOverride: runtimeOptions.autoDiscoveryOverride,
+      runtimeOptions,
     });
 
     // generate the readme
@@ -171,6 +173,7 @@ export class Blueprint extends ParentBlueprint {
       this.repository,
       'README.md',
       generateReadmeContents({
+        runtime,
         runtimeMapping: runtimeOptions,
         defaultReleaseBranch: 'main',
         lambdas: [this.options.lambda],
@@ -206,6 +209,7 @@ export class Blueprint extends ParentBlueprint {
     outputArtifactName: string;
     stepsToRunUnitTests: Array<string>;
     autoDiscoveryOverride?: AutoDiscoverReportDefinition;
+    runtimeOptions: RuntimeMapping;
   }): void {
     const { name } = params;
 
@@ -223,6 +227,9 @@ export class Blueprint extends ParentBlueprint {
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
 
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
+    const samBuildImageOptions = params.runtimeOptions.samBuildImage
+      ? `--use-container --build-image ${params.runtimeOptions.samBuildImage}`
+      : undefined;
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
@@ -260,7 +267,7 @@ export class Blueprint extends ParentBlueprint {
       steps: [
         ...params.stepsToRunUnitTests,
         '. ./.aws/scripts/setup-sam.sh',
-        'sam build --template-file template.yaml',
+        `sam build --template-file template.yaml ${samBuildImageOptions}`,
         'cd .aws-sam/build/',
         `sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region ${region}`,
       ],

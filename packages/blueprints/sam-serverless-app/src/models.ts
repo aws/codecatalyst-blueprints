@@ -1,5 +1,5 @@
 import { WriteFileOptions } from 'projen/lib/util';
-import {AutoDiscoverReportDefinition} from "@caws-blueprint-component/caws-workflows";
+import { AutoDiscoverReportDefinition } from '@caws-blueprint-component/caws-workflows';
 
 export interface RuntimeMapping {
   runtime: string;
@@ -17,6 +17,7 @@ export interface RuntimeMapping {
   filesToOverride: Array<FileTemplate>;
   filesToChangePermissionsFor: Array<FilePermissionChange>;
   autoDiscoveryOverride?: AutoDiscoverReportDefinition;
+  samBuildImage?: string;
 }
 
 export interface FileTemplate {
@@ -33,14 +34,3 @@ export interface FilePermissionChange {
   resolvePath: (context: FileTemplateContext) => string;
   newPermissions: WriteFileOptions;
 }
-
-/**
- * This is so that you can specify which lambdas you want in each api gateway
- */
-/*
-interface ApiGateway{
-   name: string;
-   runtime: 'Python 3' | '.NET Core 3' | 'Ruby 2.7' | 'Node.js 14' | 'Java 11 Maven';
-   lambdas: Lambda[];
-}
-*/
