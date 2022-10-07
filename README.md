@@ -34,6 +34,8 @@ set-blueprints-npm-repo() {
 
 # setup the blueprints repo for use
 blueprints-setup() {
+  nvm use
+
   # The blueprints repo uses yarn2 which doesn't support projen's --check-post-synthesis flag
   # Disable projen post synthesis
   export PROJEN_DISABLE_POST=1
