@@ -1,4 +1,4 @@
-import { java11, python39, nodejs14 } from './templateContents';
+import { java11, python36, nodejs14 } from './templateContents';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
 import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
@@ -121,20 +121,29 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
     },
   ],
   [
-    'Python 3.9',
+    'Python 3',
     {
-      runtime: 'python3.9',
+      runtime: 'python3.6',
       codeUri: 'hello_world/',
       srcCodePath: 'hello_world',
       testPath: 'tests',
       handler: 'app.lambda_handler',
-      templateProps: python39,
-      cacheDir: 'python39',
+      templateProps: python36,
+      cacheDir: 'python36',
       gitSrcPath: 'cookiecutter-aws-sam-hello-python',
       dependenciesFilePath: 'requirements.txt',
-      installInstructions: 'Install [Python3.9](https://www.python.org/downloads/)',
+      installInstructions: 'Install [Python3.6](https://www.python.org/downloads/)',
       stepsToRunUnitTests: ['. ./.aws/scripts/bootstrap.sh', '. ./.aws/scripts/run-tests.sh'],
       filesToCreate: [
+        {
+          resolvePath(context: FileTemplateContext) {
+            return path.join(context.repositoryRelativePath, 'requirements-dev.txt');
+          },
+          // @ts-ignore
+          resolveContent(context: FileTemplateContext): string {
+            return new StaticAsset('python/requirements-dev.txt').toString();
+          },
+        },
         {
           resolvePath(context: FileTemplateContext) {
             return path.join(context.repositoryRelativePath, '.aws', 'scripts', 'bootstrap.sh');
@@ -151,28 +160,9 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
             return new SubstitionAsset('python/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
           },
         },
-        {
-          resolvePath(context: FileTemplateContext) {
-            return path.join(context.repositoryRelativePath, '.coveragerc');
-          },
-          resolveContent(context: FileTemplateContext): string {
-            return new SubstitionAsset('python/.coveragerc').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
-          },
-        },
       ],
-      filesToOverride: [
-        {
-          resolvePath(context: FileTemplateContext) {
-            return path.join(context.repositoryRelativePath, 'tests/requirements.txt');
-          },
-          // @ts-ignore
-          resolveContent(context: FileTemplateContext): string {
-            return new StaticAsset('python/requirements-dev.txt').toString();
-          },
-        },
-      ],
+      filesToOverride: [],
       filesToChangePermissionsFor: [],
-      samBuildImage: 'amazon/aws-sam-cli-build-image-python3.9',
     },
   ],
 ]);

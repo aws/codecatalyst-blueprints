@@ -2,7 +2,6 @@ import { RuntimeMapping } from './models';
 import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 
 export function generateReadmeContents(params: {
-  runtime: string;
   runtimeMapping: RuntimeMapping;
   defaultReleaseBranch: 'main';
   lambdas: { functionName: string }[];
@@ -11,7 +10,7 @@ export function generateReadmeContents(params: {
   cloudFormationStackName: string;
   workflowName: string;
 }) {
-  const { runtime, runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, workflowName } = params;
+  const { runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, workflowName } = params;
 
   //Generate input variables
   let functionNames = '';
@@ -35,7 +34,7 @@ This project contains the following files and folder in its source repository:
 
     - events - Invocation events that you can use to invoke the function
 
-    - ${runtimeMapping.testPath} - Tests for the Lambda function's code
+    - ${runtimeMapping.testPath} - Unit tests for the Lambda function's code
 
   - .aws/workflows/${workflowName}.yaml - The template that defines the project's workflow
 
@@ -92,9 +91,7 @@ To build your application locally use the following command in your shell
    sam build
 \`\`\`
 
-  The SAM CLI installs dependencies defined in the ${runtimeMapping.codeUri}/${
-    runtimeMapping.dependenciesFilePath
-  } file of each lambda functions, creates a deployment package, and saves it in the .aws-sam/build folder.
+  The SAM CLI installs dependencies defined in the ${runtimeMapping.codeUri}/${runtimeMapping.dependenciesFilePath} file of each lambda functions, creates a deployment package, and saves it in the .aws-sam/build folder.
   For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
   Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
 
@@ -122,8 +119,6 @@ The SAM CLI reads the application template to determine the API's routes and the
             Method: get
 \`\`\`
 
-${runtimeReadmeSection[runtime]?.readmeTestSection ?? ''}
-
 ## Add a resource to your serverless application
 The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
 
@@ -139,53 +134,3 @@ See the Quokka User Guide for additional information on using the features and r
 `;
   return readmeContents;
 }
-
-export const runtimeReadmeSection = {
-  'Java 11 Maven': {
-    readmeTestSection: `
-## Tests
-Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
-\`\`\`
-$ cd HelloWorldFunction
-$ mvn test
-\`\`\`
-`,
-  },
-  'Java 11 Gradle': {
-    readmeTestSection: `
-## Tests
-Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
-\`\`\`
-$ cd HelloWorldFunction
-$ gradle test
-\`\`\`
-    `,
-  },
-  'Node.js 14': {
-    readmeTestSection: `
-## Tests
-Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
-\`\`\`
-$ cd hello-world
-$ npm install
-$ npm run test
-\`\`\`
-`,
-  },
-  'Python 3.9': {
-    readmeTestSection: `
-## Tests
-Tests are defined in the \`tests\` folder in this project. Use PIP to install the test dependencies and run tests.
-\`\`\`
-$ pip install -r tests/requirements.txt
-
-# unit test
-$ python -m pytest tests/unit -v
-
-# integration test, requires deploying the stack first.
-# Create the environment variable AWS_SAM_STACK_NAME with the name of the stack to test
-$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
-\`\`\`
-`,
-  },
-};

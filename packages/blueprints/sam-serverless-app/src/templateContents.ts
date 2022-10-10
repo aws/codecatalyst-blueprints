@@ -6,6 +6,6 @@ export const java11 = `
           PARAM1: VALUE
 `;
 
-export const python39 = '';
+export const python36 = '';
 
 export const nodejs14 = '';
