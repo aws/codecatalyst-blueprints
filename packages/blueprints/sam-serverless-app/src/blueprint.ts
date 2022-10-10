@@ -229,7 +229,7 @@ export class Blueprint extends ParentBlueprint {
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     const samBuildImageOptions = params.runtimeOptions.samBuildImage
       ? `--use-container --build-image ${params.runtimeOptions.samBuildImage}`
-      : undefined;
+      : '';
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
