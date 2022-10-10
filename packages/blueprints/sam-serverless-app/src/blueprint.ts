@@ -228,8 +228,8 @@ export class Blueprint extends ParentBlueprint {
 
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     const samBuildImageOptions = params.runtimeOptions.samBuildImage
-      ? `--use-container --build-image ${params.runtimeOptions.samBuildImage}`
-      : '';
+      ? `sam build --template-file template.yaml --use-container --build-image ${params.runtimeOptions.samBuildImage}`
+      : 'sam build --template-file template.yaml';
     addGenericBuildAction({
       blueprint: this,
       workflow: workflowDefinition,
@@ -267,7 +267,7 @@ export class Blueprint extends ParentBlueprint {
       steps: [
         ...params.stepsToRunUnitTests,
         '. ./.aws/scripts/setup-sam.sh',
-        `sam build --template-file template.yaml ${samBuildImageOptions}`,
+        samBuildImageOptions,
         'cd .aws-sam/build/',
         `sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region ${region}`,
       ],
