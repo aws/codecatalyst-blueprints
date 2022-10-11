@@ -2,14 +2,13 @@ import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-bl
 import defaults from './defaults.json';
 import { generateReadmeContents } from './readmeContents';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { StaticAsset, SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   WorkflowDefinition,
   Workflow,
   addGenericBranchTrigger,
   addGenericBuildAction,
-  addGenericCompute,
   addGenericCloudFormationDeployAction,
   emptyWorkflow,
   AutoDiscoverReportDefinition,
@@ -33,7 +32,7 @@ export interface Options extends ParentOptions {
   /**
    * @displayName Runtime Language
    */
-  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
+  runtime: 'Python 3.9' | 'Node.js 14' | 'Java 11 Maven' | 'Java 11 Gradle';
 
   /**
    * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
@@ -148,6 +147,7 @@ export class Blueprint extends ParentBlueprint {
       handler: runtimeOptions.handler,
       templateProps: runtimeOptions.templateProps,
     });
+    this.createSamInstallScript();
 
     // create additional files required for this runtime
     const context: FileTemplateContext = {
@@ -226,8 +226,6 @@ export class Blueprint extends ParentBlueprint {
     };
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
 
-    addGenericCompute(workflowDefinition, params.runtimeOptions.computeOptions.Type, params.runtimeOptions.computeOptions.Fleet);
-
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     const samBuildImageOptions = params.runtimeOptions.samBuildImage
       ? `sam build --template-file template.yaml --use-container --build-image ${params.runtimeOptions.samBuildImage}`
@@ -268,6 +266,7 @@ export class Blueprint extends ParentBlueprint {
       },
       steps: [
         ...params.stepsToRunUnitTests,
+        '. ./.aws/scripts/setup-sam.sh',
         samBuildImageOptions,
         'cd .aws-sam/build/',
         `sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region ${region}`,
@@ -331,6 +330,12 @@ export class Blueprint extends ParentBlueprint {
     const newLambdaPath = path.join(this.repository.relativePath, this.options.lambda?.functionName ?? '');
     new SampleDir(this, newLambdaPath, { sourceDir });
     return sourceDir;
+  }
+
+  protected createSamInstallScript() {
+    new SampleFile(this, path.join(this.repository.relativePath, '.aws', 'scripts', 'setup-sam.sh'), {
+      contents: new StaticAsset('setup-sam.sh').toString(),
+    });
   }
 
   protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string }): void {

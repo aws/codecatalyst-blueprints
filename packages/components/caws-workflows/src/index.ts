@@ -2,7 +2,6 @@ export * from './workflow/workflow';
 export * from './workflow/workflow-builder';
 export * from './workflow/sources';
 export * from './workflow/triggers';
-export * from './workflow/compute';
 
 export * from './samples/empty';
 export * from './samples/node';
