@@ -249,15 +249,8 @@ export class Blueprint extends ParentBlueprint {
         Sources: ['WorkflowSource'],
       },
       output: {
-        AutoDiscoverReports: params.autoDiscoveryOverride ?? {
-          ReportNamePrefix: 'AutoDiscovered',
-          IncludePaths: ['**/*'],
-          Enabled: true,
-          SuccessCriteria: {
-            PassRate: 100,
-            LineCoverage: 70,
-            BranchCoverage: 50,
-          },
+        AutoDiscoverReports: {
+          Enabled: false,
         },
         Artifacts: [
           {
