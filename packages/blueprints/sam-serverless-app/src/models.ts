@@ -1,5 +1,5 @@
 import { WriteFileOptions } from 'projen/lib/util';
-import { AutoDiscoverReportDefinition, ComputeDefintion } from '@caws-blueprint-component/caws-workflows';
+import { AutoDiscoverReportDefinition } from '@caws-blueprint-component/caws-workflows';
 
 export interface RuntimeMapping {
   runtime: string;
@@ -16,7 +16,6 @@ export interface RuntimeMapping {
   filesToCreate: Array<FileTemplate>;
   filesToOverride: Array<FileTemplate>;
   filesToChangePermissionsFor: Array<FilePermissionChange>;
-  computeOptions: ComputeDefintion;
   autoDiscoveryOverride?: AutoDiscoverReportDefinition;
   samBuildImage?: string;
 }

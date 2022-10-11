@@ -4,7 +4,6 @@ import { SourceRepository } from '@caws-blueprint-component/caws-source-reposito
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 // import { ActionDefiniton } from '..';
-import { ComputeDefintion } from './compute';
 import { SourceDefiniton } from './sources';
 import { TriggerDefiniton } from './triggers';
 // import { SourceDefiniton, TriggerDefiniton, ActionDefiniton } from '..';
@@ -21,7 +20,6 @@ export interface WorkflowDefinition {
   RunMode?: RunModeDefiniton;
   Sources?: SourceDefiniton;
   Triggers?: TriggerDefiniton[];
-  Compute?: ComputeDefintion;
   Actions?: {
     [id: string]: any;
   };

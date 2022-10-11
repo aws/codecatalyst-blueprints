@@ -2,7 +2,6 @@ import { java11, python39, nodejs14 } from './templateContents';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
 import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
-import { ComputeType, ComputeFleet } from '@caws-blueprint-component/caws-workflows';
 
 export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
   [
@@ -23,10 +22,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       filesToCreate: [],
       filesToOverride: [],
       filesToChangePermissionsFor: [],
-      computeOptions: {
-        Type: ComputeType.LAMBDA,
-        Fleet: ComputeFleet.LINUX_X86_64_LARGE,
-      },
     },
   ],
   [
@@ -73,10 +68,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           newPermissions: { executable: true },
         },
       ],
-      computeOptions: {
-        Type: ComputeType.LAMBDA,
-        Fleet: ComputeFleet.LINUX_X86_64_LARGE,
-      },
     },
   ],
   [
@@ -126,10 +117,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
           LineCoverage: 65,
           BranchCoverage: 50,
         },
-      },
-      computeOptions: {
-        Type: ComputeType.LAMBDA,
-        Fleet: ComputeFleet.LINUX_X86_64_LARGE,
       },
     },
   ],
@@ -186,10 +173,6 @@ export const runtimeMappings: Map<string, RuntimeMapping> = new Map([
       ],
       filesToChangePermissionsFor: [],
       samBuildImage: 'amazon/aws-sam-cli-build-image-python3.9',
-      computeOptions: {
-        Type: ComputeType.EC2,
-        Fleet: ComputeFleet.LINUX_X86_64_LARGE,
-      },
     },
   ],
 ]);

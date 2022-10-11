@@ -6,9 +6,6 @@ import {
   WorkflowDefinition,
   addGenericBuildAction,
   addGenericBranchTrigger,
-  addGenericCompute,
-  ComputeFleet,
-  ComputeType,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
@@ -244,7 +241,6 @@ export class Blueprint extends ParentBlueprint {
 
     addGenericBranchTrigger(workflow, ['main']);
 
-    addGenericCompute(workflow, ComputeType.LAMBDA, ComputeFleet.LINUX_X86_64_LARGE);
     /**
      * In this case we do a deployment directly from a build action rather than calling cdk synth and then deploying the cloudformation template in another action. This is optional and just done for convienence.
      */
@@ -279,7 +275,7 @@ export class Blueprint extends ParentBlueprint {
         `cd $root/${this.nodeFolderName} && npm install && npm run build`,
         'npx cdk bootstrap',
         'npm run deploy:copy-config',
-        `cd $root/${this.reactFolderName} && npm i nth-check && npm install && npm run build`,
+        `cd $root/${this.reactFolderName} && npm install && npm run build`,
         `cd $root/${this.nodeFolderName}`,
         `npx cdk deploy ${this.frontendStackName} --require-approval never --outputs-file config.json`,
 
