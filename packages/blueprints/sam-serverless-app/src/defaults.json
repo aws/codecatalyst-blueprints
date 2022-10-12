@@ -1,5 +1,5 @@
 {
-  "runtime": "Python 3.9",
+  "runtime": "Node.js 14",
   "cloudFormationStackName": "sam-stack-",
   "environment": {
     "name": "default_environment",
