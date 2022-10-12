@@ -266,10 +266,7 @@ export class Blueprint extends ParentBlueprint {
       },
       output: {
         AutoDiscoverReports: {
-          ReportNamePrefix: 'AutoDiscovered',
-          IncludePaths: ['**/*'],
-          Enabled: true,
-          ExcludePaths: ['*/node_modules/**/*'],
+          Enabled: false,
         },
         Variables: ['CloudFrontURL'],
       },
