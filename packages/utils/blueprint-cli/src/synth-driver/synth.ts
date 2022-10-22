@@ -21,8 +21,14 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
 
   const synthEntropy = String(Math.floor(Date.now() / 100));
   const synthDirectory = path.resolve(path.join(outdir, 'synth', synthEntropy));
+  const stableSynthDirectory = path.resolve(path.join(outdir, 'synth', '00.latest.synth'));
 
   cp.execSync(`mkdir -p ${synthDirectory}`, {
+    stdio: 'inherit',
+    cwd: outdir,
+  });
+
+  cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
     stdio: 'inherit',
     cwd: outdir,
   });
@@ -57,23 +63,41 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
       log,
     );
 
-    const command = `npx node ${synthExecutionFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}' '${synthEntropy}'`;
-    log.debug('generated command: %s', command);
-    cp.execSync(command, {
-      stdio: 'inherit',
-      cwd: blueprint,
+    doSynthesis(log, blueprint, 'NEW CACHE', {
+      driverFile: synthExecutionFile,
+      options: loadedOptions,
+      outputDirectory: synthDirectory,
+      entropy: synthEntropy,
+      useNode: true,
+    });
+
+    doSynthesis(log, blueprint, 'STABLE CACHE', {
+      driverFile: synthExecutionFile,
+      options: loadedOptions,
+      outputDirectory: stableSynthDirectory,
+      entropy: synthEntropy,
+      commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+      useNode: true,
     });
   } else {
     const driverFile = path.join(blueprint, 'synth-driver.ts');
     console.log(driverFile);
     try {
       writeSynthDriver(driverFile, path.join(blueprint, 'src', 'index.ts'));
-      const command = `npx ts-node ${driverFile} '${JSON.stringify(loadedOptions)}' '${synthDirectory}' '${synthEntropy}'`;
 
-      log.debug('generated command: %s', command);
-      cp.execSync(command, {
-        stdio: 'inherit',
-        cwd: blueprint,
+      doSynthesis(log, blueprint, 'NEW', {
+        driverFile,
+        options: loadedOptions,
+        outputDirectory: synthDirectory,
+        entropy: synthEntropy,
+      });
+
+      doSynthesis(log, blueprint, 'STABLE', {
+        driverFile,
+        options: loadedOptions,
+        outputDirectory: stableSynthDirectory,
+        entropy: synthEntropy,
+        commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
       });
     } catch (e) {
       throw e;
@@ -85,4 +109,32 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
       });
     }
   }
+}
+
+function doSynthesis(
+  logger: pino.BaseLogger,
+  cwd: string,
+  jobname: string,
+  options: {
+    driverFile: string;
+    outputDirectory: string;
+    entropy: string;
+    options: any;
+    commandPrefix?: string;
+
+    /**
+     * defaults to executing a synthesis with ts-node instead of node.
+     */
+    useNode?: boolean;
+  },
+) {
+  const runtime = options.useNode ? 'node' : 'ts-node';
+  const synthCommand = `${options.commandPrefix || ''}npx ${runtime} ${options.driverFile} '${JSON.stringify(options.options)}' '${
+    options.outputDirectory
+  }' '${options.entropy}'`;
+  logger.debug(`[${jobname}] Synthesis Command: ${synthCommand}`);
+  cp.execSync(synthCommand, {
+    stdio: 'inherit',
+    cwd,
+  });
 }
