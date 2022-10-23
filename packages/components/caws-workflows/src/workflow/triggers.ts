@@ -22,7 +22,7 @@ export function addGenericBranchTrigger(workflow: WorkflowDefinition, branches =
   workflow.Triggers.push({
     Type: TriggerType.PUSH,
     Branches: branches,
-    ...(filesChanged && { FileChanged: filesChanged }),
+    ...(filesChanged && { FilesChanged: filesChanged }),
   });
 }
 
@@ -42,6 +42,6 @@ export function addGenericPullRequestTrigger(workflow: WorkflowDefinition, event
     Type: TriggerType.PULLREQUEST,
     Events: events,
     Branches: branches,
-    ...(filesChanged && { FileChanged: filesChanged }),
+    ...(filesChanged && { FilesChanged: filesChanged }),
   });
 }
