@@ -6,7 +6,7 @@ This repository will be open sourced. In order to keep the development experienc
 
 Use git remotes to manaage your different versions.
 ```
-git remote add orgin <<link_to_your_fork>>
+git remote add origin <<link_to_your_fork>>
 git remote add upstream <<link_to_this_repo>>
 ```
 
