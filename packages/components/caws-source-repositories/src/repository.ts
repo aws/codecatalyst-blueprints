@@ -60,6 +60,9 @@ export class SourceRepository extends Component {
   public readonly title: string;
   public readonly blueprint: Blueprint;
 
+  // functions that get executed at the end of a synthesis of a repository.
+  public readonly synthesisSteps: (() => void)[];
+
   constructor(protected readonly blueprint_: Blueprint, protected readonly sourceRepository: SourceRepositoryDefinition) {
     super(blueprint_);
     this.blueprint = blueprint_;
@@ -67,6 +70,7 @@ export class SourceRepository extends Component {
     this.title = this.sourceRepository.title;
     this.relativePath = path.join(sourceRepositoryRootDirectory, sourceRepository.title);
     this.path = path.join(this.blueprint.context.rootDir, this.relativePath);
+    this.synthesisSteps = [];
   }
 
   synthesize(): void {
@@ -80,5 +84,10 @@ export class SourceRepository extends Component {
       fs.mkdirSync(repoDir);
     }
     super.synthesize();
+    this.synthesisSteps.forEach(step => step());
+  }
+
+  addSynthesisStep(postSynthFunction: () => void) {
+    this.synthesisSteps.push(postSynthFunction);
   }
 }
