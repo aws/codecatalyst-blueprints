@@ -4,7 +4,7 @@
 This repository will be open sourced. In order to keep the development experience uniform between developers who may not have access to open branches, Please fork this repo and work on that fork.
 
 
-Use git remotes to manaage your different versions.
+Please use git remotes to manaage your different versions.
 ```
 git remote add origin <<link_to_your_fork>>
 git remote add upstream <<link_to_this_repo>>
