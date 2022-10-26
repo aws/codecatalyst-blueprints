@@ -4,16 +4,9 @@ This project is a Cloud Development Kit (CDK) Web application project generated 
 
 Your project uses an Amazon CodeCatalyst environment to deploy a CDK application with Lambda and API Gateway to a CloudFront URL. Your Amazon CodeCatalyst environment requires an AWS account connection to be set up for your Quokka organization, along with an IAM role configured for your project workflow. After you create your project, you can view the repository, source code, and CI/CD workflow for your project. After your workflow runs successfully, your deployed CDK application URL is available under the output for your workflow.
 
-## Architecture overview
-
-...
-
-### Architecture diagram
-
-...
+### Architecture overview
 
 
-## Tech stack
 
 This project uses:
 
@@ -24,6 +17,15 @@ This project uses:
 - AWS CloudFront
 - AWS API Gateway
 - Amazon S3
+
+
+
+More elaboration needed...
+
+### Architecture diagram
+
+
+needs a diagram...
 
 
 ## Connections and permissions
@@ -82,38 +84,18 @@ The IAM roles also require the Quokka service principals `quokka.amazonaws.com` 
 
 ### Project resources
 
-This project contains the following files and folders in its source repository:
-
-- ``.aws/workflows/buildAssets.yaml`` - The template that defines the project's workflow
-
-- ``node`` - Folder containing source code for the back-end Lambda code and CDK constructs
-
-  - ``src`` - Folder containing code for the Lambda function and generating CDK constructs
-
-  - ``test`` - Folder containinng test code
-
-- ``react`` - Folder containing source code for the front-end React application
-
-  - ``build`` - Folder containing any build assets
-
-  - ``public`` - Folder containing public assets
-
-  - ``src`` - Folder containing React code
-
-- ``.mde.devfile.yaml`` - A devfile that defines developer workspaces or cloud-native development environments.
-
 This project will create the following Amazon CodeCatalyst Resources:
 
 - Source repository - A Git repository to store, version, and manage project assets.
 
 For more information on source repositories, see _Working with source repositories_ in the **Amazon CodeCatalyst User Guide**
 
-- Workflow - An automated procedure that defines how to build, test, and deploy the web application.
+- Workflow - defined in ``.aws/workflows/buildAssets.yaml`` - An automated procedure that defines how to build, test, and deploy the web application.
 
 For more information on workflows, see _Build, test, and deploy with workflows_ in the **Amazon CodeCatalyst User Guide**
 
 - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into
-  a production or non-production environment.
+  a production or non-production environment.  **NOTE: NOT SPECIFIC ENOUGH**
 
 For more information on environments, see _Organizing deployments using environments_ in the **Amazon CodeCatalyst User Guide**.
 
@@ -124,7 +106,7 @@ For more information on the create workspace operation and workspaces, see _Work
 
 ### Deployment environment
 
-This project will deploy to the following AWS Resources after being created, the deployment status can be viewed in the project's workflow:
+This project will deploy to the following AWS Resources after being created. The deployment status can be viewed in the project's workflow:
 
 - Amazon S3 - A resource to host your front-end assets on a object storage service offering industry-leading scalability, data high-availability, security,
   and performance
