@@ -101,8 +101,3 @@ For more information on environments, see _Organizing deployments using environm
   operation on Quokka.Codes.
 
 For more information on the create workspace operation and workspaces, see _Working with workspaces_ in the **Amazon CodeCatalyst User Guide**.
-
-
-## Additional Resources
-
-See the **Amazon CodeCatalyst User Guide** for additional information on using the features and resources of Quokka.Codes
