@@ -13,6 +13,9 @@ This project uses:
 - Node.js - Back-end code
 - ReactJS - Front-end code
 
+
+This project will deploy to the following AWS Resources after being created. The deployment status can be viewed in the project's workflow:
+
 - AWS Lambda
 - AWS CloudFront
 - AWS API Gateway
@@ -22,10 +25,7 @@ This project uses:
 
 More elaboration needed...
 
-### Architecture diagram
-
-
-needs a diagram...
+Also include an architecture diagram...
 
 
 ## Connections and permissions
@@ -80,9 +80,7 @@ The IAM roles also require the Quokka service principals `quokka.amazonaws.com` 
 }
 ```
 
-## Project details
-
-### Project resources
+## Project resources
 
 This project will create the following Amazon CodeCatalyst Resources:
 
@@ -103,34 +101,6 @@ For more information on environments, see _Organizing deployments using environm
   operation on Quokka.Codes.
 
 For more information on the create workspace operation and workspaces, see _Working with workspaces_ in the **Amazon CodeCatalyst User Guide**.
-
-### Deployment environment
-
-This project will deploy to the following AWS Resources after being created. The deployment status can be viewed in the project's workflow:
-
-- Amazon S3 - A resource to host your front-end assets on a object storage service offering industry-leading scalability, data high-availability, security,
-  and performance
-
-  For more information on S3, see the [AWS S3 User Guide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-
-- Amazon Cloudfront - A resource for speeding up distribution of your front-end content, such as .html, .css, .js, and image files, to your users
-
-  For more information on Cloudfront, see the
-  [AWS Cloudfront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
-
-- AWS API Gateway - A resource for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale
-
-  For more information on API Gateway, see the
-  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
-
-- AWS Lambda Function - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers
-
-  For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
-
-- IAM role(s) - A resource for securely controlled access to AWS
-
-  For more information on IAM, see the [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
-  **NOTE ARE WE ACTUALLY CREATING A NEW IAM ROLE???**
 
 
 ## Additional Resources
