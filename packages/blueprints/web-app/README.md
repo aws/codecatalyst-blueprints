@@ -1,6 +1,6 @@
-##  About this Blueprint
+##  About this blueprint
 
-This project is a Cloud Development Kit (CDK) Web application project generated using Amazon CodeCatalyst blueprints.
+This blueprint generates a Cloud Development Kit (CDK) Web application project.
 
 Your project uses an Amazon CodeCatalyst environment to deploy a CDK application with Lambda and API Gateway to a CloudFront URL. Your Amazon CodeCatalyst environment requires an AWS account connection to be set up for your Quokka organization, along with an IAM role configured for your project workflow. After you create your project, you can view the repository, source code, and CI/CD workflow for your project. After your workflow runs successfully, your deployed CDK application URL is available under the output for your workflow.
 
