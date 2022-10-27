@@ -1,4 +1,4 @@
-## Project overview
+##  About this Blueprint
 
 This project is a Cloud Development Kit (CDK) Web application project generated using Amazon CodeCatalyst blueprints.
 
