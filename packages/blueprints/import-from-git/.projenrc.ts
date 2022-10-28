@@ -4,7 +4,7 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'import-from-git',
   displayName: 'Import from Git',
-  authorName: 'caws-blueprints',
+  authorName: 'Amazon Web Services',
 
   projenrcTs: true,
   copyrightOwner: 'Amazon.com',
