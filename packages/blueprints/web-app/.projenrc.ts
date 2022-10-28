@@ -4,7 +4,7 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'web-app',
   displayName: 'Web application',
-  authorName: 'caws-blueprints',
+  authorName: 'Amazon Web Services',
   copyrightOwner: 'Amazon.com',
   projenrcTs: true,
 
@@ -23,7 +23,7 @@ const blueprint = new ProjenBlueprint({
   description: 'This blueprint creates and deploys a web application.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.web-app',
-  publishingOrganization: 'blueprints',
+  publishingOrganization: 'Amazon Web Services',
   /* Build dependencies for this module. */
   devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/uuid'],
   /* Add release management to this project. */
