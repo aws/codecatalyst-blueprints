@@ -12,7 +12,6 @@ export interface CdkBootstrapInputConfiguration {
 export interface CdkBootstrapActionConfiguration {
   [key: string]: string | undefined;
   Region: string;
-  CloudFormationExecutionPolicies?: string;
 }
 
 export interface CdkBootstrapActionParameters {
