@@ -4,7 +4,7 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'web-app',
   displayName: 'Web application',
-  authorName: 'caws-blueprints',
+  authorName: 'Amazon Web Services',
   copyrightOwner: 'Amazon.com',
   projenrcTs: true,
 
