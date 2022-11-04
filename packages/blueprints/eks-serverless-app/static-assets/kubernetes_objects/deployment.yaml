@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eks
+  template:
+    metadata:
+      labels:
+        app: eks
+    spec:
+      containers:
+        - image: public.ecr.aws/s9u7u6x1/sample_app_001:no-db
+          name: eks
+          ports:
+            - containerPort: 80

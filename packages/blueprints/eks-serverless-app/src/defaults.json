@@ -1,0 +1,10 @@
+{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "code": {
+    "sourceRepositoryName": "EKSAppRepo"
+  }
+}
+

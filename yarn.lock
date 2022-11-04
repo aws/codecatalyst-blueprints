@@ -528,6 +528,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@caws-blueprint-component/caws-workflows@npm:0.0.x":
+  version: 0.0.27
+  resolution: "@caws-blueprint-component/caws-workflows@npm:0.0.27::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint-component%2Fcaws-workflows%2F-%2Fcaws-workflows-0.0.27.tgz"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.0.x
+    "@caws-blueprint-component/caws-source-repositories": 0.0.x
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
+  peerDependencies:
+    projen: "*"
+  checksum: 55b786bf348d76d77beceb2ce5e92526ae312f42842d26bb971c774d8e4b9e1b39706fc512db2f8c8fdb2e8c8c902b204df59228e44a605ef92d4eebc1bd3d5a
+  languageName: node
+  linkType: hard
+
 "@caws-blueprint-component/caws-workspaces@0.0.x, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
@@ -707,6 +720,26 @@ __metadata:
     typescript: ^4.8.2
   peerDependencies:
     projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@caws-blueprint/blueprints.eks-serverless-app@workspace:packages/blueprints/eks-serverless-app":
+  version: 0.0.0-use.local
+  resolution: "@caws-blueprint/blueprints.eks-serverless-app@workspace:packages/blueprints/eks-serverless-app"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.0.x
+    "@caws-blueprint-component/caws-source-repositories": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workspaces": 0.0.x
+    "@caws-blueprint-util/blueprint-cli": 0.0.x
+    "@caws-blueprint-util/projen-blueprint": 0.0.x
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
+    "@types/node": ^14
+    npm-check-updates: ^15
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.8.2
   languageName: unknown
   linkType: soft
 
