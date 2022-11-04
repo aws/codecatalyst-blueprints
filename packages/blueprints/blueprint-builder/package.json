@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
+    "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
