@@ -101,7 +101,7 @@ This project contains the following files and folder in its source repository:
 
   - tests - Unit tests for the Lambda function's code
 
-- .aws/workflows/build-and-release.yaml - The template that defines the project's workflow
+- .codecatalyst/workflows/build-and-release.yaml - The template that defines the project's workflow
 
 - template.yaml - The template that defines the application's AWS resources, including Lambda Functions, API Gateways, and IAM roles
 
@@ -209,11 +209,11 @@ common serverless application resources such as functions, triggers, and APIs. F
 
 ## Deploying your serverless application
 
-The application is deployed through Quokka.Codes using the workflow defined in `.aws/workflows/build-and-release.yaml`. The workflow is triggered by
-pushes to the `main` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged,
-closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**.
-The workflow builds your application, stores the build artifacts in `REPLACE_ME`, and deploys your application to your project environments in the
-following order:
+The application is deployed through Quokka.Codes using the workflow defined in `.codecatalyst/workflows/build-and-release.yaml`. The workflow is
+triggered by pushes to the `main` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created,
+merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User
+Guide**. The workflow builds your application, stores the build artifacts in `REPLACE_ME`, and deploys your application to your project environments
+in the following order:
 
 - `prod-bn3ai` using the cloudformation stack `REPLACE_ME-prod-bn3ai`
 

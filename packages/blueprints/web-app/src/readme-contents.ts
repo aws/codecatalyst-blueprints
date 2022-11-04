@@ -1,3 +1,5 @@
+import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
+
 export function generateReadmeContents(reactFolderName: string, nodeFolderName: string) {
   return `## This Project:
 
@@ -5,7 +7,7 @@ This project is a Cloud Development Kit (CDK) Web Application Project generated 
 
 This project contains the following files and folders in its source repository:
 
-- .aws/workflows/buildAssets.yaml - The template that defines the project's workflow
+- ${workflowLocation}/buildAssets.yaml - The template that defines the project's workflow
 
 - ${nodeFolderName} - Folder containing source code for the back-end Lambda code and cdk constructs
 
@@ -98,7 +100,7 @@ cdk synth
 
 ## Deploying your serverless application
 
-The application is deployed through Quokka.Codes using the workflow defined in .aws/workflows/buildAssets.yaml. The workflow is triggered by pushes to the main branch of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised.
+The application is deployed through Quokka.Codes using the workflow defined in ${workflowLocation}/buildAssets.yaml. The workflow is triggered by pushes to the main branch of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised.
 
 For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using workflows_ section in the **Quokka User Guide**
 
