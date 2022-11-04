@@ -64,7 +64,7 @@ The IAM roles also require the Quokka service principals `quokka.amazonaws.com` 
 
 This project contains the following files and folders in its source repository:
 
-- .aws/workflows/buildAssets.yaml - The template that defines the project's workflow
+- .codecatalyst/workflows/buildAssets.yaml - The template that defines the project's workflow
 
 - node - Folder containing source code for the back-end Lambda code and cdk constructs
 
@@ -165,9 +165,9 @@ The CDK CLI will output any assets that it will generate the cdk.out folder. For
 
 ## Deploying your serverless application
 
-The application is deployed through Quokka.Codes using the workflow defined in .aws/workflows/buildAssets.yaml. The workflow is triggered by pushes to
-the main branch of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed,
-or revised.
+The application is deployed through Quokka.Codes using the workflow defined in .codecatalyst/workflows/buildAssets.yaml. The workflow is triggered by
+pushes to the main branch of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged,
+closed, or revised.
 
 For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using workflows_ section in the
 **Quokka User Guide**

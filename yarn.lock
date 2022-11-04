@@ -502,7 +502,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-workflows@0.0.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
+"@caws-blueprint-component/caws-workflows@0.1.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
   dependencies:
@@ -663,6 +663,7 @@ __metadata:
   resolution: "@caws-blueprint/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
   dependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.1.x
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x
     "@caws-blueprint-util/projen-blueprint": 0.0.x
@@ -740,7 +741,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
-    "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.1.x
     "@caws-blueprint-component/caws-workspaces": 0.0.x
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/projen-blueprint": 0.0.x
@@ -760,7 +761,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
-    "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.1.x
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/projen-blueprint": 0.0.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
@@ -786,7 +787,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-environments": 0.0.x
     "@caws-blueprint-component/caws-source-repositories": 0.0.x
-    "@caws-blueprint-component/caws-workflows": 0.0.x
+    "@caws-blueprint-component/caws-workflows": 0.1.x
     "@caws-blueprint-component/caws-workspaces": 0.0.x
     "@caws-blueprint-util/blueprint-cli": 0.0.x
     "@caws-blueprint-util/blueprint-utils": 0.0.x

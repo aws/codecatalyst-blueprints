@@ -27,11 +27,13 @@ export interface WorkflowDefinition {
   };
 }
 
+export const workflowLocation = '.codecatalyst/workflows';
+
 export class Workflow extends Component {
   constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any) {
     super(blueprint);
 
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, `.aws/workflows/${workflow.Name}.yaml`), {
+    new YamlFile(blueprint, path.join(sourceRepository.relativePath, `${workflowLocation}/${workflow.Name}.yaml`), {
       marker: false,
       obj: {
         ...workflow,
