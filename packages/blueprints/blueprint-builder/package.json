@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
+    "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-util/blueprint-utils": "0.0.x",
     "@caws-blueprint-util/projen-blueprint": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
@@ -63,7 +64,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1107",
+  "version": "0.0.1137",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

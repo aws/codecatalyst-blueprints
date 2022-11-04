@@ -43,7 +43,7 @@
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.0.x",
     "@caws-blueprint-component/caws-source-repositories": "0.0.x",
-    "@caws-blueprint-component/caws-workflows": "0.0.x",
+    "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-component/caws-workspaces": "0.0.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
@@ -60,7 +60,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1176",
+  "version": "0.0.1205",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
