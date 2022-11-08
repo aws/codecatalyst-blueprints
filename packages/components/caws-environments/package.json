@@ -41,11 +41,11 @@
     "projen": "*"
   },
   "dependencies": {
-    "@caws-blueprint/blueprints.blueprint": "^0.0.1224"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.0.9",
   "types": "lib/index.d.ts",
   "preferGlobal": true,
   "resolutions": {

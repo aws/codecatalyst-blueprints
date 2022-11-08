@@ -11,7 +11,6 @@
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
     "components:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-component/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
-    "components-utils:publish": "yarn components:publish && yarn utils:publish",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview",
     "blueprints:release:gamma": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release",
     "blueprints:release:prod": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release --endpoint public.api.quokka.codes",
