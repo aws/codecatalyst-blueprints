@@ -429,7 +429,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
@@ -439,7 +439,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -453,7 +453,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-issue@workspace:packages/components/caws-issues"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
@@ -463,7 +463,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -477,7 +477,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/glob": "*"
     "@types/node": ^14
@@ -492,7 +492,7 @@ __metadata:
     glob: "*"
     json-schema: "*"
     mustache: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -508,7 +508,7 @@ __metadata:
   dependencies:
     "@caws-blueprint-component/caws-environments": 0.1.x
     "@caws-blueprint-component/caws-source-repositories": 0.1.x
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
@@ -518,7 +518,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -533,7 +533,7 @@ __metadata:
   resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
   dependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.1.x
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
@@ -543,7 +543,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -557,7 +557,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@types/jest": 26.0.24
     "@types/jmespath": "*"
     "@types/node": ^14
@@ -574,7 +574,7 @@ __metadata:
     jest-junit: ^13
     jmespath: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.3.0
     projen: "*"
@@ -593,7 +593,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-utils@workspace:packages/utils/blueprint-utils"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -602,7 +602,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -612,7 +612,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/projen-blueprint-component@*, @caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
+"@caws-blueprint-util/projen-blueprint-component@0.1.x, @caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component"
   dependencies:
@@ -624,7 +624,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -647,7 +647,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     json-schema: "*"
-    npm-check-updates: ^15
+    npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
@@ -2762,7 +2762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cacache@npm:^16.0.0, cacache@npm:^16.1.0":
+"cacache@npm:^16.1.0":
   version: 16.1.3
   resolution: "cacache@npm:16.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcacache%2F-%2Fcacache-16.1.3.tgz"
   dependencies:
@@ -3178,7 +3178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^9.3.0, commander@npm:^9.4.1":
+"commander@npm:^9.4.1":
   version: 9.4.1
   resolution: "commander@npm:9.4.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fcommander%2F-%2Fcommander-9.4.1.tgz"
   checksum: bfb18e325a5bdf772763c2213d5c7d9e77144d944124e988bcd8e5e65fb6d45d5d4e86b09155d0f2556c9a59c31e428720e57968bcd050b2306e910a0bf3cf13
@@ -5606,15 +5606,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore-walk@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "ignore-walk@npm:5.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fignore-walk%2F-%2Fignore-walk-5.0.1.tgz"
-  dependencies:
-    minimatch: ^5.0.1
-  checksum: 1a4ef35174653a1aa6faab3d9f8781269166536aee36a04946f6e2b319b2475c1903a75ed42f04219274128242f49d0a10e20c4354ee60d9548e97031451150b
-  languageName: node
-  linkType: hard
-
 "ignore-walk@npm:^6.0.0":
   version: 6.0.0
   resolution: "ignore-walk@npm:6.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fignore-walk%2F-%2Fignore-walk-6.0.0.tgz"
@@ -7666,53 +7657,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-bundled@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "npm-bundled@npm:2.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-bundled%2F-%2Fnpm-bundled-2.0.1.tgz"
-  dependencies:
-    npm-normalize-package-bin: ^2.0.0
-  checksum: 7747293985c48c5268871efe691545b03731cb80029692000cbdb0b3344b9617be5187aa36281cabbe6b938e3651b4e87236d1c31f9e645eef391a1a779413e6
-  languageName: node
-  linkType: hard
-
-"npm-check-updates@npm:^15":
-  version: 15.3.4
-  resolution: "npm-check-updates@npm:15.3.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-check-updates%2F-%2Fnpm-check-updates-15.3.4.tgz"
-  dependencies:
-    chalk: ^5.0.1
-    cli-table: ^0.3.11
-    commander: ^9.3.0
-    fast-memoize: ^2.5.2
-    find-up: 5.0.0
-    fp-and-or: ^0.1.3
-    get-stdin: ^8.0.0
-    globby: ^11.0.4
-    hosted-git-info: ^5.0.0
-    json-parse-helpfulerror: ^1.0.3
-    jsonlines: ^0.1.1
-    lodash: ^4.17.21
-    minimatch: ^5.1.0
-    p-map: ^4.0.0
-    pacote: ^13.6.1
-    parse-github-url: ^1.0.2
-    progress: ^2.0.3
-    prompts-ncu: ^2.5.1
-    rc-config-loader: ^4.1.0
-    remote-git-tags: ^3.0.0
-    rimraf: ^3.0.2
-    semver: ^7.3.7
-    semver-utils: ^1.1.4
-    source-map-support: ^0.5.21
-    spawn-please: ^1.0.0
-    update-notifier: ^6.0.2
-    yaml: ^2.1.1
-  bin:
-    ncu: build/src/bin/cli.js
-    npm-check-updates: build/src/bin/cli.js
-  checksum: 14c414684f5dcae508640071e54aa75a863446816f449ef34f4031033c4eb19ad873f02e6f9c1bf4047e557cbee64852913dfa2a44c652129f08b2e62133a044
-  languageName: node
-  linkType: hard
-
 "npm-check-updates@npm:^16":
   version: 16.3.18
   resolution: "npm-check-updates@npm:16.3.18::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-check-updates%2F-%2Fnpm-check-updates-16.3.18.tgz"
@@ -7792,20 +7736,6 @@ __metadata:
     semver: ^7.3.5
     validate-npm-package-name: ^4.0.0
   checksum: 3793488843985ed71deb14fcba7c068d8ed03a18fd8f6b235c6a64465c9a25f60261598106d5cc8677c0bee9548e405c34c2e3c7a822e3113d3389351c745dfa
-  languageName: node
-  linkType: hard
-
-"npm-packlist@npm:^5.1.0":
-  version: 5.1.3
-  resolution: "npm-packlist@npm:5.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fnpm-packlist%2F-%2Fnpm-packlist-5.1.3.tgz"
-  dependencies:
-    glob: ^8.0.1
-    ignore-walk: ^5.0.1
-    npm-bundled: ^2.0.0
-    npm-normalize-package-bin: ^2.0.0
-  bin:
-    npm-packlist: bin/index.js
-  checksum: 94cc9c66740e8f80243301de85eb0a2cec5bbd570c3f26b6ad7af1a3eca155f7e810580dc7ea4448f12a8fd82f6db307e7132a5fe69e157eb45b325acadeb22a
   languageName: node
   linkType: hard
 
@@ -8151,37 +8081,6 @@ __metadata:
   bin:
     pacote: lib/bin.js
   checksum: 103928fcb2e42c7837e96ce532cb7f667e2a4be94e30910961c068e1f38b783ca9b0f6cd990c06c136c3712dd5f1e6fb120fa85eb9aed5b67c0c26c5c9edecaf
-  languageName: node
-  linkType: hard
-
-"pacote@npm:^13.6.1":
-  version: 13.6.2
-  resolution: "pacote@npm:13.6.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpacote%2F-%2Fpacote-13.6.2.tgz"
-  dependencies:
-    "@npmcli/git": ^3.0.0
-    "@npmcli/installed-package-contents": ^1.0.7
-    "@npmcli/promise-spawn": ^3.0.0
-    "@npmcli/run-script": ^4.1.0
-    cacache: ^16.0.0
-    chownr: ^2.0.0
-    fs-minipass: ^2.1.0
-    infer-owner: ^1.0.4
-    minipass: ^3.1.6
-    mkdirp: ^1.0.4
-    npm-package-arg: ^9.0.0
-    npm-packlist: ^5.1.0
-    npm-pick-manifest: ^7.0.0
-    npm-registry-fetch: ^13.0.1
-    proc-log: ^2.0.0
-    promise-retry: ^2.0.1
-    read-package-json: ^5.0.0
-    read-package-json-fast: ^2.0.3
-    rimraf: ^3.0.2
-    ssri: ^9.0.0
-    tar: ^6.1.11
-  bin:
-    pacote: lib/bin.js
-  checksum: a7b7f97094ab570a23e1c174537e9953a4d53176cc4b18bac77d7728bd89e2b9fa331d0f78fa463add03df79668a918bbdaa2750819504ee39242063abf53c6e
   languageName: node
   linkType: hard
 
@@ -8693,7 +8592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-config-loader@npm:^4.1.0, rc-config-loader@npm:^4.1.1":
+"rc-config-loader@npm:^4.1.1":
   version: 4.1.1
   resolution: "rc-config-loader@npm:4.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Frc-config-loader%2F-%2Frc-config-loader-4.1.1.tgz"
   dependencies:
@@ -9488,13 +9387,6 @@ __metadata:
   version: 0.7.4
   resolution: "source-map@npm:0.7.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fsource-map%2F-%2Fsource-map-0.7.4.tgz"
   checksum: 01cc5a74b1f0e1d626a58d36ad6898ea820567e87f18dfc9d24a9843a351aaa2ec09b87422589906d6ff1deed29693e176194dc88bcae7c9a852dc74b311dbf5
-  languageName: node
-  linkType: hard
-
-"spawn-please@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "spawn-please@npm:1.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fspawn-please%2F-%2Fspawn-please-1.0.0.tgz"
-  checksum: b8e1e1dc14e0b72bd7cf57b8516572680e0453d4fd52b0b82760dcc6257d30c6aa6a51fff864de4d9d53932d4078ef0b11f405354b28b314e54c14b18ebdef3b
   languageName: node
   linkType: hard
 
@@ -10989,7 +10881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.1.1, yaml@npm:^2.1.3":
+"yaml@npm:^2.1.3":
   version: 2.1.3
   resolution: "yaml@npm:2.1.3::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyaml%2F-%2Fyaml-2.1.3.tgz"
   checksum: 91316062324a93f9cb547469092392e7d004ff8f70c40fecb420f042a4870b2181557350da56c92f07bd44b8f7a252b0be26e6ade1f548e1f4351bdd01c9d3c7

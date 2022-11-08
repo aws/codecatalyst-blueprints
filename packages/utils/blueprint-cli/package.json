@@ -26,7 +26,7 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "*",
+    "@caws-blueprint-util/projen-blueprint-component": "0.1.x",
     "@types/jest": "26.0.24",
     "@types/jmespath": "*",
     "@types/node": "^14",
