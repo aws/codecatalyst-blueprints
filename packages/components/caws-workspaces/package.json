@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@caws-blueprint-component/caws-source-repositories": "0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "^0.0.1224"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
   "main": "lib/index.js",
   "license": "MIT",
