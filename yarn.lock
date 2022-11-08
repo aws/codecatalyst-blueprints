@@ -686,7 +686,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.blueprint@^0.0.1224, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/blueprints.blueprint@npm:^0.0.1224":
+  version: 0.0.1224
+  resolution: "@caws-blueprint/blueprints.blueprint@npm:0.0.1224::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint%2Fblueprints.blueprint%2F-%2Fblueprints.blueprint-0.0.1224.tgz"
+  peerDependencies:
+    projen: "*"
+  checksum: 6e40dba470cd5d24a60d5b06687b388d8352b3863aec0437b16992621963e0e4fcc02e8fc1a9a86a100814ad87e6837da216ec6013c939e9aaab070612c0ac83
+  languageName: node
+  linkType: hard
+
+"@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
