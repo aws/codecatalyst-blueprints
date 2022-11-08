@@ -32,7 +32,7 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.0.x",
+    "@caws-blueprint-util/blueprint-cli": "0.1.x",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -48,11 +48,11 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-source-repositories": "0.0.x",
+    "@caws-blueprint-component/caws-source-repositories": "0.1.x",
     "@caws-blueprint-component/caws-workflows": "0.1.x",
-    "@caws-blueprint-util/blueprint-utils": "0.0.x",
-    "@caws-blueprint-util/projen-blueprint": "0.0.x",
-    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "@caws-blueprint-util/blueprint-utils": "0.1.x",
+    "@caws-blueprint-util/projen-blueprint": "0.1.x",
+    "@caws-blueprint/blueprints.blueprint": "^0.0.1224",
     "camelcase": "1.x",
     "decamelize": "5.0.x",
     "projen": "0.31.0",
