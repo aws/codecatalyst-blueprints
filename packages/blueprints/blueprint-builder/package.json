@@ -52,7 +52,7 @@
     "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-util/blueprint-utils": "0.1.x",
     "@caws-blueprint-util/projen-blueprint": "0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "*",
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
     "camelcase": "1.x",
     "decamelize": "5.0.x",
     "projen": "0.31.0",
