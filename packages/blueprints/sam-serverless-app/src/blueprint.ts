@@ -131,10 +131,8 @@ export class Blueprint extends ParentBlueprint {
   }
 
   override synth(): void {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtime = this.options.runtime!;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const runtimeOptions = runtimeMappings.get(runtime)!;
+    const runtime = this.options.runtime;
+    const runtimeOptions = runtimeMappings[runtime];
     // create an MDE workspace
     new Workspace(this, this.repository, SampleWorkspaces.default);
 
