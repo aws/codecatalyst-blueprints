@@ -1,3 +1,5 @@
+import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
+
 export interface BlueprintIntrospection {
   imports: string[];
   options: OptionsInformation;
@@ -90,7 +92,7 @@ export class Blueprint extends ParentBlueprint {
       output: {
         AutoDiscoverReports: {
           IncludePaths: ['**/*'],
-          ExcludePaths: ['*/.aws/workflows/*'],
+          ExcludePaths: ['*/.aws/workflows/*', '*/${workflowLocation}/*],
           ReportNamePrefix: 'AutoDiscovered',
           Enabled: true,
         },

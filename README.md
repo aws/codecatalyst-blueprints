@@ -92,30 +92,3 @@ This generates the blueprint in the `synth` folder
 packages/blueprints/<blueprint>/synth/<timestamp>
 ```
 
-### Publishing
-
-You must have write access to the 'blueprints' organization in code.aws in order to publish. You'll need to get a `CAWS_COOKIE` and set in in your
-environment.
-
-```
-// paste it into your terminal like so:
-export CAWS_COOKIE='session-blhahBlahblahBlah'
-// run from the root
-yarn blueprints:release
-```
-
-### Clean up
-
-As you test changes to blueprints locally you will build up alot of projects created in the synth directory of the blueprint, to clean up the synth
-directory and remove these old projects run:
-
-```
-yarn clean-synth
-```
-
-Sometimes you may need to reset this project to a clean repository and remove the node modules, dist, lib, and synth directories. To reset this
-project to a clean repository run:
-
-```
-yarn clean-all
-```

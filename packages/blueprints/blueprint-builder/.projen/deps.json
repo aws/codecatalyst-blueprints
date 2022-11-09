@@ -68,6 +68,10 @@
       "type": "runtime"
     },
     {
+      "name": "@caws-blueprint-component/caws-workflows",
+      "type": "runtime"
+    },
+    {
       "name": "@caws-blueprint-util/blueprint-utils",
       "type": "runtime"
     },
