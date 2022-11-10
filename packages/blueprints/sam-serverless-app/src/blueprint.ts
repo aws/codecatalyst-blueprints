@@ -59,14 +59,16 @@ export interface Options extends ParentOptions {
       /**
        * This is the role that will be used to deploy the application. It should have access to deploy all of your resources. See the Readme for more information.
        * @displayName Deploy role
-       * @inlinePolicy ./my-inline-policy.json
-       * @trustPolicy ./my-trust-policy.json
+       * @inlinePolicy ./inline-policy-deploy.json
+       * @trustPolicy ./trust-policy-build.json
        */
       deployRole: Role<['SAM Deploy']>;
 
       /**
        * This is the role that allows build actions to access and write to Amazon S3, where your serverless application package is stored.
        * @displayName Build role
+       * @inlinePolicy ./inline-policy-build.json
+       * @trustPolicy ./trust-policy-build.json
        */
       buildRole: Role<['SAM Build']>;
     }>;
