@@ -59,6 +59,8 @@ export interface Options extends ParentOptions {
       /**
        * This is the role that will be used to deploy the application. It should have access to deploy all of your resources. See the Readme for more information.
        * @displayName Deploy role
+       * @inlinePolicy ./my-inline-policy.json
+       * @trustPolicy ./my-trust-policy.json
        */
       deployRole: Role<['SAM Deploy']>;
 
