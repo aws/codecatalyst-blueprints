@@ -92,7 +92,7 @@ export class Blueprint extends ParentBlueprint {
       output: {
         AutoDiscoverReports: {
           IncludePaths: ['**/*'],
-          ExcludePaths: ['*/.aws/workflows/*', '*/${workflowLocation}/*],
+          ExcludePaths: ['*/.aws/workflows/*', '*/${workflowLocation}/*'],
           ReportNamePrefix: 'AutoDiscovered',
           Enabled: true,
         },
