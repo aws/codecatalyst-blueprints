@@ -52,6 +52,8 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudfront": "*",
+    "@aws-sdk/client-s3": "*",
     "axios": "^0.25.0",
     "jmespath": "*",
     "pino": "^6.13.4",
