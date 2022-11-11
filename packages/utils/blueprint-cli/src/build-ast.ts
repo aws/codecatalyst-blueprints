@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
+import { Node } from './ast/parser/node';
 import { parse } from './ast/parser/parse';
 import { walk } from './ast/parser/walk';
 import { getAstJSON } from './ast/transformer';
@@ -10,6 +11,24 @@ export interface AstOptions extends yargs.Arguments {
   blueprint: string;
   outdir: string;
 }
+
+const supportInlineJson = (log: pino.BaseLogger, annotation: string, node: Node, blueprintPath: string): string => {
+  log.info(`[${annotation}] found ${annotation} on ${node.path} ${node.kind} ${node.type}`);
+  const jsonLocation = node?.jsDoc?.tags![`${annotation}`];
+
+  log.info(`[${annotation}] attempting to resolve ${annotation} from ${jsonLocation}`);
+  const blueprintSourceRelativePath = './src/';
+  const inlinePolicyAbsolutePath = path.resolve(blueprintPath, '../..', blueprintSourceRelativePath, jsonLocation!);
+
+  let onelineJson;
+  try {
+    onelineJson = JSON.stringify(JSON.parse(fs.readFileSync(inlinePolicyAbsolutePath, 'utf8')));
+  } catch (error) {
+    log.error(`[${annotation}] Cannot read or parse policy at: %s`, inlinePolicyAbsolutePath);
+    process.exit(255);
+  }
+  return onelineJson;
+};
 
 export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: string): Promise<void> {
   log.debug('Creating AST from: ' + blueprint);
@@ -31,25 +50,17 @@ export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: 
 
   // walk the ast, look for @inlinePolicy and json replace with the pointed file contents if its there.
   const INLINE_POLICY_ANNOTATION = 'inlinePolicy';
+  const TRUSTPOLICY_POLICY_ANNOTATION = 'trustPolicy';
   const astObject = parse(ast);
   for (const node of walk(astObject[0])) {
-    const inlinePolicy = node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`];
-    if (inlinePolicy) {
-      log.info(`found inline policy on ${node.name} ${node.kind} ${node.type}`);
-      log.debug(`[inline policy] attempting to resolve inline policy at ${inlinePolicy}`);
-      const blueprintSourceRelativePath = './src/';
-      const inlinePolicyAbsolutePath = path.resolve(blueprint, '../..', blueprintSourceRelativePath, inlinePolicy);
+    if (node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`]) {
+      const policy = supportInlineJson(log, INLINE_POLICY_ANNOTATION, node, blueprint);
+      ast = ast.replace(`"comment":"${INLINE_POLICY_ANNOTATION}"`, `"comment":${JSON.stringify(policy)}`);
+    }
 
-      let onelinePolicy;
-      try {
-        onelinePolicy = JSON.stringify(JSON.parse(fs.readFileSync(inlinePolicyAbsolutePath, 'utf8')));
-      } catch (error) {
-        log.error('[inline policy] Cannot read or parse policy at: %s', inlinePolicyAbsolutePath);
-        process.exit(255);
-      }
-
-      log.debug(`[inline policy] attempting to replace '${inlinePolicy}' in ast`);
-      ast = ast.replace(`"comment":"${inlinePolicy}"`, `"comment":${JSON.stringify(onelinePolicy)}`);
+    if (node?.jsDoc?.tags![`${TRUSTPOLICY_POLICY_ANNOTATION}`]) {
+      const policy = supportInlineJson(log, TRUSTPOLICY_POLICY_ANNOTATION, node, blueprint);
+      ast = ast.replace(`"comment":"${TRUSTPOLICY_POLICY_ANNOTATION}"`, `"comment":${JSON.stringify(policy)}`);
     }
   }
 

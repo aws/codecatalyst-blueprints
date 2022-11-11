@@ -1,6 +1,8 @@
-import { RuntimeMapping } from './models';
 import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
+
+import { RuntimeMapping } from './models';
+import { BlueprintRuntimes } from "./runtimeMappings";
 
 export function generateReadmeContents(params: {
   runtime: string;
@@ -141,7 +143,15 @@ See the Quokka User Guide for additional information on using the features and r
   return readmeContents;
 }
 
-export const runtimeReadmeSection = {
+interface RuntimeReadmeSectionData {
+  readmeTestSection: string;
+}
+
+type RuntimeReadmeSectionType = {
+  [key in BlueprintRuntimes]: RuntimeReadmeSectionData;
+};
+
+export const runtimeReadmeSection: RuntimeReadmeSectionType = {
   'Java 11 Maven': {
     readmeTestSection: `
 ## Tests

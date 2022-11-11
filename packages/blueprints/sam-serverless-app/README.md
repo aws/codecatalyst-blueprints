@@ -20,21 +20,24 @@ The SAM application uses multiple IAM roles to build and deploy the application,
 
 ```
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "",
-            "Effect": "Allow",
-            "Principal": {
-                "Service": [
-                    "quokka.amazonaws.com",
-                    "quokka-runner.amazonaws.com"
-                ]
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "CodeCatalyst",
+          "Effect": "Allow",
+          "Principal": {
+              "Service": [
+                  "codecatalyst-runner.amazonaws.com",
+                  "codecatalyst.amazonaws.com",
+                  "gamma.codecatalyst.amazonaws.com",
+                  "gamma.codecatalyst-runner.amazonaws.com"
+              ]
+          },
+          "Action": "sts:AssumeRole"
+      }
+  ]
 }
+
 ```
 
 ### Deploy role policy
