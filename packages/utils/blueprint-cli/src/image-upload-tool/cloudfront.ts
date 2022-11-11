@@ -3,6 +3,7 @@ import {
   CreateCloudFrontOriginAccessIdentityCommand,
   CreateDistributionCommand,
   GetCloudFrontOriginAccessIdentityCommand,
+  paginateListDistributions,
 } from '@aws-sdk/client-cloudfront';
 
 import * as pino from 'pino';
@@ -16,7 +17,6 @@ const cloudfrontClient = new CloudFrontClient({});
 export const getOriginAccessIdentityId = async (log: pino.BaseLogger, bucketName: string): Promise<string> => {
   try {
     log.info('Creating origin access identity ...');
-
     const createOAICommandResponse = await cloudfrontClient.send(
       new CreateCloudFrontOriginAccessIdentityCommand({
         CloudFrontOriginAccessIdentityConfig: {
@@ -39,6 +39,26 @@ export const getOriginAccessIdentityId = async (log: pino.BaseLogger, bucketName
 };
 
 /**
+ * Returns the DomainName of an existing cloudfront distro
+ * @s3Bucket s3 bucket used as the origin for the cloudfront distro
+ * @returns DomainName to the cloudfront distro
+ */
+export const getExistingCloudfrontDistro = async (log: pino.BaseLogger, s3Bucket: string): Promise<string | undefined> => {
+  for await (const page of paginateListDistributions({
+    pageSize: 25,
+    client: cloudfrontClient,
+  }, {})) {
+    for (const distro of (page.DistributionList?.Items || [])) {
+      if ((distro.Origins?.Items?.map(item => item.Id) || []).includes(s3Bucket)) {
+        log.info(`Existing cloudfront distro exists ${distro.DomainName}`);
+        return distro.DomainName;
+      }
+    }
+  }
+  return undefined;
+};
+
+/**
  * Creates Cloudfront distribution and returns the URL to image.
  */
 export const createCloudFrontDistribution = async (
@@ -48,9 +68,10 @@ export const createCloudFrontDistribution = async (
   originAccessIdentityId: string,
   image: Image,
 ): Promise<string> => {
+
+
   try {
     log.info('Creating CloudFront distribution ...');
-
     const createDistributionCommandResponse = await cloudfrontClient.send(
       new CreateDistributionCommand({
         DistributionConfig: {
@@ -72,7 +93,7 @@ export const createCloudFrontDistribution = async (
             CachePolicyId: 'b2884449-e4de-46a7-ac36-70bc7f1ddd6d', // officially managed cache policy
             ViewerProtocolPolicy: 'redirect-to-https',
           },
-          Comment: `This distribution stores the image '${image.name}' within the bucket '${bucketName}'`,
+          Comment: `This distribution stores the images within the bucket '${bucketName}'`,
           Enabled: true,
         },
       }),

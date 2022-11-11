@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 // ES6+ example
+import { exit } from 'process';
 import { STSClient, GetCallerIdentityCommand } from '@aws-sdk/client-sts';
 
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 import * as cloudfrontFunctions from './cloudfront';
+import { getExistingCloudfrontDistro } from './cloudfront';
 import * as s3Functions from './s3';
 
 export interface UploadOptions extends yargs.Arguments {
@@ -67,6 +69,16 @@ export const uploadImagePublicly = async (
 
   const { fullBucketName, bucketRegion } = await s3Functions.makeBucket(log, fullOptions.bucketName, fullOptions.region);
   await s3Functions.uploadImageToBucket(log, fullBucketName, image);
+
+  const existingCloudfrontDomain = await getExistingCloudfrontDistro(log, fullBucketName);
+  if (existingCloudfrontDomain) {
+    return {
+      imageUrl: `${existingCloudfrontDomain}/${image.name}`,
+      imageName: image.name,
+    };
+  }
+  exit(1);
+
   const originAccessIdentityId = await cloudfrontFunctions.getOriginAccessIdentityId(log, fullBucketName);
   const imageURL = await cloudfrontFunctions.createCloudFrontDistribution(log, fullBucketName, bucketRegion, originAccessIdentityId, image);
   await s3Functions.updateBucketPolicy(log, fullBucketName, originAccessIdentityId);
