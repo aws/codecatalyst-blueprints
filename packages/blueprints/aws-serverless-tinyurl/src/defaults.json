@@ -1,0 +1,12 @@
+{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "DEVELOPMENT"
+  },
+  "code": {
+    "repositoryName": "TinyUrlApp"
+  },
+  "advanced": {
+    "stackName": "TinyUrlApp"
+  }
+}

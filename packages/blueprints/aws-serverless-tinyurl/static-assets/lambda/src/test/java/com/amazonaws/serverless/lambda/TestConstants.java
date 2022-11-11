@@ -1,0 +1,12 @@
+package com.amazonaws.serverless.lambda;
+
+public class TestConstants {
+    public static final String TINY_URL_OUTPUT = "https://aws.com/lzbfxd8mrui8";
+    public static final String LONG_URL_INPUT = "https://aws.amazon.com";
+    public static final String TINY_URL = "tinyUrl";
+    public static final String LONG_URL = "longUrl";
+    public static final String REFERER_URL = "https://aws.com";
+    public static final String TINY_URL_ID = "lzbfxd8mrui8";
+    public static final String DYNAMO_TABLE_URL = "url";
+    public static final String REFERER = "Referer";
+}

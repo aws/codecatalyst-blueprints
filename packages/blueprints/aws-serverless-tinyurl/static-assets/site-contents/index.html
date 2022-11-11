@@ -1,0 +1,234 @@
+<html lang="en">
+  <head>
+    <title>URL Shortener</title>
+    <style>
+      .container {
+        margin-top: 10%;
+        margin-left: 30%;
+        margin-right: 30%;
+        box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 16%);
+        padding: 15px 30px;
+      }
+      .rounded {
+        border-radius: 10px;
+      }
+
+      button {
+        border-color: #1f8244;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        font-family: inherit;
+        overflow: visible;
+        border: 1px solid transparent;
+        line-height: 1.5;
+        text-align: center;
+        user-select: none;
+        vertical-align: middle;
+        border-color: #1f8244;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 15px 30px;
+        cursor: pointer;
+      }
+
+      .copy-tiny-url {
+        color: #ec7211;
+      }
+
+      .submit-long-url {
+        background-color: #ec7211;
+        color: #fff;
+      }
+
+      input {
+        word-wrap: break-word;
+        box-sizing: border-box;
+        font-family: inherit;
+        overflow: visible;
+        line-height: 1.5;
+        box-shadow: 0 1px 2px #e9ecef;
+        background: none;
+        border: 1px solid grey;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        height: auto;
+        padding: 16px 10px;
+        padding-right: calc(1.5em + 0.75rem);
+      }
+
+      .input-box {
+        width: 100%;
+      }
+
+      .output-box {
+        width: 75%;
+      }
+
+      .card {
+        color: #212529;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        direction: ltr;
+        font-family: Montserrat, sans-serif;
+        box-sizing: border-box;
+        justify-content: space-between;
+      }
+
+      label {
+        font-weight: 400;
+        font-style: italic;
+        display: block;
+        padding-bottom: 5px;
+      }
+
+      #tiny-url-container {
+        padding-top: 10px;
+        display: block;
+      }
+
+      #ui-alert-warning {
+        padding-top: 10px;
+        font-size: 12px;
+        font-weight: 500;
+        word-wrap: break-word;
+        color: #c31818;
+        display: none;
+      }
+
+      #ui-alert-input-error {
+        padding-top: 10px;
+        font-size: 12px;
+        font-weight: 500;
+        word-wrap: break-word;
+        color: #c31818;
+        display: none;
+      }
+
+      #ui-alert-success {
+        padding-top: 10px;
+        font-size: 12px;
+        font-weight: 500;
+        word-wrap: break-word;
+        color: #1f8244;
+        display: none;
+      }
+
+      #ui-alert-progress {
+        padding-top: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        word-wrap: break-word;
+        color: #1f8244;
+        display: none;
+      }
+
+      #ui-alert-action {
+        padding-top: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        word-wrap: break-word;
+        color: #1f8244;
+        display: none;
+      }
+
+      #product-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#tiny-url-container').hide();
+        $('#copy-tinyLink').click(function (e) {
+          e.preventDefault();
+          let copiedTinyLink = $('#tiny-url').val();
+          navigator.clipboard.writeText(copiedTinyLink);
+          $('#ui-alert-success').hide();
+          $('#ui-alert-action').show();
+        });
+
+        function isValidUrl(url) {
+          try {
+            return Boolean(new URL(url));
+          } catch (e) {
+            return false;
+          }
+        }
+
+        $('#submit').click(function (e) {
+          e.preventDefault();
+          $('#tiny-url-container').hide();
+          $('#ui-alert-success').hide();
+          $('#ui-alert-input-error').hide();
+          $('#ui-alert-action').hide();
+
+          let long_URL = $('#long-url').val();
+          if (isValidUrl(long_URL)) {
+            $('#ui-alert-progress').show();
+            $.ajax({
+              headers: { 'Access-Control-Allow-Origin': 'https://' + document.domain },
+              type: 'POST',
+              url: window.location.href + '/createTinyUrl',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                longUrl: long_URL,
+              }),
+              success: function (res) {
+                $('#ui-alert-progress').hide();
+                $('#long-url').val('');
+                $('#tiny-url').val(res['tinyUrl']);
+                $('#tiny-url-container').show();
+                $('#long-url-input').text(long_URL);
+                $('#ui-alert-success').show();
+              },
+              error: function () {
+                $('#ui-alert-warning').show();
+              },
+            });
+          } else {
+            $('#ui-alert-input-error').show();
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container rounded">
+      <p id="product-title">URL Shortener</p>
+      <div class="card">
+        <form>
+          <div id="long-url-container">
+            <label for="long-url"> Enter a long URL: </label>
+            <input class="input-box" id="long-url" type="text" aria-label="Long URL" required="required" />
+            <br />
+            <br />
+            <button id="submit" class="submit-long-url">Short it!</button> &nbsp;
+          </div>
+          <div id="tiny-url-container">
+            <label>Short URL:</label>
+            <input id="tiny-url" class="output-box" readonly="readonly" /> &nbsp; <button id="copy-tinyLink" class="copy-tiny-url">Copy</button>
+            <span id="ui-alert-action">
+              <p>Shortened URL successfully copied!, press ctrl/cmd + v to paste</p>
+            </span>
+          </div>
+          <span id="ui-alert-progress">
+            <p>Shortening...!</p>
+          </span>
+          <span id="ui-alert-input-error">
+            <p>Enter valid input!</p>
+          </span>
+          <span id="ui-alert-success">
+            <p>Shortened the URL:</p>
+            <p id="long-url-input"></p>
+          </span>
+          <span id="ui-alert-warning">Error occurred while shortening!</span>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
