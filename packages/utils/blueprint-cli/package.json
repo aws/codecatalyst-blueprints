@@ -27,7 +27,7 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "*",
+    "@caws-blueprint-util/projen-blueprint-component": "0.1.x",
     "@types/jest": "26.0.24",
     "@types/jmespath": "*",
     "@types/node": "^14",
@@ -62,7 +62,7 @@
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.0.17",
+  "version": "0.1.5",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

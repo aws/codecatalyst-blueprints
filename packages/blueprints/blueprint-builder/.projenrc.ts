@@ -17,6 +17,7 @@ const blueprint = new ProjenBlueprint({
     'typescript@4.x',
     '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
+    '@caws-blueprint-component/caws-workflows',
     '@caws-blueprint-util/blueprint-utils',
     '@caws-blueprint-util/projen-blueprint',
   ],

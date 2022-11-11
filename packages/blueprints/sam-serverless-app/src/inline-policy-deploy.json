@@ -4,15 +4,18 @@
       {
           "Effect": "Allow",
           "Action": [
-              "cloudformation:*",
-              "ecr:*",
-              "ssm:*",
-              "s3:*",
+              "s3:PutObject",
+              "s3:GetObject",
               "iam:PassRole",
+              "iam:DeleteRole",
               "iam:GetRole",
+              "iam:TagRole",
               "iam:CreateRole",
               "iam:AttachRolePolicy",
-              "iam:PutRolePolicy"
+              "iam:DetachRolePolicy",
+              "cloudformation:*",
+              "lambda:*",
+              "apigateway:*"
           ],
           "Resource": "*"
       }
