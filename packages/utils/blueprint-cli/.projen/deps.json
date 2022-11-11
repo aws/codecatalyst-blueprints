@@ -109,6 +109,10 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-sdk/client-sts",
+      "type": "runtime"
+    },
+    {
       "name": "axios",
       "type": "runtime"
     },

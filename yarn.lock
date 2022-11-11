@@ -301,7 +301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-sts@npm:3.208.0":
+"@aws-sdk/client-sts@npm:*, @aws-sdk/client-sts@npm:3.208.0":
   version: 3.208.0
   resolution: "@aws-sdk/client-sts@npm:3.208.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40aws-sdk%2Fclient-sts%2F-%2Fclient-sts-3.208.0.tgz"
   dependencies:
@@ -1715,6 +1715,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-cloudfront": "*"
     "@aws-sdk/client-s3": "*"
+    "@aws-sdk/client-sts": "*"
     "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@types/jest": 26.0.24
     "@types/jmespath": "*"
