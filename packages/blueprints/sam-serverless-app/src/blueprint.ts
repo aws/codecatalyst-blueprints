@@ -22,6 +22,7 @@ import { runtimeMappings } from './runtimeMappings';
 import { FileTemplate, FileTemplateContext, RuntimeMapping } from './models';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import * as fs from 'fs';
+import { exit } from 'process';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -143,6 +144,7 @@ export class Blueprint extends ParentBlueprint {
     // create an environment
     new Environment(this, this.options.environment);
 
+    exit(1);
     // create SAM template and installation scripts
     this.createSamTemplate({
       runtime: runtimeOptions.runtime,
