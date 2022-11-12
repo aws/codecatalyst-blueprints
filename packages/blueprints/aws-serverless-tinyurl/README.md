@@ -92,16 +92,17 @@ IAM role also requires below trust policy.
 This blueprint will create the Amazon CodeCatalyst Resources and along with a source code Repository for the project. The project contains below
 modules / files
 
-- cdk - Java maven module for creating the Application and Canary Stacks.
+- `.codecatalyst/workflows/build-and-release.yaml`: The template that defines the project's workflow
 
-- lambda - Java maven module for the Lambda function used by the Application to create Tiny URL and retrieve long url.
+- `cdk`: Java maven module for creating the Application and Canary Stacks.
 
-- site-contents - Static HTML for content serving
+- `lambda`: Java maven module for the Lambda function used by the Application to create tiny URL and retrieve long URL.
 
-- testscripts - NodeJS Source code for the canary tests
+- `site-contents`: Static HTML for content serving
 
-- pom.xml - Maven configuration for dependency management, plugin management, build and packaging
+- `testscripts`: NodeJS source code for the canary test
 
-- cdk.json - To execute the CDK code
+- `pom.xml`: Maven configuration for dependency management, plugin management, build and packaging
 
-- .codecatalyst/workflows/build-and-release.yaml - The template that defines the project's workflow
+- `cdk.json`: To execute the CDK code
+

@@ -32,7 +32,19 @@ const project = new ProjenBlueprint({
   description:
     'This blueprint creates a serverless Tiny URL Java Web Application built in Java using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.',
   devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
-  keywords: ['blueprint'],
+  keywords: [
+    'Tiny URL Application',
+    'AWS Serverless',
+    'Amazon API Gateway',
+    'AWS Lambda',
+    'Amazon DynamoDB',
+    'Amazon CloudFormation',
+    'Amazon S3',
+    'Amazon CloudWatch Synthetics',
+    'AWS CDK',
+    'Java',
+    'Fullstack',
+  ],
   homepage: '',
   mediaUrls: [
     'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',

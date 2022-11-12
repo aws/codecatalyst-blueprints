@@ -57,12 +57,22 @@
     "projen": "^0.65.19"
   },
   "keywords": [
-    "blueprint"
+    "AWS CDK",
+    "AWS Lambda",
+    "AWS Serverless",
+    "Amazon API Gateway",
+    "Amazon CloudFormation",
+    "Amazon CloudWatch Synthetics",
+    "Amazon DynamoDB",
+    "Amazon S3",
+    "Fullstack",
+    "Java",
+    "Tiny URL Application"
   ],
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "",
-  "version": "0.0.1-preview.41",
+  "version": "0.0.1-preview.46",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png"

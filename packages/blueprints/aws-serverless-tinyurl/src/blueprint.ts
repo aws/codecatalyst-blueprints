@@ -183,6 +183,7 @@ export class Blueprint extends ParentBlueprint {
       testScript: 'testscripts/nodejs/node_modules/index.js',
       cdkJson: 'cdk.json',
       pomXml: 'pom.xml',
+      readMe: 'README.md',
     };
   }
 
