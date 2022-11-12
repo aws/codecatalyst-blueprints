@@ -1,8 +1,9 @@
-# Controls when the action will run. Triggers the workflow on push
+# Controls when the action will run. Triggers the workflow on pull request
 # events but only for the main branch
 name: Build
 on:
-  push:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
     branches:
       - main
 
