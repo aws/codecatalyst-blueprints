@@ -24,7 +24,6 @@ public class TinyUrlAppStack extends NestedStack {
     private static final String DYNAMODB_TABLE_NAME = "tbl_tiny_url";
     private static final String S3_BUCKET_NAME = "static-website-content";
     private static final String DYNAMODB_TABLE_PRIMARY_KEY = "id";
-
     private static final String API_GATEWAY_S3_ASSUME_ROLE = "tinyUrlApiGatewayS3AssumeRole";
     private static final String REST_API_ID = "tinyUrlApi";
     private static final String REST_API_NAME = "TinyUrlService";
@@ -37,7 +36,7 @@ public class TinyUrlAppStack extends NestedStack {
         super(parent, stackName);
 
         // S3 Bucket resource and Content
-        Bucket siteBucket = createBucket(S3_BUCKET_NAME+ "-" + stackName.toLowerCase());
+        Bucket siteBucket = createBucket(String.join("-", S3_BUCKET_NAME, stackName.toLowerCase()));
 
         CfnOutput.Builder.create(this, "TinyUrlStaticSiteBucketName")
                 .description("S3 bucket name used for Tiny URL static website")
@@ -92,7 +91,7 @@ public class TinyUrlAppStack extends NestedStack {
                 .service("s3")
                 .integrationHttpMethod(GET)
                 .options(s3Options)
-                .path(siteBucket.getBucketName() + "/index.html")
+                .path(String.join("", siteBucket.getBucketName(), "/index.html"))
                 .build();
 
         loadTinyUrlPageResource.addMethod(GET, loadTinyUrlPageIntegration)

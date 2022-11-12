@@ -61,10 +61,16 @@ export interface Options extends ParentOptions {
      * The name of the Cloudformation stack to deploy the application's resources
      * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,128}$/
      * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-     * @displayName Cloudformation stack name
+     * @displayName Stack name
      * @defaultEntropy 5
      */
     stackName: string;
+
+    /**
+     * AWS region to deploy the application's resources
+     * @displayName AWS region
+     */
+    region: 'us-east-1' | 'us-west-2';
   };
 }
 
@@ -78,10 +84,11 @@ export class Blueprint extends ParentBlueprint {
   protected readonly repositoryName: string;
   protected readonly sourceRepository: SourceRepository;
   protected readonly stackName: string;
+  protected readonly region: string;
+  protected readonly account: string | undefined;
 
   constructor(options_: Options) {
     super(options_);
-    console.log(defaults);
 
     /**
      * This is a typecheck to ensure that the defaults passed in are of the correct type.
@@ -97,11 +104,14 @@ export class Blueprint extends ParentBlueprint {
       },
       advanced: {
         stackName: options_.advanced.stackName,
+        region: options_.advanced.region,
       },
     };
     const options = Object.assign(typeCheck, options_);
     this.repositoryName = this.sanitizePath(options.code.repositoryName);
     this.stackName = options.advanced.stackName;
+    this.region = options.advanced.region;
+    this.account = options.environment.awsAccountConnection?.id;
     this.options = options;
     console.log(options);
 
@@ -116,6 +126,8 @@ export class Blueprint extends ParentBlueprint {
       SUBSTITUTION_ASSETS.TinyUrlApp,
       tinyUrlApp.subsitite({
         stackName: this.stackName,
+        account: this.account,
+        region: this.region,
       }),
     );
 
@@ -123,7 +135,7 @@ export class Blueprint extends ParentBlueprint {
     this.createAssets(Object.values(this.getLambdaStaticAssets()));
     this.createAssets(Object.values(this.getParentStaticAssets()));
 
-    this.createEnvironmentPlusCDWorkflow(this.options.environment, 'main', 'us-east-1', this.stackName);
+    this.createEnvironmentPlusCDWorkflow(this.options.environment, 'main', this.region, this.stackName);
   }
 
   private sanitizePath(path: string) {
@@ -205,10 +217,6 @@ export class Blueprint extends ParentBlueprint {
           Branches: [branch || 'main'],
         },
       ],
-      Compute: {
-        Type: ComputeType.EC2,
-        Fleet: ComputeFleet.LINUX_X86_64_LARGE,
-      },
       Actions: {
         Build: {
           Identifier: this.getActionMapping(WorkflowActionIdEnum.BuildAndPackage),
@@ -230,10 +238,26 @@ export class Blueprint extends ParentBlueprint {
           Configuration: {
             Steps: [{ Run: 'mvn package' }],
           },
+          Compute: {
+            Type: ComputeType.LAMBDA,
+            Fleet: ComputeFleet.LINUX_X86_64_LARGE,
+          },
+        },
+        CDKBootstrapAction: {
+          Identifier: this.getActionMapping(WorkflowActionIdEnum.CDKBootstrap),
+          DependsOn: ['Build'],
+          Inputs: {
+            Artifacts: ['build_artifact'],
+          },
+          Timeout: 10,
+          Configuration: {
+            Region: region || 'us-east-1',
+          },
+          Environment: convertToWorkflowEnvironment(env),
         },
         CDKDeploy: {
           Identifier: this.getActionMapping(WorkflowActionIdEnum.CDKDeploy),
-          DependsOn: ['Build'],
+          DependsOn: ['CDKBootstrapAction'],
           Inputs: {
             Artifacts: ['build_artifact'],
           },

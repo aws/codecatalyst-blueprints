@@ -12,7 +12,11 @@ provides a persistence layer where data can be stored by the API's Lambda functi
 ## Configuring the account connection
 
 An AWS account connection is required before deploying this project. An IAM role with below policy statement is required for the blueprint to deploy
-successfully
+successfully.
+
+In order to deploy the application successfully, the account should be CDK bootstrapped. Please refer
+[AWS doc on CDK bootstrap](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) for bootstrapping the account. The account should be
+bootstrapped in the region where the application needs to be deployed.
 
 ```
 {
@@ -28,13 +32,32 @@ successfully
                 "iam:CreateRole",
                 "iam:AttachRolePolicy",
                 "iam:DetachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:PutRolePolicy",
                 "s3:*",
                 "cloudformation:*",
                 "lambda:*",
                 "apigateway:*",
-                "ssm:*"
+                "ssm:*",
+                "ecr:SetRepositoryPolicy",
+                "ecr:GetLifecyclePolicy",
+                "ecr:PutImageScanningConfiguration",
+                "ecr:DescribeRepositories",
+                "ecr:PutImageTagMutability",
+                "ecr:ListTagsForResource",
+                "ecr:CreateRepository",
+                "ecr:DeleteRepository"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/cdk-*"
+            ]
         }
     ]
 }

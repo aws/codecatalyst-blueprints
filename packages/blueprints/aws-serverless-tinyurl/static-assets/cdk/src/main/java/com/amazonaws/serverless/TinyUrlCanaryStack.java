@@ -20,29 +20,25 @@ import java.util.Map;
 
 public class TinyUrlCanaryStack extends NestedStack {
     private final String tinyUrlApiEndpoint;
-    private static final String AZ_CODE = "us-east-1";
     private static final Integer CANARY_SUCCESS_RETENTION_PERIOD = 7;
     private static final Integer CANARY_FAILURE_RETENTION_PERIOD = 31;
-    //Bucket CONSTANT
     private static final String CANARY_RESULT_BUCKET_ID = "canaryResults";
     private static final String CANARY_RESULT_BUCKET_NAME = "cw-synthetics-results";
-    //Role CONSTANT
     private static final String CANARY_ROLE_ID = "canaryExecutionRole";
     private static final String CANARY_ROLE_NAME = "cw-synthetics-role";
     private static final String CANARY_ROLE_DESCRIPTION = "Canary Execution Role";
     private static final String CANARY_ROLE_PATH = "/service-role/";
-    // Asset CONSTANT
     private static final String ASSET_ID = "canaryCodeBundle";
     private static final String ASSET_PATH = "./testscripts";
 
-    public TinyUrlCanaryStack(final Construct parent, final String stackName) {
+    public TinyUrlCanaryStack(final Construct parent, final String stackName, StackProps props) {
         super(parent, stackName);
 
         this.tinyUrlApiEndpoint = Fn.importValue("TinyUrlRestApiEndpoint");
 
         // Create Bucket for Canary Logs
         Bucket resultBucket = createBucket(CANARY_RESULT_BUCKET_ID,
-                CANARY_RESULT_BUCKET_NAME+ "-" + stackName.toLowerCase());
+                CANARY_RESULT_BUCKET_NAME + "-" + stackName.toLowerCase());
 
         CfnOutput.Builder.create(this, "TinyUrlCanaryLogsBucketName")
                 .description("S3 bucket name used for storing the Tiny URL canary results")
@@ -51,10 +47,10 @@ public class TinyUrlCanaryStack extends NestedStack {
 
         // Create a permission role for the Canary
         Role cwSyntheticsRole = createRole(CANARY_ROLE_ID,
-            CANARY_ROLE_NAME,
-            CANARY_ROLE_PATH,
-            CANARY_ROLE_DESCRIPTION,
-            resultBucket);
+                CANARY_ROLE_NAME,
+                CANARY_ROLE_PATH,
+                CANARY_ROLE_DESCRIPTION,
+                resultBucket);
 
         // Create Asset for CDK
         Asset canaryCodeBundle = createAsset(ASSET_ID, ASSET_PATH);
@@ -62,9 +58,9 @@ public class TinyUrlCanaryStack extends NestedStack {
         // S3 Bucket Location
         String s3Location = "s3://" + resultBucket.getBucketName();
 
-        // Main -- Creating Canary
+        // Creating Synthetic Canary
         String canaryName = stackName.toLowerCase();
-        Map <String, String> envVar = new HashMap<String, String>();
+        Map<String, String> envVar = new HashMap<String, String>();
         envVar.put("URL", this.tinyUrlApiEndpoint);
 
         new CfnCanary(this, canaryName, CfnCanaryProps.builder()
@@ -88,13 +84,13 @@ public class TinyUrlCanaryStack extends NestedStack {
     }
 
     // Bucket Creation
-    private Bucket createBucket(final String id, final String name){
-       return new Bucket(this, id, BucketProps.builder()
-               .bucketName(String.join("-", name, AZ_CODE, "bucket"))
-               .publicReadAccess(false)
-               .autoDeleteObjects(true)
-               .removalPolicy(RemovalPolicy.DESTROY)
-               .build());
+    private Bucket createBucket(final String id, final String name) {
+        return new Bucket(this, id, BucketProps.builder()
+                .bucketName(String.join("-", name, "bucket"))
+                .publicReadAccess(false)
+                .autoDeleteObjects(true)
+                .removalPolicy(RemovalPolicy.DESTROY)
+                .build());
     }
 
     // Required Role Creation
@@ -102,50 +98,50 @@ public class TinyUrlCanaryStack extends NestedStack {
                             final String name,
                             final String path,
                             final String description,
-                            final Bucket resultsBucket){
+                            final Bucket resultsBucket) {
 
-       Role createdRole = new Role(this, id, RoleProps.builder()
-               .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
-               .roleName(String.join("-", name, AZ_CODE, "test"))
-               .description(description)
-               .path(path)
-               .build());
-       createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
-               .actions(Arrays.asList("synthetics:*"))
-               .resources(Arrays.asList(resultsBucket.arnForObjects("*")))
-               .build()));
+        Role createdRole = new Role(this, id, RoleProps.builder()
+                .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+                .roleName(String.join("-", name, "test"))
+                .description(description)
+                .path(path)
+                .build());
+        createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
+                .actions(Arrays.asList("synthetics:*"))
+                .resources(Arrays.asList(resultsBucket.arnForObjects("*")))
+                .build()));
 
-       // CloudWatch Synthetics FullAccess Policy List
-       createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
-               .actions(Arrays.asList("s3:PutObject", "s3:GetBucketLocation"))
-               .resources(Arrays.asList(resultsBucket.arnForObjects("*")))
-               .build()));
+        // CloudWatch Synthetics FullAccess Policy List
+        createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
+                .actions(Arrays.asList("s3:PutObject", "s3:GetBucketLocation"))
+                .resources(Arrays.asList(resultsBucket.arnForObjects("*")))
+                .build()));
 
-       createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
-               .actions(Arrays.asList("s3:ListAllMyBuckets"))
-               .resources(Arrays.asList("*"))
-               .build()));
+        createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
+                .actions(Arrays.asList("s3:ListAllMyBuckets"))
+                .resources(Arrays.asList("*"))
+                .build()));
 
-       createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
-               .actions(Arrays.asList("logs:CreateLogGroup",
-                       "logs:CreateLogStream",
-                       "logs:PutLogEvents"))
-               .resources(Arrays.asList("arn:aws:logs:*:*:log-group:/aws/lambda/*"))
-               .build()));
+        createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
+                .actions(Arrays.asList("logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents"))
+                .resources(Arrays.asList("arn:aws:logs:*:*:log-group:/aws/lambda/*"))
+                .build()));
 
-       createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
-               .actions(Arrays.asList("cloudwatch:PutMetricData"))
-               .resources(Arrays.asList("*"))
-               .build()));
+        createdRole.addToPolicy(new PolicyStatement(PolicyStatementProps.builder()
+                .actions(Arrays.asList("cloudwatch:PutMetricData"))
+                .resources(Arrays.asList("*"))
+                .build()));
 
-       return createdRole;
+        return createdRole;
     }
 
-    private Asset createAsset(final String assetId, final String path){
-       return Asset.Builder
-               .create(this, assetId)
-               .path(path)
-               .build();
+    private Asset createAsset(final String assetId, final String path) {
+        return Asset.Builder
+                .create(this, assetId)
+                .path(path)
+                .build();
     }
 
 }
