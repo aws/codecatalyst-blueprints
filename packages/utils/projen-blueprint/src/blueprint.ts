@@ -98,6 +98,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addField('displayName', options.displayName || this.package.packageName);
 
     // force the static assets to always be fully included, regardless of .npmignores
-    this.package.addField('files', ['static-assets']);
+    this.package.addField('files', ['static-assets', 'lib']);
   }
 }

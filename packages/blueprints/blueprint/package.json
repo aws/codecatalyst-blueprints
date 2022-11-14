@@ -64,7 +64,8 @@
   ],
   "displayName": "Empty project",
   "files": [
-    "static-assets"
+    "static-assets",
+    "lib"
   ],
   "resolutions": {
     "@types/responselike": "1.0.0",
