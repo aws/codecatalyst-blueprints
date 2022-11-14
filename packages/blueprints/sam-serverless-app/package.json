@@ -66,7 +66,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1216",
+  "version": "0.0.1217",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
