@@ -96,5 +96,8 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addField('mediaUrls', options.mediaUrls);
     //display name will be the package name by default
     this.package.addField('displayName', options.displayName || this.package.packageName);
+
+    // force the static assets to always be fully included, regardless of .npmignores
+    this.package.addField('files', ['static-assets']);
   }
 }

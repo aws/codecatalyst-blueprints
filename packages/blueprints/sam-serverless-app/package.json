@@ -112,6 +112,9 @@
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
   ],
   "displayName": "Serverless application model (SAM) API",
+  "files": [
+    "static-assets"
+  ],
   "resolutions": {
     "@types/responselike": "1.0.0",
     "got": "12.3.1"
