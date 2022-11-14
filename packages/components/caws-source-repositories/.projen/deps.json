@@ -5,6 +5,10 @@
       "type": "build"
     },
     {
+      "name": "@caws-blueprint/blueprints.blueprint",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14",
       "type": "build"
@@ -64,12 +68,12 @@
       "type": "build"
     },
     {
-      "name": "projen",
+      "name": "@caws-blueprint/blueprints.blueprint",
       "type": "peer"
     },
     {
-      "name": "@caws-blueprint/blueprints.blueprint",
-      "type": "runtime"
+      "name": "projen",
+      "type": "peer"
     },
     {
       "name": "@types/glob",

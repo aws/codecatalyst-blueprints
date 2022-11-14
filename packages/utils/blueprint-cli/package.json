@@ -62,7 +62,7 @@
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
