@@ -13,12 +13,16 @@ describe('runtime mappings', () => {
       expect(mapping.templateProps).toContain('MemorySize: 512');
     });
 
-    it('does not create any files', () => {
-      expect(mapping.filesToCreate).toHaveLength(0);
+    it('creates run-tests.sh', () => {
+      expect(mapping.filesToCreate).toHaveLength(1);
+      expect(mapping.filesToCreate[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.codecatalyst/scripts/run-tests.sh');
+      expect(mapping.filesToCreate[0].resolveContent(fileTemplateContext)).toContain('-f testLambdaFunctionName/HelloWorldFunction');
     });
 
-    it('does not override any files', () => {
-      expect(mapping.filesToOverride).toHaveLength(0);
+    it('overrides pom.xml', () => {
+      expect(mapping.filesToOverride).toHaveLength(1);
+      expect(mapping.filesToOverride[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/HelloWorldFunction/pom.xml');
+      expect(mapping.filesToOverride[0].resolveContent(fileTemplateContext)).toContain('<artifactId>jacoco-maven-plugin</artifactId>');
     });
 
     it('does not change permissions on anything', () => {
