@@ -1755,6 +1755,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.5.5
   peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
     projen: "*"
   languageName: unknown
   linkType: soft
@@ -1779,6 +1780,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.5.5
   peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
     projen: "*"
   languageName: unknown
   linkType: soft
@@ -1808,6 +1810,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.5.5
   peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
     projen: ^0.61.44
   languageName: unknown
   linkType: soft
@@ -1834,6 +1837,9 @@ __metadata:
     ts-node: ^10
     typescript: ^4.5.5
   peerDependencies:
+    "@caws-blueprint-component/caws-environments": 0.1.x
+    "@caws-blueprint-component/caws-source-repositories": 0.1.x
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
     projen: "*"
   languageName: unknown
   linkType: soft
@@ -1859,6 +1865,8 @@ __metadata:
     ts-node: ^10
     typescript: ^4.5.5
   peerDependencies:
+    "@caws-blueprint-component/caws-source-repositories": 0.1.x
+    "@caws-blueprint/blueprints.blueprint": 0.0.x
     projen: "*"
   languageName: unknown
   linkType: soft

@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.sam-serverless-application",
-  "description": "This blueprint generates a serverless application model (SAM) project. The project will contain source code and configuration files to build and deploy your SAM application",
+  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -29,7 +29,7 @@
     "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes"
   },
   "author": {
-    "name": "caws-blueprints",
+    "name": "Amazon Web Services",
     "organization": false
   },
   "devDependencies": {
@@ -66,7 +66,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1213",
+  "version": "0.0.1216-preview.0",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
@@ -111,7 +111,11 @@
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
   ],
-  "displayName": "Serverless Application Model (SAM)",
+  "displayName": "Serverless application model (SAM) API",
+  "files": [
+    "static-assets",
+    "lib"
+  ],
   "resolutions": {
     "@types/responselike": "1.0.0",
     "got": "12.3.1"
