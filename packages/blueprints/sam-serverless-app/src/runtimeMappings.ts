@@ -27,9 +27,28 @@ export const runtimeMappings: RuntimeMap = {
     dependenciesFilePath: 'pom.xml',
     installInstructions:
       'Install [Python 3](https://www.python.org/downloads/)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
-    stepsToRunUnitTests: [],
-    filesToCreate: [],
-    filesToOverride: [],
+    stepsToRunUnitTests: ['. ./.codecatalyst/scripts/run-tests.sh'],
+    filesToCreate: [
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.codecatalyst', 'scripts', 'run-tests.sh');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+    ],
+    filesToOverride: [
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, 'HelloWorldFunction', 'pom.xml');
+        },
+        // @ts-ignore
+        resolveContent(context: FileTemplateContext): string {
+          return new StaticAsset('maven/pom.xml').toString();
+        },
+      },
+    ],
     filesToChangePermissionsFor: [],
     computeOptions: {
       Type: ComputeType.LAMBDA,
