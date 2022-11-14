@@ -204,7 +204,10 @@ export const updateBucketPolicy = async (log: pino.BaseLogger, bucketName: strin
   try {
     log.info(`Updating bucket policy for bucket '${bucketName}' ... (it will take a few seconds to update)`);
 
-    await sleep(15000); // it takes a few seconds for origin access identity to be in effect
+    // The SDK call isn't accurate. The existence seems to be there via the SDK, but the identity itself isn't immediately valid.
+    // The policy takes a second to make itself valid. We can choose to do this validity check in a loop in the future.
+    await sleep(15000);
+
     await s3Client.send(
       new PutBucketPolicyCommand({
         Bucket: bucketName,

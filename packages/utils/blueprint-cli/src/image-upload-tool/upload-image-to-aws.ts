@@ -28,7 +28,14 @@ export interface Image {
  * @returns aws account ID
  */
 const verifyAWSAccount = async (log: pino.BaseLogger): Promise<string> => {
-  const callerIdentity = await new STSClient({}).send(new GetCallerIdentityCommand({}));
+  let callerIdentity;
+  try {
+    callerIdentity = await new STSClient({}).send(new GetCallerIdentityCommand({}));
+  } catch (error) {
+    log.error('ERROR: Running STS GetCallerIdentity');
+    throw new Error('Are you logged into an aws account?');
+  }
+
   log.info(`Publishing under account [${callerIdentity.Account}]`);
   if (!callerIdentity.Account) {
     throw new Error(`You aren't logged into an aws account. Account information: ${JSON.stringify(callerIdentity, null, 2)}`);

@@ -146,18 +146,12 @@ yargs
           describe: 'name of bucket to create',
           type: 'string',
           demandOption: false,
-        })
-        .option('region', {
-          description: 'region to deploy',
-          type: 'string',
-          demandOption: false,
         });
     },
     handler: async (argv: UploadOptions): Promise<void> => {
       log.info(argv);
       const { imageUrl, imageName } = await uploadImagePublicly(log, argv.pathToImage, {
         bucketName: argv.bucket,
-        region: argv.region,
       });
       log.info(`URL to image '${imageName}': ${imageUrl} \n The URL might take a few minutes to be available.`);
       process.exit(0);
