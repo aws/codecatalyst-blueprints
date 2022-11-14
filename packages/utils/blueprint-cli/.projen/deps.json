@@ -101,6 +101,18 @@
       "type": "build"
     },
     {
+      "name": "@aws-sdk/client-cloudfront",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-s3",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-sts",
+      "type": "runtime"
+    },
+    {
       "name": "axios",
       "type": "runtime"
     },
