@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-// ES6+ example
-import { exit } from 'process';
+
 import { STSClient, GetCallerIdentityCommand } from '@aws-sdk/client-sts';
 
 import * as pino from 'pino';
@@ -77,7 +76,6 @@ export const uploadImagePublicly = async (
       imageName: image.name,
     };
   }
-  exit(1);
 
   const originAccessIdentityId = await cloudfrontFunctions.getOriginAccessIdentityId(log, fullBucketName);
   const imageURL = await cloudfrontFunctions.createCloudFrontDistribution(log, fullBucketName, bucketRegion, originAccessIdentityId, image);
