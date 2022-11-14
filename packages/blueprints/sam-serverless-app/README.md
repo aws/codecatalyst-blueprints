@@ -16,7 +16,11 @@ successfully, your deployed CDK application URL is available under the output fo
 
 This project uses:
 
-- Python
+- Node.js 14
+- Java 11
+- Python 3.9
+
+You can choose any of the above as the programming language.
 
 This project will deploy the following AWS resources after being successfuly created:
 
