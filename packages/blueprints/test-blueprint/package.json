@@ -61,12 +61,16 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "",
-  "version": "0.0.1120",
+  "version": "0.0.1124",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png"
   ],
   "displayName": "Test Blueprint [Internal]",
+  "files": [
+    "static-assets",
+    "lib"
+  ],
   "resolutions": {
     "@types/responselike": "1.0.0",
     "got": "12.3.1"

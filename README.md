@@ -12,10 +12,10 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
-#install nvm https://nvm.sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+brew install nvm            # blueprints work only with Node 14.x
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
+brew install svn            # used during synthesis of SAM blueprint
 ```
 
 Add this to your `~/.bash_profile`:
@@ -91,4 +91,3 @@ This generates the blueprint in the `synth` folder
 ```
 packages/blueprints/<blueprint>/synth/<timestamp>
 ```
-
