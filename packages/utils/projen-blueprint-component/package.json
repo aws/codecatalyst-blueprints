@@ -41,7 +41,7 @@
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "types": "lib/index.d.ts",
   "preferGlobal": true,
   "resolutions": {
