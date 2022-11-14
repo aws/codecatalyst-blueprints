@@ -42,10 +42,21 @@ Local development requires below pre-requisites.
 - [Apache Maven v3.8.6](https://maven.apache.org/install.html)
 - [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 
-You can install and test the project locally:
+To run the unit tests in the project
+
+```
+$ mvn test
+```
+
+To package the resources for deployment. Please note that unit tests will be executed as part of packaging
 
 ```
 $ mvn package
+```
+
+To test the project by deploying into your AWS Account
+
+```
 $ cdk deploy
 ```
 
@@ -66,3 +77,7 @@ The following resources have been generated and initial revisions can be modifie
 - `pom.xml`: Maven configuration for dependency management, plugin management, build and packaging
 
 - `cdk.json`: To execute the CDK code
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
