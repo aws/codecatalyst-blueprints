@@ -134,12 +134,12 @@ This Blueprint will create the following Amazon CodeCatalyst Resources:
 - Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into
   a production or non-production environment.
 
-  For more information on environments, see the _Organizing deployments using environments_ section in the **Quokka User Guide**
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**
 
 - Workspace - A cloud-based development environment. Workspace must be manually created with the generated devfile using the create workspace
-  operation on Quokka.Codes.
+  operation on CodeCatalyst.
 
-  For more information on the create workspace operation and workspaces, see the _Working with workspaces in Quokka_ section in the **Quokka User
+  For more information on the create workspace operation and workspaces, see the _Working with workspaces_ section in the **Amazon CodeCatalyst User
   Guide**
 
 ## Additional resources
