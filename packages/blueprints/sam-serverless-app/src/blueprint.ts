@@ -31,20 +31,6 @@ import * as fs from 'fs';
  */
 export interface Options extends ParentOptions {
   /**
-   * @displayName Runtime Language
-   */
-  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
-
-  /**
-   * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
-   * @displayName CloudFormation stack name
-   * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
-   * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-   * @defaultEntropy 5
-   */
-  cloudFormationStackName: string;
-
-  /**
    * Name for your deployment environment. You can add more environments once the project is created
    * @displayName Environment
    * @collapsed false
@@ -75,6 +61,12 @@ export interface Options extends ParentOptions {
   }>;
 
   /**
+   * Select your lambda code language
+   * @displayName Runtime Language
+   */
+  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
+
+  /**
    * @displayName Code Repository name
    * @collapsed true
    */
@@ -85,6 +77,15 @@ export interface Options extends ParentOptions {
      * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be between 3 and 100 characters in length. Cannot end in .git or contain spaces
      */
     sourceRepositoryName: string;
+
+    /**
+     * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
+     * @displayName CloudFormation stack name
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
+     * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
+     * @defaultEntropy 5
+     */
+    cloudFormationStackName: string;
   };
 
   /**
@@ -180,7 +181,7 @@ export class Blueprint extends ParentBlueprint {
         defaultReleaseBranch: 'main',
         lambdas: [this.options.lambda],
         environment: this.options.environment,
-        cloudFormationStackName: this.options.cloudFormationStackName,
+        cloudFormationStackName: this.options.code.cloudFormationStackName,
         workflowName: workflowName,
       }),
     );
@@ -252,8 +253,7 @@ export class Blueprint extends ParentBlueprint {
       },
       output: {
         AutoDiscoverReports: {
-          Enabled: true,
-          ReportNamePrefix: 'rpt',
+          Enabled: false,
         },
         Artifacts: [
           {
@@ -281,7 +281,7 @@ export class Blueprint extends ParentBlueprint {
       configuration: {
         parameters: {
           region,
-          'name': this.options.cloudFormationStackName,
+          'name': this.options.code.cloudFormationStackName,
           'template': '.aws-sam/build/packaged.yaml',
           'no-fail-on-empty-changeset': '1',
         },
