@@ -31,8 +31,9 @@ import * as fs from 'fs';
  */
 export interface Options extends ParentOptions {
   /**
-   * Name for your deployment environment. You can add more environments once the project is created
-   * @displayName Environment
+   * @displayName AWS connection
+   * @showName false
+   * @showEnvironmentType false
    * @collapsed false
    */
   environment: EnvironmentDefinition<{
@@ -40,7 +41,6 @@ export interface Options extends ParentOptions {
      * An AWS account connection is required by the project workflow to deploy to aws.
      * @displayName AWS account connection
      * @collapsed false
-     * @required
      */
     awsAccountConnection: AccountConnection<{
       /**
@@ -48,18 +48,16 @@ export interface Options extends ParentOptions {
        * @displayName Deploy role
        * @inlinePolicy ./inline-policy-deploy.json
        * @trustPolicy ./trust-policy.json
-       * @required
        */
-      deployRole: Role<['SAM Deploy']>;
+      deployRole: Role<['codecatalyst*']>;
 
       /**
        * This is the role that allows build actions to access and write to Amazon S3, where your serverless application package is stored.
        * @displayName Build role
        * @inlinePolicy ./inline-policy-build.json
        * @trustPolicy ./trust-policy.json
-       * @required
        */
-      buildRole: Role<['SAM Build']>;
+      buildRole: Role<['codecatalyst*']>;
     }>;
   }>;
 
@@ -70,7 +68,7 @@ export interface Options extends ParentOptions {
   runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
 
   /**
-   * @displayName Code Repository name
+   * @displayName Code Configuration
    * @collapsed true
    */
   code: {
