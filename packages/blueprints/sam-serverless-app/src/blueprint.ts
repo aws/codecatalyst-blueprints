@@ -40,6 +40,7 @@ export interface Options extends ParentOptions {
      * An AWS account connection is required by the project workflow to deploy to aws.
      * @displayName AWS account connection
      * @collapsed false
+     * @required
      */
     awsAccountConnection: AccountConnection<{
       /**
@@ -47,6 +48,7 @@ export interface Options extends ParentOptions {
        * @displayName Deploy role
        * @inlinePolicy ./inline-policy-deploy.json
        * @trustPolicy ./trust-policy.json
+       * @required
        */
       deployRole: Role<['SAM Deploy']>;
 
@@ -55,6 +57,7 @@ export interface Options extends ParentOptions {
        * @displayName Build role
        * @inlinePolicy ./inline-policy-build.json
        * @trustPolicy ./trust-policy.json
+       * @required
        */
       buildRole: Role<['SAM Build']>;
     }>;
