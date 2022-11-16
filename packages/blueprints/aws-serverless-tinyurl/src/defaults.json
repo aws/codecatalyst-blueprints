@@ -7,7 +7,8 @@
     "repositoryName": "TinyUrlApp"
   },
   "advanced": {
-    "stackName": "TinyUrlApp",
-    "region": "us-west-2'"
+    "frontendStackName": "Frontend",
+    "backendStackName": "Backend",
+    "region": "us-west-2"
   }
 }
