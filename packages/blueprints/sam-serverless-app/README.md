@@ -1,16 +1,16 @@
-## About this Blueprint
+## This Blueprint
 
 This Blueprint generates an AWS Serverless Application Model (SAM) project.
 
-A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. Note that a
-serverless application is more than just a Lambda function—it can include additional resources such as APIs, databases, and event source mappings. For
-more information on serverless applications, see the
+A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
+serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
+applications, see the
 [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
-The project uses an Amazon CodeCatalyst environment to deploy a SAM application with Lambda and API Gateway to a CloudFront URL. Your Amazon
-CodeCatalyst environment requires an AWS account connection to be set up for your organization, along with an IAM role configured for your project
-workflow. After you create your project, you can view the repository, source code, and CI/CD workflow for your project. After your workflow runs
-successfully, your deployed CDK application URL is available under the output for your workflow.
+The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
+After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
+project. After your workflow runs successfully, your deployed AWS Cloud Development Kit (CDK) application URL is available under the output for your
+workflow.
 
 ### Architecture overview
 
@@ -22,29 +22,16 @@ This project uses:
 
 You can choose any of the above as the programming language.
 
-This project will deploy the following AWS resources after being successfuly created:
-
-- Lambda Function(s) - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers. For more
-  information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
-
-- API Gateway - A resource for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. For more
-  information on API Gateway, see the [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
-
-- IAM Role(s) - A resource for securely controlled access to AWS resource, such as the lambda function(s). For more information on IAM, see the
-  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
-
-The deployment status can be viewed in the project's workflow.
-
 ![Architecture diagram](https://images2.imgbox.com/a0/69/MGTKGTt6_o.png)
 
-## Connections and permissions
+### Connections and permissions
 
 You configure your AWS account connection from the **AWS accounts** settings in your Amazon CodeCatalyst Organization settings. AWS IAM roles added to
 the account extension can be used to authorize project workflows to access AWS account resources.
 
 The SAM application requires multiple IAM roles to build and deploy the application:
 
-### IAM role trust policy
+## IAM role trust policy
 
 ```
 {
@@ -67,7 +54,7 @@ The SAM application requires multiple IAM roles to build and deploy the applicat
 }
 ```
 
-### Deploy role policy
+## Deploy role policy
 
 Create a role based on the trust policy above, and then add the following inline policy:
 
@@ -99,7 +86,7 @@ Create a role based on the trust policy above, and then add the following inline
 
 _Note: If you add more resources, you will need to update the policy_
 
-### Build role policy
+## Build role policy
 
 Create a role based on the trust policy above, and then add the following inline policy:
 
@@ -119,14 +106,30 @@ Create a role based on the trust policy above, and then add the following inline
 }
 ```
 
-## Project resources
+### Project resources
 
-This Blueprint will create the following Amazon CodeCatalyst Resources:
+This project deploys the following AWS resources after being successfuly created:
+
+- AWS Lambda function(s) - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers. For
+  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+- Amazon API Gateway - A resource for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. For
+  more information on API Gateway, see the
+  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+- IAM role(s) - A resource for securely controlled access to AWS resource, such as the AWS Lambda function(s). For more information on IAM, see the
+  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+The deployment status can be viewed in the project's workflow.
+
+This blueprint creates the following Amazon CodeCatalyst resources:
 
 - Source repository named `HelloWorld` - A Git repository to store, version, and manage project assets.
 
-  - `template.yaml` - The template that defines the application's AWS resources, including Lambda Functions, API Gateways, and IAM roles
-  - `.mde.devfile.yaml` - A devfile that defines developer workspaces or cloud-native development environments
+  - `template.yaml` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles
+  - `.mde.devfile.yaml` - A devfile that defines Dev Environments or cloud-native development environments
+
+  <!--- [Tech Comm comment:]Can you please check the wording for the sentence above. Are we talking about Amazon CodeCatalyst Dev Environments or other kinds of workspaces? --->
 
   For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**
 
@@ -140,12 +143,11 @@ This Blueprint will create the following Amazon CodeCatalyst Resources:
 
   For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**
 
-- Workspace - A cloud-based development environment. Workspace must be manually created with the generated devfile using the create workspace
-  operation on CodeCatalyst.
+- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
+  Environment operation in Amazon CodeCatalyst.
 
-  For more information on the create workspace operation and workspaces, see the _Working with workspaces_ section in the **Amazon CodeCatalyst User
-  Guide**
+  For more information on creating Dev Environemnts, see the _Working with Dev Environemnts_ section in the **Amazon CodeCatalyst User Guide**
 
-## Additional resources
+### Additional resources
 
-See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
