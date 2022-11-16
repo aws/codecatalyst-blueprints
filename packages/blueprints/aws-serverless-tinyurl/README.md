@@ -21,7 +21,7 @@ from publishing. The frontend code is compiled and optimized for production depl
 The Amazon CloudFront CDN is used to pull both the frontend and backend together under a single logical internet-accessible domain under the AWS
 account that is connected. Cloudfront provides HTTPS support for the domain as well as forward caching for the front-end.
 
-![Architecture Diagram](d2h15d5br6fxcw.cloudfront.net/aws-serverless-tinyurl-architecture.png)
+![Architecture Diagram](https://d2h15d5br6fxcw.cloudfront.net/aws-serverless-tinyurl-architecture.png)
 
 ## Configuring the account connection
 
