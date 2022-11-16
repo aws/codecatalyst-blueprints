@@ -1,7 +1,7 @@
 import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 
 const project = new ProjenBlueprint({
-  authorName: 'caws-blueprints',
+  authorName: 'Amazon Web Services',
   publishingOrganization: 'blueprints',
   packageName: '@caws-blueprint/blueprints.aws-serverless-tinyurl',
   name: 'aws-serverless-tinyurl',
