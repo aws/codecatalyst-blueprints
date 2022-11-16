@@ -5,7 +5,18 @@ const project = new ProjenBlueprintComponent({
   name: 'blueprint-cli',
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: ['pino', 'yargs', 'ts-node', 'axios', 'pino-pretty', 'typescript', 'jmespath'],
+  deps: [
+    '@aws-sdk/client-s3',
+    '@aws-sdk/client-cloudfront',
+    '@aws-sdk/client-sts',
+    'pino',
+    'yargs',
+    'ts-node',
+    'axios',
+    'pino-pretty',
+    'typescript',
+    'jmespath',
+  ],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',
   packageName: '@caws-blueprint-util/blueprint-cli',
@@ -24,6 +35,13 @@ const project = new ProjenBlueprintComponent({
     blueprint: 'lib/index.js',
   },
   jest: true,
+  tsconfig: {
+    compilerOptions: {
+      lib: ['es2019', 'dom'],
+      esModuleInterop: true,
+      noImplicitAny: false,
+    },
+  },
 });
 
 project.synth();
