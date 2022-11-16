@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.math.BigInteger;
 import java.util.Collections;
@@ -28,34 +29,39 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
     public void setUrlDataService(UrlDataService urlDataService) {
         this.urlDataService = urlDataService;
     }
+    private static final Gson gson = new Gson();
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        Gson gson = new Gson();
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        Map<String, String> payload = gson.fromJson(input.getBody(), Map.class);
         LambdaLogger logger = context.getLogger();
-
-        logger.log("Got URL: " + payload.get(LONG_URL));
-        String shortId = shortenUrl(payload.get(LONG_URL));
-        logger.log("Shortened to " + shortId);
-
         try {
+            Map<String, String> payload = gson.fromJson(input.getBody(), Map.class);
+
+            logger.log("Got URL: " + payload.get(LONG_URL));
+            String shortId = shortenUrl(payload.get(LONG_URL));
+            logger.log("Shortened to " + shortId);
+
             this.getUrlDataService().saveLongUrl(shortId, payload.get(LONG_URL));
+            logger.log(input.getHeaders().toString());
+
+            String tinyUrl = input.getHeaders().get(ORIGIN);
+            tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/").concat(shortId) : tinyUrl.concat("/t/").concat(shortId);
+
+            String body = gson.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
+            response.setBody(body);
+            response.setStatusCode(201);
+
+            return response;
         } catch (Exception e) {
-            logger.log(e.getMessage());
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            logger.log(stacktrace);
             response.setBody("Error occurred while generating the tiny URL");
             response.setStatusCode(500);
             return response;
         }
 
-        logger.log(input.getHeaders().toString());
-        String tinyUrl = input.getHeaders().get(ORIGIN);
-        tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/").concat(shortId) : tinyUrl.concat("/t/").concat(shortId);
-        String body = gson.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
-        response.setBody(body);
-        response.setStatusCode(201);
-        return response;
+
     }
 
     private String shortenUrl(String url) {

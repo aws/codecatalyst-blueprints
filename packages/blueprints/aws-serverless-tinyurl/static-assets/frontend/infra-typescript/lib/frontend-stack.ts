@@ -82,7 +82,7 @@ export class FrontendStack extends cdk.Stack {
     });
 
     // Setting up canary
-    const canaryName = 'frontend-test-canary';
+    const canaryName = 'fe-tinyurl-canary';
 
     const canaryExecutionConfig = {
       memoryInMb: 2000,

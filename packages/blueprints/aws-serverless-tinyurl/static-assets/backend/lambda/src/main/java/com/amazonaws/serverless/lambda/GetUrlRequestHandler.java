@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
 import java.util.Collections;
@@ -28,11 +29,11 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         LambdaLogger logger = context.getLogger();
-        String shortId = input.getPathParameters().get(TINY_URL);
-        logger.log("Looking for: " + shortId);
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 
         try {
+            final String shortId = input.getPathParameters().get(TINY_URL);
+            logger.log("Looking for: " + shortId);
             GetItemResponse itemResponse = this.getUrlDataService().getLongUrl(shortId);
             if (!itemResponse.item().isEmpty()) {
                 response.setStatusCode(302);
@@ -40,7 +41,8 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
                 return response;
             }
         } catch (Exception e) {
-            logger.log(e.getMessage());
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            logger.log(stacktrace);
         }
 
         response.setStatusCode(404);

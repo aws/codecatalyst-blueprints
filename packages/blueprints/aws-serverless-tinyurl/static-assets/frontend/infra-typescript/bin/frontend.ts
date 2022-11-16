@@ -5,7 +5,7 @@ import { FrontendStack } from '../lib/frontend-stack';
 
 const app = new cdk.App();
 
-const stackName = app.node.tryGetContext('stack_name') || 'Frontendaf63x';
+const stackName = app.node.tryGetContext('stack_name') || '{{frontend_stack_name}}';
 
 new FrontendStack(app, stackName, {
   /* If you don't specify 'env', this stack will be environment-agnostic.
@@ -19,6 +19,6 @@ new FrontendStack(app, stackName, {
   /* Uncomment the next line if you know exactly what Account and Region you
    * want to deploy the stack to.
    */
-  env: { account: '381171000587', region: 'us-west-2' },
+  env: { account: '{{bp_aws_account}}', region: '{{bp_aws_region}}' },
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 });

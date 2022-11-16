@@ -16,7 +16,7 @@ The application architecture uses Amazon CloudFront, AWS Lambda, Amazon API Gate
 The frontend application framework uses ReactJS with TypeScript and uses [CloudScape](https://cloudscape.design/) for the user interface.
 
 The build pipeline runs unit and integration tests on the frontend and backend, and produces testing reports. Failed tests will stop the artifacts
-from publishing. Front end code is compiled and optimized for production deployment.
+from publishing. The frontend code is compiled and optimized for production deployment.
 
 The Amazon CloudFront CDN is used to pull both the frontend and backend together under a single logical internet-accessible domain under the AWS
 account that is connected. Cloudfront provides HTTPS support for the domain as well as forward caching for the front-end.

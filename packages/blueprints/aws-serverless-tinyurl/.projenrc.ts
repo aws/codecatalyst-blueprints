@@ -30,7 +30,7 @@ const project = new ProjenBlueprint({
     '@caws-blueprint-component/caws-workspaces',
   ],
   description:
-    'This blueprint creates a serverless Tiny URL Java Web Application built in Java using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.',
+    'This blueprint creates a serverless Tiny URL Java Web Application using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.',
   devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
   keywords: [
     'Tiny URL Application',

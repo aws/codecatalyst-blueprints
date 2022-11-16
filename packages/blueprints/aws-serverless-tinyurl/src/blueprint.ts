@@ -130,7 +130,7 @@ export class Blueprint extends ParentBlueprint {
     this.frontendStackName = options.advanced.frontendStackName;
     this.backendStackName = options.advanced.backendStackName;
     this.region = options.advanced.region;
-    this.account = options.environment.awsAccountConnection?.id;
+    this.account = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
     this.options = options;
 
     const frontendInfraSourceFolder = 'frontend/infra-typescript';
@@ -180,8 +180,6 @@ export class Blueprint extends ParentBlueprint {
 
   private getActions() {
     return {
-      'aws/build': ['@v1', '-beta'],
-      'aws/managed-test': ['@v1', '-gamma'],
       'aws/cdk-bootstrap': ['@v1', '-gamma'],
       'aws/cdk-deploy': ['@v1', '-gamma'],
     };

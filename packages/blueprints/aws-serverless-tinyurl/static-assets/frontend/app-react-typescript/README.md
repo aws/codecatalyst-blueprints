@@ -11,6 +11,7 @@ the respective documentation as you extend the app.
 Local development requires below pre-requisites.
 
 - [NodeJS v14.x](https://nodejs.org/en/)
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 - [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 
 In the project directory, you can run:
@@ -27,6 +28,24 @@ In the project directory, you can run:
 
 - `yarn eject` to remove the single build dependency from your project, this is a one-way operation. Once you `eject`, you can’t go back!. This
   command will not be useful unless you want to customize the build.
+
+## Project resources
+
+The project contains below modules / files
+
+- `canary`: Canary test scripts
+
+- `public`: HTML resources
+
+- `src`: To define the React components and UI logic
+
+- `jest.config.js`: For unit test discoverability and execution
+
+- `package.json`: To maintain the dependencies
+
+- `babel.config.js`: To convert .ts to .js files
+
+- `tsconfig.json`: Typescript compilation
 
 ## Additional resources
 

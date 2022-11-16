@@ -20,10 +20,10 @@ import static org.mockito.Mockito.*;
 
 public class UrlDataServiceTest {
 
-    UrlDataService urlDataService;
-    DynamoDbClient client;
-    GetItemResponse getItemResponse;
-    PutItemResponse putItemResponse;
+    private UrlDataService urlDataService;
+    private DynamoDbClient client;
+    private GetItemResponse getItemResponse;
+    private PutItemResponse putItemResponse;
 
     @Before public void prepare(){
         urlDataService = new UrlDataService();
@@ -59,7 +59,7 @@ public class UrlDataServiceTest {
         Assert.assertEquals(LONG_URL_INPUT, argument.getValue().item().get(DYNAMO_TABLE_URL).s());
         Assert.assertSame(putItemResponse, this.putItemResponse);
     }
-    
+
 }
 
 

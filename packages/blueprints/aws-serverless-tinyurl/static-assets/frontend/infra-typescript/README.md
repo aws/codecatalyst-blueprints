@@ -24,6 +24,24 @@ Local development requires below pre-requisites.
 - `cdk bootstrap` To bootstrap the AWS Account
 - `cdk deploy` To deploy this stack to your default AWS account/region
 
+## Project resources
+
+The project contains below modules / files
+
+- `bin`: CDK App to synthesize the infrastructure
+
+- `lib`: To define the Stack definitions for the frontend infrastructure
+
+- `test`: To test the infrastructure code
+
+- `jest.config.js`: For unit test discoverability and execution
+
+- `package.json`: To maintain the dependencies
+
+- `cdk.json`: To execute the CDK code
+
+- `tsconfig.json`: Typescript compilation
+
 ## Additional resources
 
 See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst

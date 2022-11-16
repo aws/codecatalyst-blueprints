@@ -20,7 +20,6 @@ public class TinyUrlAppStack extends Stack {
     private static final String CREATE_URL_LAMBDA_HANDLER = "com.amazonaws.serverless.lambda.CreateUrlRequestHandler";
     private static final String DYNAMODB_TABLE_NAME = "tbl_tiny_url";
     private static final String DYNAMODB_TABLE_PRIMARY_KEY = "id";
-    private static final String REST_API_NAME = "tinyUrl";
     private static final String REST_API_GET_TINY_URL = "{tinyUrl}";
     private static final String REST_API_CREATE_TINY_URL = "createTinyUrl";
     private static final String GET = HttpMethod.GET.name();
@@ -80,7 +79,7 @@ public class TinyUrlAppStack extends Stack {
     }
 
     private FunctionProps getLambdaFunctionProps(Map<String, String> lambdaEnvMap, String handler) {
-        return FunctionProps.builder().code(Code.fromAsset("./asset/lambda-1.0.0-jar-with-dependencies.jar"))
+        return FunctionProps.builder().code(Code.fromAsset("./asset/lambda-jar-with-dependencies.jar"))
                 .handler(handler).runtime(Runtime.JAVA_8)
                 .environment(lambdaEnvMap)
                 .timeout(Duration.seconds(30))
