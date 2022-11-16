@@ -23,6 +23,20 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
   readonly overridePackageVersion?: string;
 }
 
+const DEFAULT_OPTS = {
+  license: 'MIT',
+  sampleCode: false,
+  github: false,
+  eslint: true,
+  jest: false,
+  npmignoreEnabled: true,
+  tsconfig: {
+    compilerOptions: {
+      esModuleInterop: true,
+      noImplicitAny: false,
+    },
+  },
+};
 /**
  * Blueprint app in TypeScript
  *
@@ -31,21 +45,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
  */
 export class ProjenBlueprint extends typescript.TypeScriptProject {
   constructor(options: ProjenBlueprintOptions) {
-    super({
-      license: 'MIT',
-      sampleCode: false,
-      github: false,
-      eslint: true,
-      jest: false,
-      npmignoreEnabled: true,
-      tsconfig: {
-        compilerOptions: {
-          esModuleInterop: true,
-          noImplicitAny: false,
-        },
-      },
+    const finalOpts = {
+      ...DEFAULT_OPTS,
       ...options,
-    });
+    };
+    super(finalOpts);
 
     const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
     this.package.addVersion(version || '0.0.0');
@@ -60,6 +64,38 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     this.addTask('bump:preview', {
       exec: 'npm version prerelease --preid preview -no-git-tag-version',
+    });
+
+    // Our version of Projen adds `--updateSnapshot` to the *test* task. We do not want this because we
+    // rely on snapshot testing to prevent regressions. Newer versions of Projen (0.63+) support removing
+    // this param in an idiomatic way:
+    // https://github.com/projen/projen/commit/c84c8f9a64d95c5b6c0d0f20d156f94c5a7f90f2
+    // Until then, we remove this argument manually.
+    //
+    // We cannot update the *test* task without removing it (https://github.com/projen/projen/issues/2243), and we
+    // cannot remove it without removing the *build* task too, since there is a dependency.
+    this.removeTask('build');
+    this.removeTask('test');
+    const testOpts = {
+      description: 'Run tests',
+      steps: [
+        (finalOpts.eslint ? { spawn: 'eslint' } : {}),
+        (finalOpts.jest ? { exec: 'jest --passWithNoTests' } : {}),
+      ],
+    };
+    this.addTask('test', testOpts);
+    // Re-add the *build* task just as it was originally:
+    // https://github.com/projen/projen/blob/98b1abc07335bbad3384484591344e6f7dffc70c/src/project-build.ts#L70
+    this.addTask('build', {
+      description: 'Full release build',
+      steps: [
+        { spawn: 'default' },
+        { spawn: 'pre-compile' },
+        { spawn: 'compile' },
+        { spawn: 'post-compile' },
+        { spawn: 'test' },
+        { spawn: 'package' },
+      ],
     });
 
     // set custom scripts
