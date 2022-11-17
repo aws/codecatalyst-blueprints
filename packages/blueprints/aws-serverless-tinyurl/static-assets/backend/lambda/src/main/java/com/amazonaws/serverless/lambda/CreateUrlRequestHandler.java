@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
 import com.google.gson.Gson;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -12,7 +13,9 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.amazonaws.serverless.lambda.HandlerConstants.*;
+import static com.amazonaws.serverless.lambda.HandlerConstants.LONG_URL;
+import static com.amazonaws.serverless.lambda.HandlerConstants.ORIGIN;
+import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 
 
 public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
@@ -29,6 +32,7 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
     public void setUrlDataService(UrlDataService urlDataService) {
         this.urlDataService = urlDataService;
     }
+
     private static final Gson gson = new Gson();
 
     @Override
@@ -42,11 +46,16 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
             String shortId = shortenUrl(payload.get(LONG_URL));
             logger.log("Shortened to " + shortId);
 
-            this.getUrlDataService().saveLongUrl(shortId, payload.get(LONG_URL));
-            logger.log(input.getHeaders().toString());
+            this.getUrlDataService()
+                    .saveLongUrl(shortId, payload.get(LONG_URL));
+            logger.log(input.getHeaders()
+                    .toString());
 
-            String tinyUrl = input.getHeaders().get(ORIGIN);
-            tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/").concat(shortId) : tinyUrl.concat("/t/").concat(shortId);
+            String tinyUrl = input.getHeaders()
+                    .get(ORIGIN);
+            tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/")
+                    .concat(shortId) : tinyUrl.concat("/t/")
+                    .concat(shortId);
 
             String body = gson.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
             response.setBody(body);
@@ -69,7 +78,8 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
         BigInteger hash = new BigInteger("cbf29ce484222325", 16);
         for (byte b : data) {
             hash = hash.xor(BigInteger.valueOf((int) b & 0xff));
-            hash = hash.multiply(new BigInteger("100000001b3", 16)).mod(new BigInteger("2").pow(64));
+            hash = hash.multiply(new BigInteger("100000001b3", 16))
+                    .mod(new BigInteger("2").pow(64));
         }
         return hash.toString(36);
     }

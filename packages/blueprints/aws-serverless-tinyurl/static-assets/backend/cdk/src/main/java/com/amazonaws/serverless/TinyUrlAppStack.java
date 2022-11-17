@@ -1,11 +1,28 @@
 package com.amazonaws.serverless;
 
-import software.amazon.awscdk.*;
+import software.amazon.awscdk.CfnOutput;
+import software.amazon.awscdk.CfnOutputProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.RemovalPolicy;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.apigateway.CorsOptions;
 import software.amazon.awscdk.services.apigateway.IResource;
-import software.amazon.awscdk.services.apigateway.*;
-import software.amazon.awscdk.services.dynamodb.*;
+import software.amazon.awscdk.services.apigateway.Integration;
+import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.LambdaIntegrationOptions;
+import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.apigateway.RestApiProps;
+import software.amazon.awscdk.services.dynamodb.Attribute;
+import software.amazon.awscdk.services.dynamodb.AttributeType;
+import software.amazon.awscdk.services.dynamodb.BillingMode;
+import software.amazon.awscdk.services.dynamodb.Table;
+import software.amazon.awscdk.services.dynamodb.TableProps;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.FunctionProps;
+import software.amazon.awscdk.services.lambda.HttpMethod;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.*;
 import software.constructs.Construct;
 
 import java.util.Arrays;
@@ -80,7 +97,7 @@ public class TinyUrlAppStack extends Stack {
 
     private FunctionProps getLambdaFunctionProps(Map<String, String> lambdaEnvMap, String handler) {
         return FunctionProps.builder().code(Code.fromAsset("./asset/lambda-jar-with-dependencies.jar"))
-                .handler(handler).runtime(Runtime.JAVA_8)
+                .handler(handler).runtime(Runtime.JAVA_11)
                 .environment(lambdaEnvMap)
                 .timeout(Duration.seconds(30))
                 .memorySize(512).build();

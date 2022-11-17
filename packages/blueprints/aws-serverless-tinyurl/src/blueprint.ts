@@ -126,7 +126,7 @@ export class Blueprint extends ParentBlueprint {
       },
     };
     const options = Object.assign(typeCheck, options_);
-    this.repositoryName = this.sanitizePath(options.code.repositoryName);
+    this.repositoryName = options.code.repositoryName;
     this.frontendStackName = options.advanced.frontendStackName;
     this.backendStackName = options.advanced.backendStackName;
     this.region = options.advanced.region;
@@ -172,10 +172,6 @@ export class Blueprint extends ParentBlueprint {
     });
 
     this.createWorkflow();
-  }
-
-  private sanitizePath(path: string) {
-    return path.replace(/\.|\/| /g, '');
   }
 
   private getActions() {

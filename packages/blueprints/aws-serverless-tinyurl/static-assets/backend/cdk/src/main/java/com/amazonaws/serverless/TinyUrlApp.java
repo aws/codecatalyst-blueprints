@@ -19,10 +19,6 @@ public class TinyUrlApp {
         new TinyUrlAppStack(app, "{{backend_stack_name}}", StackProps.builder()
                 .env(environment).build());
 
-        // Environment environment = makeEnv("XXXXXXXXX", "XXXXXX");
-        // new TinyUrlRootStack(app, "TinyUrl1", StackProps.builder()
-        //         .env(environment).build());
-
         app.synth();
     }
 

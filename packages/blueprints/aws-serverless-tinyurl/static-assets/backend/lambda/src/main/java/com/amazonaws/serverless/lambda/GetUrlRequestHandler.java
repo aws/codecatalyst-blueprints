@@ -5,12 +5,15 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
 import java.util.Collections;
 
-import static com.amazonaws.serverless.lambda.HandlerConstants.*;
+import static com.amazonaws.serverless.lambda.HandlerConstants.DYNAMO_TABLE_URL;
+import static com.amazonaws.serverless.lambda.HandlerConstants.LOCATION;
+import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 
 public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private UrlDataService urlDataService;
@@ -32,12 +35,17 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 
         try {
-            final String shortId = input.getPathParameters().get(TINY_URL);
+            final String shortId = input.getPathParameters()
+                    .get(TINY_URL);
             logger.log("Looking for: " + shortId);
-            GetItemResponse itemResponse = this.getUrlDataService().getLongUrl(shortId);
-            if (!itemResponse.item().isEmpty()) {
+            GetItemResponse itemResponse = this.getUrlDataService()
+                    .getLongUrl(shortId);
+            if (!itemResponse.item()
+                    .isEmpty()) {
                 response.setStatusCode(302);
-                response.setHeaders(Collections.singletonMap(LOCATION, itemResponse.item().get(DYNAMO_TABLE_URL).s()));
+                response.setHeaders(Collections.singletonMap(LOCATION, itemResponse.item()
+                        .get(DYNAMO_TABLE_URL)
+                        .s()));
                 return response;
             }
         } catch (Exception e) {

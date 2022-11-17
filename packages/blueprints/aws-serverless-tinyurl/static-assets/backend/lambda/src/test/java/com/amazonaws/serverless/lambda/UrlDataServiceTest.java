@@ -5,18 +5,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.*;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
 
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.Collections;
-import java.util.UUID;
 
 import static com.amazonaws.serverless.lambda.HandlerConstants.DYNAMO_TABLE_ID;
 import static com.amazonaws.serverless.lambda.HandlerConstants.DYNAMO_TABLE_URL;
-import static com.amazonaws.serverless.lambda.TestConstants.*;
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UrlDataServiceTest {
 
@@ -25,15 +30,20 @@ public class UrlDataServiceTest {
     private GetItemResponse getItemResponse;
     private PutItemResponse putItemResponse;
 
-    @Before public void prepare(){
+    @Before
+    public void prepare() {
         urlDataService = new UrlDataService();
         client = mock(DynamoDbClient.class);
         urlDataService.setDynamoDbClient(client);
         getItemResponse = GetItemResponse.builder()
-                .item(Collections.singletonMap(DYNAMO_TABLE_URL, AttributeValue.builder().s(LONG_URL_INPUT).build()))
+                .item(Collections.singletonMap(DYNAMO_TABLE_URL, AttributeValue.builder()
+                        .s(LONG_URL_INPUT)
+                        .build()))
                 .build();
-        putItemResponse = PutItemResponse.builder().build();
+        putItemResponse = PutItemResponse.builder()
+                .build();
     }
+
     @Test
     public void getLongUrl() {
         ArgumentCaptor<GetItemRequest> argument = ArgumentCaptor.forClass(GetItemRequest.class);
@@ -42,8 +52,13 @@ public class UrlDataServiceTest {
         getItemResponse = urlDataService.getLongUrl(TINY_URL_ID);
 
         verify(client, times(1)).getItem(argument.capture());
-        Assert.assertEquals(TINY_URL_ID, argument.getValue().key().get(DYNAMO_TABLE_ID).s());
-        Assert.assertEquals(LONG_URL_INPUT, getItemResponse.item().get(DYNAMO_TABLE_URL).s());
+        Assert.assertEquals(TINY_URL_ID, argument.getValue()
+                .key()
+                .get(DYNAMO_TABLE_ID)
+                .s());
+        Assert.assertEquals(LONG_URL_INPUT, getItemResponse.item()
+                .get(DYNAMO_TABLE_URL)
+                .s());
     }
 
     @Test
@@ -55,8 +70,14 @@ public class UrlDataServiceTest {
         urlDataService.setDynamoDbClient(client);
 
         verify(client, times(1)).putItem(argument.capture());
-        Assert.assertEquals(TINY_URL_ID, argument.getValue().item().get(DYNAMO_TABLE_ID).s());
-        Assert.assertEquals(LONG_URL_INPUT, argument.getValue().item().get(DYNAMO_TABLE_URL).s());
+        Assert.assertEquals(TINY_URL_ID, argument.getValue()
+                .item()
+                .get(DYNAMO_TABLE_ID)
+                .s());
+        Assert.assertEquals(LONG_URL_INPUT, argument.getValue()
+                .item()
+                .get(DYNAMO_TABLE_URL)
+                .s());
         Assert.assertSame(putItemResponse, this.putItemResponse);
     }
 

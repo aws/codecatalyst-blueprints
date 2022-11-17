@@ -19,7 +19,7 @@ Workflow uses `CDKBootstrap` and `CDKDeploy` Actions to deploy the resources on 
 
 Local development requires below pre-requisites.
 
-- [JDK 11](https://docs.oracle.com/en/java/javase/18/install/overview-jdk-installation.html)
+- [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
 - [Apache Maven v3.8.6](https://maven.apache.org/install.html)
 - [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 

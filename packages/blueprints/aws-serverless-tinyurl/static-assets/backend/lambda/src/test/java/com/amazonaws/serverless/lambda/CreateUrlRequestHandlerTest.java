@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,9 +13,15 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.amazonaws.serverless.lambda.TestConstants.*;
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.ORIGIN;
+import static com.amazonaws.serverless.lambda.TestConstants.ORIGIN_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_OUTPUT;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 public class CreateUrlRequestHandlerTest {
 
     @Test

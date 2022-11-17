@@ -81,13 +81,16 @@ export class FrontendStack extends cdk.Stack {
       value: frontendUrl,
     });
 
-    // Setting up canary
-    const canaryName = 'fe-tinyurl-canary';
+    /*
+    Setting up canary name with stack name as prefix as
+    cloudwatch Synthetics has name constraint of 21 characters
+    */
+    const canaryName = id.substring(0, 10).toLowerCase().concat('-canary');
 
     const canaryExecutionConfig = {
       memoryInMb: 2000,
       timeout: 45,
-      syntheticRuntimeVersion: 'syn-nodejs-puppeteer-3.6',
+      syntheticRuntimeVersion: 'syn-nodejs-puppeteer-3.8',
       frequency: 1,
     };
 
@@ -204,7 +207,7 @@ export class FrontendStack extends cdk.Stack {
         // durationInSeconds: canaryExecutionConfig.duration,
         expression: canaryScheduleExpression,
       },
-      startCanaryAfterCreation: true,
+      startCanaryAfterCreation: false,
     });
   }
 }
