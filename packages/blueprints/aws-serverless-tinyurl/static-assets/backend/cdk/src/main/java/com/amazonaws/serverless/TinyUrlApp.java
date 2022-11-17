@@ -17,7 +17,8 @@ public class TinyUrlApp {
         App app = new App();
         Environment environment = makeEnv("{{bp_aws_account}}", "{{bp_aws_region}}");
         new TinyUrlAppStack(app, "{{backend_stack_name}}", StackProps.builder()
-                .env(environment).build());
+                .env(environment)
+                .build());
 
         app.synth();
     }

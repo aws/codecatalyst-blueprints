@@ -112,10 +112,6 @@ export class FrontendStack extends cdk.Stack {
       bucketName: canaryResultsBucketName,
     });
 
-    // Override Logical ID of the s3 bucket
-    const cfnBucket = canaryResultsBucket.node.defaultChild as s3.CfnBucket;
-    cfnBucket.overrideLogicalId('FrontendCanaryResultsBucket');
-
     // SyntheticsExecutionRole requires several permissions to AWS resources as defined in
     // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-synthetics-canary.html#cfn-synthetics-canary-executionrolearn
 
