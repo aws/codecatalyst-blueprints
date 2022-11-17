@@ -42,8 +42,12 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
         try {
             Map<String, String> payload = gson.fromJson(input.getBody(), Map.class);
 
-            logger.log("Got URL: " + payload.get(LONG_URL));
-            String shortId = shortenUrl(payload.get(LONG_URL));
+            final String longUrl = payload.get(LONG_URL);
+            if (null == longUrl || longUrl.isEmpty()) {
+                throw new Exception("Input url is null or empty");
+            }
+            logger.log("Got URL: " + longUrl);
+            String shortId = shortenUrl(longUrl);
             logger.log("Shortened to " + shortId);
 
             this.getUrlDataService()

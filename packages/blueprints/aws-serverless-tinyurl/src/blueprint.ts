@@ -46,7 +46,7 @@ export interface Options extends ParentOptions {
 
   /**
    * @displayName Code Repository name
-   * @collapsed true
+   * @collapsed false
    */
   code: {
     /**

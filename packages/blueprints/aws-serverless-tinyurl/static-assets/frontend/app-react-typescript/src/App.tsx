@@ -8,12 +8,23 @@ const SERVICE = new URLService();
 function App() {
   let [urlInputValue, setUrlInputValue] = React.useState('');
   let [creating, setCreating] = React.useState(false);
+
   async function create() {
-    setCreating(true);
-    let apiResponse = await SERVICE.CreateTinyUrl(urlInputValue).finally(() => {
-      setCreating(false);
-    });
-    setUrlInputValue(apiResponse);
+    if (isValidUrl(urlInputValue)) {
+      setCreating(true);
+      let apiResponse = await SERVICE.CreateTinyUrl(urlInputValue).finally(() => {
+        setCreating(false);
+      });
+      setUrlInputValue(apiResponse);
+    }
+  }
+
+  function isValidUrl(inputUrl: string) {
+    try {
+      return Boolean(new URL(inputUrl));
+    } catch (e) {
+      return false;
+    }
   }
 
   function reset() {
@@ -40,7 +51,7 @@ function App() {
 
           <cs.Popover
             dismissButton={false}
-            position="top"
+            position="bottom"
             size="small"
             triggerType="custom"
             content={<cs.StatusIndicator type="info">URL copied</cs.StatusIndicator>}
@@ -52,6 +63,7 @@ function App() {
           <cs.Button formAction="none" variant="link" onClick={() => reset()}>
             Clear
           </cs.Button>
+
           {creating ? <Spinner /> : <></>}
         </cs.SpaceBetween>
       </cs.Form>

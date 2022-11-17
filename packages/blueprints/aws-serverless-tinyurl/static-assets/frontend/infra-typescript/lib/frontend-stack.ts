@@ -82,31 +82,31 @@ export class FrontendStack extends cdk.Stack {
     });
 
     /*
-    Setting up canary name with stack name as prefix as
-    cloudwatch Synthetics has name constraint of 21 characters
+    Set the canary name with the length not exceeding 21 characters due to 
+    naming constraint in cloudwatch Synthetics 
     */
-    const canaryName = id.substring(0, 10).toLowerCase().concat('-canary');
+    const canaryName = id.toLowerCase().substring(0, 21);
 
     const canaryExecutionConfig = {
       memoryInMb: 2000,
       timeout: 45,
       syntheticRuntimeVersion: 'syn-nodejs-puppeteer-3.8',
-      frequency: 1,
+      frequency: 0,
     };
 
-    // TODO: Add a test for frequency < 1
-    // TODO: Add a test for timeout > (maybe >=?) frequency * 60
-
-    const canaryScheduleExpression =
-      canaryExecutionConfig.frequency === 1 ? `rate(${canaryExecutionConfig.frequency} minute)` : `rate(${canaryExecutionConfig.frequency} minutes)`;
+    /*
+    Expression to set the canary to run only once
+    To run it on a desired frequency, please update the expression
+    https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/API_CanaryScheduleInput.html
+    */
+    const canaryScheduleExpression = `rate(${canaryExecutionConfig.frequency} minute)`;
 
     const canaryAsset = new Asset(this, 'canaryCode', {
       path: 'frontend/build/canary',
     });
 
-    const canaryResultsBucketName = `${canaryName}-results`;
-
-    const iamRoleName = `${canaryName}-executor`;
+    const canaryResultsBucketName = `${id.toLowerCase()}-canary-results`;
+    const iamRoleName = 'iamRoleName';
 
     const canaryResultsBucket = new s3.Bucket(this, canaryResultsBucketName, {
       bucketName: canaryResultsBucketName,
@@ -115,72 +115,54 @@ export class FrontendStack extends cdk.Stack {
     // SyntheticsExecutionRole requires several permissions to AWS resources as defined in
     // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-synthetics-canary.html#cfn-synthetics-canary-executionrolearn
 
+    // Canary needs following permissions to run on VPC
+    // https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_VPC.html
+
+    const cloudWatchSyntheticsRolePolicy = new iam.PolicyDocument({
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['ec2:CreateNetworkInterface', 'ec2:DescribeNetworkInterfaces', 'ec2:DeleteNetworkInterface'],
+          resources: ['*'],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:PutObject'],
+          resources: [canaryResultsBucket.arnForObjects('*')],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:GetBucketLocation'],
+          resources: [canaryResultsBucket.bucketArn],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['logs:CreateLogStream', 'logs:PutLogEvents', 'logs:CreateLogGroup'],
+          resources: [`'arn:${this.partition}:logs:${this.region}:${this.account}:log-group:/aws/lambda/cwsyn-*'`],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:ListAllMyBuckets'],
+          resources: ['*'],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['cloudwatch:PutMetricData'],
+          resources: ['*'],
+          conditions: {
+            StringLike: { 'cloudwatch:namespace': '*CloudWatchSynthetics' },
+          },
+        }),
+      ],
+    });
+
     const cloudWatchSyntheticsRole = new iam.Role(this, iamRoleName, {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       roleName: iamRoleName,
       path: '/service-role/',
-      description: 'QuickSight Core UX Canaries Execution Role',
+      description: 'UX Canaries Execution Role',
+      inlinePolicies: { CloudWatchSyntheticsRolePolicy: cloudWatchSyntheticsRolePolicy },
     });
-
-    // Override Logical ID of the IAM Role
-    const cfnRole = cloudWatchSyntheticsRole.node.defaultChild as iam.CfnRole;
-    cfnRole.overrideLogicalId('FrontendCanaryRole');
-
-    // Canary needs following permissions to run on VPC
-    // https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_VPC.html
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['ec2:CreateNetworkInterface', 'ec2:DescribeNetworkInterfaces', 'ec2:DeleteNetworkInterface'],
-        resources: ['*'],
-      }),
-    );
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['s3:PutObject'],
-        resources: [canaryResultsBucket.arnForObjects('*')],
-      }),
-    );
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['s3:GetBucketLocation'],
-        resources: [canaryResultsBucket.bucketArn],
-      }),
-    );
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['logs:CreateLogStream', 'logs:PutLogEvents', 'logs:CreateLogGroup'],
-        resources: [
-          `arn:${this.partition}:logs:${this.region}:${this.account}:log-group:/aws/lambda/cwsyn-*`, // generalize for all canary log streams
-        ],
-      }),
-    );
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['s3:ListAllMyBuckets'],
-        resources: ['*'],
-      }),
-    );
-
-    cloudWatchSyntheticsRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['cloudwatch:PutMetricData'],
-        resources: ['*'],
-        conditions: {
-          StringLike: { 'cloudwatch:namespace': '*CloudWatchSynthetics' },
-        },
-      }),
-    );
 
     new CfnCanary(this, canaryName, {
       artifactS3Location: `s3://${canaryResultsBucket.bucketName}`,
