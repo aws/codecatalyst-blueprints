@@ -254,7 +254,8 @@ export class Blueprint extends ParentBlueprint {
       },
       output: {
         AutoDiscoverReports: {
-          Enabled: false,
+          Enabled: true,
+          ReportNamePrefix: 'rpt',
         },
         Artifacts: [
           {
