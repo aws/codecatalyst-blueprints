@@ -38,9 +38,8 @@ export interface Options extends ParentOptions {
       /**
        * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources.
        * @displayName CDK Role
-       * @inlinePolicy ./inline-deploy-policy.json
        */
-      cdkRole: Role<['CDK Bootstrap', 'CDK Deploy']>;
+      cdkRole: Role<['codecatalyst*']>;
     }>;
   }>;
 
@@ -83,10 +82,9 @@ export interface Options extends ParentOptions {
     /**
      * Enter the Region to deploy
      * @displayName AWS Region
-     * @validationRegex /(us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-\d/
      * @validationMessage Must be a valid region.
      */
-    region: string;
+    region: 'us-west-2' | 'us-east-1' | 'ap-southeast-2' | 'ap-northeast-1' | 'eu-west-1' | 'ap-south-1';
   };
 }
 
