@@ -52,15 +52,18 @@ export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: 
   const INLINE_POLICY_ANNOTATION = 'inlinePolicy';
   const TRUSTPOLICY_POLICY_ANNOTATION = 'trustPolicy';
   const astObject = parse(ast);
+
   for (const node of walk(astObject[0])) {
-    if (node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`]) {
+    const inlinePolicyFile = node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`];
+    if (inlinePolicyFile) {
       const policy = supportInlineJson(log, INLINE_POLICY_ANNOTATION, node, blueprint);
-      ast = ast.replace(`"comment":"${INLINE_POLICY_ANNOTATION}"`, `"comment":${JSON.stringify(policy)}`);
+      ast = ast.replace(`"comment":"${inlinePolicyFile}"`, `"comment":${JSON.stringify(policy)}`);
     }
 
-    if (node?.jsDoc?.tags![`${TRUSTPOLICY_POLICY_ANNOTATION}`]) {
+    const trustPolicyFile = node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`];
+    if (trustPolicyFile) {
       const policy = supportInlineJson(log, TRUSTPOLICY_POLICY_ANNOTATION, node, blueprint);
-      ast = ast.replace(`"comment":"${TRUSTPOLICY_POLICY_ANNOTATION}"`, `"comment":${JSON.stringify(policy)}`);
+      ast = ast.replace(`"comment":"${trustPolicyFile}"`, `"comment":${JSON.stringify(policy)}`);
     }
   }
 
