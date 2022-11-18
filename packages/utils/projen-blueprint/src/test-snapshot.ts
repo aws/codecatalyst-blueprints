@@ -2,33 +2,22 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { JsonFile, Project, SourceCode } from 'projen';
 import { BlueprintSnapshotConfiguration } from './blueprint';
-import { generateFilesTs } from './snapshot-testing/gen-files';
-import { generateOutdirTs } from './snapshot-testing/gen-outdir';
+import { generateSnapshotInfraFile } from './snapshot-testing/gen-infra';
 import { generateSpecTs } from './snapshot-testing/gen-spec';
-import { generateTestConfigsTs } from './snapshot-testing/gen-test-configs';
-
-const DEFAULT_GLOBS = [
-  '**',
-  '!environments/**',
-  '!aws-account-to-environment/**',
-];
 
 const SRC_DIR = 'src';
-const INFRA_SUBDIR = 'testSnapshotInfra';
-const CONFIGS_SUBDIR = 'test-configs';
+const INFRA_SUBDIR = 'testSnapshotInfrastructure';
+const CONFIGS_SUBDIR = 'snapshot-configurations';
 const DEFAULT_TEST_CONFIG_FILENAME = 'default-config.json';
+const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshots.spec.ts';
 
 export function generateTestSnapshotInfraFiles(project: Project, testingConfig: BlueprintSnapshotConfiguration) {
   // If you add or change any files here, remember to update `cleanUpTestSnapshotInfraFiles()`
   const files = [
-    [generateFilesTs(testingConfig.snapshotGlobs ?? DEFAULT_GLOBS),
-      path.join(SRC_DIR, INFRA_SUBDIR, 'files.ts')],
-    [generateOutdirTs(),
-      path.join(SRC_DIR, INFRA_SUBDIR, 'outdir.ts')],
-    [generateTestConfigsTs(),
-      path.join(SRC_DIR, INFRA_SUBDIR, 'testConfigs.ts')],
+    [generateSnapshotInfraFile(testingConfig, SRC_DIR, CONFIGS_SUBDIR),
+      path.join(SRC_DIR, INFRA_SUBDIR, 'infrastructure.ts')],
     [generateSpecTs(INFRA_SUBDIR),
-      path.join(SRC_DIR, 'blueprint-snapshots.spec.ts')],
+      path.join(SRC_DIR, SNAPSHOTS_SPEC_FILENAME)],
   ];
 
   const infraDir = path.join(SRC_DIR, INFRA_SUBDIR);
@@ -37,7 +26,7 @@ export function generateTestSnapshotInfraFiles(project: Project, testingConfig: 
   fs.mkdirSync(infraDir);
 
   files.forEach(([fileContent, fileName]) => {
-    const sourceCodeObj = new SourceCode(project, fileName, { readonly: false });
+    const sourceCodeObj = new SourceCode(project, fileName);
     fileContent.split('\n').forEach(line => sourceCodeObj.line(line));
   });
 
@@ -56,5 +45,5 @@ export function generateTestSnapshotInfraFiles(project: Project, testingConfig: 
 export function cleanUpTestSnapshotInfraFiles() {
   const dir = path.join(SRC_DIR, INFRA_SUBDIR);
   fs.rmSync(dir, { recursive: true, force: true });
-  fs.rmSync(path.join(SRC_DIR, 'blueprint-snapshots.spec.ts'), { force: true });
+  fs.rmSync(path.join(SRC_DIR, SNAPSHOTS_SPEC_FILENAME), { force: true });
 }
