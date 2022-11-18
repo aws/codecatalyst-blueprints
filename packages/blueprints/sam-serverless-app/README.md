@@ -26,7 +26,7 @@ You can choose any of the above as the programming language.
 
 ### Connections and permissions
 
-You configure your AWS account connection from the **AWS accounts** settings in your Amazon CodeCatalyst Organization settings. AWS IAM roles added to
+You configure your AWS account connection from the **AWS accounts** settings in your Amazon CodeCatalyst Space settings. AWS IAM roles added to
 the account extension can be used to authorize project workflows to access AWS account resources.
 
 The SAM application requires multiple IAM roles to build and deploy the application:
@@ -43,9 +43,7 @@ The SAM application requires multiple IAM roles to build and deploy the applicat
           "Principal": {
               "Service": [
                   "codecatalyst-runner.amazonaws.com",
-                  "codecatalyst.amazonaws.com",
-                  "gamma.codecatalyst.amazonaws.com",
-                  "gamma.codecatalyst-runner.amazonaws.com"
+                  "codecatalyst.amazonaws.com"
               ]
           },
           "Action": "sts:AssumeRole"
