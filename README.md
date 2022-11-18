@@ -28,7 +28,7 @@ set-blueprints-npm-repo() {
   # Set NPM config to also be the same repository (needed for some synths to work properly)
   aws codeartifact login --region us-west-2 --tool npm --repository global-templates --domain template --domain-owner 721779663932 --profile=codeartifact-readonly
 
-  #set the repositories in your workspace as an environment variable
+  #set the repositories in your workspace as an environment variable 
   export NPM_REPO=`aws codeartifact get-repository-endpoint --region us-west-2 --domain template --domain-owner 721779663932 --repository global-templates --format npm --profile=codeartifact-readonly | jq -r '.repositoryEndpoint'`
   echo 'NPM_REPO set to: '$NPM_REPO
   export NPM_REPO_AUTH_TOKEN=`aws codeartifact get-authorization-token --region us-west-2 --domain template --domain-owner 721779663932 --query authorizationToken --profile=codeartifact-readonly --output text`
