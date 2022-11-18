@@ -50,8 +50,8 @@ export interface Options extends ParentOptions {
   code: {
     /**
      * @displayName Code Repository name
-     * @validationRegex /(?!.*\.git$)^[a-zA-Z0-9_.-]{3,100}$/
-     * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be between 3 and 100 characters in length. Cannot end in .git or contain spaces
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,128}$/
+     * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_) and dashes(-) up to a total length of 128 characters
      */
     repositoryName: string;
   };

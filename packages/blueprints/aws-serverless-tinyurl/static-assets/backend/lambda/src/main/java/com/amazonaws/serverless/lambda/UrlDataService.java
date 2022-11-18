@@ -1,7 +1,11 @@
 package com.amazonaws.serverless.lambda;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.*;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,14 +22,9 @@ public class UrlDataService {
         if (this.dynamoDbClient == null) {
             this.dynamoDbClient = create();
         }
-        return this.dynamoDbClient;
+        return dynamoDbClient;
     }
-
-    public void setDynamoDbClient(DynamoDbClient dynamoDbClient) {
-        this.dynamoDbClient = dynamoDbClient;
-    }
-
-    public GetItemResponse getLongUrl(final String shortId) {
+    GetItemResponse getLongUrl(final String shortId) {
         GetItemResponse itemResponse = this.getDynamoDbClient()
                 .getItem(GetItemRequest.builder()
                         .tableName(System.getenv(TABLE_NAME))
@@ -36,7 +35,10 @@ public class UrlDataService {
         return itemResponse;
     }
 
-    public PutItemResponse saveLongUrl(final String shortId, final String longUrl) {
+    /*
+    To save the long URL input for the generated short URL
+     */
+     PutItemResponse saveLongUrl(final String shortId, final String longUrl) {
         HashMap<String, AttributeValue> item = new HashMap<String, AttributeValue>();
         item.put(DYNAMO_TABLE_ID, AttributeValue.builder()
                 .s(shortId)

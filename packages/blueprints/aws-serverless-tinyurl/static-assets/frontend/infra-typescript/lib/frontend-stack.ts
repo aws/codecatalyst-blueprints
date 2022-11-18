@@ -77,7 +77,7 @@ export class FrontendStack extends cdk.Stack {
     });
 
     const frontendUrl = `https://${frontendCloudfront.distributionDomainName}/`;
-    new cdk.CfnOutput(this, 'FrontendUrl', {
+    new cdk.CfnOutput(this, 'appUrl', {
       value: frontendUrl,
     });
 

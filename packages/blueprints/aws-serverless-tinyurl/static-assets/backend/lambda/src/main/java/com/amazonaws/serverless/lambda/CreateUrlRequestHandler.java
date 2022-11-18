@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -21,26 +22,21 @@ import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private UrlDataService urlDataService;
+    private static final Gson GSON = new Gson();
 
     private UrlDataService getUrlDataService() {
         if (this.urlDataService == null) {
             this.urlDataService = new UrlDataService();
         }
-        return this.urlDataService;
+        return urlDataService;
     }
-
-    public void setUrlDataService(UrlDataService urlDataService) {
-        this.urlDataService = urlDataService;
-    }
-
-    private static final Gson gson = new Gson();
 
     @Override
-    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+    public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         LambdaLogger logger = context.getLogger();
         try {
-            Map<String, String> payload = gson.fromJson(input.getBody(), Map.class);
+            Map<String, String> payload = GSON.fromJson(input.getBody(), Map.class);
 
             final String longUrl = payload.get(LONG_URL);
             if (null == longUrl || longUrl.isEmpty()) {
@@ -57,34 +53,37 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
 
             String tinyUrl = input.getHeaders()
                     .get(ORIGIN);
+
             tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/")
                     .concat(shortId) : tinyUrl.concat("/t/")
                     .concat(shortId);
 
-            String body = gson.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
+            String body = GSON.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
             response.setBody(body);
-            response.setStatusCode(201);
+            response.setStatusCode(HttpURLConnection.HTTP_CREATED);
 
             return response;
         } catch (Exception e) {
             String stacktrace = ExceptionUtils.getStackTrace(e);
             logger.log(stacktrace);
             response.setBody("Error occurred while generating the tiny URL");
-            response.setStatusCode(500);
+            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
             return response;
         }
-
-
     }
 
-    private String shortenUrl(String url) {
+    private String shortenUrl(final String url) {
+        final int preHashRadixRepresentation = 16;
+        final int xor = 0xff;
+        final int exponent = 64;
+        final int finalHashRadixRepresentation = 36;
         byte[] data = url.getBytes();
-        BigInteger hash = new BigInteger("cbf29ce484222325", 16);
+        BigInteger hash = new BigInteger("cbf29ce484222325", preHashRadixRepresentation);
         for (byte b : data) {
-            hash = hash.xor(BigInteger.valueOf((int) b & 0xff));
-            hash = hash.multiply(new BigInteger("100000001b3", 16))
-                    .mod(new BigInteger("2").pow(64));
+            hash = hash.xor(BigInteger.valueOf((int) b & xor));
+            hash = hash.multiply(new BigInteger("100000001b3", preHashRadixRepresentation))
+                    .mod(new BigInteger("2").pow(exponent));
         }
-        return hash.toString(36);
+        return hash.toString(finalHashRadixRepresentation);
     }
 }

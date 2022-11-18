@@ -6,14 +6,14 @@ import software.amazon.awscdk.StackProps;
 
 public class TinyUrlApp {
 
-    private static Environment makeEnv(String account, String region) {
+    private static Environment makeEnv(final String account, final String region) {
         return Environment.builder()
                 .account(account)
                 .region(region)
                 .build();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         App app = new App();
         Environment environment = makeEnv("{{bp_aws_account}}", "{{bp_aws_region}}");
         new TinyUrlAppStack(app, "{{backend_stack_name}}", StackProps.builder()

@@ -9,6 +9,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import static com.amazonaws.serverless.lambda.HandlerConstants.DYNAMO_TABLE_URL;
@@ -22,15 +23,11 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
         if (this.urlDataService == null) {
             this.urlDataService = new UrlDataService();
         }
-        return this.urlDataService;
-    }
-
-    public void setUrlDataService(UrlDataService urlDataService) {
-        this.urlDataService = urlDataService;
+        return urlDataService;
     }
 
     @Override
-    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+    public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         LambdaLogger logger = context.getLogger();
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 
@@ -42,7 +39,7 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
                     .getLongUrl(shortId);
             if (!itemResponse.item()
                     .isEmpty()) {
-                response.setStatusCode(302);
+                response.setStatusCode(HttpURLConnection.HTTP_MOVED_TEMP);
                 response.setHeaders(Collections.singletonMap(LOCATION, itemResponse.item()
                         .get(DYNAMO_TABLE_URL)
                         .s()));
@@ -53,8 +50,8 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
             logger.log(stacktrace);
         }
 
-        response.setStatusCode(404);
-        response.setBody("Not found");
+        response.setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
+        response.setBody("URL not found");
         return response;
     }
 

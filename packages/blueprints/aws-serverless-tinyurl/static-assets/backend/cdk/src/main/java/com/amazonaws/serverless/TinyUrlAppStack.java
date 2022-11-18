@@ -41,6 +41,8 @@ public class TinyUrlAppStack extends Stack {
     private static final String REST_API_CREATE_TINY_URL = "createTinyUrl";
     private static final String GET = HttpMethod.GET.name();
     private static final String POST = HttpMethod.POST.name();
+    private static final int LAMBDA_MEMORY_SIZE = 512;
+    private static final int LAMBDA_TIMEOUT = 30;
 
     public TinyUrlAppStack(final Construct parent, final String stackName, final StackProps props) {
         super(parent, stackName, props);
@@ -104,18 +106,18 @@ public class TinyUrlAppStack extends Stack {
                 .build());
     }
 
-    private FunctionProps getLambdaFunctionProps(Map<String, String> lambdaEnvMap, String handler) {
+    private FunctionProps getLambdaFunctionProps(final Map<String, String> lambdaEnvMap, final String handler) {
         return FunctionProps.builder()
                 .code(Code.fromAsset("./asset/lambda-jar-with-dependencies.jar"))
                 .handler(handler)
                 .runtime(Runtime.JAVA_11)
                 .environment(lambdaEnvMap)
-                .timeout(Duration.seconds(30))
-                .memorySize(512)
+                .timeout(Duration.seconds(LAMBDA_TIMEOUT))
+                .memorySize(LAMBDA_MEMORY_SIZE)
                 .build();
     }
 
-    private Table defineDynamoTable(String tableName, String partitionKey) {
+    private Table defineDynamoTable(final String tableName, final String partitionKey) {
         Attribute partitionKeyAttribute = Attribute.builder()
                 .name(partitionKey)
                 .type(AttributeType.STRING)
