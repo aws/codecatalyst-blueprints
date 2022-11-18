@@ -9,7 +9,7 @@ const SRC_DIR = 'src';
 const INFRA_SUBDIR = 'testSnapshotInfrastructure';
 const CONFIGS_SUBDIR = 'snapshot-configurations';
 const DEFAULT_TEST_CONFIG_FILENAME = 'default-config.json';
-const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshots.spec.ts';
+const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
 
 export function generateTestSnapshotInfraFiles(project: Project, testingConfig: BlueprintSnapshotConfiguration) {
   // If you add or change any files here, remember to update `cleanUpTestSnapshotInfraFiles()`
