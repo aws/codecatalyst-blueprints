@@ -113,14 +113,9 @@ export class Blueprint extends ParentBlueprint {
     const typeCheck: Options = {
       outdir: this.outdir,
       ...defaults,
-      environment: options_.environment,
-      code: {
-        repositoryName: options_.code.repositoryName,
-      },
       advanced: {
-        frontendStackName: options_.advanced.frontendStackName,
-        backendStackName: options_.advanced.backendStackName,
-        region: options_.advanced.region,
+        ...defaults.advanced,
+        region: defaults.advanced.region as Options['advanced']['region'],
       },
     };
     const options = Object.assign(typeCheck, options_);
