@@ -23,6 +23,20 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
   readonly overridePackageVersion?: string;
 }
 
+const DEFAULT_OPTS = {
+  license: 'MIT',
+  sampleCode: false,
+  github: false,
+  eslint: true,
+  jest: false,
+  npmignoreEnabled: true,
+  tsconfig: {
+    compilerOptions: {
+      esModuleInterop: true,
+      noImplicitAny: false,
+    },
+  },
+};
 /**
  * Blueprint app in TypeScript
  *
@@ -31,21 +45,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
  */
 export class ProjenBlueprint extends typescript.TypeScriptProject {
   constructor(options: ProjenBlueprintOptions) {
-    super({
-      license: 'MIT',
-      sampleCode: false,
-      github: false,
-      eslint: true,
-      jest: false,
-      npmignoreEnabled: true,
-      tsconfig: {
-        compilerOptions: {
-          esModuleInterop: true,
-          noImplicitAny: false,
-        },
-      },
+    const finalOpts = {
+      ...DEFAULT_OPTS,
       ...options,
-    });
+    };
+    super(finalOpts);
 
     const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
     this.package.addVersion(version || '0.0.0');
@@ -61,6 +65,27 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.addTask('bump:preview', {
       exec: 'npm version prerelease --preid preview -no-git-tag-version',
     });
+
+    // Our version of Projen adds `--updateSnapshot` to the *test* task. We do not want this because we
+    // rely on snapshot testing to prevent regressions. Newer versions of Projen (0.63+) support removing
+    // this param in an idiomatic way:
+    // https://github.com/projen/projen/commit/c84c8f9a64d95c5b6c0d0f20d156f94c5a7f90f2
+    // Until then, we remove this argument manually.
+    const testTask = this.tasks.tryFind('test');
+    if (testTask) {
+      testTask.reset();
+      // The following logic is a simplification of what Projen does, so there may be projects where
+      // the updated jest invocation doesn't work, but it works well enough for our blueprints.
+      if (finalOpts.eslint) {
+        const eslintTask = this.tasks.tryFind('eslint');
+        if (eslintTask) {
+          testTask.spawn(eslintTask);
+        }
+      }
+      if (finalOpts.jest) {
+        testTask.exec('jest --passWithNoTests');
+      }
+    }
 
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
