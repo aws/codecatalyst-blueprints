@@ -1,4 +1,4 @@
-![Build](https://github.com/aws/caws-blueprints/actions/workflows/build-action.yml/badge.svg)
+![Build](https://github.com/aws/caws-blueprints/actions/workflows/build-action.yml/badge.svg) 
 
 [Documentation and wiki](https://github.com/aws/caws-blueprints/wiki)
 
