@@ -81,6 +81,20 @@ public class GetUrlRequestHandlerTest {
         Assertions.assertEquals(response.getBody(), "URL not found");
     }
 
+    @Test
+    public void verify_handleRequest_and_raise_exception() {
+        request.setPathParameters(Collections.singletonMap(TINY_URL, TINY_URL_ID));
+        GetItemResponse getItemResponse = GetItemResponse.builder()
+                .item(null)
+                .build();
+        when(urlDataService.getLongUrl(any(String.class))).thenReturn(null);
+
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        Assertions.assertEquals(response.getBody(), "URL not found");
+    }
+
 }
 
 

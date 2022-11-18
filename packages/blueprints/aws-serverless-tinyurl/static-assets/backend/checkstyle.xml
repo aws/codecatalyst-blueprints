@@ -141,7 +141,9 @@
 
 		<!-- Checks for common coding problems               -->
 		<!-- See http://checkstyle.sf.net/config_coding.html -->
-		<module name="AvoidInlineConditionals"/>
+		<module name="AvoidInlineConditionals">
+			<property name="severity" value="warning"/>
+		</module>
 		<module name="EmptyStatement"/>
 		<module name="EqualsHashCode"/>
 		<module name="HiddenField"/>
@@ -154,9 +156,13 @@
 
 		<!-- Checks for class design                         -->
 		<!-- See http://checkstyle.sf.net/config_design.html -->
-		<module name="DesignForExtension"/>
+		<module name="DesignForExtension">
+			<property name="severity" value="warning"/>
+		</module>
 		<module name="FinalClass"/>
-		<module name="HideUtilityClassConstructor"/>
+		<module name="HideUtilityClassConstructor">
+			<property name="severity" value="warning"/>
+		</module>
 		<module name="InterfaceIsType"/>
 		<module name="VisibilityModifier"/>
 

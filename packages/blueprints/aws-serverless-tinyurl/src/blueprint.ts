@@ -261,7 +261,7 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: ['cd backend', 'mvn test', 'echo "No Test Coverage step defined"'],
+      steps: ['cd backend', 'mvn verify', 'sh jacocoConsoleReporter.sh'],
     });
 
     // To bootstrap and deploy the backend service
