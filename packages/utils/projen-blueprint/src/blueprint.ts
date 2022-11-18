@@ -2,6 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript } from 'projen';
 
+import { cleanUpTestSnapshotInfraFiles, generateTestSnapshotInfraFiles } from './test-snapshot';
+
+export interface BlueprintSnapshotConfiguration {
+  enableSnapshotTesting: boolean;
+  snapshotGlobs?: string[];
+}
+
 export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
   /**
    * List of media url links
@@ -21,6 +28,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * Override package version. I hope you know what you're doing.
    */
   readonly overridePackageVersion?: string;
+
+  /**
+   * Blueprint snapshot configuration
+   */
+  readonly blueprintSnapshotConfiguration?: BlueprintSnapshotConfiguration;
 }
 
 const DEFAULT_OPTS = {
@@ -124,5 +136,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     // force the static assets to always be fully included, regardless of .npmignores
     this.package.addField('files', ['static-assets', 'lib']);
+
+    if (finalOpts.jest && finalOpts.blueprintSnapshotConfiguration?.enableSnapshotTesting) {
+      this.addDevDeps('globule');
+      this.addDevDeps('ts-deepmerge');
+      generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+    } else {
+      cleanUpTestSnapshotInfraFiles();
+    }
   }
 }
