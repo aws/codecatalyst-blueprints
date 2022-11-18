@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { JsonFile, Project, SourceCode } from 'projen';
+import { JsonFile, Project, TextFile } from 'projen';
 import { BlueprintSnapshotConfiguration } from './blueprint';
 import { generateFilesTs } from './snapshot-testing/gen-files';
 import { generateOutdirTs } from './snapshot-testing/gen-outdir';
@@ -37,8 +37,13 @@ export function generateTestSnapshotInfraFiles(project: Project, testingConfig: 
   fs.mkdirSync(infraDir);
 
   files.forEach(([fileContent, fileName]) => {
-    const sourceCodeObj = new SourceCode(project, fileName, { readonly: false });
-    fileContent.split('\n').forEach(line => sourceCodeObj.line(line));
+    // These are source code files, but we use `TextFile` instead of `SourceCode` because
+    // the former lets us choose to not commit these.
+    const fileObj = new TextFile(project, fileName, {
+      committed: false,
+      marker: false, // we add our own marker
+    });
+    fileContent.split('\n').forEach(line => fileObj.addLine(line));
   });
 
   const configsDir = path.join(SRC_DIR, CONFIGS_SUBDIR);
