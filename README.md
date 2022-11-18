@@ -2,7 +2,7 @@
 
 [Documentation and wiki](https://github.com/aws/caws-blueprints/wiki)
 
-## Set Up
+## Set Up 
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
 also exist for vim. Many gitignored files will be invisible in vim and may cause annoying problems.
