@@ -145,6 +145,7 @@ export class Blueprint extends ParentBlueprint {
         'projen',
         '@caws-blueprint-component/caws-workflows',
         '@caws-blueprint-component/caws-source-repositories',
+        '@caws-blueprint-component/caws-environments',
       ],
       description: `${this.options.description}`,
 
