@@ -35,6 +35,8 @@
                             </artifactItems>
                             <stripVersion>true</stripVersion>
                             <outputDirectory>../asset</outputDirectory>
+<!--                            for unit testing the cdk stack-->
+                            <outputDirectory>../cdk/asset</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
