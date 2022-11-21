@@ -7,6 +7,8 @@
     ".projen/files.json",
     ".projen/tasks.json",
     "LICENSE",
+    "src/blueprint-snapshot-driver.spec.ts",
+    "src/testSnapshotInfrastructure/infrastructure.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],
