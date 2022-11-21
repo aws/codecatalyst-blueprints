@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "mvn: debug tests",
+            "detail": "mvn debug tests",
+            "type": "shell",
+            "command": "mvnDebug -DforkMode=never test",
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Listening for transport dt_socket at address"
+                }
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/{{lambdaFunctionName}}/HelloWorldFunction"
+            }
+        },
+        {
+            "label": "mvn: test",
+            "detail": "mvn test",
+            "type": "shell",
+            "command": "mvn test",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}/{{lambdaFunctionName}}/HelloWorldFunction"
+            }
+        },
+        {
+            "type": "shell",
+            "command": "sam build",
+            "label": "sam: build",
+            "detail": "sam build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local invoke {{lambdaFunctionName}}Function --event {{lambdaFunctionName}}/events/event.json",
+            "label": "sam: invoke",
+            "detail": "sam invoke",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local start-api",
+            "label": "sam: start api",
+            "detail": "sam start api",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Running on"
+                }
+            }
+        }
+    ]
+}
