@@ -308,10 +308,10 @@ export class Blueprint extends ParentBlueprint {
       dependsOn: ['BackendCDKDeploy'],
       output: {
         AutoDiscoverReports: {
-          IncludePaths: ['backend/**/*'],
+          IncludePaths: ['frontend/**/*'],
           ExcludePaths: ['*/.aws/workflows/*'],
           ReportNamePrefix: 'rpt',
-          Enabled: true,
+          Enabled: false,
         },
         Artifacts: [
           {
@@ -358,7 +358,7 @@ export class Blueprint extends ParentBlueprint {
       output: {
         AutoDiscoverReports: {
           IncludePaths: ['frontend/coverage/*'],
-          ReportNamePrefix: 'CLOVERXML',
+          ReportNamePrefix: 'rpt',
           Enabled: true,
         },
       },
