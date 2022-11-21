@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "install",
+            "group": "build",
+            "label": "npm: install",
+            "detail": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/{{lambdaFunctionName}}/hello-world"
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "group": "test",
+            "label": "npm: test",
+            "detail": "npm test",
+            "options": {
+                "cwd": "${workspaceFolder}/{{lambdaFunctionName}}/hello-world"
+            }
+        },
+        {
+            "type": "shell",
+            "command": "sam build",
+            "label": "sam: build",
+            "detail": "sam build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local invoke {{lambdaFunctionName}}Function --event {{lambdaFunctionName}}/events/event.json",
+            "label": "sam: invoke",
+            "detail": "sam invoke",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local start-api",
+            "label": "sam: start api",
+            "detail": "sam start api",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Running on"
+                }
+              }
+        }
+    ]
+}

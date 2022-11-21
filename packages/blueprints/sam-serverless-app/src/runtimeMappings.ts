@@ -37,6 +37,30 @@ export const runtimeMappings: RuntimeMap = {
           return new SubstitionAsset('maven/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
         },
       },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.vscode/extensions.json').toString();
+        },
+      },
     ],
     filesToOverride: [
       {
@@ -75,6 +99,30 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(context: FileTemplateContext): string {
           return new SubstitionAsset('gradle/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.vscode/extensions.json').toString();
         },
       },
     ],
@@ -123,6 +171,30 @@ export const runtimeMappings: RuntimeMap = {
   //       },
   //       resolveContent(context: FileTemplateContext): string {
   //         return new SubstitionAsset('nodejs/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.vscode/extensions.json').toString();
   //       },
   //     },
   //   ],
@@ -189,6 +261,38 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(context: FileTemplateContext): string {
           return new SubstitionAsset('python/.coveragerc').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'settings.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.vscode/settings.json').toString();
         },
       },
     ],
