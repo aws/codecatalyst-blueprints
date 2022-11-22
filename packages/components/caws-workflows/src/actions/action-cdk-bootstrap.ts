@@ -1,23 +1,17 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { WorkflowDefinition } from '../workflow/workflow';
-import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
-
-export interface CdkBootstrapInputConfiguration {
-  Artifacts?: string[];
-  Sources?: string[];
-  [key: string]: any;
-}
+import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton, ComputeConfiguration, OutputDefinition, InputsDefinition } from './action';
 
 export interface CdkBootstrapActionConfiguration {
-  [key: string]: string | undefined;
   Region: string;
 }
 
 export interface CdkBootstrapActionParameters {
-  inputs: CdkBootstrapInputConfiguration;
+  inputs: InputsDefinition;
+  outputs: OutputDefinition;
   environment: WorkflowEnvironment;
-  computeName?: 'Linux.x86-64.Large' | 'Linux.x86-64.XLarge' | 'Linux.x86-64.2XLarge' | string;
+  computeName?: ComputeConfiguration;
   configuration: CdkBootstrapActionConfiguration;
   actionName: string;
 }
@@ -28,12 +22,13 @@ export function addGenericCdkBootstrapAction(
     workflow: WorkflowDefinition;
   },
 ): string {
-  const { blueprint, workflow, inputs, environment, configuration, computeName } = params;
+  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName } = params;
   const actionName = (params.actionName || 'BootstrapCdkStack').replace(new RegExp('-', 'g'), '_');
 
   const cdkBootstrapAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.cdkBootstrap, blueprint.context.environmentId),
     Inputs: inputs,
+    Outputs: outputs,
     Environment: environment,
     Compute: computeName,
     Configuration: configuration,
