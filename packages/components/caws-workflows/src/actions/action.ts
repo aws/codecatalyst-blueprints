@@ -45,20 +45,22 @@ export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environ
   return ACTION_IDENTIFIERS[alias]?.[environmentIdentifier] ?? ACTION_IDENTIFIERS[alias]?.default;
 }
 
-type TypeSupportedActions =
-  | BuildActionConfiguration
-  | CfnDeployActionConfiguration
-  | TestActionConfiguration
-  | CdkDeployActionConfiguration
-  | CdkBootstrapActionConfiguration;
+type TypeSupportedCompute = ComputeConfiguration;
+type TypeSupportedActions = BuildActionConfiguration | CfnDeployActionConfiguration | TestActionConfiguration | CdkDeployActionConfiguration
+| CdkBootstrapActionConfiguration;
 export interface ActionDefiniton {
   Identifier?: string;
-  Compute?: string;
+  Compute?: TypeSupportedCompute | string;
   Configuration?: TypeSupportedActions;
   DependsOn?: string[];
   Inputs?: InputsDefinition;
   Outputs?: OutputDefinition;
   Environment?: WorkflowEnvironment;
+}
+
+export interface ComputeConfiguration {
+  Type?: string;
+  Fleet?: string;
 }
 
 /**
