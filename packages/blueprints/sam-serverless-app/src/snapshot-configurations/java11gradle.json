@@ -1,0 +1,9 @@
+{
+  "runtime": "Java 11 Gradle",
+  "code": {
+    "sourceRepositoryName": "test-src-repo-name"
+  },
+  "lambda": {
+    "functionName": "test-fn-name"
+  }
+}
