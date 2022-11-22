@@ -23,4 +23,5 @@ jobs:
           cache: 'yarn'
       - run: yarn --immutable-cache
       - run: yarn build
+      - run: yarn test
       - run: export PROJEN_DISABLE_POST=1 && yarn blueprints:synth:cache

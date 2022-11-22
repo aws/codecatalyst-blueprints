@@ -6,6 +6,7 @@
     "clean-synth": "bash ./scripts/clean-synth.sh",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
+    "test": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run test",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
