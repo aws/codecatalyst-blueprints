@@ -1,18 +1,27 @@
-import { RuntimeMapping } from './models';
 import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
 
-export function generateReadmeContents(params: {
+import { RuntimeMapping } from './models';
+import { BlueprintRuntimes } from './runtimeMappings';
+
+interface ReadmeParams {
   runtime: string;
   runtimeMapping: RuntimeMapping;
-  defaultReleaseBranch: 'main';
+  defaultReleaseBranch?: string;
   lambdas: { functionName: string }[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   environment: EnvironmentDefinition<any>;
   cloudFormationStackName: string;
   workflowName: string;
-}) {
-  const { runtime, runtimeMapping, defaultReleaseBranch, lambdas, environment, cloudFormationStackName, workflowName } = params;
+}
+
+export function generateReadmeContents(params: ReadmeParams) {
+  const { runtime, runtimeMapping, lambdas, environment, cloudFormationStackName, workflowName } = params;
+  const defaultReleaseBranch = params.defaultReleaseBranch ?? 'main';
+
+  if (lambdas.length < 1) {
+    throw new Error('Readme expects at least one Lambda function');
+  }
 
   //Generate input variables
   let functionNames = '';
@@ -93,9 +102,7 @@ To build your application locally use the following command in your shell
    sam build
 \`\`\`
 
-  The SAM CLI installs dependencies defined in the ${runtimeMapping.codeUri}/${
-    runtimeMapping.dependenciesFilePath
-  } file of each lambda functions, creates a deployment package, and saves it in the .aws-sam/build folder.
+  The SAM CLI installs dependencies defined in the ${runtimeMapping.codeUri}/${runtimeMapping.dependenciesFilePath} file of each lambda functions, creates a deployment package, and saves it in the .aws-sam/build folder.
   For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
   Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
 
@@ -123,7 +130,7 @@ The SAM CLI reads the application template to determine the API's routes and the
             Method: get
 \`\`\`
 
-${runtimeReadmeSection[runtime]?.readmeTestSection ?? ''}
+${runtimeReadmeSection[runtime].readmeTestSection}
 
 ## Add a resource to your serverless application
 The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
@@ -141,7 +148,15 @@ See the Quokka User Guide for additional information on using the features and r
   return readmeContents;
 }
 
-export const runtimeReadmeSection = {
+interface RuntimeReadmeSectionData {
+  readmeTestSection: string;
+}
+
+type RuntimeReadmeSectionType = {
+  [key in BlueprintRuntimes]: RuntimeReadmeSectionData;
+};
+
+export const runtimeReadmeSection: RuntimeReadmeSectionType = {
   'Java 11 Maven': {
     readmeTestSection: `
 ## Tests

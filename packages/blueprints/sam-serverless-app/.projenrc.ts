@@ -1,4 +1,5 @@
 import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+
 const project = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'sam-serverless-application',
@@ -7,9 +8,17 @@ const project = new ProjenBlueprint({
   sampleCode: false,
   github: false,
   eslint: false,
-  jest: false,
+  jest: true,
+  blueprintSnapshotConfiguration: {
+    enableSnapshotTesting: true,
+    snapshotGlobs: [
+      '**',
+      '!environments/**',
+      '!aws-account-to-environment/**',
+    ],
+  },
   npmignoreEnabled: true,
-  authorName: 'caws-blueprints',
+  authorName: 'Amazon Web Services',
   tsconfig: {
     compilerOptions: {
       esModuleInterop: true,
@@ -24,14 +33,14 @@ const project = new ProjenBlueprint({
     '@caws-blueprint-component/caws-environments',
   ],
   description:
-    'This blueprint generates a serverless application model (SAM) project. The project will contain source code and configuration files to build and deploy your SAM application',
+    'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language',
   packageName: '@caws-blueprint/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
-  devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
+  devDeps: ['@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli', '@types/jest', 'ts-jest', 'ts-node', 'typescript'],
   keywords: ['blueprint', 'sam', 'lambda', 'python', 'node', 'nodejs', 'java', 'serverless'],
   homepage: 'https://aws.amazon.com/',
   mediaUrls: ['https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg'],
-  displayName: 'Serverless Application Model (SAM)',
+  displayName: 'Serverless application model (SAM) API',
 });
 
 project.synth();
