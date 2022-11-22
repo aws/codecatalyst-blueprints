@@ -36,8 +36,8 @@ public class UrlDataServiceTest {
         urlDataService = new UrlDataService();
         client = mock(DynamoDbClient.class);
 
-        Class clazz = urlDataService.getClass();
-        Field f = clazz.getDeclaredField("dynamoDbClient");
+        Class urlDataServiceClass = urlDataService.getClass();
+        Field f = urlDataServiceClass.getDeclaredField("dynamoDbClient");
         f.setAccessible(true);
         f.set(urlDataService, client);
 

@@ -58,10 +58,13 @@ public class TinyUrlAppStack extends Stack {
                 .tryGetContext("origins");
         final String allowedOrigins = (origins == null ? "*" : origins.toString());
 
-        final Map<String, String> lambdaEnv = new HashMap<>();
-        lambdaEnv.put("TABLE_NAME", DYNAMODB_TABLE_NAME);
-        lambdaEnv.put("PRIMARY_KEY", DYNAMODB_TABLE_PRIMARY_KEY);
-        lambdaEnv.put("ALLOWED_ORIGINS", allowedOrigins);
+        Map<String, String> lambdaEnv = new HashMap<String, String>() {
+            {
+                put("TABLE_NAME", urlTable.getTableName());
+                put("PRIMARY_KEY", DYNAMODB_TABLE_PRIMARY_KEY);
+                put("ALLOWED_ORIGINS", allowedOrigins);
+            }
+        };
 
         // Create lambda functions
         Function getTinyUrlFunction = new Function(this, GET_URL_LAMBDA, getLambdaFunctionProps(lambdaEnv, GET_URL_LAMBDA_HANDLER));

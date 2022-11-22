@@ -17,14 +17,14 @@ import static com.amazonaws.serverless.lambda.HandlerConstants.LOCATION;
 import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 
 public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
-    private UrlDataService urlDataService;
 
-    private UrlDataService getUrlDataService() {
-        if (this.urlDataService == null) {
-            this.urlDataService = new UrlDataService();
-        }
-        return urlDataService;
+    public GetUrlRequestHandler() {
+        this(new UrlDataService());
     }
+    GetUrlRequestHandler(UrlDataService urlDataService) {
+        this.urlDataService = urlDataService;
+    }
+    private UrlDataService urlDataService;
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
@@ -35,8 +35,7 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
             final String shortId = input.getPathParameters()
                     .get(TINY_URL);
             logger.log("Looking for: " + shortId);
-            GetItemResponse itemResponse = this.getUrlDataService()
-                    .getLongUrl(shortId);
+            GetItemResponse itemResponse = this.urlDataService.getLongUrl(shortId);
             if (!itemResponse.item()
                     .isEmpty()) {
                 response.setStatusCode(HttpURLConnection.HTTP_MOVED_TEMP);

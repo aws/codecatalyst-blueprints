@@ -213,7 +213,7 @@ export class Blueprint extends ParentBlueprint {
       output: {
         AutoDiscoverReports: {
           ReportNamePrefix: 'rpt',
-          Enabled: true,
+          Enabled: false,
         },
         Artifacts: [
           {
@@ -244,9 +244,9 @@ export class Blueprint extends ParentBlueprint {
       },
       output: {
         AutoDiscoverReports: {
-          IncludePaths: ['backend/**/*'],
+          IncludePaths: ['backend/cdk/target/**/*', 'backend/lambda/target/**/*'],
           ExcludePaths: ['*/.aws/workflows/*'],
-          ReportNamePrefix: 'Report',
+          ReportNamePrefix: 'Rpt',
           Enabled: true,
         },
         Artifacts: [

@@ -21,7 +21,7 @@ Local development requires below pre-requisites.
 
 - [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
 - [Apache Maven v3.8.6](https://maven.apache.org/install.html)
-- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 
 To run the unit tests in the project
 

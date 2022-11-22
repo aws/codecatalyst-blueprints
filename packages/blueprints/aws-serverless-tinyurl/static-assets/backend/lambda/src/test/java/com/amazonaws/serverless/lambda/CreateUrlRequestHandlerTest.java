@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -35,17 +34,11 @@ public class CreateUrlRequestHandlerTest {
     APIGatewayProxyRequestEvent request;
     Gson gson;
     Context context;
-    Class clazz;
 
     @BeforeEach
     public void prepare() throws NoSuchFieldException, IllegalAccessException {
         urlDataService = mock(UrlDataService.class);
-        handler = new CreateUrlRequestHandler();
-        clazz = handler.getClass();
-        Field urlDataServiceField = clazz.getDeclaredField("urlDataService");
-        urlDataServiceField.setAccessible(true);
-        urlDataServiceField.set(handler, urlDataService);
-
+        handler = new CreateUrlRequestHandler(urlDataService);
         request = new APIGatewayProxyRequestEvent();
         gson = new Gson();
         context = mock(Context.class);
@@ -73,9 +66,10 @@ public class CreateUrlRequestHandlerTest {
 
     @Test
     public void verify_shortenUrl_with_valid_input() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method shortenUrlMethod = clazz.getDeclaredMethod("shortenUrl", String.class);
+        Method shortenUrlMethod = handler.getClass()
+                .getDeclaredMethod("shortenUrl", String.class);
         shortenUrlMethod.setAccessible(true);
-        String tinyUrl = (String) shortenUrlMethod.invoke(handler, new String(LONG_URL_INPUT));
+        String tinyUrl = (String) shortenUrlMethod.invoke(handler, LONG_URL_INPUT);
         Assertions.assertEquals(TINY_URL_ID, tinyUrl);
     }
 }

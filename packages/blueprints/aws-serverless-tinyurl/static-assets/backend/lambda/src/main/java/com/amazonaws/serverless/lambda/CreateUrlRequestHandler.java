@@ -18,18 +18,17 @@ import static com.amazonaws.serverless.lambda.HandlerConstants.LONG_URL;
 import static com.amazonaws.serverless.lambda.HandlerConstants.ORIGIN;
 import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 
-
 public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    public CreateUrlRequestHandler() {
+        this(new UrlDataService());
+    }
+    CreateUrlRequestHandler(UrlDataService urlDataService) {
+        this.urlDataService = urlDataService;
+    }
 
     private UrlDataService urlDataService;
     private static final Gson GSON = new Gson();
-
-    private UrlDataService getUrlDataService() {
-        if (this.urlDataService == null) {
-            this.urlDataService = new UrlDataService();
-        }
-        return urlDataService;
-    }
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
@@ -39,15 +38,14 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
             Map<String, String> payload = GSON.fromJson(input.getBody(), Map.class);
 
             final String longUrl = payload.get(LONG_URL);
-            if (null == longUrl || longUrl.isEmpty()) {
+            if (longUrl == null || longUrl.isEmpty()) {
                 throw new Exception("Input url is null or empty");
             }
             logger.log("Got URL: " + longUrl);
             String shortId = shortenUrl(longUrl);
             logger.log("Shortened to " + shortId);
 
-            this.getUrlDataService()
-                    .saveLongUrl(shortId, payload.get(LONG_URL));
+            this.urlDataService.saveLongUrl(shortId, payload.get(LONG_URL));
             logger.log(input.getHeaders()
                     .toString());
 

@@ -28,24 +28,16 @@ import static org.mockito.Mockito.when;
 
 public class GetUrlRequestHandlerTest {
 
-
     GetUrlRequestHandler handler;
     UrlDataService urlDataService;
     APIGatewayProxyRequestEvent request;
     Gson gson;
     Context context;
 
-
     @BeforeEach
     public void prepare() throws NoSuchFieldException, IllegalAccessException {
         urlDataService = mock(UrlDataService.class);
-        handler = new GetUrlRequestHandler();
-
-        Class clazz = handler.getClass();
-        Field urlDataServiceField = clazz.getDeclaredField("urlDataService");
-        urlDataServiceField.setAccessible(true);
-        urlDataServiceField.set(handler, urlDataService);
-
+        handler = new GetUrlRequestHandler(urlDataService);
         request = new APIGatewayProxyRequestEvent();
         gson = new Gson();
         context = mock(Context.class);
