@@ -1,0 +1,408 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
+"#!/usr/bin/env bash
+
+WORKING_DIR=SamFirstEndpoint/hello-world/
+npm install --prefix $WORKING_DIR
+npm --prefix $WORKING_DIR run coverage
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+"
+Name: build-and-release
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Compute:
+  Type: Lambda
+  Fleet: Linux.x86-64.Large
+Actions:
+  build_for_default_environment:
+    Identifier: aws/build-beta@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+      Artifacts:
+        - Name: build_result
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: . ./.codecatalyst/scripts/run-tests.sh
+        - Run: sam build --template-file template.yaml
+        - Run: cd .aws-sam/build/
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+  deploy_to_default_environment:
+    Identifier: aws/cfn-deploy-gamma@v1
+    Inputs:
+      Artifacts:
+        - build_result
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+    Configuration:
+      Parameters:
+        region: us-west-2
+        name: sam-stack-
+        template: .aws-sam/build/packaged.yaml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/README.md 1`] = `
+"
+## This Project:
+
+This project is an AWS Serverless Application Model (SAM) Project generated using the AWS Blueprints System. For more information on blueprints, see the _Working with blueprints in Quokka_ section in the **Quokka User Guide**. This project contains the source code, supporting files, and Quokka.Codes resources for a SAM application that is deployed using Quokka.Codes workflows.
+
+This project contains the following files and folder in its source repository:
+
+  - SamFirstEndpoint - Source code and supporting files for the Lambda function of the application, containing:
+
+    - hello-world - Code for the Lambda function of the application
+
+    - events - Invocation events that you can use to invoke the function
+
+    - hello-world/tests - Tests for the Lambda function's code
+
+  - .codecatalyst/workflows/build-and-release.yaml - The template that defines the project's workflow
+
+  - template.yaml - The template that defines the application's AWS resources, including Lambda Functions, API Gateways, and IAM roles
+
+  - .mde.devfile.yaml - A DevFile that defines developer workspaces or cloud-native development environments.
+
+This project has created the following Quokka.Codes Resources:
+
+- Source repository - A git repository to store, version, and manage project assets.
+
+  For more information on source repositories, see the _Source Repositories in Quokka_ section in the **Quokka User Guide**
+
+- Workflow - An automated procedure that defines how to build, test, and deploy the serverless application.
+
+  For more information on workflows, see the _Build, test, and deploy with workflows in Quokka_ section of the **Quokka User Guide**
+
+- Environment(s) - An abstraction of infrastructure resources for deploying applications. Environments can be used to organize deployment actions into a production or non-production environment
+
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Quokka User Guide**
+
+- Workspace - A cloud native development environment. Workspace must be manually created with the generated DevFile using the create workspace operation on Quokka.Codes.
+
+  For more information on the create workspace operation and workspaces, see the _Working with workspaces in Quokka_ section in the **Quokka User Guide**
+
+This project will deploy the following AWS Resources after being successfuly created, the deployment status can be viewed in the project's workflow:
+
+  - Lambda Function(s) - A resource to invoke your code on a high-availability compute infrastructure without provisioning or managing servers. For more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+  - API Gateway - A resource for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. For more information on API Gateway, see the [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+  - IAM Role(s) - A resource for securely controlled access to AWS resource, such as the lambda function(s). For more information on IAM, see the [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+## Serverless Application
+
+A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. Note that a serverless application is more than just a Lambda function—it can include additional resources such as APIs, databases, and event source mappings.
+For more information on serverless applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+## Using the SAM CLI to build and test locally
+
+You can use the Serverless Application Model Command Line Interface (SAM CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+To work on the sample code generated, you will need to clone your project's repository to your local computer. If you haven't, do that first. You can find instructions in the _Clone a source repository_ section in the **Quokka User Guide**.
+
+To use the SAM CLI, you need the following tools into your workspace.
+
+  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+  * Install [Python 3](https://www.python.org/downloads/)
+ * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)
+
+To build your application locally use the following command in your shell
+
+\`\`\`
+   sam build
+\`\`\`
+
+  The SAM CLI installs dependencies defined in the hello-world//package.json file of each lambda functions, creates a deployment package, and saves it in the .aws-sam/build folder.
+  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
+  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
+
+\`\`\`
+  sam local invoke <functionName> --event <functionName>/events/event.json
+\`\`\`
+
+For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
+The SAM CLI can also emulate your applications API. Use the sam local start-api to run the API locally (The default port is 3000).
+
+\`\`\`
+  sam local start-api
+  curl http://localhost:3000/
+\`\`\`
+
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
+The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
+
+\`\`\`yaml
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+\`\`\`
+
+
+## Tests
+Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
+\`\`\`
+$ cd hello-world
+$ npm install
+$ npm run test
+\`\`\`
+
+
+## Add a resource to your serverless application
+The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
+
+## Deploying your serverless application
+The application is deployed through Quokka.Codes using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` of the source repository. Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Adding a trigger_ section in the **Quokka User Guide**. The workflow builds your application, stores the build artifacts in a generated s3 bucket, and deploys your application to your project environments in the following order:
+
+  - \`default_environment\` using the cloudformation stack \`sam-stack--default_environment\`
+
+
+For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using workflows_ section in the **Quokka User Guide**.
+
+## Additional Resources
+See the Quokka User Guide for additional information on using the features and resources of Quokka.Codes
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
+"{
+  "body": "{\\"message\\": \\"hello world\\"}",
+  "resource": "/{proxy+}",
+  "path": "/path/to/resource",
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "queryStringParameters": {
+    "foo": "bar"
+  },
+  "pathParameters": {
+    "proxy": "/path/to/resource"
+  },
+  "stageVariables": {
+    "baz": "qux"
+  },
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, sdch",
+    "Accept-Language": "en-US,en;q=0.8",
+    "Cache-Control": "max-age=0",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Custom User Agent String",
+    "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+    "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "requestTime": "09/Apr/2015:12:34:56 +0000",
+    "requestTimeEpoch": 1428582896000,
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "accessKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "path": "/prod/path/to/resource",
+    "resourcePath": "/{proxy+}",
+    "httpMethod": "POST",
+    "apiId": "1234567890",
+    "protocol": "HTTP/1.1"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.js 1`] = `
+"// const axios = require('axios')
+// const url = 'http://checkip.amazonaws.com/';
+let response;
+
+/**
+ *
+ * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+ * @param {Object} event - API Gateway Lambda Proxy Input Format
+ *
+ * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html 
+ * @param {Object} context
+ *
+ * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+ * @returns {Object} object - API Gateway Lambda Proxy Output Format
+ * 
+ */
+exports.lambdaHandler = async (event, context) => {
+    try {
+        // const ret = await axios(url);
+        response = {
+            'statusCode': 200,
+            'body': JSON.stringify({
+                message: 'hello world',
+                // location: ret.data.trim()
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+
+    return response
+};
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/SamFirstEndpoint/hello-world/package.json 1`] = `
+"{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "hello world sample for NodeJS",
+  "main": "app.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "scripts": {
+    "test": "mocha --reporter mocha-junit-reporter tests/unit/",
+    "coverage": "nyc --reporter clover --reporter text npm test"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^9.1.4",
+    "mocha-junit-reporter": "^2.0.2",
+    "nyc": "^15.1.0"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.js 1`] = `
+"'use strict';
+
+const app = require('../../app.js');
+const chai = require('chai');
+const expect = chai.expect;
+var event, context;
+
+describe('Tests index', function () {
+    it('verifies successful response', async () => {
+        const result = await app.lambdaHandler(event, context)
+
+        expect(result).to.be.an('object');
+        expect(result.statusCode).to.equal(200);
+        expect(result.body).to.be.an('string');
+
+        let response = JSON.parse(result.body);
+
+        expect(response).to.be.an('object');
+        expect(response.message).to.be.equal("hello world");
+        // expect(response.location).to.be.an("string");
+    });
+});
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/devfile.yaml 1`] = `
+"
+schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:latest
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+"
+`;
+
+exports[`Blueprint snapshots for test configurations default-config configuration matches snapshots: src/ServerlessAppRepo/template.yaml 1`] = `
+"Transform: AWS::Serverless-2016-10-31
+Description: lambdas
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  SamFirstEndpointFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamFirstEndpoint/hello-world/
+      Runtime: nodejs14.x
+      Handler: app.lambdaHandler
+      Description: SamFirstEndpoint
+      Events:
+          SamFirstEndpoint:
+             Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+             Properties:
+                Path: /SamFirstEndpoint
+                Method: get
+Outputs:
+# ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+# Find out more about other implicit resources you can reference within SAM
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  SamFirstEndpointApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/SamFirstEndpoint/"
+  SamFirstEndpointFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt SamFirstEndpointFunction.Arn
+  SamFirstEndpointFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
+`;
