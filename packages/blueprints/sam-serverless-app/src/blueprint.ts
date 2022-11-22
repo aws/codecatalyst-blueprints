@@ -32,22 +32,9 @@ import { exit } from 'process';
  */
 export interface Options extends ParentOptions {
   /**
-   * @displayName Runtime Language
-   */
-  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
-
-  /**
-   * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
-   * @displayName CloudFormation stack name
-   * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
-   * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
-   * @defaultEntropy 5
-   */
-  cloudFormationStackName: string;
-
-  /**
-   * Name for your deployment environment. You can add more environments once the project is created
-   * @displayName Environment
+   * @displayName AWS connection
+   * @showName false
+   * @showEnvironmentType false
    * @collapsed false
    */
   environment: EnvironmentDefinition<{
@@ -63,7 +50,7 @@ export interface Options extends ParentOptions {
        * @inlinePolicy ./inline-policy-deploy.json
        * @trustPolicy ./trust-policy.json
        */
-      deployRole: Role<['SAM Deploy']>;
+      deployRole: Role<['codecatalyst*']>;
 
       /**
        * This is the role that allows build actions to access and write to Amazon S3, where your serverless application package is stored.
@@ -71,12 +58,18 @@ export interface Options extends ParentOptions {
        * @inlinePolicy ./inline-policy-build.json
        * @trustPolicy ./trust-policy.json
        */
-      buildRole: Role<['SAM Build']>;
+      buildRole: Role<['codecatalyst*']>;
     }>;
   }>;
 
   /**
-   * @displayName Code Repository name
+   * Select your lambda code language
+   * @displayName Runtime Language
+   */
+  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
+
+  /**
+   * @displayName Code Configuration
    * @collapsed true
    */
   code: {
@@ -86,6 +79,15 @@ export interface Options extends ParentOptions {
      * @validationMessage Must contain only alphanumeric characters, periods (.), underscores (_), dashes (-) and be between 3 and 100 characters in length. Cannot end in .git or contain spaces
      */
     sourceRepositoryName: string;
+
+    /**
+     * The name of the AWS CloudFormation stack generated for the blueprint. It must be unique for the AWS account it's being deployed to.
+     * @displayName CloudFormation stack name
+     * @validationRegex /^[a-zA-Z][a-zA-Z0-9-]{1,100}$/
+     * @validationMessage Stack names must start with a letter, then contain alphanumeric characters and dashes(-) up to a total length of 128 characters
+     * @defaultEntropy 5
+     */
+    cloudFormationStackName: string;
   };
 
   /**
@@ -182,7 +184,7 @@ export class Blueprint extends ParentBlueprint {
         defaultReleaseBranch: 'main',
         lambdas: [this.options.lambda],
         environment: this.options.environment,
-        cloudFormationStackName: this.options.cloudFormationStackName,
+        cloudFormationStackName: this.options.code.cloudFormationStackName,
         workflowName: workflowName,
       }),
     );
@@ -254,7 +256,8 @@ export class Blueprint extends ParentBlueprint {
       },
       output: {
         AutoDiscoverReports: {
-          Enabled: false,
+          Enabled: true,
+          ReportNamePrefix: 'rpt',
         },
         Artifacts: [
           {
@@ -282,7 +285,7 @@ export class Blueprint extends ParentBlueprint {
       configuration: {
         parameters: {
           region,
-          'name': this.options.cloudFormationStackName,
+          'name': this.options.code.cloudFormationStackName,
           'template': '.aws-sam/build/packaged.yaml',
           'no-fail-on-empty-changeset': '1',
         },
@@ -312,8 +315,8 @@ export class Blueprint extends ParentBlueprint {
   }): string {
     const sourceDir = path.join('/tmp/sam-lambdas', params.cacheDir);
 
-    cp.execSync(`svn checkout https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}} ${sourceDir}; \
-      rm -rf ${sourceDir}/.svn ${sourceDir}/.gitignore ${sourceDir}/README.md ${sourceDir}/template.yaml`);
+    cp.execFileSync('svn', ['checkout',`https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}}`,`${sourceDir}`]);
+    cp.execFileSync('rm', ['-rf',  `${sourceDir}/.svn`, `${sourceDir}/.gitignore`, `${sourceDir}/README.md`, `${sourceDir}/template.yaml`]);
 
     // override any files that need to be overridden
     const overrideContext: FileTemplateContext = {
