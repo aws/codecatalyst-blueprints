@@ -67,7 +67,7 @@ export function addGenericCdkDeployAction(
     Outputs: outputs,
     Environment: environment,
     Compute: computeName,
-    Configuration: convertYamlInputToString(configuration), // call function here
+    Configuration: convertYamlInputToString(configuration),
   };
   workflow.Actions = workflow.Actions || {};
   workflow.Actions[actionName] = cdkDeployAction;
