@@ -3,7 +3,10 @@ package com.amazonaws.serverless.lambda;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
@@ -24,22 +27,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class UrlDataServiceTest {
-
+    @Mock
+    private DynamoDbClient dynamoDbClient;
     private UrlDataService urlDataService;
-    private DynamoDbClient client;
     private GetItemResponse getItemResponse;
     private PutItemResponse putItemResponse;
 
     @BeforeEach
     public void prepare() throws NoSuchFieldException, IllegalAccessException {
         urlDataService = new UrlDataService();
-        client = mock(DynamoDbClient.class);
+        dynamoDbClient = mock(DynamoDbClient.class);
 
         Class urlDataServiceClass = urlDataService.getClass();
         Field f = urlDataServiceClass.getDeclaredField("dynamoDbClient");
         f.setAccessible(true);
-        f.set(urlDataService, client);
+        f.set(urlDataService, dynamoDbClient);
 
         getItemResponse = GetItemResponse.builder()
                 .item(Collections.singletonMap(DYNAMO_TABLE_URL, AttributeValue.builder()
@@ -53,11 +57,11 @@ public class UrlDataServiceTest {
     @Test
     public void verify_getLongUrl() {
         ArgumentCaptor<GetItemRequest> argument = ArgumentCaptor.forClass(GetItemRequest.class);
-        when(client.getItem(any(GetItemRequest.class))).thenReturn(getItemResponse);
+        when(dynamoDbClient.getItem(any(GetItemRequest.class))).thenReturn(getItemResponse);
 
         getItemResponse = urlDataService.getLongUrl(TINY_URL_ID);
 
-        verify(client, times(1)).getItem(argument.capture());
+        verify(dynamoDbClient, times(1)).getItem(argument.capture());
         Assertions.assertEquals(TINY_URL_ID, argument.getValue()
                 .key()
                 .get(DYNAMO_TABLE_ID)
@@ -70,10 +74,10 @@ public class UrlDataServiceTest {
     @Test
     public void verify_saveLongUrl() {
         ArgumentCaptor<PutItemRequest> argument = ArgumentCaptor.forClass(PutItemRequest.class);
-        when(client.putItem(any(PutItemRequest.class))).thenReturn(putItemResponse);
+        when(dynamoDbClient.putItem(any(PutItemRequest.class))).thenReturn(putItemResponse);
         PutItemResponse putItemResponse = urlDataService.saveLongUrl(TINY_URL_ID, LONG_URL_INPUT);
 
-        verify(client, times(1)).putItem(argument.capture());
+        verify(dynamoDbClient, times(1)).putItem(argument.capture());
         Assertions.assertEquals(TINY_URL_ID, argument.getValue()
                 .item()
                 .get(DYNAMO_TABLE_ID)

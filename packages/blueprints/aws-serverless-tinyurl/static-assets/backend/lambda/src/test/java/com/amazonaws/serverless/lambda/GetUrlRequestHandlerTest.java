@@ -5,14 +5,15 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
@@ -23,25 +24,24 @@ import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class GetUrlRequestHandlerTest {
-
-    GetUrlRequestHandler handler;
-    UrlDataService urlDataService;
-    APIGatewayProxyRequestEvent request;
-    Gson gson;
-    Context context;
+    @Mock
+    private UrlDataService urlDataService;
+    @Mock
+    private Context context;
+    @Mock
+    private LambdaLogger logger;
+    private GetUrlRequestHandler handler;
+    private APIGatewayProxyRequestEvent request;
 
     @BeforeEach
-    public void prepare() throws NoSuchFieldException, IllegalAccessException {
-        urlDataService = mock(UrlDataService.class);
+    public void prepare() {
         handler = new GetUrlRequestHandler(urlDataService);
         request = new APIGatewayProxyRequestEvent();
-        gson = new Gson();
-        context = mock(Context.class);
-        when(context.getLogger()).thenReturn(mock(LambdaLogger.class));
+        when(context.getLogger()).thenReturn(logger);
     }
 
     @Test
