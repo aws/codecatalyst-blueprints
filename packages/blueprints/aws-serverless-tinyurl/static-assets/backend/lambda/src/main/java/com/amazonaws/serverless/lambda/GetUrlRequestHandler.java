@@ -21,10 +21,10 @@ public class GetUrlRequestHandler implements RequestHandler<APIGatewayProxyReque
     public GetUrlRequestHandler() {
         this(new UrlDataService());
     }
-    GetUrlRequestHandler(UrlDataService urlDataService) {
+    GetUrlRequestHandler(final UrlDataService urlDataService) {
         this.urlDataService = urlDataService;
     }
-    private UrlDataService urlDataService;
+    private final UrlDataService urlDataService;
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {

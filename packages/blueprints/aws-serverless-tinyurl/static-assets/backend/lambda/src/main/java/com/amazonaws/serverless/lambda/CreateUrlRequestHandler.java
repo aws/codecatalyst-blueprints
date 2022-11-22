@@ -23,11 +23,11 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
     public CreateUrlRequestHandler() {
         this(new UrlDataService());
     }
-    CreateUrlRequestHandler(UrlDataService urlDataService) {
+    CreateUrlRequestHandler(final UrlDataService urlDataService) {
         this.urlDataService = urlDataService;
     }
 
-    private UrlDataService urlDataService;
+    private final UrlDataService urlDataService;
     private static final Gson GSON = new Gson();
 
     @Override
