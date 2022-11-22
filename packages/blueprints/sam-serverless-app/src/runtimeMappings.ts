@@ -61,6 +61,22 @@ export const runtimeMappings: RuntimeMap = {
           return new StaticAsset('maven/.vscode/extensions.json').toString();
         },
       },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.cloud9/runners/SAM Project Test Runner.run').toString();
+        },
+      },
     ],
     filesToOverride: [
       {
@@ -123,6 +139,22 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(): string {
           return new StaticAsset('gradle/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
@@ -194,6 +226,22 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(): string {
           return new StaticAsset('nodejs/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
@@ -292,6 +340,22 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(): string {
           return new StaticAsset('python/.vscode/settings.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
