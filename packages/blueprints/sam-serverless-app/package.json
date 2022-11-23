@@ -37,13 +37,11 @@
     "@caws-blueprint-util/projen-blueprint": "0.1.x",
     "@types/jest": "*",
     "@types/node": "^14",
-    "globule": "*",
     "jest": "*",
     "jest-junit": "^13",
     "npm-check-updates": "^15",
     "projen": "*",
     "standard-version": "^9",
-    "ts-deepmerge": "*",
     "ts-jest": "*",
     "ts-node": "^10",
     "typescript": "*"
@@ -68,7 +66,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1234",
+  "version": "0.0.1236",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

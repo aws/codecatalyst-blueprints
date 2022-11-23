@@ -1,5 +1,4 @@
 import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
-
 const project = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'sam-serverless-application',
@@ -9,14 +8,6 @@ const project = new ProjenBlueprint({
   github: false,
   eslint: false,
   jest: true,
-  blueprintSnapshotConfiguration: {
-    enableSnapshotTesting: true,
-    snapshotGlobs: [
-      '**',
-      '!environments/**',
-      '!aws-account-to-environment/**',
-    ],
-  },
   npmignoreEnabled: true,
   authorName: 'Amazon Web Services',
   tsconfig: {
