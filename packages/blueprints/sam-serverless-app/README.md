@@ -9,8 +9,8 @@ applications, see the
 
 The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
 After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
-project. After your workflow runs successfully, your deployed AWS Cloud Development Kit (CDK) application URL is available under the output for your
-workflow.
+project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html)
+application URL is available under the output for your workflow.
 
 ### Architecture overview
 
@@ -26,8 +26,8 @@ You can choose any of the above as the programming language.
 
 ### Connections and permissions
 
-You configure your AWS account connection from the **AWS accounts** settings in your Amazon CodeCatalyst Space settings. AWS IAM roles added to
-the account extension can be used to authorize project workflows to access AWS account resources.
+You configure your AWS account connection from the **AWS accounts** settings in your Amazon CodeCatalyst Space settings. AWS IAM roles added to the
+account extension can be used to authorize project workflows to access AWS account resources.
 
 The SAM application requires multiple IAM roles to build and deploy the application:
 
