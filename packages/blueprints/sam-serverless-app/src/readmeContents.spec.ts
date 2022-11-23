@@ -25,15 +25,15 @@ describe('readme contents', () => {
     });
 
     it('incorporates runtimeMapping param', () => {
-      expect(readmeContents).toContain(`${runtimeMapping.srcCodePath} - Code for the Lambda function`);
+      expect(readmeContents).toContain(`\`${runtimeMapping.srcCodePath}\` - Code for the AWS Lambda function`);
     });
 
     it('incorporates defaultReleaseBranch param', () => {
-      expect(readmeContents).toContain('The workflow is triggered by pushes to the `test-release-branch` of the source repository');
+      expect(readmeContents).toContain('The workflow is triggered by pushes to the `test-release-branch` branch of the source repository');
     });
 
     it('incorporates lambdas param', () => {
-      expect(readmeContents).toContain('lambda1, lambda2 - Source code');
+      expect(readmeContents).toContain('`lambda1, lambda2` - Source code');
     });
 
     it('incorporates environment param', () => {
@@ -41,7 +41,7 @@ describe('readme contents', () => {
     });
 
     it('incorporates cloudFormationStackName param', () => {
-      expect(readmeContents).toContain('using the cloudformation stack `test-cfn-stack-name');
+      expect(readmeContents).toContain('using the `test-cfn-stack-name` AWS Cloudformation stack');
     });
 
     it('incorporates workflowName param', () => {
