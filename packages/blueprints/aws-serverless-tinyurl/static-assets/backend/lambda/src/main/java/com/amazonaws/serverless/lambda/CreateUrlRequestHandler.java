@@ -1,8 +1,9 @@
 package com.amazonaws.serverless.lambda;
 
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.serverless.lambda.model.TinyUrl;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
@@ -18,22 +19,23 @@ import static com.amazonaws.serverless.lambda.HandlerConstants.LONG_URL;
 import static com.amazonaws.serverless.lambda.HandlerConstants.ORIGIN;
 import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
 
-public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class CreateUrlRequestHandler extends TinyUrlRequestHandler {
 
     public CreateUrlRequestHandler() {
-        this(new UrlDataService());
-    }
-    CreateUrlRequestHandler(final UrlDataService urlDataService) {
-        this.urlDataService = urlDataService;
+        super();
     }
 
-    private final UrlDataService urlDataService;
+    CreateUrlRequestHandler(final UrlDataService urlDataService) {
+        super(urlDataService);
+    }
+
     private static final Gson GSON = new Gson();
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         LambdaLogger logger = context.getLogger();
+        logger.log(input.toString());
         try {
             Map<String, String> payload = GSON.fromJson(input.getBody(), Map.class);
 
@@ -45,7 +47,7 @@ public class CreateUrlRequestHandler implements RequestHandler<APIGatewayProxyRe
             String shortId = shortenUrl(longUrl);
             logger.log("Shortened to " + shortId);
 
-            this.urlDataService.saveLongUrl(shortId, payload.get(LONG_URL));
+            this.getUrlDataService().saveLongUrl(new TinyUrl(shortId, payload.get(LONG_URL)));
             logger.log(input.getHeaders()
                     .toString());
 

@@ -7,6 +7,5 @@ public class TestConstants {
     public static final String LONG_URL = "longUrl";
     public static final String ORIGIN_URL = "https://aws.com";
     public static final String TINY_URL_ID = "lzbfxd8mrui8";
-    public static final String DYNAMO_TABLE_URL = "url";
     public static final String ORIGIN = "origin";
 }

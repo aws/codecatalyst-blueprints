@@ -6,4 +6,7 @@
 
 <suppressions>
 	<suppress checks="Javadoc" files="."/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="DesignForExtension" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.TinyUrlRequestHandler"/>
 </suppressions>

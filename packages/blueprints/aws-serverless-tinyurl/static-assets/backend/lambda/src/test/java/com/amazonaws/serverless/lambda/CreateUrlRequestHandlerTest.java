@@ -1,6 +1,7 @@
 package com.amazonaws.serverless.lambda;
 
 
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
@@ -57,7 +58,18 @@ public class CreateUrlRequestHandlerTest {
 
     @Test
     public void verify_handleRequest_with_null_input() {
-        request.setBody(null);
+        String body = GSON.toJson(Collections.singletonMap(LONG_URL, null));
+        request.setBody(body);
+        request.setHeaders(Collections.singletonMap(ORIGIN, ORIGIN_URL));
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_INTERNAL_ERROR);
+        Assertions.assertEquals(response.getBody(), "Error occurred while generating the tiny URL");
+    }
+
+    @Test
+    public void verify_handleRequest_with_empty_input() {
+        String body = GSON.toJson(Collections.singletonMap(LONG_URL, ""));
+        request.setBody(body);
         request.setHeaders(Collections.singletonMap(ORIGIN, ORIGIN_URL));
         APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
         Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_INTERNAL_ERROR);
