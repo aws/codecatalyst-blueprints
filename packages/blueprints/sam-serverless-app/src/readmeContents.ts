@@ -226,6 +226,13 @@ Triggers can be code pushes to a source repository branch or a pull request bein
 The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`${environment.name}\` using the \`${cloudFormationStackName}\` AWS Cloudformation stack.
 For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
 
+If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
+\`\`\`
+  cd .aws-sam/build/
+  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
+  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+\`\`\`
+
 ## Additional Resources
 See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
 `;
