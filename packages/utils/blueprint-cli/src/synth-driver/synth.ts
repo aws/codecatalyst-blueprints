@@ -9,28 +9,39 @@ import { writeSynthDriver } from './driver';
 export interface SynthesizeOptions extends yargs.Arguments {
   blueprint: string;
   outdir: string;
+  outdirExact: boolean;
+  enableStableSynthesis: boolean;
   cache: boolean;
   options?: string;
 }
 
-export async function synth(log: pino.BaseLogger, blueprint: string, outdir: string, useCache: boolean, options?: string): Promise<void> {
+export async function synth(
+  log: pino.BaseLogger,
+  { blueprint, outdir, outdirExact, enableStableSynthesis, useCache, options }: SynthesizeOptions,
+): Promise<void> {
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
     process.exit(255);
   }
 
   const synthEntropy = String(Math.floor(Date.now() / 100));
-  const synthDirectory = path.resolve(path.join(outdir, 'synth', synthEntropy));
-  const stableSynthDirectory = path.resolve(path.join(outdir, 'synth', '00.latest.synth'));
+  const synthDirectory = outdirExact
+    ? path.resolve(outdir)
+    : path.resolve(path.join(outdir, 'synth', synthEntropy));
+  const withStableSynthDirectory = (f) => {
+    if (enableStableSynthesis) {
+      return f(path.resolve(path.join(outdir, 'synth', '00.latest.synth')));
+    }
+  };
 
   cp.execSync(`mkdir -p ${synthDirectory}`, {
     stdio: 'inherit',
-    cwd: outdir,
   });
 
-  cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
-    stdio: 'inherit',
-    cwd: outdir,
+  withStableSynthDirectory((stableSynthDirectory) => {
+    cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
+      stdio: 'inherit',
+    });
   });
 
   let loadedOptions = {};
@@ -71,13 +82,15 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
       useNode: true,
     });
 
-    doSynthesis(log, blueprint, 'STABLE CACHE', {
-      driverFile: synthExecutionFile,
-      options: loadedOptions,
-      outputDirectory: stableSynthDirectory,
-      entropy: synthEntropy,
-      commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
-      useNode: true,
+    withStableSynthDirectory((stableSynthDirectory) => {
+      doSynthesis(log, blueprint, 'STABLE CACHE', {
+        driverFile: synthExecutionFile,
+        options: loadedOptions,
+        outputDirectory: stableSynthDirectory,
+        entropy: synthEntropy,
+        commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+        useNode: true,
+      });
     });
   } else {
     const driverFile = path.join(blueprint, 'synth-driver.ts');
@@ -92,12 +105,14 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
         entropy: synthEntropy,
       });
 
-      doSynthesis(log, blueprint, 'STABLE', {
-        driverFile,
-        options: loadedOptions,
-        outputDirectory: stableSynthDirectory,
-        entropy: synthEntropy,
-        commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+      withStableSynthDirectory((stableSynthDirectory) => {
+        doSynthesis(log, blueprint, 'STABLE', {
+          driverFile,
+          options: loadedOptions,
+          outputDirectory: stableSynthDirectory,
+          entropy: synthEntropy,
+          commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+        });
       });
     } catch (e) {
       throw e;
