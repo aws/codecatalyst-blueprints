@@ -47,7 +47,7 @@
     "projen": "*",
     "standard-version": "^9",
     "ts-jest": "*",
-    "ts-loader": "*",
+    "ts-loader": "^9.4.1",
     "ts-node": "^10",
     "typescript": "^4.5.5"
   },
@@ -65,7 +65,7 @@
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

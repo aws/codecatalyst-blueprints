@@ -60,7 +60,7 @@ export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: 
       ast = ast.replace(`"comment":"${inlinePolicyFile}"`, `"comment":${JSON.stringify(policy)}`);
     }
 
-    const trustPolicyFile = node?.jsDoc?.tags![`${INLINE_POLICY_ANNOTATION}`];
+    const trustPolicyFile = node?.jsDoc?.tags![`${TRUSTPOLICY_POLICY_ANNOTATION}`];
     if (trustPolicyFile) {
       const policy = supportInlineJson(log, TRUSTPOLICY_POLICY_ANNOTATION, node, blueprint);
       ast = ast.replace(`"comment":"${trustPolicyFile}"`, `"comment":${JSON.stringify(policy)}`);
