@@ -1,13 +1,8 @@
 import { BlueprintSnapshotConfiguration } from '../blueprint';
 
-const DEFAULT_GLOBS = [
-  '**',
-];
+const DEFAULT_GLOBS = ['**'];
 
-export function generateSnapshotInfraFile(
-  testingConfig: BlueprintSnapshotConfiguration,
-  srcDir: string,
-  configsSubdir: string): string {
+export function generateSnapshotInfraFile(testingConfig: BlueprintSnapshotConfiguration, srcDir: string, configsSubdir: string): string {
   return `
 import * as fs from 'fs';
 import * as fsPromises from 'fs/promises';
