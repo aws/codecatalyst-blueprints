@@ -32,7 +32,7 @@ describe('Blueprint snapshots for test configurations', () => {
         console.debug(\`Wrote snapshot config to \${configOutfile}\`);
 
         // Synthesize using the Blueprint CLI
-        const synthCmd = \`npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir \${blueprintOutdir} --options \${configOutfile}\`;
+        const synthCmd = \`npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir \${blueprintOutdir} --defaults \${configOutfile}\`;
         console.debug(\`Synthesis command: \${synthCmd}\`);
 
         let synthBuffer;
