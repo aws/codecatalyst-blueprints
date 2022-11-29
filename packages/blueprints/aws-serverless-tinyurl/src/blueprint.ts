@@ -222,7 +222,10 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: ["find * -maxdepth 0 -name 'backend' -prune -o -exec rm -rf '{}' ';'", 'mv backend/* .', 'mvn package -Dmaven.test.skip'],
+      steps: [
+        'mv backend/* .',
+        'mvn package -Dmaven.test.skip',
+      ],
     });
 
     // To verify the backend unit tests
@@ -256,7 +259,11 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: ['cd backend', 'mvn verify', 'sh jacocoConsoleReporter.sh'],
+      steps: [
+        'cd backend',
+        'mvn verify',
+        'sh jacocoConsoleReporter.sh',
+      ],
     });
 
     // To bootstrap and deploy the backend service
@@ -321,20 +328,12 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
       steps: [
-        'mv frontend frontend-src',
-        'cd frontend-src',
+        'cd frontend',
         'npm install',
         'echo "REACT_APP_SERVICE_URL=/t" > ".env"',
         'npm run build',
-        'mkdir -p cdk/frontend/build',
-        'mv build/* cdk/frontend/build/',
-        'mkdir -p cdk/frontend/build/canary',
-        'mv canary/* cdk/frontend/build/canary',
-        "find * -maxdepth 0 -name 'cdk' -prune -o -exec rm -rf '{}' ';'",
-        'mv cdk/* .',
-        'cd ..',
-        "find * -maxdepth 0 -name 'frontend-src' -prune -o -exec rm -rf '{}' ';'",
-        'mv frontend-src/* .',
+        'cp -r canary build',
+        'mv cdk/* ..',
       ],
     });
 
@@ -362,7 +361,11 @@ export class Blueprint extends ParentBlueprint {
           Enabled: true,
         },
       },
-      steps: ['cd frontend', 'npm install', 'npm test -- --coverage --watchAll=false;'],
+      steps: [
+        'cd frontend',
+        'npm install',
+        'npm test -- --coverage --watchAll=false;',
+      ],
     });
 
     // To bootstrap and deploy the frontend
