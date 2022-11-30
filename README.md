@@ -2,6 +2,8 @@
 
 [Documentation and wiki](https://github.com/aws/caws-blueprints/wiki)
 
+[Other blueprint repos](https://github.com/orgs/aws/teams/amazon-blueprints-contributors/repositories)
+
 ## Set Up 
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
