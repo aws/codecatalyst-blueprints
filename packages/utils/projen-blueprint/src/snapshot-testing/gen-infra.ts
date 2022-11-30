@@ -5,7 +5,6 @@ const DEFAULT_GLOBS = ['**'];
 export function generateSnapshotInfraFile(testingConfig: BlueprintSnapshotConfiguration, srcDir: string, configsSubdir: string): string {
   return `
 import * as fs from 'fs';
-import * as fsPromises from 'fs/promises';
 import * as globule from 'globule';
 import * as path from 'path';
 import merge from 'ts-deepmerge';
@@ -47,10 +46,13 @@ interface BlueprintOutputFile {
   relPath: string;
 }
 
-async function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): AsyncGenerator<BlueprintOutputFile> {
-  for (const entry of await fsPromises.readdir(absCurrentRootPath)) {
+/**
+ * This function is synchronous because we need synchronous behavior for Jest.
+ */
+function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): Generator<BlueprintOutputFile> {
+  for (const entry of fs.readdirSync(absCurrentRootPath)) {
     const entryWithAbsPath = path.resolve(absCurrentRootPath, entry);
-    if ((await fsPromises.stat(entryWithAbsPath)).isDirectory()) {
+    if ((fs.statSync(entryWithAbsPath)).isDirectory()) {
       yield* getAllNestedFiles(absOriginalRootPath, entryWithAbsPath);
     } else {
       const relPathToEntry = path.relative(absOriginalRootPath, absCurrentRootPath);

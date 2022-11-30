@@ -95,7 +95,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         }
       }
       if (finalOpts.jest) {
-        testTask.exec('jest --ci --passWithNoTests');
+        testTask.exec('jest --ci --passWithNoTests --verbose');
       }
     }
 
