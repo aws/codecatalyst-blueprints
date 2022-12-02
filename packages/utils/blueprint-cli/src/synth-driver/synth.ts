@@ -9,42 +9,57 @@ import { writeSynthDriver } from './driver';
 export interface SynthesizeOptions extends yargs.Arguments {
   blueprint: string;
   outdir: string;
+  outdirExact: boolean;
+  enableStableSynthesis: boolean;
   cache: boolean;
-  options?: string;
+  defaults?: string;
 }
 
-export async function synth(log: pino.BaseLogger, blueprint: string, outdir: string, useCache: boolean, options?: string): Promise<void> {
+export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOptions): Promise<void> {
+  const { blueprint, outdir, outdirExact, enableStableSynthesis, cache, defaults } = synthOptions;
+  console.log(`cache ${cache}`);
+
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
     process.exit(255);
   }
 
   const synthEntropy = String(Math.floor(Date.now() / 100));
-  const synthDirectory = path.resolve(path.join(outdir, 'synth', synthEntropy));
-  const stableSynthDirectory = path.resolve(path.join(outdir, 'synth', '00.latest.synth'));
+  let synthDirectory = '';
+  if (outdirExact) {
+    synthDirectory = outdir;
+  } else {
+    synthDirectory = path.resolve(path.join(outdir, 'synth', synthEntropy));
+  }
+
+  let stableSynthDirectory: string | undefined = undefined;
+  if (enableStableSynthesis) {
+    stableSynthDirectory = path.resolve(path.join(outdir, 'synth', '00.latest.synth'));
+  }
 
   cp.execSync(`mkdir -p ${synthDirectory}`, {
     stdio: 'inherit',
-    cwd: outdir,
   });
 
-  cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
-    stdio: 'inherit',
-    cwd: outdir,
-  });
+  if (stableSynthDirectory) {
+    cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
+      stdio: 'inherit',
+    });
+  }
 
   let loadedOptions = {};
-  if (options) {
-    if (!fs.existsSync(options)) {
-      log.error('options file did not exist: %s', options);
+  if (defaults) {
+    if (!fs.existsSync(defaults)) {
+      log.error('defaults file did not exist: %s', defaults);
       process.exit(255);
     }
     loadedOptions = {
-      ...JSON.parse(fs.readFileSync(options, 'utf-8')),
+      ...JSON.parse(fs.readFileSync(defaults, 'utf-8')),
     };
   }
 
-  if (useCache) {
+  console.log(`usage cache?, ${cache}`);
+  if (cache) {
     const buildDirectory = path.join(blueprint, 'lib');
     const builtEntryPoint = './index.js';
     log.debug('Creating cache from built: %s', buildDirectory);
@@ -71,14 +86,16 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
       useNode: true,
     });
 
-    doSynthesis(log, blueprint, 'STABLE CACHE', {
-      driverFile: synthExecutionFile,
-      options: loadedOptions,
-      outputDirectory: stableSynthDirectory,
-      entropy: synthEntropy,
-      commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
-      useNode: true,
-    });
+    if (stableSynthDirectory) {
+      doSynthesis(log, blueprint, 'STABLE CACHE', {
+        driverFile: synthExecutionFile,
+        options: loadedOptions,
+        outputDirectory: stableSynthDirectory,
+        entropy: synthEntropy,
+        commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+        useNode: true,
+      });
+    }
   } else {
     const driverFile = path.join(blueprint, 'synth-driver.ts');
     console.log(driverFile);
@@ -92,13 +109,15 @@ export async function synth(log: pino.BaseLogger, blueprint: string, outdir: str
         entropy: synthEntropy,
       });
 
-      doSynthesis(log, blueprint, 'STABLE', {
-        driverFile,
-        options: loadedOptions,
-        outputDirectory: stableSynthDirectory,
-        entropy: synthEntropy,
-        commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
-      });
+      if (stableSynthDirectory) {
+        doSynthesis(log, blueprint, 'STABLE', {
+          driverFile,
+          options: loadedOptions,
+          outputDirectory: stableSynthDirectory,
+          entropy: synthEntropy,
+          commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
+        });
+      }
     } catch (e) {
       throw e;
     } finally {
@@ -129,9 +148,15 @@ function doSynthesis(
   },
 ) {
   const runtime = options.useNode ? 'node' : 'ts-node';
-  const synthCommand = `${options.commandPrefix || ''}npx ${runtime} ${options.driverFile} '${JSON.stringify(options.options)}' '${
-    options.outputDirectory
-  }' '${options.entropy}'`;
+  const synthCommand = [
+    `${options.commandPrefix || ''}`,
+    `npx ${runtime} `,
+    `${options.driverFile} `,
+    `'${JSON.stringify(options.options)}' `,
+    `'${options.outputDirectory}' `,
+    `'${options.entropy}'`,
+  ].join('');
+
   logger.debug(`[${jobname}] Synthesis Command: ${synthCommand}`);
   cp.execSync(synthCommand, {
     stdio: 'inherit',

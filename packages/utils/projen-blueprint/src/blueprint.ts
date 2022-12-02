@@ -2,6 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript } from 'projen';
 
+import { cleanUpTestSnapshotInfraFiles, generateTestSnapshotInfraFiles } from './test-snapshot';
+
+export interface BlueprintSnapshotConfiguration {
+  enableSnapshotTesting: boolean;
+  snapshotGlobs?: string[];
+}
+
 export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
   /**
    * List of media url links
@@ -21,6 +28,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * Override package version. I hope you know what you're doing.
    */
   readonly overridePackageVersion?: string;
+
+  /**
+   * Blueprint snapshot configuration
+   */
+  readonly blueprintSnapshotConfiguration?: BlueprintSnapshotConfiguration;
 }
 
 const DEFAULT_OPTS = {
@@ -71,32 +83,21 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // this param in an idiomatic way:
     // https://github.com/projen/projen/commit/c84c8f9a64d95c5b6c0d0f20d156f94c5a7f90f2
     // Until then, we remove this argument manually.
-    //
-    // We cannot update the *test* task without removing it (https://github.com/projen/projen/issues/2243), and we
-    // cannot remove it without removing the *build* task too, since there is a dependency.
-    this.removeTask('build');
-    this.removeTask('test');
-    const testOpts = {
-      description: 'Run tests',
-      steps: [
-        (finalOpts.eslint ? { spawn: 'eslint' } : {}),
-        (finalOpts.jest ? { exec: 'jest --passWithNoTests' } : {}),
-      ],
-    };
-    this.addTask('test', testOpts);
-    // Re-add the *build* task just as it was originally:
-    // https://github.com/projen/projen/blob/98b1abc07335bbad3384484591344e6f7dffc70c/src/project-build.ts#L70
-    this.addTask('build', {
-      description: 'Full release build',
-      steps: [
-        { spawn: 'default' },
-        { spawn: 'pre-compile' },
-        { spawn: 'compile' },
-        { spawn: 'post-compile' },
-        { spawn: 'test' },
-        { spawn: 'package' },
-      ],
-    });
+    const testTask = this.tasks.tryFind('test');
+    if (testTask) {
+      testTask.reset();
+      // The following logic is a simplification of what Projen does, so there may be projects where
+      // the updated jest invocation doesn't work, but it works well enough for our blueprints.
+      if (finalOpts.eslint) {
+        const eslintTask = this.tasks.tryFind('eslint');
+        if (eslintTask) {
+          testTask.spawn(eslintTask);
+        }
+      }
+      if (finalOpts.jest) {
+        testTask.exec('jest --ci --passWithNoTests');
+      }
+    }
 
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
@@ -135,5 +136,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     // force the static assets to always be fully included, regardless of .npmignores
     this.package.addField('files', ['static-assets', 'lib']);
+
+    if (finalOpts.jest && finalOpts.blueprintSnapshotConfiguration?.enableSnapshotTesting) {
+      this.addDevDeps('globule');
+      this.addDevDeps('ts-deepmerge');
+      generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+    } else {
+      cleanUpTestSnapshotInfraFiles();
+    }
   }
 }

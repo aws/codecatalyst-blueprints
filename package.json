@@ -13,8 +13,7 @@
     "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
     "components-utils:publish": "yarn components:publish && yarn utils:publish",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview",
-    "blueprints:release:gamma": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release",
-    "blueprints:release:prod": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release --endpoint public.api.quokka.codes",
+    "blueprints:preview:prod": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview:prod",
     "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth",
     "blueprints:synth:cache": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth:cache"
   },
@@ -39,7 +38,7 @@
     "husky": "^4.3.8",
     "prettier": "^2.6.0",
     "pretty-quick": "^3.1.3",
-    "ts-loader": "^8.0.5",
+    "ts-loader": "^9.4.1",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.0.3",
     "webpack": "^5.62.1",
