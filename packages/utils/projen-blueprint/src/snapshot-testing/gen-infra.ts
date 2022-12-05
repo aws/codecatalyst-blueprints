@@ -1,13 +1,8 @@
 import { BlueprintSnapshotConfiguration } from '../blueprint';
 
-const DEFAULT_GLOBS = [
-  '**',
-];
+const DEFAULT_GLOBS = ['**'];
 
-export function generateSnapshotInfraFile(
-  testingConfig: BlueprintSnapshotConfiguration,
-  srcDir: string,
-  configsSubdir: string): string {
+export function generateSnapshotInfraFile(testingConfig: BlueprintSnapshotConfiguration, srcDir: string, configsSubdir: string): string {
   return `
 import * as fs from 'fs';
 import * as fsPromises from 'fs/promises';
@@ -78,8 +73,10 @@ export function getAllBlueprintSnapshottedFilenames(outdir: string) {
   return getAllNestedFiles(outdir, outdir);
 }
 
-export function prepareNewOutdir(): string {
-  const outdir = fs.mkdtempSync('unittest-outdir-');
+// We'll incorporate the given hint into the filename, to help disambiguate
+// if the consumer wants multiple directories.
+export function prepareTempDir(hint: string): string {
+  const outdir = fs.mkdtempSync(\`outdir-test-\${hint}\`);
   console.debug(\`outdir: \${outdir}\`);
 
   // Clean up the directory. If we don't clean up, then \`mkdirSync\` will throw an error.
@@ -90,7 +87,7 @@ export function prepareNewOutdir(): string {
   return outdir;
 }
 
-export function cleanUpOutdir(outdir: string): void {
+export function cleanUpTempDir(outdir: string): void {
   console.debug(\`cleaning up outdir: \${outdir}\`);
   fs.rmSync(outdir, { force: true, recursive: true });
 }
