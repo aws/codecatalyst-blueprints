@@ -11,6 +11,8 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 #### Prereq:
 
+Make sure you have `toolbox` and `ada` [installed](https://builderhub.corp.amazon.com/docs/builder-toolbox/user-guide/getting-started.html).
+
 Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
