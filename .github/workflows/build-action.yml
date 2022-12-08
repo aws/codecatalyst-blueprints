@@ -21,6 +21,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
-      - run: yarn
+      - run: yarn --immutable-cache
       - run: yarn build
       - run: export PROJEN_DISABLE_POST=1 && yarn blueprints:synth:cache
