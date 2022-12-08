@@ -22,7 +22,8 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "*",
+    "@caws-blueprint-util/projen-blueprint-component": "0.1.x",
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -38,10 +39,10 @@
     "typescript": "^4.5.5"
   },
   "peerDependencies": {
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
     "projen": "^0.61.44"
   },
   "dependencies": {
-    "@caws-blueprint/blueprints.blueprint": "0.0.x",
     "@types/glob": "*",
     "camelcase": "5.3.x",
     "decamelize": "5.0.x",
@@ -50,7 +51,7 @@
   },
   "main": "lib/index.js",
   "license": "MIT",
-  "version": "0.0.16",
+  "version": "0.1.12",
   "types": "lib/index.d.ts",
   "preferGlobal": true,
   "resolutions": {

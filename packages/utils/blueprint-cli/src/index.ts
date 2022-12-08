@@ -5,6 +5,7 @@ import * as yargs from 'yargs';
 
 import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
+import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
@@ -32,6 +33,16 @@ yargs
           type: 'string',
           demandOption: true,
         })
+        .option('outdirExact', {
+          default: false,
+          describe: 'use given `outdir` exactly, without adding entropy and without using a stable directory',
+          type: 'boolean',
+        })
+        .option('enableStableSynthesis', {
+          default: true,
+          describe: 'in addition to regular synthesis, synthesize in a stable directory using a stable cache',
+          type: 'boolean',
+        })
         .option('defaults', {
           description: 'path to defaults.json to feed default values into synthesis',
           type: 'string',
@@ -43,13 +54,13 @@ yargs
         });
     },
     handler: async (argv: SynthesizeOptions): Promise<void> => {
-      await synth(log, argv.blueprint, argv.outdir, argv.cache, argv.options);
+      await synth(log, argv);
       process.exit(0);
     },
   })
   .command({
     command: 'publish <blueprint>',
-    describe: 'publishes a bueprint',
+    describe: 'publishes a blueprint',
     builder: (args: yargs.Argv<unknown>) => {
       return args
         .positional('blueprint', {
@@ -128,6 +139,31 @@ yargs
         log.error(JSON.stringify(errors, null, 2));
         process.exit(1);
       }
+      process.exit(0);
+    },
+  })
+  .command({
+    command: 'upload-image-public <pathToImage>',
+    describe: 'uploads an image publicly and returns its URL. This uses your current AWS credentials',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .positional('pathToImage', {
+          describe: 'path to the image',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('bucket', {
+          describe: 'name of bucket to create',
+          type: 'string',
+          demandOption: false,
+        });
+    },
+    handler: async (argv: UploadOptions): Promise<void> => {
+      log.info(argv);
+      const { imageUrl, imageName } = await uploadImagePublicly(log, argv.pathToImage, {
+        bucketName: argv.bucket,
+      });
+      log.info(`URL to image '${imageName}': ${imageUrl} \n The URL might take a few minutes to be available.`);
       process.exit(0);
     },
   })
