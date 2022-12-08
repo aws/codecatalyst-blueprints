@@ -49,12 +49,11 @@
     "typescript": "*"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-environments": "^0.1.x",
-    "@caws-blueprint-component/caws-source-repositories": "^0.1.x",
-    "@caws-blueprint-component/caws-workflows": "^0.1.x",
-    "@caws-blueprint-component/caws-workspaces": "^0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "^0.0.x",
-    "projen": "^0.61.44"
+    "@caws-blueprint-component/caws-environments": "0.1.x",
+    "@caws-blueprint-component/caws-source-repositories": "0.1.x",
+    "@caws-blueprint-component/caws-workflows": "0.1.x",
+    "@caws-blueprint-component/caws-workspaces": "0.1.x",
+    "@caws-blueprint/blueprints.blueprint": "0.0.x"
   },
   "keywords": [
     "AWS CDK",
