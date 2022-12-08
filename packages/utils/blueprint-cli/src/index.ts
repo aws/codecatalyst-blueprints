@@ -33,6 +33,16 @@ yargs
           type: 'string',
           demandOption: true,
         })
+        .option('outdirExact', {
+          default: false,
+          describe: 'use given `outdir` exactly, without adding entropy and without using a stable directory',
+          type: 'boolean',
+        })
+        .option('enableStableSynthesis', {
+          default: true,
+          describe: 'in addition to regular synthesis, synthesize in a stable directory using a stable cache',
+          type: 'boolean',
+        })
         .option('defaults', {
           description: 'path to defaults.json to feed default values into synthesis',
           type: 'string',
@@ -44,7 +54,7 @@ yargs
         });
     },
     handler: async (argv: SynthesizeOptions): Promise<void> => {
-      await synth(log, argv.blueprint, argv.outdir, argv.cache, argv.options);
+      await synth(log, argv);
       process.exit(0);
     },
   })
