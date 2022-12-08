@@ -52,7 +52,7 @@ blueprints-setup() {
 }
 ```
 
-## Development
+## Development 
 
 Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 
