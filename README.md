@@ -11,7 +11,9 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 #### Prereq:
 
-Install these globally. These are requirements for various tooling to work properly and are available from public npm.
+(1) Make sure you have `toolbox` and `ada` [installed](https://builderhub.corp.amazon.com/docs/builder-toolbox/user-guide/getting-started.html).
+
+(2) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
 brew install nvm            # blueprints work only with Node 14.x
@@ -50,7 +52,7 @@ blueprints-setup() {
 }
 ```
 
-## Development
+## Development 
 
 Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 
