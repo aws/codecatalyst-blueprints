@@ -65,7 +65,7 @@ function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: str
         };
       }
       else {
-        console.debug(\`Skipping snapshot testing for <\${entryWithRelPath}> per .projenrc\`);
+        // console.debug(\`Skipping snapshot testing for <\${entryWithRelPath}> per .projenrc\`);
       }
     }
   }
@@ -79,7 +79,7 @@ export function getAllBlueprintSnapshottedFilenames(outdir: string) {
 // if the consumer wants multiple directories.
 export function prepareTempDir(hint: string): string {
   const outdir = fs.mkdtempSync(\`outdir-test-\${hint}\`);
-  console.debug(\`outdir: \${outdir}\`);
+  // console.debug(\`outdir: \${outdir}\`);
 
   // Clean up the directory. If we don't clean up, then \`mkdirSync\` will throw an error.
   fs.rmSync(outdir, { force: true, recursive: true });
@@ -90,7 +90,7 @@ export function prepareTempDir(hint: string): string {
 }
 
 export function cleanUpTempDir(outdir: string): void {
-  console.debug(\`cleaning up outdir: \${outdir}\`);
+  // console.debug(\`cleaning up outdir: \${outdir}\`);
   fs.rmSync(outdir, { force: true, recursive: true });
 }
 
