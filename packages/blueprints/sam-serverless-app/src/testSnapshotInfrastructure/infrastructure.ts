@@ -1,3 +1,4 @@
+
 import * as fs from 'fs';
 import * as globule from 'globule';
 import * as path from 'path';
@@ -8,7 +9,7 @@ import { Options } from '../blueprint';
 const PATH_TO_SRC = 'src';
 const PATH_TO_CONFIGS = path.join(PATH_TO_SRC, 'snapshot-configurations');
 // eslint-disable-next-line
-const GLOBS: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
+const GLOBS: string[] = ["**","!environments/**","!aws-account-to-environment/**"];
 
 type TestConfigFromFile = Omit<Options, 'outdir'>;
 
@@ -46,7 +47,7 @@ interface BlueprintOutputFile {
 function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): Generator<BlueprintOutputFile> {
   for (const entry of fs.readdirSync(absCurrentRootPath)) {
     const entryWithAbsPath = path.resolve(absCurrentRootPath, entry);
-    if (fs.statSync(entryWithAbsPath).isDirectory()) {
+    if ((fs.statSync(entryWithAbsPath)).isDirectory()) {
       yield* getAllNestedFiles(absOriginalRootPath, entryWithAbsPath);
     } else {
       const relPathToEntry = path.relative(absOriginalRootPath, absCurrentRootPath);
@@ -57,8 +58,9 @@ function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: str
           absPath: entryWithAbsPath,
           relPath: entryWithRelPath,
         };
-      } else {
-        console.debug(`Skipping snapshot testing for <${entryWithRelPath}> per .projenrc`);
+      }
+      else {
+        // console.debug(`Skipping snapshot testing for <${entryWithRelPath}> per .projenrc`);
       }
     }
   }
@@ -72,7 +74,7 @@ export function getAllBlueprintSnapshottedFilenames(outdir: string) {
 // if the consumer wants multiple directories.
 export function prepareTempDir(hint: string): string {
   const outdir = fs.mkdtempSync(`outdir-test-${hint}`);
-  console.debug(`outdir: ${outdir}`);
+  // console.debug(`outdir: ${outdir}`);
 
   // Clean up the directory. If we don't clean up, then `mkdirSync` will throw an error.
   fs.rmSync(outdir, { force: true, recursive: true });
@@ -83,7 +85,7 @@ export function prepareTempDir(hint: string): string {
 }
 
 export function cleanUpTempDir(outdir: string): void {
-  console.debug(`cleaning up outdir: ${outdir}`);
+  // console.debug(`cleaning up outdir: ${outdir}`);
   fs.rmSync(outdir, { force: true, recursive: true });
 }
 
