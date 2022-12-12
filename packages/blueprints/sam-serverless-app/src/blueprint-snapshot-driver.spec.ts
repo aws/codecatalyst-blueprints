@@ -16,11 +16,11 @@ function beforeAllSync(testConfig) {
   const configOutdir = prepareTempDir('config');
   const configOutfile = path.join(configOutdir, 'snap-config.json');
   fs.writeFileSync(configOutfile, JSON.stringify(options));
-  // console.debug(`Wrote snapshot config to ${configOutfile}`);
+  console.debug(`Wrote snapshot config to ${configOutfile}`);
 
   // Synthesize using the Blueprint CLI
   const synthCmd = `npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir ${blueprintOutdir} --defaults ${configOutfile}`;
-  // console.debug(`Synthesis command: ${synthCmd}`);
+  console.debug(`Synthesis command: ${synthCmd}`);
 
   let synthBuffer;
   try {
