@@ -11,7 +11,7 @@ import {
   addGenericBuildAction,
   addGenericCompute,
   addGenericCloudFormationDeployAction,
-  emptyWorkflow,
+  makeEmptyWorkflow,
   AutoDiscoverReportDefinition,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleDir, SampleFile } from 'projen';
@@ -225,7 +225,7 @@ export class Blueprint extends ParentBlueprint {
     const schemaVersion = '1.0';
 
     const workflowDefinition: WorkflowDefinition = {
-      ...emptyWorkflow,
+      ...makeEmptyWorkflow(),
       SchemaVersion: schemaVersion,
       Name: name,
     };
