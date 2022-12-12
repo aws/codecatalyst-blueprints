@@ -186,6 +186,7 @@ export class Blueprint extends ParentBlueprint {
         environment: this.options.environment,
         cloudFormationStackName: this.options.code.cloudFormationStackName,
         workflowName: workflowName,
+        sourceRepositoryName: this.repository.title,
       }),
     );
 
@@ -315,8 +316,12 @@ export class Blueprint extends ParentBlueprint {
   }): string {
     const sourceDir = path.join('/tmp/sam-lambdas', params.cacheDir);
 
-    cp.execFileSync('svn', ['checkout',`https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}}`,`${sourceDir}`]);
-    cp.execFileSync('rm', ['-rf',  `${sourceDir}/.svn`, `${sourceDir}/.gitignore`, `${sourceDir}/README.md`, `${sourceDir}/template.yaml`]);
+    cp.execFileSync('svn', [
+      'checkout',
+      `https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}}`,
+      `${sourceDir}`,
+    ]);
+    cp.execFileSync('rm', ['-rf', `${sourceDir}/.svn`, `${sourceDir}/.gitignore`, `${sourceDir}/README.md`, `${sourceDir}/template.yaml`]);
 
     // override any files that need to be overridden
     const overrideContext: FileTemplateContext = {

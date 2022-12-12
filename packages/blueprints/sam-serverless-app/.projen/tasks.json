@@ -131,7 +131,7 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests"
+          "exec": "jest --ci --passWithNoTests --verbose"
         }
       ]
     },

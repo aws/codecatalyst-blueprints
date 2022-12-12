@@ -10,6 +10,8 @@
 /.projen/tasks.json linguist-generated
 /LICENSE linguist-generated
 /package.json linguist-generated
+/src/blueprint-snapshot-driver.spec.ts linguist-generated
+/src/testSnapshotInfrastructure/infrastructure.ts linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
 /yarn.lock linguist-generated
