@@ -9,12 +9,7 @@ const project = new ProjenBlueprint({
   eslint: false,
   jest: true,
   blueprintSnapshotConfiguration: {
-    enableSnapshotTesting: true,
-    snapshotGlobs: [
-      '**',
-      '!environments/**',
-      '!aws-account-to-environment/**',
-    ],
+    snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
   },
   npmignoreEnabled: true,
   authorName: 'Amazon Web Services',
