@@ -5,7 +5,9 @@ import { typescript } from 'projen';
 import { cleanUpTestSnapshotInfraFiles, generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
-  enableSnapshotTesting: boolean;
+  /**
+   * Which file paths do you want to snapshot across
+   */
   snapshotGlobs?: string[];
 }
 
@@ -137,10 +139,15 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // force the static assets to always be fully included, regardless of .npmignores
     this.package.addField('files', ['static-assets', 'lib']);
 
-    if (finalOpts.jest && finalOpts.blueprintSnapshotConfiguration?.enableSnapshotTesting) {
-      this.addDevDeps('globule');
-      this.addDevDeps('ts-deepmerge');
-      generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+    if (finalOpts.blueprintSnapshotConfiguration) {
+      if (finalOpts.jest) {
+        this.addDevDeps('globule');
+        this.addDevDeps('ts-deepmerge');
+        generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+      } else {
+        console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
+        cleanUpTestSnapshotInfraFiles();
+      }
     } else {
       cleanUpTestSnapshotInfraFiles();
     }
