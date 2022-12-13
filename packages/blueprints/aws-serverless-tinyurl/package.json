@@ -53,20 +53,21 @@
     "@caws-blueprint-component/caws-source-repositories": "0.1.x",
     "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-component/caws-workspaces": "0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "0.0.x"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "projen": "*"
   },
   "keywords": [
-    "AWS CDK",
-    "AWS Lambda",
-    "AWS Serverless",
-    "Amazon API Gateway",
-    "Amazon CloudFormation",
-    "Amazon CloudWatch Synthetics",
-    "Amazon DynamoDB",
-    "Amazon S3",
-    "Fullstack",
-    "Java",
-    "Tiny URL Application"
+    "api-gateway",
+    "cdk",
+    "cloudformation",
+    "cloudwatch-synthetics",
+    "dava",
+    "dynamodb",
+    "fullstack",
+    "lambda",
+    "s3",
+    "serverless",
+    "tiny-url application"
   ],
   "main": "lib/index.js",
   "license": "MIT",

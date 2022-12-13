@@ -13,3 +13,5 @@ export function makeEmptyWorkflow(): WorkflowDefinition {
     Actions: {},
   };
 }
+
+export const emptyWorkflow = makeEmptyWorkflow();
