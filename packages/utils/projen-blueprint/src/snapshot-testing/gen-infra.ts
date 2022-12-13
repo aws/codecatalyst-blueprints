@@ -3,8 +3,7 @@ import { BlueprintSnapshotConfiguration } from '../blueprint';
 const DEFAULT_GLOBS = ['**'];
 
 export function generateSnapshotInfraFile(testingConfig: BlueprintSnapshotConfiguration, srcDir: string, configsSubdir: string): string {
-  return `
-import * as fs from 'fs';
+  return `import * as fs from 'fs';
 import * as globule from 'globule';
 import * as path from 'path';
 import merge from 'ts-deepmerge';
@@ -14,7 +13,7 @@ import { Options } from '../blueprint';
 const PATH_TO_SRC = '${srcDir}';
 const PATH_TO_CONFIGS = path.join(PATH_TO_SRC, '${configsSubdir}');
 // eslint-disable-next-line
-const GLOBS: string[] = ${JSON.stringify(testingConfig.snapshotGlobs ?? DEFAULT_GLOBS)};
+const GLOBS: string[] = [${(testingConfig.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(', ')}];
 
 type TestConfigFromFile = Omit<Options, 'outdir'>;
 
@@ -52,7 +51,7 @@ interface BlueprintOutputFile {
 function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): Generator<BlueprintOutputFile> {
   for (const entry of fs.readdirSync(absCurrentRootPath)) {
     const entryWithAbsPath = path.resolve(absCurrentRootPath, entry);
-    if ((fs.statSync(entryWithAbsPath)).isDirectory()) {
+    if (fs.statSync(entryWithAbsPath).isDirectory()) {
       yield* getAllNestedFiles(absOriginalRootPath, entryWithAbsPath);
     } else {
       const relPathToEntry = path.relative(absOriginalRootPath, absCurrentRootPath);
@@ -63,8 +62,7 @@ function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: str
           absPath: entryWithAbsPath,
           relPath: entryWithRelPath,
         };
-      }
-      else {
+      } else {
         // console.debug(\`Skipping snapshot testing for <\${entryWithRelPath}> per .projenrc\`);
       }
     }

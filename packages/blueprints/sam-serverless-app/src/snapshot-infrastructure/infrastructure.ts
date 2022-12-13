@@ -1,4 +1,3 @@
-
 import * as fs from 'fs';
 import * as globule from 'globule';
 import * as path from 'path';
@@ -9,7 +8,7 @@ import { Options } from '../blueprint';
 const PATH_TO_SRC = 'src';
 const PATH_TO_CONFIGS = path.join(PATH_TO_SRC, 'snapshot-configurations');
 // eslint-disable-next-line
-const GLOBS: string[] = ["**","!environments/**","!aws-account-to-environment/**"];
+const GLOBS: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
 
 type TestConfigFromFile = Omit<Options, 'outdir'>;
 
@@ -47,7 +46,7 @@ interface BlueprintOutputFile {
 function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): Generator<BlueprintOutputFile> {
   for (const entry of fs.readdirSync(absCurrentRootPath)) {
     const entryWithAbsPath = path.resolve(absCurrentRootPath, entry);
-    if ((fs.statSync(entryWithAbsPath)).isDirectory()) {
+    if (fs.statSync(entryWithAbsPath).isDirectory()) {
       yield* getAllNestedFiles(absOriginalRootPath, entryWithAbsPath);
     } else {
       const relPathToEntry = path.relative(absOriginalRootPath, absCurrentRootPath);
@@ -58,8 +57,7 @@ function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: str
           absPath: entryWithAbsPath,
           relPath: entryWithRelPath,
         };
-      }
-      else {
+      } else {
         // console.debug(`Skipping snapshot testing for <${entryWithRelPath}> per .projenrc`);
       }
     }

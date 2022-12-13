@@ -6,7 +6,7 @@ import { generateSnapshotInfraFile } from './snapshot-testing/gen-infra';
 import { generateSpecTs } from './snapshot-testing/gen-spec';
 
 const SRC_DIR = 'src';
-const INFRA_SUBDIR = 'testSnapshotInfrastructure';
+const INFRA_SUBDIR = 'snapshot-infrastructure';
 const CONFIGS_SUBDIR = 'snapshot-configurations';
 const DEFAULT_TEST_CONFIG_FILENAME = 'default-config.json';
 const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
@@ -14,10 +14,8 @@ const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
 export function generateTestSnapshotInfraFiles(project: Project, testingConfig: BlueprintSnapshotConfiguration) {
   // If you add or change any files here, remember to update `cleanUpTestSnapshotInfraFiles()`
   const files = [
-    [generateSnapshotInfraFile(testingConfig, SRC_DIR, CONFIGS_SUBDIR),
-      path.join(SRC_DIR, INFRA_SUBDIR, 'infrastructure.ts')],
-    [generateSpecTs(INFRA_SUBDIR),
-      path.join(SRC_DIR, SNAPSHOTS_SPEC_FILENAME)],
+    [generateSnapshotInfraFile(testingConfig, SRC_DIR, CONFIGS_SUBDIR), path.join(SRC_DIR, INFRA_SUBDIR, 'infrastructure.ts')],
+    [generateSpecTs(INFRA_SUBDIR), path.join(SRC_DIR, SNAPSHOTS_SPEC_FILENAME)],
   ];
 
   const infraDir = path.join(SRC_DIR, INFRA_SUBDIR);
