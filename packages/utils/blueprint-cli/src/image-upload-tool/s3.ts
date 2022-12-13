@@ -165,6 +165,7 @@ export const uploadImageToBucket = async (log: pino.BaseLogger, bucketName: stri
         Bucket: bucketName,
         Key: image.name,
         Body: image.body,
+        ContentType: `image/${image.extension}`,
       }),
     );
 
