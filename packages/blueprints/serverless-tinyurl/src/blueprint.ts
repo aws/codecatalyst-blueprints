@@ -38,6 +38,8 @@ export interface Options extends ParentOptions {
       /**
        * This is the role that will be used to deploy the web application. It should have access to bootstrap and deploy all of your resources.
        * @displayName CDK Role
+       * @inlinePolicy ./policies/cdk-policy.json
+       * @trustPolicy ./policies/trust-policy.json
        */
       cdkRole: Role<['codecatalyst*']>;
     }>;
