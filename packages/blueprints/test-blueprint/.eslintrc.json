@@ -40,7 +40,8 @@
     "*.generated.ts",
     "coverage",
     "!.projenrc.ts",
-    "!projenrc/**/*.ts"
+    "!projenrc/**/*.ts",
+    "src/snapshot-*"
   ],
   "rules": {
     "indent": [

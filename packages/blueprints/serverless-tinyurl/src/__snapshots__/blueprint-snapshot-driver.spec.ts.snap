@@ -2000,15 +2000,14 @@ exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/f
 // example test. To run these tests, uncomment this file along with the
 // example resource in lib/frontend-stack.ts
 test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new Frontend.FrontendStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
-
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+  //   const app = new cdk.App();
+  //     // WHEN
+  //   const stack = new Frontend.FrontendStack(app, 'MyTestStack');
+  //     // THEN
+  //   const template = Template.fromStack(stack);
+  //   template.hasResourceProperties('AWS::SQS::Queue', {
+  //     VisibilityTimeout: 300
+  //   });
 });
 "
 `;
@@ -2129,10 +2128,7 @@ exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/f
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Tiny URL App"
-    />
+    <meta name="description" content="Tiny URL App" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -2237,7 +2233,8 @@ test('renders learn react link', () => {
   render(<App />);
   const urlTextArea = screen.getByPlaceholderText(/enter the url to short/i);
   expect(urlTextArea).toBeEnabled;
-});"
+});
+"
 `;
 
 exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/App.tsx 1`] = `
@@ -2321,16 +2318,14 @@ export default App;
 exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/index.css 1`] = `
 "body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 "
 `;
@@ -2345,7 +2340,7 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

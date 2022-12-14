@@ -5,6 +5,8 @@
 
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { BuildActionConfiguration } from './action-build';
+import { CdkBootstrapActionConfiguration } from './action-cdk-bootstrap';
+import { CdkDeployActionYamlOutput } from './action-cdk-deploy';
 import { CfnDeployActionConfiguration } from './action-cfn-deploy';
 import { TestActionConfiguration } from './action-test-reports';
 
@@ -12,6 +14,8 @@ export enum ActionIdentifierAlias {
   build = 'build',
   deploy = 'deploy',
   test = 'test',
+  cdkDeploy = 'cdkDeploy',
+  cdkBootstrap = 'cdkBootstrap',
 }
 
 const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
@@ -27,20 +31,40 @@ const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } =
     default: 'aws/cfn-deploy-gamma@v1',
     prod: 'aws/cfn-deploy@v1',
   },
+  cdkDeploy: {
+    default: 'aws/cdk-deploy-gamma@v1',
+    prod: 'aws/cdk-deploy@v1',
+  },
+  cdkBootstrap: {
+    default: 'aws/cdk-bootstrap-gamma@v1',
+    prod: 'aws/cdk-bootstrap@v1',
+  },
 };
 
 export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environmentIdentifier: string = 'default'): string | undefined {
   return ACTION_IDENTIFIERS[alias]?.[environmentIdentifier] ?? ACTION_IDENTIFIERS[alias]?.default;
 }
 
-type TypeSupportedActions = BuildActionConfiguration | CfnDeployActionConfiguration | TestActionConfiguration;
+type TypeSupportedCompute = ComputeConfiguration;
+type TypeSupportedActions =
+  | BuildActionConfiguration
+  | CfnDeployActionConfiguration
+  | TestActionConfiguration
+  | CdkDeployActionYamlOutput
+  | CdkBootstrapActionConfiguration;
 export interface ActionDefiniton {
   Identifier?: string;
+  Compute?: TypeSupportedCompute | string;
   Configuration?: TypeSupportedActions;
   DependsOn?: string[];
   Inputs?: InputsDefinition;
   Outputs?: OutputDefinition;
   Environment?: WorkflowEnvironment;
+}
+
+export interface ComputeConfiguration {
+  Type?: string;
+  Fleet?: string;
 }
 
 /**
@@ -90,4 +114,17 @@ export interface SuccessCriteriaDefinition {
     Severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFORMATIONAL';
     Number: number;
   };
+}
+
+export function convertInputsToJsonString(input: any): string | undefined {
+  if (typeof input === 'string') {
+    return input;
+  }
+  if (input instanceof Array) {
+    return JSON.stringify(input);
+  }
+  if (input instanceof Object) {
+    return JSON.stringify(input);
+  }
+  return undefined;
 }

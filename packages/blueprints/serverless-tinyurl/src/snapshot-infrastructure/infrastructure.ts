@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import * as globule from 'globule';
+import * as path from 'path';
 import merge from 'ts-deepmerge';
 
 import { Options } from '../blueprint';

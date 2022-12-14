@@ -46,3 +46,9 @@ project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yar
 project.setScript('npm:push', 'yarn npm publish');
 
 project.synth();
+
+const pkgJson = project.tryFindFile('package.json');
+pkgJson &&
+  fs.writeFileSync(pkgJson.absolutePath, '\n', {
+    flag: 'a+',
+  });
