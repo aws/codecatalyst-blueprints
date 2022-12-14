@@ -7,13 +7,13 @@ export const makeCDKBootstrapWorkflow = (
   blueprint: Blueprint,
   environment: WorkflowEnvironment,
   options?: {
-    cdkDeployActionConfiguration?: CdkBootstrapActionConfiguration;
+    CdkBootstrapActionConfiguration?: CdkBootstrapActionConfiguration;
     workflowName?: string;
   },
 ) => {
   const startingWorkflowDefinition = {
     SchemaVersion: '1.0',
-    Name: options?.workflowName || 'sample-cdk-deploy',
+    Name: options?.workflowName || 'sample-cdk-bootstrap',
     Triggers: [],
   };
 
@@ -37,7 +37,7 @@ export const makeCDKBootstrapWorkflow = (
         },
       ],
     },
-    configuration: options?.cdkDeployActionConfiguration || {
+    configuration: options?.cdkBootstrapActionConfiguration || {
       Region: 'us-west-2',
     },
   });
