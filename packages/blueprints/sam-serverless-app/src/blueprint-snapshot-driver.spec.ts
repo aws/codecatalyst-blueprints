@@ -1,10 +1,9 @@
-export function generateSpecTs(infraSubdir: string): string {
-  return `import * as cproc from 'child_process';
+import * as cproc from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
 import { Options } from './blueprint';
-import { allTestConfigs, cleanUpTempDir, getAllBlueprintSnapshottedFilenames, prepareTempDir } from './${infraSubdir}/infrastructure';
+import { allTestConfigs, cleanUpTempDir, getAllBlueprintSnapshottedFilenames, prepareTempDir } from './snapshot-infrastructure/infrastructure';
 
 function beforeAllSync(testConfig) {
   const blueprintOutdir = prepareTempDir('blueprint');
@@ -17,17 +16,17 @@ function beforeAllSync(testConfig) {
   const configOutdir = prepareTempDir('config');
   const configOutfile = path.join(configOutdir, 'snap-config.json');
   fs.writeFileSync(configOutfile, JSON.stringify(options));
-  console.debug(\`Wrote snapshot config to \${configOutfile}\`);
+  console.debug(`Wrote snapshot config to ${configOutfile}`);
 
   // Synthesize using the Blueprint CLI
-  const synthCmd = \`npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir \${blueprintOutdir} --defaults \${configOutfile}\`;
-  console.debug(\`Synthesis command: \${synthCmd}\`);
+  const synthCmd = `npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir ${blueprintOutdir} --defaults ${configOutfile}`;
+  console.debug(`Synthesis command: ${synthCmd}`);
 
   let synthBuffer;
   try {
     synthBuffer = cproc.execSync(synthCmd);
   } catch (e) {
-    console.log(\`Failed synthesis output:\\n\${synthBuffer}\`);
+    console.log(`Failed synthesis output:\n${synthBuffer}`);
     throw e;
   }
 
@@ -36,7 +35,7 @@ function beforeAllSync(testConfig) {
 
 describe('Blueprint snapshots', () => {
   allTestConfigs().forEach(testConfig => {
-    describe(\`\${testConfig.name} configuration\`, () => {
+    describe(`${testConfig.name} configuration`, () => {
       /**
        * This is structured somewhat uniquely because we want a separate Jest test for each
        * snapshotted file to make the output more detailed and failures clearer to diagnose.
@@ -53,12 +52,10 @@ describe('Blueprint snapshots', () => {
       });
 
       for (const snappedFile of getAllBlueprintSnapshottedFilenames(blueprintOutdir)) {
-        it(\`matches \${snappedFile.relPath}\`, () => {
+        it(`matches ${snappedFile.relPath}`, () => {
           expect(fs.readFileSync(snappedFile.absPath, { encoding: 'utf-8' })).toMatchSnapshot();
         });
       }
     });
   });
 });
-`;
-}
