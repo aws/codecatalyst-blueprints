@@ -1,5 +1,5 @@
-import { WriteFileOptions } from 'projen/lib/util';
 import { AutoDiscoverReportDefinition, ComputeDefintion } from '@caws-blueprint-component/caws-workflows';
+import { WriteFileOptions } from 'projen/lib/util';
 
 export interface RuntimeMapping {
   runtime: string;

@@ -141,6 +141,27 @@
       "steps": [
         {
           "spawn": "eslint"
+        },
+        {
+          "exec": "jest --ci --passWithNoTests --verbose"
+        }
+      ]
+    },
+    "test:update": {
+      "name": "test:update",
+      "description": "Update jest snapshots",
+      "steps": [
+        {
+          "exec": "jest --updateSnapshot"
+        }
+      ]
+    },
+    "test:watch": {
+      "name": "test:watch",
+      "description": "Run jest in watch mode",
+      "steps": [
+        {
+          "exec": "jest --watch"
         }
       ]
     },

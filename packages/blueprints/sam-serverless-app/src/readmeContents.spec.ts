@@ -1,5 +1,5 @@
-import { runtimeMappings } from './runtimeMappings';
 import { generateReadmeContents } from './readmeContents';
+import { runtimeMappings } from './runtimeMappings';
 
 describe('readme contents', () => {
   describe('happy case', () => {

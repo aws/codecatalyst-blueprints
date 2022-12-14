@@ -222,10 +222,7 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: [
-        'mv backend/* .',
-        'mvn package -Dmaven.test.skip',
-      ],
+      steps: ['mv backend/* .', 'mvn package -Dmaven.test.skip'],
     });
 
     // To verify the backend unit tests
@@ -259,11 +256,7 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: [
-        'cd backend',
-        'mvn verify',
-        'sh jacocoConsoleReporter.sh',
-      ],
+      steps: ['cd backend', 'mvn verify', 'sh jacocoConsoleReporter.sh'],
     });
 
     // To bootstrap and deploy the backend service
@@ -327,14 +320,7 @@ export class Blueprint extends ParentBlueprint {
           },
         ],
       },
-      steps: [
-        'cd frontend',
-        'npm install',
-        'echo "REACT_APP_SERVICE_URL=/t" > ".env"',
-        'npm run build',
-        'cp -r canary build',
-        'mv cdk/* ..',
-      ],
+      steps: ['cd frontend', 'npm install', 'echo "REACT_APP_SERVICE_URL=/t" > ".env"', 'npm run build', 'cp -r canary build', 'mv cdk/* ..'],
     });
 
     // To verify the frontend unit tests
@@ -361,11 +347,7 @@ export class Blueprint extends ParentBlueprint {
           Enabled: true,
         },
       },
-      steps: [
-        'cd frontend',
-        'npm install',
-        'npm test -- --coverage --watchAll=false;',
-      ],
+      steps: ['cd frontend', 'npm install', 'npm test -- --coverage --watchAll=false;'],
     });
 
     // To bootstrap and deploy the frontend

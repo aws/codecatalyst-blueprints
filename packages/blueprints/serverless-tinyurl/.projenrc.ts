@@ -3,8 +3,8 @@ import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 const project = new ProjenBlueprint({
   authorName: 'Amazon Web Services',
   publishingOrganization: 'blueprints',
-  packageName: '@caws-blueprint/blueprints.aws-serverless-tinyurl',
-  name: 'aws-serverless-tinyurl',
+  packageName: '@caws-blueprint/blueprints.serverless-tinyurl',
+  name: 'serverless-tinyurl',
   displayName: 'AWS Serverless Tiny URL Application in Java',
   defaultReleaseBranch: 'main',
   license: 'MIT',
@@ -12,7 +12,7 @@ const project = new ProjenBlueprint({
   sampleCode: false,
   github: false,
   eslint: true,
-  jest: false,
+  jest: true,
   npmignoreEnabled: true,
   tsconfig: {
     compilerOptions: {
@@ -21,7 +21,6 @@ const project = new ProjenBlueprint({
     },
   },
   blueprintSnapshotConfiguration: {
-    enableSnapshotTesting: true,
     snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
   },
   copyrightOwner: 'caws-blueprints',

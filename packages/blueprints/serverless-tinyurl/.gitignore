@@ -30,6 +30,9 @@ jspm_packages/
 .yarn-integrity
 .cache
 !/.projenrc.js
+/test-reports/
+junit.xml
+/coverage/
 /dist/changelog.md
 /dist/version.txt
 !/test/
@@ -40,3 +43,5 @@ jspm_packages/
 /dist/
 !/.eslintrc.json
 synth
+!/src/snapshot-infrastructure/infrastructure.ts
+!/src/blueprint-snapshot-driver.spec.ts

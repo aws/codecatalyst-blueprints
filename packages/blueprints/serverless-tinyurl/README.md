@@ -121,7 +121,7 @@ modules / files
 - `frontend`
 
   - `canary`: Canary test script
-  
+
   - `cdk` : Typescript package to code the frontend infrastructure
 
   - `src`: React components using to power the frontend

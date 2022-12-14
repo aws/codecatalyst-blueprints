@@ -41,6 +41,7 @@ junit.xml
 !/src/
 /lib
 /dist/
+!/.eslintrc.json
 synth
 !/src/snapshot-infrastructure/infrastructure.ts
 !/src/blueprint-snapshot-driver.spec.ts
