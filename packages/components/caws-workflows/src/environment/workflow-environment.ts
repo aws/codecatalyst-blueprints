@@ -1,5 +1,8 @@
 import { AccountConnection, Environment } from '@caws-blueprint-component/caws-environments';
 
+/**
+ * can use convertToWorkflowEnvironment to convert from an Environment to a WorkflowEnvironment
+ */
 export interface WorkflowEnvironment {
   Name: string;
   Connections: ConnectionDefinition[];
