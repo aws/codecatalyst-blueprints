@@ -7,7 +7,7 @@ export const makeCDKBootstrapWorkflow = (
   blueprint: Blueprint,
   environment: WorkflowEnvironment,
   options?: {
-    CdkBootstrapActionConfiguration?: CdkBootstrapActionConfiguration;
+    cdkBootstrapActionConfiguration?: CdkBootstrapActionConfiguration;
     workflowName?: string;
   },
 ) => {
