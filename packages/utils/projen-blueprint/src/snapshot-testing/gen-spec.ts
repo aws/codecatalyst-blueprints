@@ -1,16 +1,10 @@
 export function generateSpecTs(infraSubdir: string): string {
-  return `
-import * as cproc from 'child_process';
+  return `import * as cproc from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
 import { Options } from './blueprint';
-import {
-  allTestConfigs,
-  cleanUpTempDir,
-  getAllBlueprintSnapshottedFilenames,
-  prepareTempDir,
-} from './${infraSubdir}/infrastructure';
+import { allTestConfigs, cleanUpTempDir, getAllBlueprintSnapshottedFilenames, prepareTempDir } from './${infraSubdir}/infrastructure';
 
 function beforeAllSync(testConfig) {
   const blueprintOutdir = prepareTempDir('blueprint');
@@ -50,7 +44,7 @@ describe('Blueprint snapshots', () => {
        * Jest requires tests to be defined synchronously (https://github.com/facebook/jest/issues/2235),
        * so we need to synthesize the blueprint synchronously. Both *beforeAll* and *beforeEach*
        * run asynchronously, so we run our own sync code to set up blueprints.
-      */
+       */
       const [blueprintOutdir, configOutdir] = beforeAllSync(testConfig);
 
       afterAll(() => {
