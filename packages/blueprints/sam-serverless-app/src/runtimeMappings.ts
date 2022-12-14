@@ -1,9 +1,9 @@
-import { java11, python39, nodejs14 } from './templateContents';
-import { FileTemplateContext, RuntimeMapping } from './models';
 import path from 'path';
 import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
 import { ComputeType, ComputeFleet } from '@caws-blueprint-component/caws-workflows';
 import { Options } from './blueprint';
+import { FileTemplateContext, RuntimeMapping } from './models';
+import { java11, python39, nodejs14 } from './templateContents';
 
 // Ideally we would do it the other way around, with this file defining the union of runtimes
 // and the blueprint importing this type, but today the Blueprint Wizard does not support
