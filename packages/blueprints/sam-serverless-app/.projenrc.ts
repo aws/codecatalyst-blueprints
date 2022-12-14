@@ -6,7 +6,7 @@ const project = new ProjenBlueprint({
   projenrcTs: true,
   sampleCode: false,
   github: false,
-  eslint: false,
+  eslint: true,
   jest: true,
   blueprintSnapshotConfiguration: {
     snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
@@ -25,6 +25,7 @@ const project = new ProjenBlueprint({
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-component/caws-workspaces',
     '@caws-blueprint-component/caws-environments',
+    'projen',
   ],
   description:
     'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language',

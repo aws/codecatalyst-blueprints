@@ -151,6 +151,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     } else {
       cleanUpTestSnapshotInfraFiles();
     }
+
+    if (options.eslint) {
+      this.eslint?.addIgnorePattern('src/snapshot-*');
+    }
   }
 
   synth(): void {

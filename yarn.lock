@@ -2044,9 +2044,16 @@ __metadata:
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/jest": "*"
     "@types/node": ^14
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
     globule: "*"
     jest: "*"
     jest-junit: ^13
+    json-schema: "*"
     npm-check-updates: ^15
     projen: "*"
     standard-version: ^9
