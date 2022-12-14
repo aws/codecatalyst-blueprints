@@ -6,6 +6,8 @@ export * from './workflow/compute';
 
 export * from './samples/empty';
 export * from './samples/node';
+export * from './samples/cdk-bootstrap';
+export * from './samples/cdk-deploy';
 
 export * from './environment/workflow-environment';
 
