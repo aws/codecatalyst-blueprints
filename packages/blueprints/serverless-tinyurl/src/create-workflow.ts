@@ -1,38 +1,14 @@
 import { Environment } from '@caws-blueprint-component/caws-environments';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import {
-  Workflow,
   convertToWorkflowEnvironment,
-  getDefaultActionIdentifier,
-  ActionIdentifierAlias,
   WorkflowDefinition,
   emptyWorkflow,
   ComputeType,
   ComputeFleet,
-  addGenericCompute,
-  addGenericBranchTrigger,
-  addGenericBuildAction,
   WorkflowBuilder,
   WorkflowEnvironment,
 } from '@caws-blueprint-component/caws-workflows';
-
-// enum WorkflowActionIdEnum {
-//   CDKBootstrap = 'aws/cdk-bootstrap',
-//   CDKDeploy = 'aws/cdk-deploy',
-// }
-
-// private getActions() {
-//   return {
-//     'aws/cdk-bootstrap': ['@v1', '-gamma'],
-//     'aws/cdk-deploy': ['@v1', '-gamma'],
-//   };
-// }
-
-// private getActionMapping(action: WorkflowActionIdEnum): string {
-//   getDefaultActionIdentifier(ActionIdentifierAlias.build);
-//   const [vz, ext] = this.getActions()[action];
-//   return `${action}${this.options.environment.environmentType === 'PRODUCTION' ? '' : ext}${vz}`;
-// }
 
 export function makeWorkflowDefintion(
   blueprint: Blueprint,
@@ -231,6 +207,6 @@ export function makeWorkflowDefintion(
     },
     environment: workflowEnvironment,
   });
-
-  return wfbuilder.getDefinition();
+  
+  return wfbuilder.definition;
 }
