@@ -4,7 +4,7 @@
 
 [Other blueprint repos](https://github.com/orgs/aws/teams/amazon-blueprints-contributors/repositories)
 
-## Set Up 
+## Set Up
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
 also exist for vim. Many gitignored files will be invisible in vim and may cause annoying problems.
@@ -17,6 +17,8 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 ```
 brew install nvm            # blueprints work only with Node 14.x
+nvm use
+npm install npm@6.14.13 -g  # we depend on npm v6.14.13
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 brew install svn            # used during synthesis of SAM blueprint
