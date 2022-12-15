@@ -17,6 +17,8 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 ```
 brew install nvm            # blueprints work only with Node 14.x
+nvm use
+npm install npm@6.14.13 -g
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 brew install svn            # used during synthesis of SAM blueprint
