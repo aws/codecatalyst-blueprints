@@ -16,11 +16,12 @@ export interface CdkBootstrapActionConfiguration {
 
 export interface CdkBootstrapActionParameters {
   inputs: InputsDefinition;
-  outputs: OutputDefinition;
+  outputs?: OutputDefinition;
   environment: WorkflowEnvironment;
   computeName?: ComputeConfiguration;
   configuration: CdkBootstrapActionConfiguration;
   actionName: string;
+  dependsOn?: string[];
 }
 
 export function addGenericCdkBootstrapAction(
@@ -29,7 +30,7 @@ export function addGenericCdkBootstrapAction(
     workflow: WorkflowDefinition;
   },
 ): string {
-  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName } = params;
+  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName, dependsOn } = params;
   const actionName = (params.actionName || 'BootstrapCdkStack').replace(new RegExp('-', 'g'), '_');
 
   const cdkBootstrapAction: ActionDefiniton = {
@@ -37,6 +38,7 @@ export function addGenericCdkBootstrapAction(
     Inputs: inputs,
     Outputs: outputs,
     Environment: environment,
+    DependsOn: dependsOn,
     Compute: computeName,
     Configuration: configuration,
   };

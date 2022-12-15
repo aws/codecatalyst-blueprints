@@ -21,7 +21,7 @@ export const makeCDKBootstrapWorkflow = (
     blueprint,
     workflow: startingWorkflowDefinition,
     actionName: 'BootstrapAction',
-    environment,
+    environment: environment,
     inputs: {
       Sources: ['WorkflowSource'],
     },

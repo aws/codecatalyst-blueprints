@@ -1,5 +1,5 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { TriggerDefiniton } from '..';
+import { ComputeDefintion, TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../actions/action-cdk-bootstrap';
 import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions/action-cdk-deploy';
@@ -37,6 +37,10 @@ export class WorkflowBuilder {
   addTrigger(trigger: TriggerDefiniton) {
     this.definition.Triggers = this.definition.Triggers || [];
     this.definition.Triggers.push(trigger);
+  }
+
+  addCompute(compute: ComputeDefintion) {
+    this.definition.Compute = this.definition.Compute || compute;
   }
 
   addBranchTrigger(branches = ['main'], filesChanged?: string[]) {

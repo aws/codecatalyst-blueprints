@@ -1,19 +1,8 @@
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, SourceFile, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
-import {
-  Workflow,
-  convertToWorkflowEnvironment,
-  getDefaultActionIdentifier,
-  ActionIdentifierAlias,
-  WorkflowDefinition,
-  emptyWorkflow,
-  ComputeType,
-  ComputeFleet,
-  addGenericCompute,
-  addGenericBranchTrigger,
-  addGenericBuildAction,
-} from '@caws-blueprint-component/caws-workflows';
+import { Workflow } from '@caws-blueprint-component/caws-workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
+import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
 
 /**
@@ -97,12 +86,8 @@ export interface Options extends ParentOptions {
  */
 export class Blueprint extends ParentBlueprint {
   protected options: Options;
-  protected readonly repositoryName: string;
+
   protected readonly sourceRepository: SourceRepository;
-  protected readonly frontendStackName: string;
-  protected readonly backendStackName: string;
-  protected readonly region: string;
-  protected readonly account: string | undefined;
 
   constructor(options_: Options) {
     super(options_);
@@ -121,20 +106,16 @@ export class Blueprint extends ParentBlueprint {
       },
     };
     const options = Object.assign(typeCheck, options_);
-    this.repositoryName = options.code.repositoryName;
-    this.frontendStackName = options.advanced.frontendStackName;
-    this.backendStackName = options.advanced.backendStackName;
-    this.region = options.advanced.region;
-    this.account = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
     this.options = options;
 
     const frontendInfraSourceFolder = 'frontend/infra-typescript';
     const frontendReactSourceFolder = 'frontend/app-react-typescript';
     const backendSourceFolder = 'backend';
 
-    // add a repository
-    this.sourceRepository = new SourceRepository(this, { title: this.repositoryName });
+    const accountId = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
+    this.sourceRepository = new SourceRepository(this, { title: this.options.code.repositoryName });
 
+    // copy frontend code
     const frontendFrameworkFolder = frontendReactSourceFolder + '/**';
     SubstitionAsset.findAll(frontendFrameworkFolder).forEach(asset => {
       new SourceFile(this.sourceRepository, `frontend/${asset.path().replace(`${frontendReactSourceFolder}/`, '')}`, asset.toString());
@@ -145,10 +126,10 @@ export class Blueprint extends ParentBlueprint {
       new SourceFile(
         this.sourceRepository,
         `frontend/cdk/${asset.path().replace(`${frontendInfraSourceFolder}/`, '')}`,
-        asset.subsitite({
-          frontend_stack_name: this.frontendStackName,
-          bp_aws_account: this.account,
-          bp_aws_region: this.region,
+        asset.substitute({
+          frontend_stack_name: this.options.advanced.frontendStackName,
+          bp_aws_account: accountId,
+          bp_aws_region: this.options.advanced.region,
         }),
       );
     });
@@ -158,223 +139,23 @@ export class Blueprint extends ParentBlueprint {
       new SourceFile(
         this.sourceRepository,
         `backend/${asset.path().replace(`${backendSourceFolder}/`, '')}`,
-        asset.subsitite({
-          backend_stack_name: this.backendStackName,
-          bp_aws_account: this.account,
-          bp_aws_region: this.region,
+        asset.substitute({
+          backend_stack_name: this.options.advanced.backendStackName,
+          bp_aws_account: accountId,
+          bp_aws_region: this.options.advanced.region,
         }),
       );
     });
 
-    this.createWorkflow();
-  }
-
-  private getActions() {
-    return {
-      'aws/cdk-bootstrap': ['@v1', '-gamma'],
-      'aws/cdk-deploy': ['@v1', '-gamma'],
-    };
-  }
-
-  private getActionMapping(action: WorkflowActionIdEnum): string {
-    getDefaultActionIdentifier(ActionIdentifierAlias.build);
-    const [vz, ext] = this.getActions()[action];
-    return `${action}${this.options.environment.environmentType === 'PRODUCTION' ? '' : ext}${vz}`;
-  }
-
-  private createWorkflow() {
-    const schemaVersion = '1.0';
-    const defaultBranch = 'main';
-    const env = new Environment(this, this.options.environment);
-
-    const workflowDefinition: WorkflowDefinition = {
-      ...emptyWorkflow,
-      SchemaVersion: schemaVersion,
-      Name: 'main_fullstack_workflow',
-    };
-    addGenericCompute(workflowDefinition, ComputeType.LAMBDA, ComputeFleet.LINUX_X86_64_LARGE);
-    addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
-
-    // To build the backend artifacts
-    addGenericBuildAction({
-      blueprint: this,
-      workflow: workflowDefinition,
-      actionName: 'BackendBuildAndPackage',
-      environment: {
-        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
-        Connections: [
-          {
-            Name: this.options.environment.awsAccountConnection?.name || ' ',
-            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || ' ',
-          },
-        ],
+    const environment = new Environment(this, this.options.environment);
+    const workflowDefinition = makeWorkflowDefintion(this, environment, {
+      workflowName: 'main_fullstack_workflow',
+      stacks: {
+        frontend: options.advanced.frontendStackName,
+        backend: options.advanced.backendStackName,
+        region: options.advanced.region,
       },
-      input: {
-        Sources: ['WorkflowSource'],
-      },
-      output: {
-        AutoDiscoverReports: {
-          ReportNamePrefix: 'rpt',
-          Enabled: false,
-        },
-        Artifacts: [
-          {
-            Name: 'backend_build_artifacts',
-            Files: ['**/*'],
-          },
-        ],
-      },
-      steps: ['mv backend/* .', 'mvn package -Dmaven.test.skip'],
     });
-
-    // To verify the backend unit tests
-    addGenericBuildAction({
-      blueprint: this,
-      workflow: workflowDefinition,
-      actionName: 'BackendTest',
-      environment: {
-        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
-        Connections: [
-          {
-            Name: this.options.environment.awsAccountConnection?.name || ' ',
-            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || ' ',
-          },
-        ],
-      },
-      input: {
-        Sources: ['WorkflowSource'],
-      },
-      output: {
-        AutoDiscoverReports: {
-          IncludePaths: ['backend/cdk/target/**/*', 'backend/lambda/target/**/*'],
-          ExcludePaths: ['*/.aws/workflows/*'],
-          ReportNamePrefix: 'Rpt',
-          Enabled: true,
-        },
-        Artifacts: [
-          {
-            Name: 'backend_test_artifacts',
-            Files: ['**/*'],
-          },
-        ],
-      },
-      steps: ['cd backend', 'mvn verify', 'sh jacocoConsoleReporter.sh'],
-    });
-
-    // To bootstrap and deploy the backend service
-    workflowDefinition.Actions = {
-      ...workflowDefinition.Actions,
-      BackendCDKBootstrapAction: {
-        Identifier: this.getActionMapping(WorkflowActionIdEnum.CDKBootstrap),
-        Inputs: {
-          Artifacts: ['backend_build_artifacts'],
-        },
-        DependsOn: ['BackendTest', 'BackendBuildAndPackage'],
-        Configuration: {
-          Region: this.region || 'us-east-1',
-        },
-        Environment: convertToWorkflowEnvironment(env),
-      },
-      BackendCDKDeploy: {
-        Identifier: this.getActionMapping(WorkflowActionIdEnum.CDKDeploy),
-        Inputs: {
-          Artifacts: ['backend_build_artifacts'],
-        },
-        DependsOn: ['BackendCDKBootstrapAction'],
-        Configuration: {
-          StackName: `${this.backendStackName}`,
-          Region: this.region || 'us-east-1',
-          Context: `{"stack_name": "${this.backendStackName}"}`,
-        },
-        Environment: convertToWorkflowEnvironment(env),
-      },
-    };
-
-    // To build the frontend artifacts
-    addGenericBuildAction({
-      blueprint: this,
-      workflow: workflowDefinition,
-      actionName: 'FrontendBuildAndPackage',
-      environment: {
-        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
-        Connections: [
-          {
-            Name: this.options.environment.awsAccountConnection?.name || ' ',
-            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || ' ',
-          },
-        ],
-      },
-      input: {
-        Sources: ['WorkflowSource'],
-      },
-      dependsOn: ['BackendCDKDeploy'],
-      output: {
-        AutoDiscoverReports: {
-          IncludePaths: ['frontend/**/*'],
-          ExcludePaths: ['*/.aws/workflows/*'],
-          ReportNamePrefix: 'rpt',
-          Enabled: false,
-        },
-        Artifacts: [
-          {
-            Name: 'frontend_build_artifacts',
-            Files: ['**/*'],
-          },
-        ],
-      },
-      steps: ['cd frontend', 'npm install', 'echo "REACT_APP_SERVICE_URL=/t" > ".env"', 'npm run build', 'cp -r canary build', 'mv cdk/* ..'],
-    });
-
-    // To verify the frontend unit tests
-    addGenericBuildAction({
-      blueprint: this,
-      workflow: workflowDefinition,
-      actionName: 'FrontendTest',
-      environment: {
-        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
-        Connections: [
-          {
-            Name: this.options.environment.awsAccountConnection?.name || ' ',
-            Role: this.options.environment.awsAccountConnection?.cdkRole?.name || ' ',
-          },
-        ],
-      },
-      input: {
-        Sources: ['WorkflowSource'],
-      },
-      output: {
-        AutoDiscoverReports: {
-          IncludePaths: ['frontend/coverage/*'],
-          ReportNamePrefix: 'rpt',
-          Enabled: true,
-        },
-      },
-      steps: ['cd frontend', 'npm install', 'npm test -- --coverage --watchAll=false;'],
-    });
-
-    // To bootstrap and deploy the frontend
-    workflowDefinition.Actions = {
-      ...workflowDefinition.Actions,
-      FrontendCDKDeploy: {
-        Identifier: this.getActionMapping(WorkflowActionIdEnum.CDKDeploy),
-        Inputs: {
-          Artifacts: ['frontend_build_artifacts'],
-        },
-        DependsOn: ['FrontendTest', 'FrontendBuildAndPackage'],
-        Configuration: {
-          StackName: `${this.frontendStackName}`,
-          Region: this.region || 'us-east-1',
-          Context: `{"stack_name": "${this.frontendStackName}", "api_domain": "\${BackendCDKDeploy.ApiDomain}", "api_stage": "\${BackendCDKDeploy.ApiStage}"}`,
-        },
-        Environment: convertToWorkflowEnvironment(env),
-      },
-    };
-
     new Workflow(this, this.sourceRepository, workflowDefinition);
   }
-}
-
-enum WorkflowActionIdEnum {
-  CDKBootstrap = 'aws/cdk-bootstrap',
-  CDKDeploy = 'aws/cdk-deploy',
 }

@@ -1,7 +1,14 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { WorkflowDefinition } from '../workflow/workflow';
-import { ActionDefiniton, ActionIdentifierAlias, AutoDiscoverReportDefinition, getDefaultActionIdentifier, InputsDefinition, OutputDefinition } from './action';
+import {
+  ActionDefiniton,
+  ActionIdentifierAlias,
+  AutoDiscoverReportDefinition,
+  getDefaultActionIdentifier,
+  InputsDefinition,
+  OutputDefinition,
+} from './action';
 
 export interface BuildActionConfiguration {
   ActionRoleArn?: string;
@@ -29,7 +36,7 @@ export interface BuildInputConfiguration {
  * The output of a build action
  */
 export interface BuildOutputConfiguration {
-  AutoDiscoverReports: AutoDiscoverReportDefinition;
+  AutoDiscoverReports?: AutoDiscoverReportDefinition;
   Variables?: string[];
   Artifacts?: {
     Name: string;
@@ -40,6 +47,9 @@ export interface BuildOutputConfiguration {
 
 export const generateOutput = (params: BuildOutputConfiguration): OutputDefinition => {
   const outputs: OutputDefinition = {
+    AutoDiscoverReports: {
+      Enabled: false,
+    },
     ...params,
   };
   return outputs;
@@ -71,10 +81,12 @@ export interface BuildActionParameters {
   dependsOn?: string[];
 }
 
-export const addGenericBuildAction = (params: BuildActionParameters & {
-  blueprint: Blueprint;
-  workflow: WorkflowDefinition;
-}): string => {
+export const addGenericBuildAction = (
+  params: BuildActionParameters & {
+    blueprint: Blueprint;
+    workflow: WorkflowDefinition;
+  },
+): string => {
   const { blueprint, workflow, steps, input, output } = params;
 
   const buildAction: ActionDefiniton = {

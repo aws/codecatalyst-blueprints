@@ -46,11 +46,12 @@ export const convertYamlInputToString = (paramterInput: CdkDeployActionConfigura
 
 export interface CdkDeployActionParameters {
   inputs: InputsDefinition;
-  outputs: OutputDefinition;
+  outputs?: OutputDefinition;
   environment: WorkflowEnvironment;
   computeName?: ComputeConfiguration;
   configuration: CdkDeployActionConfiguration;
   actionName: string;
+  dependsOn?: string[];
 }
 
 export function addGenericCdkDeployAction(
@@ -59,7 +60,7 @@ export function addGenericCdkDeployAction(
     workflow: WorkflowDefinition;
   },
 ): string {
-  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName } = params;
+  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName, dependsOn } = params;
   const actionName = (params.actionName || 'DeployCdkStack').replace(new RegExp('-', 'g'), '_');
 
   const cdkDeployAction: ActionDefiniton = {
@@ -67,6 +68,7 @@ export function addGenericCdkDeployAction(
     Inputs: inputs,
     Outputs: outputs,
     Environment: environment,
+    DependsOn: dependsOn,
     Compute: computeName,
     Configuration: convertYamlInputToString(configuration),
   };
