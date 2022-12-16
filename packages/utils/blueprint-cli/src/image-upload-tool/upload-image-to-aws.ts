@@ -39,7 +39,7 @@ const verifyAWSAccount = async (log: pino.BaseLogger): Promise<string> => {
 
   log.info(`Publishing under account [${callerIdentity.Account}]`);
   if (!callerIdentity.Account) {
-    throw new Error(`You aren't logged into an aws account. Account information: ${JSON.stringify(callerIdentity, null, 2)}`);
+    throw new Error(`You are not logged into an aws account. Account information: ${JSON.stringify(callerIdentity, null, 2)}`);
   }
   return callerIdentity.Account;
 };
@@ -63,7 +63,7 @@ export const uploadImagePublicly = async (
   const fullOptions = {
     // by default we make buckets globally unique by accountId
     bucketName: options?.bucketName || `blueprint-image-${accountId}`,
-    region: options?.region || 'us-west-2',
+    region: options?.region || process.env.AWS_REGION || 'us-west-2',
   };
 
   const image: Image = {
