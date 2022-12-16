@@ -2,17 +2,23 @@
 
 [Documentation and wiki](https://github.com/aws/caws-blueprints/wiki)
 
-## Set Up 
+[Other blueprint repos](https://github.com/orgs/aws/teams/amazon-blueprints-contributors/repositories)
+
+## Set Up
 
 We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
 also exist for vim. Many gitignored files will be invisible in vim and may cause annoying problems.
 
 #### Prereq:
 
-Install these globally. These are requirements for various tooling to work properly and are available from public npm.
+(1) Make sure you have `toolbox` and `ada` [installed](https://builderhub.corp.amazon.com/docs/builder-toolbox/user-guide/getting-started.html).
+
+(2) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
 brew install nvm            # blueprints work only with Node 14.x
+nvm use
+npm install npm@6.14.13 -g  # we depend on npm v6.14.13
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 brew install svn            # used during synthesis of SAM blueprint
@@ -48,7 +54,7 @@ blueprints-setup() {
 }
 ```
 
-## Development
+## Development 
 
 Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 

@@ -18,4 +18,5 @@ dist
 /.idea/
 /.projenrc.js
 tsconfig.tsbuildinfo
+/.eslintrc.json
 synth
