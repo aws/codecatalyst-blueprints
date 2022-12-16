@@ -110,6 +110,7 @@ export class Blueprint extends ParentBlueprint {
 
     const frontendInfraSourceFolder = 'frontend/infra-typescript';
     const frontendReactSourceFolder = 'frontend/app-react-typescript';
+    const frontendCanarySourceFolder = 'frontend/canary';
     const backendSourceFolder = 'backend';
 
     const accountId = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
@@ -121,6 +122,13 @@ export class Blueprint extends ParentBlueprint {
       new SourceFile(this.sourceRepository, `frontend/${asset.path().replace(`${frontendReactSourceFolder}/`, '')}`, asset.toString());
     });
 
+    // copy frontend canary
+    const frontendCanaryFolder = frontendCanarySourceFolder + '/**';
+    SubstitionAsset.findAll(frontendCanaryFolder).forEach(asset => {
+      new SourceFile(this.sourceRepository, `frontend/canary/${asset.path().replace(`${frontendCanarySourceFolder}/`, '')}`, asset.toString());
+    });
+
+    // copy frontend infra
     const frontendInfraFolder = frontendInfraSourceFolder + '/**';
     SubstitionAsset.findAll(frontendInfraFolder).forEach(asset => {
       new SourceFile(

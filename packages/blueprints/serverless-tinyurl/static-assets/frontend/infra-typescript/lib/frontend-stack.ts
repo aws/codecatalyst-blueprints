@@ -70,7 +70,7 @@ export class FrontendStack extends cdk.Stack {
     });
 
     new s3_deployment.BucketDeployment(this, 'FrontendAppDeploy', {
-      sources: [s3_deployment.Source.asset('frontend/build')],
+      sources: [s3_deployment.Source.asset('build')],
       destinationBucket: frontendSourceBucket,
       distribution: frontendCloudfront,
       distributionPaths: ['/*'],
@@ -102,7 +102,7 @@ export class FrontendStack extends cdk.Stack {
     const canaryScheduleExpression = `rate(${canaryExecutionConfig.frequency} minute)`;
 
     const canaryAsset = new Asset(this, 'canaryCode', {
-      path: 'frontend/build/canary',
+      path: 'build/canary',
     });
 
     const canaryResultsBucketName = `${id.toLowerCase()}-canary-results`;

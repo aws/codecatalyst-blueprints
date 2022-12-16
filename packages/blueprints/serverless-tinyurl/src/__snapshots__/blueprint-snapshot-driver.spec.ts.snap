@@ -16,102 +16,23 @@ Actions:
         - WorkflowSource
     Outputs:
       AutoDiscoverReports:
-        Enabled: false
+        Enabled: true
+        ReportNamePrefix: rpt
+        IncludePaths:
+          - cdk/target/**/*
+          - lambda/target/**/*
+        ExcludePaths:
+          - "*/.aws/workflows/*"
       Artifacts:
         - Name: backend_build_artifacts
           Files:
             - "**/*"
     Configuration:
       Steps:
-        - Run: mv backend/* .
-        - Run: mvn package -Dmaven.test.skip
-    Environment:
-      Name: default_environment
-      Connections: []
-  BackendTest:
-    Identifier: aws/build-beta@v1
-    Inputs:
-      Sources:
-        - WorkflowSource
-    Outputs:
-      AutoDiscoverReports:
-        Enabled: true
-        ReportNamePrefix: Rpt
-        IncludePaths:
-          - backend/cdk/target/**/*
-          - backend/lambda/target/**/*
-        ExcludePaths:
-          - "*/.aws/workflows/*"
-      Artifacts:
-        - Name: backend_test_artifacts
-          Files:
-            - "**/*"
-    Configuration:
-      Steps:
         - Run: cd backend
         - Run: mvn verify
-        - Run: sh jacocoConsoleReporter.sh
-    Environment:
-      Name: default_environment
-      Connections: []
-  BackendCDKBootstrapAction:
-    Identifier: aws/cdk-bootstrap-gamma@v1
-    Inputs:
-      Artifacts:
-        - backend_build_artifacts
-    Environment:
-      Name: default_environment
-      Connections: []
-    DependsOn:
-      - BackendBuildAndPackage
-      - BackendTest
-    Configuration:
-      Region: us-west-2
-  BackendCDKDeploy:
-    Identifier: aws/cdk-deploy-gamma@v1
-    Inputs:
-      Artifacts:
-        - backend_build_artifacts
-    Environment:
-      Name: default_environment
-      Connections: []
-    DependsOn:
-      - BackendCDKBootstrapAction
-    Configuration:
-      StackName: TinyUrlBackend
-      Region: us-west-2
-      Context: '{"stack_name":"TinyUrlBackend"}'
+        - Run: mvn package -Dmaven.test.skip
   FrontendBuildAndPackage:
-    Identifier: aws/build-beta@v1
-    Inputs:
-      Sources:
-        - WorkflowSource
-    Outputs:
-      AutoDiscoverReports:
-        IncludePaths:
-          - frontend/**/*
-        ExcludePaths:
-          - "*/.aws/workflows/*"
-        ReportNamePrefix: rpt
-        Enabled: false
-      Artifacts:
-        - Name: frontend_build_artifacts
-          Files:
-            - "**/*"
-    Configuration:
-      Steps:
-        - Run: cd frontend
-        - Run: npm install
-        - Run: echo "REACT_APP_SERVICE_URL=/t" > ".env"
-        - Run: npm run build
-        - Run: cp -r canary build
-        - Run: mv cdk/* ..
-    Environment:
-      Name: default_environment
-      Connections: []
-    DependsOn:
-      - BackendCDKDeploy
-  FrontendTest:
     Identifier: aws/build-beta@v1
     Inputs:
       Sources:
@@ -131,11 +52,36 @@ Actions:
         - Run: cd frontend
         - Run: npm install
         - Run: npm test -- --coverage --watchAll=false
+        - Run: echo "REACT_APP_SERVICE_URL=/t" > ".env"
+        - Run: npm run build
+        - Run: cp -r canary build
+        - Run: cp -r cdk/* .
+  CDKBootstrapAction:
+    Identifier: aws/cdk-bootstrap-gamma@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Environment:
+      Name: default_environment
+      Connections: []
+    Configuration:
+      Region: us-west-2
+  BackendCDKDeploy:
+    Identifier: aws/cdk-deploy-gamma@v1
+    Inputs:
+      Artifacts:
+        - backend_build_artifacts
     Environment:
       Name: default_environment
       Connections: []
     DependsOn:
-      - BackendCDKDeploy
+      - BackendBuildAndPackage
+      - CDKBootstrapAction
+    Configuration:
+      StackName: TinyUrlBackend
+      Region: us-west-2
+      CdkRootPath: backend/
+      Context: '{"stack_name":"TinyUrlBackend"}'
   FrontendCDKDeploy:
     Identifier: aws/cdk-deploy-gamma@v1
     Inputs:
@@ -145,11 +91,12 @@ Actions:
       Name: default_environment
       Connections: []
     DependsOn:
-      - FrontendTest
       - FrontendBuildAndPackage
+      - BackendCDKDeploy
     Configuration:
       StackName: TinyUrlFrontend
       Region: us-west-2
+      CdkRootPath: frontend/
       Context: '{"stack_name":"TinyUrlFrontend","api_domain":"\${BackendCDKDeploy.ApiDomain}","api_stage":"\${BackendCDKDeploy.ApiStage}"}'
 Compute:
   Type: EC2
@@ -1625,6 +1572,35 @@ exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/f
 "
 `;
 
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/canary/nodejs/node_modules/index.js 1`] = `
+"const synthetics = require('Synthetics');
+const log = require('SyntheticsLogger');
+
+const pageLoadBlueprint = async function () {
+  // Configure the stage of the API using environment variables
+  const url = String(process.env.SITE_URL);
+
+  const page = await synthetics.getPage();
+  const response = await page.goto(url, {
+    waitUntil: 'domcontentloaded',
+    timeout: 30000,
+  });
+  // Wait for page to render. Increase or decrease wait time based on endpoint being monitored.
+  await page.waitFor(15000);
+  // This will take a screenshot that will be included in test output artifacts.
+  await synthetics.takeScreenshot('loaded', 'loaded');
+  const pageTitle = await page.title();
+  log.info('Page title: ' + pageTitle);
+  if (response.status() !== 200) {
+    throw 'Failed to load page!';
+  }
+};
+
+exports.handler = async () => {
+  return await pageLoadBlueprint();
+};"
+`;
+
 exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/README.md 1`] = `
 "# Frontend Infrastructure
 
@@ -1835,7 +1811,7 @@ export class FrontendStack extends cdk.Stack {
     });
 
     new s3_deployment.BucketDeployment(this, 'FrontendAppDeploy', {
-      sources: [s3_deployment.Source.asset('frontend/build')],
+      sources: [s3_deployment.Source.asset('build')],
       destinationBucket: frontendSourceBucket,
       distribution: frontendCloudfront,
       distributionPaths: ['/*'],
@@ -1867,7 +1843,7 @@ export class FrontendStack extends cdk.Stack {
     const canaryScheduleExpression = \`rate(\${canaryExecutionConfig.frequency} minute)\`;
 
     const canaryAsset = new Asset(this, 'canaryCode', {
-      path: 'frontend/build/canary',
+      path: 'build/canary',
     });
 
     const canaryResultsBucketName = \`\${id.toLowerCase()}-canary-results\`;
