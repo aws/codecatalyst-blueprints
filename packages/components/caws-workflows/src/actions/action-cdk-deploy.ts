@@ -14,8 +14,8 @@ import {
 export interface CdkDeployActionConfiguration {
   StackName: string;
   Region?: string;
-  Tags?: {[key: string]: string};
-  Context?: {[key: string]: string};
+  Tags?: { [key: string]: string };
+  Context?: { [key: string]: string };
   CfnOutputVariables?: string[];
   CdkRootPath?: string;
 }
@@ -34,22 +34,24 @@ export interface CdkDeployActionYamlOutput {
 export const convertYamlInputToString = (paramterInput: CdkDeployActionConfiguration): CdkDeployActionYamlOutput => {
   const stringifiedInput: CdkDeployActionYamlOutput = {
     StackName: paramterInput.StackName,
-    Region: typeof paramterInput.Region === 'undefined'? undefined : paramterInput.Region,
-    CdkRootPath: typeof paramterInput.CdkRootPath === 'undefined'? undefined : paramterInput.CdkRootPath,
-    Tags: typeof paramterInput.Tags === 'undefined'? undefined : convertInputsToJsonString(paramterInput.Tags),
-    Context: typeof paramterInput.Context === 'undefined'? undefined : convertInputsToJsonString(paramterInput.Context),
-    CfnOutputVariables: typeof paramterInput.CfnOutputVariables === 'undefined'? undefined : convertInputsToJsonString(paramterInput.CfnOutputVariables),
+    Region: typeof paramterInput.Region === 'undefined' ? undefined : paramterInput.Region,
+    CdkRootPath: typeof paramterInput.CdkRootPath === 'undefined' ? undefined : paramterInput.CdkRootPath,
+    Tags: typeof paramterInput.Tags === 'undefined' ? undefined : convertInputsToJsonString(paramterInput.Tags),
+    Context: typeof paramterInput.Context === 'undefined' ? undefined : convertInputsToJsonString(paramterInput.Context),
+    CfnOutputVariables:
+      typeof paramterInput.CfnOutputVariables === 'undefined' ? undefined : convertInputsToJsonString(paramterInput.CfnOutputVariables),
   };
   return stringifiedInput;
 };
 
 export interface CdkDeployActionParameters {
   inputs: InputsDefinition;
-  outputs: OutputDefinition;
+  outputs?: OutputDefinition;
   environment: WorkflowEnvironment;
   computeName?: ComputeConfiguration;
   configuration: CdkDeployActionConfiguration;
   actionName: string;
+  dependsOn?: string[];
 }
 
 export function addGenericCdkDeployAction(
@@ -58,7 +60,7 @@ export function addGenericCdkDeployAction(
     workflow: WorkflowDefinition;
   },
 ): string {
-  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName } = params;
+  const { blueprint, workflow, inputs, outputs, environment, configuration, computeName, dependsOn } = params;
   const actionName = (params.actionName || 'DeployCdkStack').replace(new RegExp('-', 'g'), '_');
 
   const cdkDeployAction: ActionDefiniton = {
@@ -66,6 +68,7 @@ export function addGenericCdkDeployAction(
     Inputs: inputs,
     Outputs: outputs,
     Environment: environment,
+    DependsOn: dependsOn,
     Compute: computeName,
     Configuration: convertYamlInputToString(configuration),
   };
