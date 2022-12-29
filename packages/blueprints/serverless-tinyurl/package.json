@@ -80,7 +80,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "",
-  "version": "0.0.1-preview.144",
+  "version": "0.0.1-preview.150",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
