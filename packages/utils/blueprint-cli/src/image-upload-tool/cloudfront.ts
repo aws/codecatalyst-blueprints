@@ -44,13 +44,16 @@ export const getOriginAccessIdentityId = async (log: pino.BaseLogger, bucketName
  * @returns DomainName to the cloudfront distro
  */
 export const getExistingCloudfrontDistro = async (log: pino.BaseLogger, s3Bucket: string): Promise<string | undefined> => {
-  for await (const page of paginateListDistributions({
-    pageSize: 25,
-    client: cloudfrontClient,
-  }, {})) {
-    for (const distro of (page.DistributionList?.Items || [])) {
+  for await (const page of paginateListDistributions(
+    {
+      pageSize: 25,
+      client: cloudfrontClient,
+    },
+    {},
+  )) {
+    for (const distro of page.DistributionList?.Items || []) {
       if ((distro.Origins?.Items?.map(item => item.Id) || []).includes(s3Bucket)) {
-        log.info(`Existing cloudfront distro exists ${distro.DomainName}`);
+        log.info(`Existing cloudfront distribution exists, domain name: ${distro.DomainName}`);
         return distro.DomainName;
       }
     }
@@ -68,8 +71,6 @@ export const createCloudFrontDistribution = async (
   originAccessIdentityId: string,
   image: Image,
 ): Promise<string> => {
-
-
   try {
     log.info('Creating CloudFront distribution ...');
     const createDistributionCommandResponse = await cloudfrontClient.send(
