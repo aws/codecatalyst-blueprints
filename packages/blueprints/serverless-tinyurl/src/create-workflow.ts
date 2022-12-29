@@ -27,10 +27,10 @@ export function makeWorkflowDefintion(
   const wfbuilder = new WorkflowBuilder(blueprint, emptyWorkflow);
   wfbuilder.setName(options.workflowName);
   wfbuilder.addBranchTrigger(['main']),
-    wfbuilder.addCompute({
-      Type: ComputeType.LAMBDA,
-      Fleet: ComputeFleet.LINUX_X86_64_LARGE,
-    });
+  wfbuilder.addCompute({
+    Type: ComputeType.LAMBDA,
+    Fleet: ComputeFleet.LINUX_X86_64_LARGE,
+  });
 
   /**
    * general notes:
