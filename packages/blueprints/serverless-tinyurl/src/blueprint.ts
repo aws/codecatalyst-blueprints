@@ -155,7 +155,10 @@ export class Blueprint extends ParentBlueprint {
       );
     });
 
+    // connect an account via the environment construct
     const environment = new Environment(this, this.options.environment);
+
+    // create the workflow
     const workflowDefinition = makeWorkflowDefintion(this, environment, {
       workflowName: 'main_fullstack_workflow',
       stacks: {

@@ -32,25 +32,6 @@ export function makeWorkflowDefintion(
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     });
 
-  /**
-   * general notes:
-   * Below is the dependency flow for the CD
-   * t. trigger
-   * 1. build and test the frontend
-   * 2. build and test the backend
-   * 3. bootstrap the account
-   * 4. deploy the backend
-   * 5. deploy the frontend
-   *
-   *   t
-   * 1 . 2 . 3
-   * | . |  /
-   * | . 4
-   *  \  |
-   *    5
-   *
-   */
-
   // To build and package the backend
   wfbuilder.addBuildAction({
     actionName: 'BackendBuildAndPackage',
