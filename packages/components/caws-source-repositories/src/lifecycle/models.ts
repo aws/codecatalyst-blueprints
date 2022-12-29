@@ -15,40 +15,30 @@
  * 6. Write content into the output directory.
  */
 export interface LifecycleControl {
-  /**
-   * These are file globs that the blueprint will clean from the existing content prior to writing anything as part of resynthesis.
-   * This results in these file globs always being hard replaced.
-   * The blueprint will remove everything in these globs and before doing any writing.
-   * @priority 1
-   */
-  alwaysReplace: string[];
+   /**
+     * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in. 
+     * e.g. css files
+     * This works by removing these file globs in new synthesis before starting any merge.
+     */
+    userOwned: string[];
 
-  /**
-   * These are file globs that the blueprint will never add into as part of resynthesis.
-   * The blueprint will never write into these globs as part of resynthesis.
-   * @priority 2
-   */
-  neverReplace: string[];
+    /**
+     * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in. 
+     * e.g. css files
+     * This works by removing these file globs in the existing codebase before starting any merge.
+     */
+    blueprintOwned: string[];
 
-  /**
-   * These are file globs that will use existing content when merging files.
-   * It will always use existing content. This is the opposite of 'useNewContent' strategy.
-   * @priority 3
-   */
-  mergeUsingExistingContent: string[];
+    /**
+     * Some files might be shared. Specify how to resolve shared ownership
+     */
+    shared: MergeStrategy[]
 
-  /**
-   * These are file globs that will use new, incoming content when merging files
-   * It will always overwrite existing content with new content. This is the opposite of 'useExistingContent' strategy.
-   * @priority 4
-   */
-  mergeUsingNewContent: string[];
-
-  /**
-   * Implement this method if you want your own merge strategy on files that conflict.
-   * @defaults defaultMergeStrategy
-   */
-  mergeStrategy: MergeStrategyFunction;
+    /**
+     * This function will be invoked on all files that result in a merge but might otherwise not have been covered with ownership patterns.
+     * @defaults defaultMergeStrategy
+     */
+    defaultMergeStrategy: MergeStrategyFunction;
 }
 
 export type MergeStrategyFunction = (filePath: string, existingContent: Buffer, newContent: Buffer, options?: {}) => string | NodeJS.ArrayBufferView;

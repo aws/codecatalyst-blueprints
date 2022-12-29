@@ -15,14 +15,44 @@ export interface SynthesizeOptions extends yargs.Arguments {
   defaults?: string;
 }
 
+interface ValidationResult {
+  options: any;
+  optionsFileName: any;
+}
+const validateSynth = (log: pino.BaseLogger, options: {
+  blueprintDirectory: string;
+  optionsPath: string;
+}): ValidationResult => {
+  const {optionsPath, blueprintDirectory} = options;
+
+  if (!fs.existsSync(blueprintDirectory)) {
+    log.error('blueprint directory does not exist: %s', blueprintDirectory);
+    process.exit(255);
+  }
+
+  let loadedOptions = {};
+  if (optionsPath) {
+    if (!fs.existsSync(optionsPath)) {
+      log.error('Options file did not exist: %s', optionsPath);
+      process.exit(255);
+    }
+    loadedOptions = {
+      ...JSON.parse(fs.readFileSync(optionsPath, 'utf-8')),
+    };
+  }
+  return {
+    options: loadedOptions,
+    optionsFileName: path.parse(optionsPath).base
+  };
+}
+
 export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOptions): Promise<void> {
   const { blueprint, outdir, outdirExact, enableStableSynthesis, cache, defaults } = synthOptions;
   console.log(`cache ${cache}`);
-
-  if (!fs.existsSync(blueprint)) {
-    log.error('blueprint directory does not exist: %s', blueprint);
-    process.exit(255);
-  }
+  const {options, optionsFileName} = validateSynth(log, {
+    blueprintDirectory: blueprint,
+    optionsPath: defaults || '',
+  });
 
   const synthEntropy = String(Math.floor(Date.now() / 100));
   let synthDirectory = '';
@@ -34,7 +64,7 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
 
   let stableSynthDirectory: string | undefined = undefined;
   if (enableStableSynthesis) {
-    stableSynthDirectory = path.resolve(path.join(outdir, 'synth', '00.latest.synth'));
+    stableSynthDirectory = path.resolve(path.join(outdir, 'synth', `00.latest.${optionsFileName}`));
   }
 
   cp.execSync(`mkdir -p ${synthDirectory}`, {
@@ -45,17 +75,6 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
     cp.execSync(`mkdir -p ${stableSynthDirectory}`, {
       stdio: 'inherit',
     });
-  }
-
-  let loadedOptions = {};
-  if (defaults) {
-    if (!fs.existsSync(defaults)) {
-      log.error('defaults file did not exist: %s', defaults);
-      process.exit(255);
-    }
-    loadedOptions = {
-      ...JSON.parse(fs.readFileSync(defaults, 'utf-8')),
-    };
   }
 
   console.log(`usage cache?, ${cache}`);
@@ -80,7 +99,7 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
 
     doSynthesis(log, blueprint, 'NEW CACHE', {
       driverFile: synthExecutionFile,
-      options: loadedOptions,
+      options,
       outputDirectory: synthDirectory,
       entropy: synthEntropy,
       useNode: true,
@@ -89,7 +108,7 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
     if (stableSynthDirectory) {
       doSynthesis(log, blueprint, 'STABLE CACHE', {
         driverFile: synthExecutionFile,
-        options: loadedOptions,
+        options,
         outputDirectory: stableSynthDirectory,
         entropy: synthEntropy,
         commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,
@@ -104,7 +123,7 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
 
       doSynthesis(log, blueprint, 'NEW', {
         driverFile,
-        options: loadedOptions,
+        options,
         outputDirectory: synthDirectory,
         entropy: synthEntropy,
       });
@@ -112,7 +131,7 @@ export async function synth(log: pino.BaseLogger, synthOptions: SynthesizeOption
       if (stableSynthDirectory) {
         doSynthesis(log, blueprint, 'STABLE', {
           driverFile,
-          options: loadedOptions,
+          options,
           outputDirectory: stableSynthDirectory,
           entropy: synthEntropy,
           commandPrefix: `rm -rf ${stableSynthDirectory}/* && `,

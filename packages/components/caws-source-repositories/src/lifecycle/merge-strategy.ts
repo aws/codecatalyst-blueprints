@@ -1,4 +1,4 @@
-import { isInGlob } from './file-resolution';
+import { matchesGlob } from './file-resolution';
 import { MergeStrategy, MergeStrategyFunction } from './models';
 
 export class MergeStrategies {
@@ -40,7 +40,7 @@ export function merge(
 ): string | NodeJS.ArrayBufferView | undefined {
   for (const strategy of strategies) {
     for (const glob of strategy.globs) {
-      if (isInGlob(file.path, glob)) {
+      if (matchesGlob(file.path, glob)) {
         return strategy.strategy(file.path, file.existingContent, file.newContent);
       }
     }

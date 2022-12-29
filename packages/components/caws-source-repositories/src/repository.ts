@@ -15,9 +15,19 @@ export interface SourceRepositoryDefinition {
   title: string;
 
   /**
-   * This is a way to denote ownership boundries.
+   * This controls how files are merged when a user runs re-synthesis.
+   *
+   * Resynthesis is typically run when an update to a blueprint results in bug fixes or other changes in generated code.
+   * This will result in a depend-a-bot style PR into customer generated codebases.
+   *
+   * You should assume that the same or similar options are passed during resynthesis, if the options diverge too much,
+   * (e.g. changing the language) it might not be possible to effectively reason about needed changes. This might still
+   * result in a valid synthesis, but will likely require the customer to do some work to manually fix merge conflicts.
+   *
+   * This can also happen if the blueprint interface adds backwards breaking changes to it's shape, prior used options
+   * will no longer work.
    */
-  lifecycle?: Partial<LifecycleControl>;
+  resynthesis?: Partial<LifecycleControl>;
 }
 
 /**
@@ -34,7 +44,7 @@ export class SourceRepository extends Component {
   // functions that get executed at the end of a synthesis of a repository.
   public readonly synthesisSteps: (() => void)[];
 
-  public readonly lifecycle: LifecycleControl;
+  public readonly resynthesis: LifecycleControl;
 
   constructor(protected readonly blueprint_: Blueprint, protected readonly sourceRepository: SourceRepositoryDefinition) {
     super(blueprint_);
@@ -44,19 +54,18 @@ export class SourceRepository extends Component {
     this.relativePath = path.join(sourceRepositoryRootDirectory, sourceRepository.title);
     this.path = path.join(this.blueprint.context.rootDir, this.relativePath);
     this.synthesisSteps = [];
-    this.lifecycle = {
-      alwaysReplace: [],
-      neverReplace: [],
-      mergeUsingExistingContent: [],
-      mergeUsingNewContent: [],
-      mergeStrategy: MergeStrategies.default,
-      ...sourceRepository.lifecycle,
+    this.resynthesis = {
+      blueprintOwned: [],
+      userOwned: [],
+      shared: [],
+      defaultMergeStrategy: MergeStrategies.default,
+      ...sourceRepository.resynthesis,
     };
 
     // If lifecycle management is not enabled, this means the author probably has not reasoned about how to do updates safely.
-    // We clean all existing files in an attempt to ship a working product as close to what the author would expect
-    if (!sourceRepository.lifecycle) {
-      this.lifecycle.alwaysReplace = ['**/*'];
+    // We assume the blueprint owns all the files in the filesystem.
+    if (!sourceRepository.resynthesis) {
+      this.resynthesis.blueprintOwned = ['**/*'];
     }
   }
 
@@ -98,18 +107,12 @@ export class SourceRepository extends Component {
       /**
        * TODO: * 1. check if there is a LIFECYCLE_MANAGEMENT_RECORD in the existing repo, update the lifecycle content.
        */
+      
       const lifecycleMergePriority = [
-        {
-          globs: this.lifecycle.mergeUsingExistingContent,
-          strategy: MergeStrategies.useExistingContent,
-        },
-        {
-          globs: this.lifecycle.mergeUsingNewContent,
-          strategy: MergeStrategies.useNewContent,
-        },
+        ...this.sourceRepository.resynthesis?.shared || [],
         {
           globs: ['**/*'],
-          strategy: this.lifecycle.mergeStrategy,
+          strategy: this.resynthesis.defaultMergeStrategy,
         },
       ];
 
@@ -117,13 +120,13 @@ export class SourceRepository extends Component {
       [
         {
           scope: existingContentFolder,
-          globs: this.lifecycle.alwaysReplace,
-          label: 'Clean and Replace',
+          globs: this.resynthesis.blueprintOwned,
+          label: 'Removing blueprint owned:',
         },
         {
           scope: newContentFolder,
-          globs: this.lifecycle.neverReplace,
-          label: 'Not Updating',
+          globs: this.resynthesis.userOwned,
+          label: 'Removing user owned:',
         },
       ].forEach(lifeCycleStage =>
         removeFiles(lifeCycleStage.scope, lifeCycleStage.globs, {
@@ -133,8 +136,8 @@ export class SourceRepository extends Component {
 
       // walk all the files that could possibly show up in the resynth'd content
       const lifecycledFiles = new Set<MirroredFilePath>();
-      [existingContentFolder, newContentFolder].forEach(location => {
-        for (const file of walkFiles(location, '**/*')) {
+      [existingContentFolder, newContentFolder].forEach(folder => {
+        for (const file of walkFiles(folder, '**/*')) {
           lifecycledFiles.add(makeMirroredPaths(existingContentFolder, newContentFolder, file));
         }
       });

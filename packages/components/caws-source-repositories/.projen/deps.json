@@ -9,6 +9,14 @@
       "type": "build"
     },
     {
+      "name": "@types/glob",
+      "type": "build"
+    },
+    {
+      "name": "@types/minimatch",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14",
       "type": "build"
@@ -76,10 +84,6 @@
       "type": "peer"
     },
     {
-      "name": "@types/glob",
-      "type": "runtime"
-    },
-    {
       "name": "camelcase",
       "type": "runtime"
     },
@@ -89,6 +93,10 @@
     },
     {
       "name": "glob",
+      "type": "runtime"
+    },
+    {
+      "name": "minimatch",
       "type": "runtime"
     },
     {

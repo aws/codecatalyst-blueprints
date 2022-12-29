@@ -132,6 +132,9 @@ export class Blueprint extends ParentBlueprint {
 
     this.repository = new SourceRepository(this, {
       title: this.options.code.sourceRepositoryName || 'sam-lambda',
+      resynthesis: {
+        
+      }
     });
     this.options.lambda = options.lambda;
   }
