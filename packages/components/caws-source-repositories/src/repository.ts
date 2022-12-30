@@ -107,9 +107,9 @@ export class SourceRepository extends Component {
       /**
        * TODO: * 1. check if there is a LIFECYCLE_MANAGEMENT_RECORD in the existing repo, update the lifecycle content.
        */
-      
+
       const lifecycleMergePriority = [
-        ...this.sourceRepository.resynthesis?.shared || [],
+        ...(this.sourceRepository.resynthesis?.shared || []),
         {
           globs: ['**/*'],
           strategy: this.resynthesis.defaultMergeStrategy,

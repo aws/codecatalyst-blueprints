@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import path from 'path';
 import * as glob from 'glob';
+import * as ini from 'ini';
 import * as minimatch from 'minimatch';
 import { MirroredFilePath } from './models';
 
@@ -33,8 +34,8 @@ export function removeFiles(
     operation: string;
   },
 ) {
-  globs.forEach(glob => {
-    for (const file of walkFiles(pathLocation, glob)) {
+  globs.forEach(globule => {
+    for (const file of walkFiles(pathLocation, globule)) {
       console.log(`${options.operation}: ${file.replace(pathLocation, '')}`);
       fs.rmSync(file, { force: true });
     }
@@ -61,12 +62,12 @@ export function fileExists(location: string): boolean {
   return fs.existsSync(location);
 }
 
-
-import * as fs from "fs";
-import * as ini from "ini";
-
 interface IniObject {
   [key: string]: string[];
+}
+
+export function writeIniFile(object: IniObject, filepath: string) {
+  fs.writeFileSync(filepath, ini.encode(object));
 }
 
 /**
@@ -78,7 +79,7 @@ interface IniObject {
  */
 export function readIniFile(filePath: string): IniObject {
   // Read the file contents
-  const fileContents = fs.readFileSync(filePath, "utf8");
+  const fileContents = fs.readFileSync(filePath, 'utf8');
 
   // Parse the INI file using the ini module
   const iniObject = ini.parse(fileContents);
@@ -86,7 +87,7 @@ export function readIniFile(filePath: string): IniObject {
   // Convert the object to the desired format
   const result: IniObject = {};
   for (const [key, value] of Object.entries(iniObject)) {
-    result[key] = `${value}`.split("\n");
+    result[key] = `${value}`.split('\n');
   }
   return result;
 }

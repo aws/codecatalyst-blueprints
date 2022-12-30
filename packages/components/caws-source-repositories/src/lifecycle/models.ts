@@ -15,30 +15,30 @@
  * 6. Write content into the output directory.
  */
 export interface LifecycleControl {
-   /**
-     * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in. 
-     * e.g. css files
-     * This works by removing these file globs in new synthesis before starting any merge.
-     */
-    userOwned: string[];
+  /**
+   * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in.
+   * e.g. css files
+   * This works by removing these file globs in new synthesis before starting any merge.
+   */
+  userOwned: string[];
 
-    /**
-     * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in. 
-     * e.g. css files
-     * This works by removing these file globs in the existing codebase before starting any merge.
-     */
-    blueprintOwned: string[];
+  /**
+   * This is code that the blueprint customer is expected to own and make updates to. This is typically specific to the program the customer is building and not the type of codebase the customer is working in.
+   * e.g. css files
+   * This works by removing these file globs in the existing codebase before starting any merge.
+   */
+  blueprintOwned: string[];
 
-    /**
-     * Some files might be shared. Specify how to resolve shared ownership
-     */
-    shared: MergeStrategy[]
+  /**
+   * Some files might be shared. Specify how to resolve shared ownership
+   */
+  shared: MergeStrategy[];
 
-    /**
-     * This function will be invoked on all files that result in a merge but might otherwise not have been covered with ownership patterns.
-     * @defaults defaultMergeStrategy
-     */
-    defaultMergeStrategy: MergeStrategyFunction;
+  /**
+   * This function will be invoked on all files that result in a merge but might otherwise not have been covered with ownership patterns.
+   * @defaults defaultMergeStrategy
+   */
+  defaultMergeStrategy: MergeStrategyFunction;
 }
 
 export type MergeStrategyFunction = (filePath: string, existingContent: Buffer, newContent: Buffer, options?: {}) => string | NodeJS.ArrayBufferView;

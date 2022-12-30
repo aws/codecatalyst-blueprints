@@ -96,6 +96,10 @@
       "type": "runtime"
     },
     {
+      "name": "ini",
+      "type": "runtime"
+    },
+    {
       "name": "minimatch",
       "type": "runtime"
     },

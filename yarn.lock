@@ -1792,6 +1792,7 @@ __metadata:
     "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
     "@types/glob": "*"
+    "@types/minimatch": "*"
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1888,6 +1889,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     axios: ^0.25.0
+    deepmerge: "*"
     eslint: ^8
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
@@ -5342,7 +5344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2":
+"deepmerge@npm:*, deepmerge@npm:^4.2.2":
   version: 4.2.2
   resolution: "deepmerge@npm:4.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdeepmerge%2F-%2Fdeepmerge-4.2.2.tgz"
   checksum: a8c43a1ed8d6d1ed2b5bf569fa4c8eb9f0924034baf75d5d406e47e157a451075c4db353efea7b6bcc56ec48116a8ce72fccf867b6e078e7c561904b5897530b

@@ -48,6 +48,7 @@
     "camelcase": "5.3.x",
     "decamelize": "5.0.x",
     "glob": "*",
+    "ini": "*",
     "minimatch": "*",
     "mustache": "*"
   },
