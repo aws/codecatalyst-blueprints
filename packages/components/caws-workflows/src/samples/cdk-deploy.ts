@@ -13,7 +13,7 @@ export const makeCDKDeployWorkflow = (
 ) => {
   const startingWorkflowDefinition = {
     SchemaVersion: '1.0',
-    Name: 'sample-cdk-deploy',
+    Name: options?.workflowName || 'sample-cdk-deploy',
     Triggers: [],
   };
 
@@ -21,7 +21,7 @@ export const makeCDKDeployWorkflow = (
     blueprint,
     workflow: startingWorkflowDefinition,
     actionName: 'DeployAction',
-    environment,
+    environment: environment,
     inputs: {
       Sources: ['WorkflowSource'],
     },
