@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.codecatalyst/scripts/run-tests.sh 1`] = `
 "#!/usr/bin/env bash
 
 echo "Running unit tests..."
@@ -9,7 +9,7 @@ GRADLE_DIR=gradle-test-fn-name/HelloWorldFunction
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "
 Name: build-and-release
 SchemaVersion: "1.0"
@@ -65,7 +65,7 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/README.md 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/README.md 1`] = `
 "
 ## This Project
 
@@ -281,7 +281,7 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/devfile.yaml 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/devfile.yaml 1`] = `
 "
 schemaVersion: 2.0.0
 metadata:
@@ -307,7 +307,7 @@ components:
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/build.gradle 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/build.gradle 1`] = `
 "plugins {
     id 'java'
     id 'jacoco'
@@ -345,7 +345,7 @@ targetCompatibility = 11
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.jar 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.jar 1`] = `
 "PK
      A            	   META-INF/ PK
      A m�>=@   ?      META-INF/MANIFEST.MF�M��LK-.�
@@ -892,7 +892,7 @@ f  org/gradle/wrapper/SystemPropertiesHandler.classPK
 �8=|  �  9           ��]�  org/gradle/cli/SystemPropertiesCommandLineConverter.classPK    4 4 J  0�    "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.properties 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.properties 1`] = `
 "distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 distributionUrl=https\\://services.gradle.org/distributions/gradle-7.3.3-bin.zip
@@ -901,7 +901,7 @@ zipStorePath=wrapper/dists
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew 1`] = `
 "#!/bin/sh
 
 #
@@ -1139,7 +1139,7 @@ exec "$JAVACMD" "$@"
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew.bat 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew.bat 1`] = `
 "@rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -1232,7 +1232,7 @@ if "%OS%"=="Windows_NT" endlocal
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/main/java/helloworld/App.java 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/main/java/helloworld/App.java 1`] = `
 "package helloworld;
 
 import java.io.BufferedReader;
@@ -1284,7 +1284,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/test/java/helloworld/AppTest.java 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/test/java/helloworld/AppTest.java 1`] = `
 "package helloworld;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -1310,7 +1310,7 @@ public class AppTest {
 "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/gradle-test-fn-name/events/event.json 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/events/event.json 1`] = `
 "{
     "body": "{\\"message\\": \\"hello world\\"}",
     "resource": "/{proxy+}",
@@ -1376,7 +1376,7 @@ exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-r
   "
 `;
 
-exports[`Blueprint snapshots java11gradle configuration matches src/gradle-src-repo-name/template.yaml 1`] = `
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/template.yaml 1`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -1416,7 +1416,7 @@ Outputs:
     Value: !GetAtt gradle-test-fn-nameFunctionRole.Arn"
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
 "#!/usr/bin/env bash
 
 WORKING_DIR=SamFirstEndpoint/hello-world/
@@ -1425,7 +1425,7 @@ npm --prefix $WORKING_DIR run coverage
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "
 Name: build-and-release
 SchemaVersion: "1.0"
@@ -1481,7 +1481,7 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/README.md 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/README.md 1`] = `
 "
 ## This Project
 
@@ -1698,7 +1698,7 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
 "{
   "body": "{\\"message\\": \\"hello world\\"}",
   "resource": "/{proxy+}",
@@ -1764,7 +1764,12 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.js 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/.npmignore 1`] = `
+"tests/*
+"
+`;
+
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.js 1`] = `
 "// const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
 let response;
@@ -1801,7 +1806,7 @@ exports.lambdaHandler = async (event, context) => {
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/package.json 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/package.json 1`] = `
 "{
   "name": "hello_world",
   "version": "1.0.0",
@@ -1827,7 +1832,7 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.js 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.js 1`] = `
 "'use strict';
 
 const app = require('../../app.js');
@@ -1853,7 +1858,7 @@ describe('Tests index', function () {
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
 "
 schemaVersion: 2.0.0
 metadata:
@@ -1879,7 +1884,7 @@ components:
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -1914,7 +1919,7 @@ Outputs:
     Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/bootstrap.sh 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/bootstrap.sh 1`] = `
 "#!/bin/bash
 
 VENV="venv"
@@ -1926,7 +1931,7 @@ $VENV/bin/pip install -r SamFirstEndpoint/hello_world/requirements.txt
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
 "#!/bin/bash
 
 echo "Running unit tests..."
@@ -1934,7 +1939,7 @@ PYTHONPATH=SamFirstEndpoint pytest --junitxml=test_results.xml --cov-report xml:
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "
 Name: build-and-release
 SchemaVersion: "1.0"
@@ -1991,7 +1996,13 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/README.md 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.coveragerc 1`] = `
+"[run]
+omit = SamFirstEndpoint/tests/integration/*
+"
+`;
+
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/README.md 1`] = `
 "
 ## This Project
 
@@ -2212,9 +2223,9 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/__init__.py 1`] = `""`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
 "{
   "body": "{\\"message\\": \\"hello world\\"}",
   "resource": "/hello",
@@ -2280,9 +2291,9 @@ exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRep
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/__init__.py 1`] = `""`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/app.py 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/app.py 1`] = `
 "import json
 
 # import requests
@@ -2328,13 +2339,13 @@ def lambda_handler(event, context):
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/requirements.txt 1`] = `"requests"`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/requirements.txt 1`] = `"requests"`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/__init__.py 1`] = `""`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/__init__.py 1`] = `""`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/test_api_gateway.py 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/test_api_gateway.py 1`] = `
 "import os
 
 import boto3
@@ -2383,7 +2394,7 @@ class TestApiGateway:
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/requirements.txt 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/requirements.txt 1`] = `
 "pytest
 pytest-cov
 pytest-mock
@@ -2392,9 +2403,9 @@ requests
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/__init__.py 1`] = `""`;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/test_handler.py 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/test_handler.py 1`] = `
 "import json
 
 import pytest
@@ -2470,7 +2481,7 @@ def test_lambda_handler(apigw_event):
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
 "
 schemaVersion: 2.0.0
 metadata:
@@ -2496,7 +2507,7 @@ components:
 "
 `;
 
-exports[`Blueprint snapshots python39 configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
