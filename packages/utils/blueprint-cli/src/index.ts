@@ -76,7 +76,7 @@ yargs
         });
       }
       if (argv.enableStableSynthesis) {
-        const defaultSynth = path.join(argv.outdir, 'synth', `00.latest.${path.parse(argv.options).base}`);
+        const defaultSynth = path.join(argv.outdir, 'synth', `00.fresh.${path.parse(argv.options).base}`);
         runs.push({
           execPrior: `rm -rf ${defaultSynth}`,
           optionOverridePath: argv.options,
@@ -85,7 +85,7 @@ yargs
       }
       if (argv.additionalOptionOverrides) {
         fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
-          const outputLocation = path.join(argv.outdir, 'synth', `00.latest.${override.name}`);
+          const outputLocation = path.join(argv.outdir, 'synth', `00.fresh.${override.name}`);
           runs.push({
             execPrior: `rm -rf ${outputLocation}`,
             optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
@@ -119,15 +119,15 @@ yargs
           type: 'string',
           demandOption: true,
         })
-        .option('cache', {
-          description: 'Generate and synth from a webpacked cache',
-          default: false,
-          type: 'boolean',
-        })
         .option('options', {
           description: 'path to defaults.json to feed default values into synthesis',
           type: 'string',
           demandOption: true,
+        })
+        .option('cache', {
+          description: 'Generate and synth from a webpacked cache',
+          default: false,
+          type: 'boolean',
         })
         .option('additionalOverrides', {
           description: 'synthesize additional partial options over the default to a stable directory',
@@ -138,7 +138,7 @@ yargs
       const runs: SynthRun[] = [
         {
           optionOverridePath: argv.options,
-          outputPath: path.join(argv.outdir, 'synth', `00.latest.${path.parse(argv.options).base}`),
+          outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
         },
       ];
 
@@ -146,7 +146,7 @@ yargs
         fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
           runs.push({
             optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
-            outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.latest.${override.name}`)),
+            outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
           });
         });
       }

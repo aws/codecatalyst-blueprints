@@ -4,10 +4,10 @@ import { JsonFile, Project, SourceCode } from 'projen';
 import { BlueprintSnapshotConfiguration } from './blueprint';
 import { generateSpecTs } from './snapshot-testing/gen-spec';
 
-const SRC_DIR = 'src';
-const CONFIGS_SUBDIR = 'snapshot-configurations';
-const DEFAULT_TEST_CONFIG_FILENAME = 'defaults.json';
-const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
+export const SRC_DIR = 'src';
+export const CONFIGS_SUBDIR = 'snapshot-configurations';
+export const DEFAULT_TEST_CONFIG_FILENAME = 'defaults.json';
+export const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
 
 export function generateTestSnapshotInfraFiles(project: Project, testingConfig: BlueprintSnapshotConfiguration) {
   // If you add or change any files here, remember to update `cleanUpTestSnapshotInfraFiles()`
