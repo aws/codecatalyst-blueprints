@@ -59,7 +59,7 @@ export interface SynthOptions {
  * @param log
  * @param options
  */
-export async function synthesize(log: pino.BaseLogger, options: SynthOptions): Promise<void> {
+export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
   validateSynthOptions(log, {
     blueprintDirectory: options.blueprintPath,
     optionsPaths: [options.defaultsPath, ...options.runs.map(output => output.optionOverridePath)],

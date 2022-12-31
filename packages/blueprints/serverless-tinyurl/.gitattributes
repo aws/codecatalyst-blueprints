@@ -12,7 +12,6 @@
 /LICENSE linguist-generated
 /package.json linguist-generated
 /src/blueprint-snapshot-driver.spec.ts linguist-generated
-/src/snapshot-infrastructure/infrastructure.ts linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
 /yarn.lock linguist-generated

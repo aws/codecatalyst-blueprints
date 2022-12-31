@@ -1,57 +1,47 @@
-import * as cproc from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-driver/synth';
+import * as globule from 'globule';
+import * as pino from 'pino';
 
-import { Options } from './blueprint';
-import { allTestConfigs, cleanUpTempDir, getAllBlueprintSnapshottedFilenames, prepareTempDir } from './snapshot-infrastructure/infrastructure';
+const log = pino.default({
+  prettyPrint: true,
+  level: process.env.LOG_LEVEL || 'debug',
+});
 
-function beforeAllSync(testConfig) {
-  const blueprintOutdir = prepareTempDir('blueprint');
+const configurationsLocation = 'src/snapshot-configurations';
+const defaultsLocation = 'src/defaults.json';
+const blueprintLocation = './';
+const outputDirectory = './';
+const GLOBS_UNDER_SNAPSHOT: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
 
-  // Write options to a file, as that's what the Blueprints CLI consumes.
-  const options: Options = {
-    ...testConfig.config,
-    outdir: blueprintOutdir,
-  };
-  const configOutdir = prepareTempDir('config');
-  const configOutfile = path.join(configOutdir, 'snap-config.json');
-  fs.writeFileSync(configOutfile, JSON.stringify(options));
-  //console.debug(`Wrote snapshot config to ${configOutfile}`);
+function runSnapshotSynthesis() {
+  // run synthesis into several directories.
 
-  // Synthesize using the Blueprint CLI
-  const synthCmd = `npx blueprint synth ./ --outdirExact true --enableStableSynthesis false --outdir ${blueprintOutdir} --defaults ${configOutfile}`;
-  //console.debug(`Synthesis command: ${synthCmd}`);
+  const snapshotRuns: cli.SynthRun[] = [];
+  fs.readdirSync(configurationsLocation, { withFileTypes: true }).forEach(override => {
+    const outputLocation = path.join(outputDirectory, 'synth', `01.snapshot.${override.name}`);
+    snapshotRuns.push({
+      execPrior: `rm -rf ${outputLocation}`,
+      optionOverridePath: path.join(configurationsLocation!, override.name),
+      outputPath: path.resolve(outputLocation),
+    });
+  });
 
-  let synthBuffer;
-  try {
-    synthBuffer = cproc.execSync(synthCmd);
-  } catch (e) {
-    console.log(`Failed synthesis output:\n${synthBuffer}`);
-    throw e;
-  }
+  cli.synthesize(log as any, {
+    useCache: true,
+    blueprintPath: blueprintLocation,
+    defaultsPath: defaultsLocation,
+    runs: snapshotRuns,
+  });
 
-  return [blueprintOutdir, configOutdir];
+  return snapshotRuns;
 }
 
 describe('Blueprint snapshots', () => {
-  allTestConfigs().forEach(testConfig => {
-    describe(`${testConfig.name} configuration`, () => {
-      /**
-       * This is structured somewhat uniquely because we want a separate Jest test for each
-       * snapshotted file to make the output more detailed and failures clearer to diagnose.
-       *
-       * Jest requires tests to be defined synchronously (https://github.com/facebook/jest/issues/2235),
-       * so we need to synthesize the blueprint synchronously. Both *beforeAll* and *beforeEach*
-       * run asynchronously, so we run our own sync code to set up blueprints.
-       */
-      const [blueprintOutdir, configOutdir] = beforeAllSync(testConfig);
-
-      afterAll(() => {
-        cleanUpTempDir(blueprintOutdir);
-        cleanUpTempDir(configOutdir);
-      });
-
-      for (const snappedFile of getAllBlueprintSnapshottedFilenames(blueprintOutdir)) {
+  runSnapshotSynthesis().forEach(run => {
+    describe(`${path.parse(run.optionOverridePath).base} configuration`, () => {
+      for (const snappedFile of filesUnderSnapshot(run.outputPath, GLOBS_UNDER_SNAPSHOT)) {
         it(`matches ${snappedFile.relPath}`, () => {
           expect(fs.readFileSync(snappedFile.absPath, { encoding: 'utf-8' })).toMatchSnapshot();
         });
@@ -59,3 +49,33 @@ describe('Blueprint snapshots', () => {
     });
   });
 });
+
+/**
+ * In unit tests, we need both the absolute and the relative paths.
+ * The absolute path helps us to access the files on the filesystem. It varies for each test run.
+ * The relative path is used to reference a file's snapshot across test runs. It is constant.
+ */
+interface BlueprintOutputFile {
+  absPath: string;
+  relPath: string;
+}
+
+function filesUnderSnapshot(outdir: string, globs: string[]): BlueprintOutputFile[] {
+  return globule
+    .find(['**/*', '**/*.??*', '*'], {
+      cwd: outdir,
+      dot: true,
+    })
+    .filter(element =>
+      globule.isMatch(globs, element, {
+        dot: true,
+      }),
+    )
+    .filter(element => !fs.lstatSync(path.join(outdir, element)).isDirectory())
+    .map(element => {
+      return {
+        absPath: path.join(outdir, element),
+        relPath: element,
+      };
+    });
+}

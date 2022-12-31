@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as pino from 'pino';
-import * as globule from 'globule';
 import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-driver/synth';
+import * as globule from 'globule';
+import * as pino from 'pino';
 
 const log = pino.default({
   prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',
 });
 
-const configurationsLocation = './src/snapshot-configurations';
-const defaultsLocation = './src/defaults.json';
+const configurationsLocation = 'src/snapshot-configurations';
+const defaultsLocation = 'src/defaults.json';
 const blueprintLocation = './';
 const outputDirectory = './';
 const GLOBS_UNDER_SNAPSHOT: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];

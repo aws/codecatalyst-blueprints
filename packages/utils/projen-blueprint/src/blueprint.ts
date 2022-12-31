@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript } from 'projen';
 
-import { cleanUpTestSnapshotInfraFiles, generateTestSnapshotInfraFiles } from './test-snapshot';
+import { generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
   /**
@@ -141,15 +141,19 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     if (finalOpts.blueprintSnapshotConfiguration) {
       if (finalOpts.jest) {
-        this.addDevDeps('globule');
-        this.addDevDeps('ts-deepmerge');
+        this.addDeps('globule');
+        this.addDevDeps('@types/globule');
+
+        this.addDeps('pino@^6.13.4');
+        this.addDevDeps('@types/pino@^6.3.12');
+        this.addDevDeps('pino-pretty@^4.8.0');
+
+        this.addPeerDeps('@caws-blueprint-util/blueprint-cli');
+
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
-        cleanUpTestSnapshotInfraFiles();
       }
-    } else {
-      cleanUpTestSnapshotInfraFiles();
     }
 
     if (options.eslint) {

@@ -36,25 +36,29 @@
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.1.x",
     "@caws-blueprint-util/projen-blueprint": "0.1.x",
+    "@types/globule": "*",
     "@types/jest": "*",
     "@types/node": "^14",
+    "@types/pino": "^6.3.12",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
     "eslint-import-resolver-node": "*",
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
-    "globule": "*",
     "jest": "*",
     "jest-junit": "^13",
     "json-schema": "*",
     "npm-check-updates": "^15",
+    "pino-pretty": "^4.8.0",
     "projen": "*",
     "standard-version": "^9",
-    "ts-deepmerge": "*",
     "ts-jest": "*",
     "ts-node": "^10",
     "typescript": "*"
+  },
+  "peerDependencies": {
+    "@caws-blueprint-util/blueprint-cli": "*"
   },
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.1.x",
@@ -62,6 +66,8 @@
     "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-component/caws-workspaces": "0.1.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "globule": "*",
+    "pino": "^6.13.4",
     "projen": "*"
   },
   "keywords": [

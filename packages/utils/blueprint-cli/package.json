@@ -43,7 +43,7 @@
     "jest-junit": "^13",
     "json-schema": "*",
     "npm-check-updates": "^15",
-    "pino-pretty": "^4.3.0",
+    "pino-pretty": "^4.8.0",
     "projen": "*",
     "standard-version": "^9",
     "ts-jest": "*",
