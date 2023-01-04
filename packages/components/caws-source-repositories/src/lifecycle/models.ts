@@ -36,31 +36,35 @@ export interface LifecycleControl {
 
   /**
    * This function will be invoked on all files that result in a merge but might otherwise not have been covered with ownership patterns.
-   * @defaults defaultMergeStrategy
+   * @defaults MergeStrategy.useExistingContent
    */
   defaultMergeStrategy: MergeStrategyFunction;
 }
 
-export type MergeStrategyFunction = (filePath: string, existingContent: Buffer, newContent: Buffer, options?: {}) => string | NodeJS.ArrayBufferView;
+export type MergeStrategyFunction = (filePath: string, existingContent: Buffer, newContent: Buffer, options?: {}) => Buffer;
 
 export interface MergeStrategy {
-  globs: string[];
+  /**
+   * used for human friendly naming of this strategy
+   */
+  strategyName: string;
   strategy: MergeStrategyFunction;
+  globs: string[];
 }
 
 export interface MirroredFilePath {
   /**
    * This is a trimmed path to the file starting at the repository root.
    */
-  path: string;
+  localpath: string;
 
   /**
    * Absolute path to the existing file location
    */
-  existingAbsPath: string | undefined;
+  existingLocation: string | undefined;
 
   /**
    * Absolute path to the new file location
    */
-  newAbsPath: string | undefined;
+  newLocation: string | undefined;
 }

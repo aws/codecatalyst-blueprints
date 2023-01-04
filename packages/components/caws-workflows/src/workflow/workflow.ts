@@ -1,13 +1,11 @@
-import * as path from 'path';
-
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { Component, YamlFile } from 'projen';
+import { Component } from 'projen';
 // import { ActionDefiniton } from '..';
+import * as YAML from 'yaml';
 import { ComputeDefintion } from './compute';
 import { SourceDefiniton } from './sources';
 import { TriggerDefiniton } from './triggers';
-// import { SourceDefiniton, TriggerDefiniton, ActionDefiniton } from '..';
 
 export enum RunModeDefiniton {
   PARALLEL = 'PARALLEL',
@@ -32,17 +30,14 @@ export const workflowLocation = '.codecatalyst/workflows';
 export class Workflow extends Component {
   constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any) {
     super(blueprint);
+    const workflowPath = `${workflowLocation}/${workflow.Name}.yaml`;
 
-    const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name}.yaml`;
-    const workflowPath = path.join(sourceRepository.relativePath, indendedWorkflowLocation);
-    // last write wins
-    sourceRepository.project.tryRemoveFile(workflowPath);
-
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, indendedWorkflowLocation), {
-      marker: false,
-      obj: {
-        ...workflow,
-      },
-    });
+    new SourceFile(
+      sourceRepository,
+      workflowPath,
+      YAML.stringify(workflow, {
+        indent: 2,
+      }),
+    );
   }
 }

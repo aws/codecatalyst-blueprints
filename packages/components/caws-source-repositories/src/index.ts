@@ -1,4 +1,5 @@
 export * from './repository';
-export * from './text-file';
-export * from './file';
 export * from './static-assets';
+export * from './lifecycle/merge-strategy';
+export * from './files/source-file';
+export * from './files/file';

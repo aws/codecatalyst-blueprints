@@ -1,73 +1,67 @@
 import * as fs from 'fs';
 import path from 'path';
-import * as glob from 'glob';
+import * as globule from 'globule';
 import * as ini from 'ini';
-import * as minimatch from 'minimatch';
-import { MirroredFilePath } from './models';
+import { File } from '../files/file';
+import { SourceRepository } from '../repository';
 
+// globa patterns that represent all files.
+export const ALL_FILES = ['**/*', '**/*.??*', '*'];
 /**
- * Returns all the file paths under this locationPath that adhere to this glob pattern.
+ * Returns all the file paths under this locationPath that adhere to this glob patterns.
  */
-export function* walkFiles(locationPath: string, globPattern: string): IterableIterator<string> {
-  const filePaths = glob.sync(path.join(locationPath, globPattern));
-  for (const filePath of filePaths) {
-    yield filePath;
-  }
-
-  const subdirectories = fs.readdirSync(locationPath).filter(item => fs.statSync(path.join(locationPath, item)).isDirectory());
-  for (const subdirectory of subdirectories) {
-    yield* walkFiles(path.join(locationPath, subdirectory), globPattern);
-  }
+export function walkFiles(locationPath: string, globPatterns: string[]): string[] {
+  return globule
+    .find(ALL_FILES, {
+      cwd: locationPath,
+      dot: true,
+    })
+    .filter(localPath => matchesGlob(localPath, globPatterns))
+    .filter(localPath => !fs.lstatSync(path.join(locationPath, localPath)).isDirectory());
 }
 
 /**
  * check if a file path adheres to a glob pattern.
  */
-export function matchesGlob(filePath: string, globPattern: string): boolean {
-  return minimatch.default(filePath, globPattern);
-}
-
-export function removeFiles(
-  pathLocation: string,
-  globs: string[],
-  options: {
-    operation: string;
-  },
-) {
-  globs.forEach(globule => {
-    for (const file of walkFiles(pathLocation, globule)) {
-      console.log(`${options.operation}: ${file.replace(pathLocation, '')}`);
-      fs.rmSync(file, { force: true });
-    }
+export function matchesGlob(filePath: string, globPatterns: string[]): boolean {
+  return globule.isMatch(globPatterns, filePath, {
+    dot: true,
   });
 }
 
-export function makeMirroredPaths(existingRoot: string, newRoot: string, filePath: string): MirroredFilePath {
-  let trimmedPath = filePath.replace(existingRoot, '');
-  trimmedPath = trimmedPath.replace(newRoot, '');
+export function cleanExistingCodeAndNewSynth(
+  repository: SourceRepository,
+  options: {
+    blueprintOwned: string[];
+    userOwned: string[];
+    existingCodeLocation: string;
+  },
+) {
+  const { blueprintOwned, userOwned, existingCodeLocation } = options;
 
-  const existingCodePath = path.join(existingRoot, trimmedPath);
-  const newCodePath = path.join(newRoot, trimmedPath);
-  return {
-    path: trimmedPath,
-    existingAbsPath: fileExists(existingCodePath) ? existingCodePath : undefined,
-    newAbsPath: fileExists(newCodePath) ? newCodePath : undefined,
-  };
-}
+  // replace all the existing user owned files from the old synth into the new synth
+  for (const filepath of Object.keys(repository.getFiles())) {
+    if (matchesGlob(filepath, userOwned)) {
+      console.log(`Enforcing User Owns: ${filepath} becuase ${userOwned}`);
+      new File(repository, filepath, fs.readFileSync(path.join(existingCodeLocation, filepath)));
+    }
+  }
 
-/**
- * Implements a visitor pattern to walk all the filePaths at a directory location depth first that adhere to a particlar glob.
- */
-export function fileExists(location: string): boolean {
-  return fs.existsSync(location);
+  // remove all the blueprint owned files from the existing codebase,
+  // remove all the user owned files from the new synth
+  for (const file of walkFiles(existingCodeLocation, blueprintOwned)) {
+    if (matchesGlob(file, userOwned)) {
+      console.log(`Blueprint and User Owns: ${file}`);
+      console.log(`User Ownership wins: ${file} becuase user owns ${userOwned} and blueprint owns ${blueprintOwned}`);
+    } else {
+      console.log(`Enforcing Blueprint Owns: ${file} becuase ${blueprintOwned}`);
+      fs.rmSync(file, { force: true });
+    }
+  }
 }
 
 interface IniObject {
   [key: string]: string[];
-}
-
-export function writeIniFile(object: IniObject, filepath: string) {
-  fs.writeFileSync(filepath, ini.encode(object));
 }
 
 /**
@@ -91,3 +85,14 @@ export function readIniFile(filePath: string): IniObject {
   }
   return result;
 }
+
+export const removeFolders = (folders: string[]) => {
+  folders.forEach(folder => {
+    if (fs.existsSync(folder)) {
+      fs.rmSync(folder, {
+        recursive: true,
+        force: true,
+      });
+    }
+  });
+};

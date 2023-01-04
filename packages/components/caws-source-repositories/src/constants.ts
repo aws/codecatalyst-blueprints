@@ -1,4 +1,4 @@
-export const BAD_SOURCE_CHARACTERS = [
+export const BAD_REPO_CHARACTERS = [
   '!',
   '?',
   '@',

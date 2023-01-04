@@ -9,7 +9,7 @@
       "type": "build"
     },
     {
-      "name": "@types/glob",
+      "name": "@types/globule",
       "type": "build"
     },
     {
@@ -93,6 +93,10 @@
     },
     {
       "name": "glob",
+      "type": "runtime"
+    },
+    {
+      "name": "globule",
       "type": "runtime"
     },
     {

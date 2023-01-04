@@ -24,7 +24,7 @@
   "devDependencies": {
     "@caws-blueprint-util/projen-blueprint-component": "0.1.x",
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
-    "@types/glob": "*",
+    "@types/globule": "*",
     "@types/minimatch": "*",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
@@ -48,6 +48,7 @@
     "camelcase": "5.3.x",
     "decamelize": "5.0.x",
     "glob": "*",
+    "globule": "*",
     "ini": "*",
     "minimatch": "*",
     "mustache": "*"

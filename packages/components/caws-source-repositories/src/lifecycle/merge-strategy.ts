@@ -2,22 +2,13 @@ import { matchesGlob } from './file-resolution';
 import { MergeStrategy, MergeStrategyFunction } from './models';
 
 export class MergeStrategies {
-  public static readonly default: MergeStrategyFunction = (
-    _filePath: string,
-    _existingContent: Buffer,
-    _newContent: Buffer,
-    _options?: {},
-  ): string | NodeJS.ArrayBufferView => {
-    return _newContent.toString();
-  };
-
   public static readonly useNewContent: MergeStrategyFunction = (
     _filePath: string,
     _existingContent: Buffer,
     _newContent: Buffer,
     _options?: {},
-  ): string | NodeJS.ArrayBufferView => {
-    return _newContent.toString();
+  ): Buffer => {
+    return _newContent;
   };
 
   public static readonly useExistingContent: MergeStrategyFunction = (
@@ -25,8 +16,8 @@ export class MergeStrategies {
     _existingContent: Buffer,
     _newContent: Buffer,
     _options?: {},
-  ): string | NodeJS.ArrayBufferView => {
-    return _existingContent.toString();
+  ): Buffer => {
+    return _existingContent;
   };
 }
 
@@ -37,13 +28,19 @@ export function merge(
     existingContent: Buffer;
     newContent: Buffer;
   },
-): string | NodeJS.ArrayBufferView | undefined {
-  for (const strategy of strategies) {
-    for (const glob of strategy.globs) {
-      if (matchesGlob(file.path, glob)) {
-        return strategy.strategy(file.path, file.existingContent, file.newContent);
-      }
+): Buffer {
+  let match: boolean = false;
+  for (const strategy of strategies.reverse()) {
+    if (matchesGlob(file.path, strategy.globs)) {
+      console.log(`Strategy '${strategy.strategyName}' across ${strategy.globs} matches: ${file.path}`);
+      return strategy.strategy(file.path, file.existingContent, file.newContent);
     }
   }
-  return undefined;
+
+  if (!match) {
+    const err = `COULD NOT MATCH ${file.path}`;
+    console.error(err);
+    throw new Error(err);
+  }
+  return file.existingContent;
 }
