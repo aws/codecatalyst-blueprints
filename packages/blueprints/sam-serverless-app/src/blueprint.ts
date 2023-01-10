@@ -1,9 +1,8 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
-import defaults from './defaults.json';
-import { generateReadmeContents } from './readmeContents';
+import * as cp from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
 import {
   WorkflowDefinition,
   Workflow,
@@ -11,17 +10,18 @@ import {
   addGenericBuildAction,
   addGenericCompute,
   addGenericCloudFormationDeployAction,
-  emptyWorkflow,
+  makeEmptyWorkflow,
   AutoDiscoverReportDefinition,
 } from '@caws-blueprint-component/caws-workflows';
+import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { SampleDir, SampleFile } from 'projen';
-import * as cp from 'child_process';
-import * as path from 'path';
+import { getFilePermissions, writeFile } from 'projen/lib/util';
+import defaults from './defaults.json';
+import { FileTemplate, FileTemplateContext, RuntimeMapping } from './models';
+import { generateReadmeContents } from './readmeContents';
 
 import { runtimeMappings } from './runtimeMappings';
-import { FileTemplate, FileTemplateContext, RuntimeMapping } from './models';
-import { getFilePermissions, writeFile } from 'projen/lib/util';
-import * as fs from 'fs';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -225,7 +225,7 @@ export class Blueprint extends ParentBlueprint {
     const schemaVersion = '1.0';
 
     const workflowDefinition: WorkflowDefinition = {
-      ...emptyWorkflow,
+      ...makeEmptyWorkflow(),
       SchemaVersion: schemaVersion,
       Name: name,
     };
@@ -386,6 +386,6 @@ Globals:
 /**
  * removes all '.' '/' and ' ' characters
  */
-function sanitizePath(path: string) {
-  return path.replace(/\.|\/| /g, '');
+function sanitizePath(path_: string) {
+  return path_.replace(/\.|\/| /g, '');
 }

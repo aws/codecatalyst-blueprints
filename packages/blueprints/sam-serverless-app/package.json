@@ -9,6 +9,7 @@
     "compile": "npx projen compile",
     "default": "npx projen default",
     "eject": "npx projen eject",
+    "eslint": "npx projen eslint",
     "package": "rm -rf ./dist/js/ && npx projen package",
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
@@ -37,11 +38,20 @@
     "@caws-blueprint-util/projen-blueprint": "0.1.x",
     "@types/jest": "*",
     "@types/node": "^14",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
+    "eslint": "^8",
+    "eslint-import-resolver-node": "*",
+    "eslint-import-resolver-typescript": "*",
+    "eslint-plugin-import": "*",
+    "globule": "*",
     "jest": "*",
     "jest-junit": "^13",
+    "json-schema": "*",
     "npm-check-updates": "^15",
     "projen": "*",
     "standard-version": "^9",
+    "ts-deepmerge": "*",
     "ts-jest": "*",
     "ts-node": "^10",
     "typescript": "*"
@@ -51,7 +61,8 @@
     "@caws-blueprint-component/caws-source-repositories": "0.1.x",
     "@caws-blueprint-component/caws-workflows": "0.1.x",
     "@caws-blueprint-component/caws-workspaces": "0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "0.0.x"
+    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "projen": "*"
   },
   "keywords": [
     "aws lambda",
@@ -65,7 +76,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.1.12",
+  "version": "0.1.30",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

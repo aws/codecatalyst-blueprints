@@ -1,6 +1,8 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { TriggerDefiniton } from '..';
+import { ComputeDefintion, TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
+import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../actions/action-cdk-bootstrap';
+import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions/action-cdk-deploy';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
 import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
@@ -37,6 +39,10 @@ export class WorkflowBuilder {
     this.definition.Triggers.push(trigger);
   }
 
+  addCompute(compute: ComputeDefintion) {
+    this.definition.Compute = this.definition.Compute || compute;
+  }
+
   addBranchTrigger(branches = ['main'], filesChanged?: string[]) {
     addGenericBranchTrigger(this.definition, branches, filesChanged);
   }
@@ -55,6 +61,22 @@ export class WorkflowBuilder {
 
   addCfnDeployAction(configuration: CfnDeployActionParameters) {
     addGenericCloudFormationDeployAction({
+      ...configuration,
+      blueprint: this.blueprint,
+      workflow: this.definition,
+    });
+  }
+
+  addCdkDeployAction(configuration: CdkDeployActionParameters) {
+    addGenericCdkDeployAction({
+      ...configuration,
+      blueprint: this.blueprint,
+      workflow: this.definition,
+    });
+  }
+
+  addCdkBootstrapAction(configuration: CdkBootstrapActionParameters) {
+    addGenericCdkBootstrapAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,

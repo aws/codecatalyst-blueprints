@@ -46,7 +46,21 @@ export class SubstitionAsset extends StaticAsset {
     super(path);
   }
 
+  /**
+   * @deprecated
+   * @param subsitution
+   * @returns
+   */
   subsitite(subsitution: any): string {
+    return this.substitute(subsitution);
+  }
+
+  /**
+   * Use Mustache subsitution across this asset.
+   * @param subsitution
+   * @returns
+   */
+  substitute(subsitution: any): string {
     return Mustache.render(this.content().toString(), subsitution);
   }
 }

@@ -3,9 +3,7 @@ import { BlueprintSnapshotConfiguration } from '../blueprint';
 const DEFAULT_GLOBS = ['**'];
 
 export function generateSnapshotInfraFile(testingConfig: BlueprintSnapshotConfiguration, srcDir: string, configsSubdir: string): string {
-  return `
-import * as fs from 'fs';
-import * as fsPromises from 'fs/promises';
+  return `import * as fs from 'fs';
 import * as globule from 'globule';
 import * as path from 'path';
 import merge from 'ts-deepmerge';
@@ -15,7 +13,7 @@ import { Options } from '../blueprint';
 const PATH_TO_SRC = '${srcDir}';
 const PATH_TO_CONFIGS = path.join(PATH_TO_SRC, '${configsSubdir}');
 // eslint-disable-next-line
-const GLOBS: string[] = ${JSON.stringify(testingConfig.snapshotGlobs ?? DEFAULT_GLOBS)};
+const GLOBS: string[] = [${(testingConfig.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(', ')}];
 
 type TestConfigFromFile = Omit<Options, 'outdir'>;
 
@@ -47,10 +45,13 @@ interface BlueprintOutputFile {
   relPath: string;
 }
 
-async function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): AsyncGenerator<BlueprintOutputFile> {
-  for (const entry of await fsPromises.readdir(absCurrentRootPath)) {
+/**
+ * This function is synchronous because we need synchronous behavior for Jest.
+ */
+function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPath: string): Generator<BlueprintOutputFile> {
+  for (const entry of fs.readdirSync(absCurrentRootPath)) {
     const entryWithAbsPath = path.resolve(absCurrentRootPath, entry);
-    if ((await fsPromises.stat(entryWithAbsPath)).isDirectory()) {
+    if (fs.statSync(entryWithAbsPath).isDirectory()) {
       yield* getAllNestedFiles(absOriginalRootPath, entryWithAbsPath);
     } else {
       const relPathToEntry = path.relative(absOriginalRootPath, absCurrentRootPath);
@@ -61,9 +62,8 @@ async function* getAllNestedFiles(absOriginalRootPath: string, absCurrentRootPat
           absPath: entryWithAbsPath,
           relPath: entryWithRelPath,
         };
-      }
-      else {
-        console.debug(\`Skipping snapshot testing for <\${entryWithRelPath}> per .projenrc\`);
+      } else {
+        // console.debug(\`Skipping snapshot testing for <\${entryWithRelPath}> per .projenrc\`);
       }
     }
   }
@@ -77,7 +77,7 @@ export function getAllBlueprintSnapshottedFilenames(outdir: string) {
 // if the consumer wants multiple directories.
 export function prepareTempDir(hint: string): string {
   const outdir = fs.mkdtempSync(\`outdir-test-\${hint}\`);
-  console.debug(\`outdir: \${outdir}\`);
+  // console.debug(\`outdir: \${outdir}\`);
 
   // Clean up the directory. If we don't clean up, then \`mkdirSync\` will throw an error.
   fs.rmSync(outdir, { force: true, recursive: true });
@@ -88,7 +88,7 @@ export function prepareTempDir(hint: string): string {
 }
 
 export function cleanUpTempDir(outdir: string): void {
-  console.debug(\`cleaning up outdir: \${outdir}\`);
+  // console.debug(\`cleaning up outdir: \${outdir}\`);
   fs.rmSync(outdir, { force: true, recursive: true });
 }
 

@@ -137,11 +137,10 @@ export const makeBucket = async (
       }),
     );
 
-    if (getBucketLocationCommandResponse.LocationConstraint) {
-      log.info(`Bucket is deployed in '${getBucketLocationCommandResponse.LocationConstraint}'`);
-    } else {
-      throw new Error('Bucket region not found in response'); // this should never happen
+    if (!getBucketLocationCommandResponse.LocationConstraint) {
+      getBucketLocationCommandResponse.LocationConstraint = 'us-east-1'; // LocationConstraint being null implies the region is us-east-1
     }
+    log.info(`Bucket is deployed in '${getBucketLocationCommandResponse.LocationConstraint}'`);
   } catch (error) {
     log.error('Error getting bucket region: \n');
     throw error;
@@ -165,6 +164,7 @@ export const uploadImageToBucket = async (log: pino.BaseLogger, bucketName: stri
         Bucket: bucketName,
         Key: image.name,
         Body: image.body,
+        ContentType: `image/${image.extension}`,
       }),
     );
 

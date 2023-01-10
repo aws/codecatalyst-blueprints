@@ -21,6 +21,7 @@ export interface UploadOptions extends yargs.Arguments {
 export interface Image {
   name: string;
   body: Buffer;
+  extension: string | undefined;
 }
 
 /**
@@ -38,7 +39,7 @@ const verifyAWSAccount = async (log: pino.BaseLogger): Promise<string> => {
 
   log.info(`Publishing under account [${callerIdentity.Account}]`);
   if (!callerIdentity.Account) {
-    throw new Error(`You aren't logged into an aws account. Account information: ${JSON.stringify(callerIdentity, null, 2)}`);
+    throw new Error(`You are not logged into an aws account. Account information: ${JSON.stringify(callerIdentity, null, 2)}`);
   }
   return callerIdentity.Account;
 };
@@ -62,13 +63,22 @@ export const uploadImagePublicly = async (
   const fullOptions = {
     // by default we make buckets globally unique by accountId
     bucketName: options?.bucketName || `blueprint-image-${accountId}`,
-    region: options?.region || 'us-west-2',
+    region: options?.region || process.env.AWS_REGION || 'us-west-2',
   };
 
   const image: Image = {
     name: path.basename(pathToImage),
     body: fs.readFileSync(pathToImage),
+    extension: pathToImage.split('.').pop(),
   };
+
+  const extensionList: string[] = ['png', 'jpeg', 'jpg', 'jpe', 'jif', 'jfif', 'jfi', 'gif', 'bmp', 'dib', 'tiff', 'tif', 'svg', 'svgz'];
+
+  if (!image.extension || !extensionList.includes(image.extension)) {
+    log.error('ERROR: Unsupported image type');
+    throw new Error(`Image type '${image.extension}' is not supported. Please make sure the image type is in the supported list. \n
+      Supported image type: ${extensionList.join(', ')} \n`);
+  }
 
   log.info(`Full path to image: ${pathToImage}`);
   log.info(`Region to deploy: ${fullOptions.region}`);
