@@ -110,7 +110,7 @@ export const runtimeMappings: RuntimeMap = {
     handler: 'app.lambdaHandler',
     templateProps: nodejs14,
     cacheDir: 'nodejs14',
-    gitSrcPath: 'hello',
+    gitSrcPath: 'hello-ts',
     dependenciesFilePath: 'package.json',
     installInstructions:
       'Install [Python 3](https://www.python.org/downloads/)\n * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)',
