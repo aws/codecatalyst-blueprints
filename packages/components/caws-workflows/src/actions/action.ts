@@ -46,8 +46,12 @@ export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environ
 }
 
 type TypeSupportedCompute = ComputeConfiguration;
-type TypeSupportedActions = BuildActionConfiguration | CfnDeployActionConfiguration | TestActionConfiguration | CdkDeployActionYamlOutput
-| CdkBootstrapActionConfiguration;
+type TypeSupportedActions =
+  | BuildActionConfiguration
+  | CfnDeployActionConfiguration
+  | TestActionConfiguration
+  | CdkDeployActionYamlOutput
+  | CdkBootstrapActionConfiguration;
 export interface ActionDefiniton {
   Identifier?: string;
   Compute?: TypeSupportedCompute | string;

@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "DEVELOPMENT"
+  },
+  "code": {
+    "repositoryName": "TinyUrlApp"
+  },
+  "advanced": {
+    "frontendStackName": "TinyUrlFrontend",
+    "backendStackName": "TinyUrlBackend",
+    "region": "us-west-2"
+  }
+}

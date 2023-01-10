@@ -1,0 +1,2413 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
+"
+Name: main_fullstack_workflow
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Actions:
+  BackendBuildAndPackage:
+    Identifier: aws/build-beta@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+        IncludePaths:
+          - cdk/target/**/*
+          - lambda/target/**/*
+        ExcludePaths:
+          - "*/.aws/workflows/*"
+      Artifacts:
+        - Name: backend_build_artifacts
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: cd backend
+        - Run: mvn verify
+        - Run: mvn package -Dmaven.test.skip
+  FrontendBuildAndPackage:
+    Identifier: aws/build-beta@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        IncludePaths:
+          - frontend/coverage/*
+        ReportNamePrefix: rpt
+        Enabled: true
+      Artifacts:
+        - Name: frontend_build_artifacts
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: cd frontend
+        - Run: npm install
+        - Run: npm test -- --coverage --watchAll=false
+        - Run: echo "REACT_APP_SERVICE_URL=/t" > ".env"
+        - Run: npm run build
+        - Run: cp -r canary build
+        - Run: cp -r cdk/* .
+  CDKBootstrapAction:
+    Identifier: aws/cdk-bootstrap-gamma@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Environment:
+      Name: default_environment
+      Connections: []
+    Configuration:
+      Region: us-west-2
+  BackendCDKDeploy:
+    Identifier: aws/cdk-deploy-gamma@v1
+    Inputs:
+      Artifacts:
+        - backend_build_artifacts
+    Environment:
+      Name: default_environment
+      Connections: []
+    DependsOn:
+      - BackendBuildAndPackage
+      - CDKBootstrapAction
+    Configuration:
+      StackName: TinyUrlBackend
+      Region: us-west-2
+      CdkRootPath: backend/
+      Context: '{"stack_name":"TinyUrlBackend"}'
+  FrontendCDKDeploy:
+    Identifier: aws/cdk-deploy-gamma@v1
+    Inputs:
+      Artifacts:
+        - frontend_build_artifacts
+    Environment:
+      Name: default_environment
+      Connections: []
+    DependsOn:
+      - FrontendBuildAndPackage
+      - BackendCDKDeploy
+    Configuration:
+      StackName: TinyUrlFrontend
+      Region: us-west-2
+      CdkRootPath: frontend/
+      Context: '{"stack_name":"TinyUrlFrontend","api_domain":"\${BackendCDKDeploy.ApiDomain}","api_stage":"\${BackendCDKDeploy.ApiStage}"}'
+Compute:
+  Type: EC2
+  Fleet: Linux.x86-64.Large
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/README.md 1`] = `
+"# Backend
+
+The backend is deployed as a RESTful API using AWS Serverless technologies:
+
+- [AWS API Gateway](https://aws.amazon.com/api-gateway) to provide the REST interface to the user
+- [Amazon DynamoDB](https://aws.amazon.com/dynamodb) for URL persistence
+- [AWS Lambda](https://aws.amazon.com/lambda) process the API gateway requests for create and retrieve the data from DynamoDB table
+
+### Infrastructure
+
+\`cdk\` maven module will set up the Application Stack.
+
+Project uses [maven](https://maven.apache.org/) for build and packaging the resources for production deployment. As part of the build, the workflow
+will run the unit tests in the \`lambda\` maven module, and produces testing reports. Failed tests will stop the artifacts from publishing.
+
+Workflow uses \`CDKBootstrap\` and \`CDKDeploy\` Actions to deploy the resources on AWS services.
+
+## Local Development
+
+Local development requires below pre-requisites.
+
+- [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
+- [Apache Maven v3.8.6](https://maven.apache.org/install.html)
+- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+
+To run the unit tests in the project
+
+\`\`\`
+$ mvn test
+\`\`\`
+
+To package the resources for deployment.
+
+\`\`\`
+$ mvn package
+\`\`\`
+
+To test the project by deploying into your AWS Account
+
+\`\`\`
+$ cdk deploy
+\`\`\`
+
+### Resources
+
+The following resources have been generated as a initial revisions and it can be modified for your requirements
+
+- \`cdk\`: Java maven module for creating the backend stack.
+
+- \`lambda\`: Java maven module for the Lambda function used by the Application to create tiny URL and retrieve long URL.
+
+- \`pom.xml\`: Maven configuration for dependency management, plugin management, build and packaging
+
+- \`cdk.json\`: To execute the CDK code
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk.json 1`] = `
+"{
+  "app": "mvn exec:java -pl cdk -Dexec.mainClass=com.amazonaws.serverless.TinyUrlApp"
+}"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk/cdk.json 1`] = `
+"{
+  "app": "mvn compile"
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk/pom.xml 1`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>aws-serverless-tinyurl</artifactId>
+        <groupId>com.amazonaws.caws.blueprints</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cdk</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>software.amazon.awscdk</groupId>
+            <artifactId>aws-cdk-lib</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>software.constructs</groupId>
+            <artifactId>constructs</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlApp.java 1`] = `
+"package com.amazonaws.serverless;
+
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.StackProps;
+
+public class TinyUrlApp {
+
+    private static Environment makeEnv(final String account, final String region) {
+        return Environment.builder()
+                .account(account)
+                .region(region)
+                .build();
+    }
+
+    public static void main(final String[] args) {
+        App app = new App();
+        Environment environment = makeEnv("&lt;&lt;PUT_YOUR_AWS_ACCOUNT_ID&gt;&gt;", "us-west-2");
+        new TinyUrlAppStack(app, "TinyUrlBackend", StackProps.builder()
+                .env(environment)
+                .build());
+
+        app.synth();
+    }
+
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlAppStack.java 1`] = `
+"package com.amazonaws.serverless;
+
+import software.amazon.awscdk.CfnOutput;
+import software.amazon.awscdk.CfnOutputProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.RemovalPolicy;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.apigateway.CorsOptions;
+import software.amazon.awscdk.services.apigateway.IResource;
+import software.amazon.awscdk.services.apigateway.Integration;
+import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.LambdaIntegrationOptions;
+import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.apigateway.RestApiProps;
+import software.amazon.awscdk.services.dynamodb.Attribute;
+import software.amazon.awscdk.services.dynamodb.AttributeType;
+import software.amazon.awscdk.services.dynamodb.BillingMode;
+import software.amazon.awscdk.services.dynamodb.Table;
+import software.amazon.awscdk.services.dynamodb.TableProps;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.FunctionProps;
+import software.amazon.awscdk.services.lambda.HttpMethod;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.constructs.Construct;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class TinyUrlAppStack extends Stack {
+
+    private static final String GET_URL_LAMBDA = "getUrlFunction";
+    private static final String GET_URL_LAMBDA_HANDLER = "com.amazonaws.serverless.lambda.GetUrlRequestHandler";
+    private static final String CREATE_URL_LAMBDA = "createUrlFunction";
+    private static final String CREATE_URL_LAMBDA_HANDLER = "com.amazonaws.serverless.lambda.CreateUrlRequestHandler";
+    private static final String DYNAMODB_TABLE_NAME = "tbl_tiny_url";
+    private static final String DYNAMODB_TABLE_PRIMARY_KEY = "id";
+    private static final String REST_API_GET_TINY_URL = "{tinyUrl}";
+    private static final String REST_API_CREATE_TINY_URL = "createTinyUrl";
+    private static final String GET = HttpMethod.GET.name();
+    private static final String POST = HttpMethod.POST.name();
+    private static final int LAMBDA_MEMORY_SIZE = 512;
+    private static final int LAMBDA_TIMEOUT = 30;
+
+    public TinyUrlAppStack(final Construct parent, final String stackName, final StackProps props) {
+        super(parent, stackName, props);
+
+        // Create dynamodb table
+        Table urlTable = defineDynamoTable(DYNAMODB_TABLE_NAME, DYNAMODB_TABLE_PRIMARY_KEY);
+
+        CfnOutput.Builder.create(this, "BackendDynamoTable")
+                .value(urlTable.getTableName())
+                .build();
+
+        Object origins = this.getNode()
+                .tryGetContext("origins");
+        final String allowedOrigins = (origins == null ? "*" : origins.toString());
+
+        Map<String, String> lambdaEnv = new HashMap<String, String>() {
+            {
+                put("TABLE_NAME", urlTable.getTableName());
+                put("PRIMARY_KEY", DYNAMODB_TABLE_PRIMARY_KEY);
+                put("ALLOWED_ORIGINS", allowedOrigins);
+            }
+        };
+
+        // Create lambda functions
+        Function getTinyUrlFunction = new Function(this, GET_URL_LAMBDA, getLambdaFunctionProps(lambdaEnv, GET_URL_LAMBDA_HANDLER));
+        urlTable.grantReadData(getTinyUrlFunction);
+
+        Function createTinyUrlFunction = new Function(this, CREATE_URL_LAMBDA, getLambdaFunctionProps(lambdaEnv, CREATE_URL_LAMBDA_HANDLER));
+        urlTable.grantReadWriteData(createTinyUrlFunction);
+
+        // Create the API Gateway
+        RestApi apiGateway = new RestApi(this, "TinyUrlApiGateway", RestApiProps.builder()
+                .defaultCorsPreflightOptions(CorsOptions.builder()
+                        .allowCredentials(true)
+                        .allowMethods(Arrays.asList("GET", "POST", "OPTIONS"))
+                        .allowHeaders(Arrays.asList("Content-Type", "Authorization", "Content-Length", "X-Requested-With"))
+                        .allowOrigins(Arrays.asList(allowedOrigins.split(",")))
+                        .build())
+                .build());
+
+        IResource api = apiGateway.getRoot()
+                .addResource("t");
+        IResource getTinyUrlResource = api.addResource(REST_API_GET_TINY_URL);
+        IResource createTinyUrlResource = api.addResource(REST_API_CREATE_TINY_URL);
+
+        LambdaIntegrationOptions lambdaIntegrationOptions = LambdaIntegrationOptions.builder()
+                .proxy(true)
+                .build();
+
+        Integration getTinyUrlIntegration = new LambdaIntegration(getTinyUrlFunction, lambdaIntegrationOptions);
+        getTinyUrlResource.addMethod(GET, getTinyUrlIntegration);
+
+        Integration createTinyUrlIntegration = new LambdaIntegration(createTinyUrlFunction, lambdaIntegrationOptions);
+        createTinyUrlResource.addMethod(POST, createTinyUrlIntegration);
+
+        new CfnOutput(this, "ApiDomain", CfnOutputProps.builder()
+                .value(apiGateway.getUrl()
+                        .split("/")[2])
+                .build());
+
+        new CfnOutput(this, "ApiStage", CfnOutputProps.builder()
+                .value(apiGateway.getDeploymentStage()
+                        .getStageName())
+                .build());
+    }
+
+    private FunctionProps getLambdaFunctionProps(final Map<String, String> lambdaEnvMap, final String handler) {
+        return FunctionProps.builder()
+                .code(Code.fromAsset("./asset/lambda-jar-with-dependencies.jar"))
+                .handler(handler)
+                .runtime(Runtime.JAVA_11)
+                .environment(lambdaEnvMap)
+                .timeout(Duration.seconds(LAMBDA_TIMEOUT))
+                .memorySize(LAMBDA_MEMORY_SIZE)
+                .build();
+    }
+
+    private Table defineDynamoTable(final String tableName, final String partitionKey) {
+        Attribute partitionKeyAttribute = Attribute.builder()
+                .name(partitionKey)
+                .type(AttributeType.STRING)
+                .build();
+        TableProps tableProps = TableProps.builder()
+                .billingMode(BillingMode.PAY_PER_REQUEST)
+                .tableName(tableName)
+                .partitionKey(partitionKeyAttribute)
+                .removalPolicy(RemovalPolicy.DESTROY)
+                .build();
+        Table dynamodbTable = new Table(this, tableName, tableProps);
+        return dynamodbTable;
+    }
+
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/cdk/src/test/java/com/amazonaws/serverless/TinyUrlStackTest.java 1`] = `
+"package com.amazonaws.serverless;
+
+
+import org.junit.jupiter.api.Test;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.assertions.Template;
+
+public class TinyUrlStackTest {
+
+    @Test
+    public void verify_app_synth() {
+       App app = new App();
+       TinyUrlAppStack stack = new TinyUrlAppStack(app, "TestStack", StackProps.builder().build());
+
+       Template template = Template.fromStack(stack);
+
+       template.resourceCountIs("AWS::Lambda::Function", 2);
+
+       template.hasResource("AWS::DynamoDB::Table", 1);
+
+       template.hasResource("AWS::ApiGateway::RestApi", 1);
+    }
+
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/checkstyle.xml 1`] = `
+"<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+		"http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+
+  Checkstyle configuration that checks the sun coding conventions from:
+
+    - the Java Language Specification at
+      http://java.sun.com/docs/books/jls/second_edition/html/index.html
+
+    - the Sun Code Conventions at http://java.sun.com/docs/codeconv/
+
+    - the Javadoc guidelines at
+      http://java.sun.com/j2se/javadoc/writingdoccomments/index.html
+
+    - the JDK Api documentation http://java.sun.com/j2se/docs/api/index.html
+
+    - some best practices
+
+  Checkstyle is very configurable. Be sure to read the documentation at
+  http://checkstyle.sf.net (or in your downloaded distribution).
+
+  Most Checks are configurable, be sure to consult the documentation.
+
+  To completely disable a check, just comment it out or delete it from the file.
+
+  Finally, it is worth reading the documentation.
+
+-->
+
+<module name="Checker">
+	<!--
+        If you set the basedir property below, then all reported file
+        names will be relative to the specified directory. See
+        http://checkstyle.sourceforge.net/5.x/config.html#Checker
+
+        <property name="basedir" value="\${basedir}"/>
+    -->
+
+	<property name="fileExtensions" value="java, properties, xml"/>
+
+	<!-- Checks that a package-info.java file exists for each package.     -->
+	<!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+	<module name="JavadocPackage"/>
+
+	<!-- Checks whether files end with a new line.                        -->
+	<!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
+	<module name="NewlineAtEndOfFile"/>
+
+	<!-- Checks that property files contain the same keys.         -->
+	<!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
+	<module name="Translation"/>
+
+	<!-- Checks for Size Violations.                    -->
+	<!-- See http://checkstyle.sf.net/config_sizes.html -->
+	<module name="FileLength"/>
+
+	<!-- Checks for whitespace                               -->
+	<!-- See http://checkstyle.sf.net/config_whitespace.html -->
+	<module name="FileTabCharacter"/>
+
+	<!-- Miscellaneous other checks.                   -->
+	<!-- See http://checkstyle.sf.net/config_misc.html -->
+	<module name="RegexpSingleline">
+		<property name="format" value="\\s+$"/>
+		<property name="minimum" value="0"/>
+		<property name="maximum" value="0"/>
+		<property name="message" value="Line has trailing spaces."/>
+	</module>
+
+	<!-- Checks for Headers                                -->
+	<!-- See http://checkstyle.sf.net/config_header.html   -->
+	<!-- <module name="Header"> -->
+	<!--   <property name="headerFile" value="\${checkstyle.header.file}"/> -->
+	<!--   <property name="fileExtensions" value="java"/> -->
+	<!-- </module> -->
+
+	<module name="TreeWalker">
+
+		<!-- Checks for Javadoc comments.                     -->
+		<!-- See http://checkstyle.sf.net/config_javadoc.html -->
+		<module name="JavadocMethod"/>
+		<module name="JavadocType"/>
+		<module name="JavadocVariable"/>
+		<module name="JavadocStyle"/>
+
+		<!-- Checks for Naming Conventions.                  -->
+		<!-- See http://checkstyle.sf.net/config_naming.html -->
+		<module name="ConstantName"/>
+		<module name="LocalFinalVariableName"/>
+		<module name="LocalVariableName"/>
+		<module name="MemberName"/>
+		<module name="MethodName"/>
+		<module name="PackageName"/>
+		<module name="ParameterName"/>
+		<module name="StaticVariableName"/>
+		<module name="TypeName"/>
+
+		<!-- Checks for imports                              -->
+		<!-- See http://checkstyle.sf.net/config_import.html -->
+		<module name="AvoidStarImport"/>
+		<module name="IllegalImport"/> <!-- defaults to sun.* packages -->
+		<module name="RedundantImport"/>
+		<module name="UnusedImports"/>
+
+		<!-- Checks for Size Violations.                    -->
+		<!-- See http://checkstyle.sf.net/config_sizes.html -->
+		<module name="LineLength">
+			<property name="max" value="150"/>
+		</module>
+		<module name="MethodLength"/>
+		<module name="ParameterNumber"/>
+
+		<!-- Checks for whitespace                               -->
+		<!-- See http://checkstyle.sf.net/config_whitespace.html -->
+		<module name="EmptyForIteratorPad"/>
+		<module name="GenericWhitespace"/>
+		<module name="MethodParamPad"/>
+		<module name="NoWhitespaceAfter"/>
+		<module name="NoWhitespaceBefore"/>
+		<module name="OperatorWrap"/>
+		<module name="ParenPad"/>
+		<module name="TypecastParenPad"/>
+		<module name="WhitespaceAfter"/>
+		<module name="WhitespaceAround"/>
+
+		<!-- Modifier Checks                                    -->
+		<!-- See http://checkstyle.sf.net/config_modifiers.html -->
+		<module name="ModifierOrder"/>
+		<module name="RedundantModifier"/>
+
+		<!-- Checks for blocks. You know, those {}'s         -->
+		<!-- See http://checkstyle.sf.net/config_blocks.html -->
+		<module name="AvoidNestedBlocks"/>
+		<module name="EmptyBlock"/>
+		<module name="LeftCurly"/>
+		<module name="NeedBraces"/>
+		<module name="RightCurly"/>
+
+		<!-- Checks for common coding problems               -->
+		<!-- See http://checkstyle.sf.net/config_coding.html -->
+		<module name="AvoidInlineConditionals">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="EmptyStatement"/>
+		<module name="EqualsHashCode"/>
+		<module name="HiddenField"/>
+		<module name="IllegalInstantiation"/>
+		<module name="InnerAssignment"/>
+		<module name="MagicNumber"/>
+		<module name="MissingSwitchDefault"/>
+		<module name="SimplifyBooleanExpression"/>
+		<module name="SimplifyBooleanReturn"/>
+
+		<!-- Checks for class design                         -->
+		<!-- See http://checkstyle.sf.net/config_design.html -->
+		<module name="DesignForExtension">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="FinalClass"/>
+		<module name="HideUtilityClassConstructor">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="InterfaceIsType"/>
+		<module name="VisibilityModifier"/>
+
+		<!-- Miscellaneous other checks.                   -->
+		<!-- See http://checkstyle.sf.net/config_misc.html -->
+		<module name="ArrayTypeStyle"/>
+		<module name="FinalParameters"/>
+		<module name="TodoComment"/>
+		<module name="UpperEll"/>
+
+	</module>
+
+</module>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/checkstyle-suppressions.xml 1`] = `
+"<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+		"-//Puppy Crawl//DTD Suppressions 1.0//EN"
+		"http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+	<suppress checks="Javadoc" files="."/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="DesignForExtension" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.TinyUrlRequestHandler"/>
+</suppressions>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/jacocoConsoleReporter.sh 1`] = `
+"for file in $(find . -type f -name "jacoco.csv"); do
+    awk -F, \\
+    '{ instructions += $4 + $5; covered += $5 } END \\
+     { print "jacoco coverage:  " FILENAME "\\n" covered, "/", instructions, " instructions covered"; \\
+     print 100*covered/instructions, "% covered" }' \\
+    $file
+done
+
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/cdk.json 1`] = `
+"{
+  "app": "mvn compile"
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/pom.xml 1`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>aws-serverless-tinyurl</artifactId>
+        <groupId>com.amazonaws.caws.blueprints</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>lambda</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-installed-package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>\${project.groupId}</groupId>
+                                    <artifactId>\${project.artifactId}</artifactId>
+                                    <classifier>jar-with-dependencies</classifier>
+                                    <version>\${project.version}</version>
+                                    <type>\${project.packaging}</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <stripVersion>true</stripVersion>
+                            <outputDirectory>../asset</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-installed-verify</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>\${project.groupId}</groupId>
+                                    <artifactId>\${project.artifactId}</artifactId>
+                                    <classifier>jar-with-dependencies</classifier>
+                                    <version>\${project.version}</version>
+                                    <type>\${project.packaging}</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <stripVersion>true</stripVersion>
+                            <outputDirectory>../cdk/asset</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>some test to exclude here</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-events</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bom</artifactId>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandler.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+import com.google.gson.Gson;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.Map;
+
+import static com.amazonaws.serverless.lambda.HandlerConstants.LONG_URL;
+import static com.amazonaws.serverless.lambda.HandlerConstants.ORIGIN;
+import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
+
+public class CreateUrlRequestHandler extends TinyUrlRequestHandler {
+
+    public CreateUrlRequestHandler() {
+        super();
+    }
+
+    CreateUrlRequestHandler(final UrlDataService urlDataService) {
+        super(urlDataService);
+    }
+
+    private static final Gson GSON = new Gson();
+
+    @Override
+    public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+        LambdaLogger logger = context.getLogger();
+        logger.log(input.toString());
+        try {
+            Map<String, String> payload = GSON.fromJson(input.getBody(), Map.class);
+
+            final String longUrl = payload.get(LONG_URL);
+            if (longUrl == null || longUrl.isEmpty()) {
+                throw new Exception("Input url is null or empty");
+            }
+            logger.log("Got URL: " + longUrl);
+            String shortId = shortenUrl(longUrl);
+            logger.log("Shortened to " + shortId);
+
+            this.getUrlDataService().saveLongUrl(new TinyUrl(shortId, payload.get(LONG_URL)));
+            logger.log(input.getHeaders()
+                    .toString());
+
+            String tinyUrl = input.getHeaders()
+                    .get(ORIGIN);
+
+            tinyUrl = tinyUrl.endsWith("/") ? tinyUrl.concat("t/")
+                    .concat(shortId) : tinyUrl.concat("/t/")
+                    .concat(shortId);
+
+            String body = GSON.toJson(Collections.singletonMap(TINY_URL, tinyUrl));
+            response.setBody(body);
+            response.setStatusCode(HttpURLConnection.HTTP_CREATED);
+
+            return response;
+        } catch (Exception e) {
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            logger.log(stacktrace);
+            response.setBody("Error occurred while generating the tiny URL");
+            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
+            return response;
+        }
+    }
+
+    private String shortenUrl(final String url) {
+        final int preHashRadixRepresentation = 16;
+        final int xor = 0xff;
+        final int exponent = 64;
+        final int finalHashRadixRepresentation = 36;
+        byte[] data = url.getBytes();
+        BigInteger hash = new BigInteger("cbf29ce484222325", preHashRadixRepresentation);
+        for (byte b : data) {
+            hash = hash.xor(BigInteger.valueOf((int) b & xor));
+            hash = hash.multiply(new BigInteger("100000001b3", preHashRadixRepresentation))
+                    .mod(new BigInteger("2").pow(exponent));
+        }
+        return hash.toString(finalHashRadixRepresentation);
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/GetUrlRequestHandler.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import java.net.HttpURLConnection;
+import java.util.Collections;
+
+import static com.amazonaws.serverless.lambda.HandlerConstants.LOCATION;
+import static com.amazonaws.serverless.lambda.HandlerConstants.TINY_URL;
+
+public class GetUrlRequestHandler extends TinyUrlRequestHandler {
+
+    public GetUrlRequestHandler() {
+        super();
+    }
+
+    GetUrlRequestHandler(final UrlDataService urlDataService) {
+        super(urlDataService);
+    }
+
+    @Override
+    public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        LambdaLogger logger = context.getLogger();
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+
+        try {
+            final String shortId = input.getPathParameters()
+                    .get(TINY_URL);
+            logger.log("Looking for: " + shortId);
+            TinyUrl tinyUrlResponse = this.getUrlDataService().getLongUrl(shortId);
+            if (tinyUrlResponse != null) {
+                response.setStatusCode(HttpURLConnection.HTTP_MOVED_TEMP);
+                response.setHeaders(Collections.singletonMap(LOCATION, tinyUrlResponse.getUrl()));
+                return response;
+            }
+        } catch (Exception e) {
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            logger.log(stacktrace);
+        }
+
+        response.setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
+        response.setBody("URL not found");
+        return response;
+    }
+
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/HandlerConstants.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+public final class HandlerConstants {
+    private HandlerConstants() {
+
+    }
+
+    public static final String LONG_URL = "longUrl";
+    public static final String TINY_URL = "tinyUrl";
+    public static final String LOCATION = "Location";
+    public static final String ORIGIN = "origin";
+
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/TinyUrlRequestHandler.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+public abstract class TinyUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    public UrlDataService getUrlDataService() {
+        return urlDataService;
+    }
+
+    private final UrlDataService urlDataService;
+
+    public TinyUrlRequestHandler() {
+        this(new UrlDataService(System.getenv("AWS_REGION")));
+    }
+
+    TinyUrlRequestHandler(final UrlDataService urlDataService) {
+        this.urlDataService = urlDataService;
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/dao/UrlDataService.java 1`] = `
+"package com.amazonaws.serverless.lambda.dao;
+
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+
+public class UrlDataService {
+
+    public UrlDataService(final String awsRegion) {
+        dynamoDBMapper = new DynamoDBMapper(AmazonDynamoDBClientBuilder.standard()
+                .withRegion(awsRegion)
+                .build());
+    }
+
+    private DynamoDBMapper dynamoDBMapper;
+
+    public TinyUrl getLongUrl(final String shortId) {
+        TinyUrl input = new TinyUrl();
+        input.setId(shortId);
+        TinyUrl result = dynamoDBMapper.load(input);
+        return result;
+    }
+
+    /*
+    To save the long URL input for the generated short URL
+     */
+    public void saveLongUrl(final TinyUrl tinyUrl) {
+        dynamoDBMapper.save(tinyUrl);
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/model/TinyUrl.java 1`] = `
+"package com.amazonaws.serverless.lambda.model;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+@DynamoDBTable(tableName = "tbl_tiny_url")
+public class TinyUrl {
+
+    @DynamoDBHashKey
+    private String id;
+    private String url;
+
+    public TinyUrl() {
+
+    }
+
+    public TinyUrl(final String id, final String url) {
+        this.id = id;
+        this.url = url;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public void setUrl(final String url) {
+        this.url = url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandlerTest.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+import com.google.gson.Gson;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.Map;
+
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.ORIGIN;
+import static com.amazonaws.serverless.lambda.TestConstants.ORIGIN_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_OUTPUT;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class CreateUrlRequestHandlerTest {
+    @Mock
+    private UrlDataService urlDataService;
+    @Mock
+    private Context context;
+    @Mock
+    private LambdaLogger logger;
+    private CreateUrlRequestHandler handler;
+    private APIGatewayProxyRequestEvent request;
+    private static final Gson GSON = new Gson();
+
+    @BeforeEach
+    public void prepare() {
+        handler = new CreateUrlRequestHandler(urlDataService);
+        request = new APIGatewayProxyRequestEvent();
+        when(context.getLogger()).thenReturn(logger);
+    }
+
+    @Test
+    public void verify_handleRequest_with_input() {
+        String body = GSON.toJson(Collections.singletonMap(LONG_URL, LONG_URL_INPUT));
+        request.setBody(body);
+        request.setHeaders(Collections.singletonMap(ORIGIN, ORIGIN_URL));
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Map data = GSON.fromJson(response.getBody(), Map.class);
+        Assertions.assertEquals(TINY_URL_OUTPUT, data.get(TINY_URL));
+    }
+
+    @Test
+    public void verify_handleRequest_with_null_input() {
+        String body = GSON.toJson(Collections.singletonMap(LONG_URL, null));
+        request.setBody(body);
+        request.setHeaders(Collections.singletonMap(ORIGIN, ORIGIN_URL));
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_INTERNAL_ERROR);
+        Assertions.assertEquals(response.getBody(), "Error occurred while generating the tiny URL");
+    }
+
+    @Test
+    public void verify_handleRequest_with_empty_input() {
+        String body = GSON.toJson(Collections.singletonMap(LONG_URL, ""));
+        request.setBody(body);
+        request.setHeaders(Collections.singletonMap(ORIGIN, ORIGIN_URL));
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_INTERNAL_ERROR);
+        Assertions.assertEquals(response.getBody(), "Error occurred while generating the tiny URL");
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/GetUrlRequestHandlerTest.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.net.HttpURLConnection;
+import java.util.Collections;
+
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class GetUrlRequestHandlerTest {
+    @Mock
+    private UrlDataService urlDataService;
+    @Mock
+    private Context context;
+    @Mock
+    private LambdaLogger logger;
+    private GetUrlRequestHandler handler;
+    private APIGatewayProxyRequestEvent request;
+
+    @BeforeEach
+    public void prepare() {
+        handler = new GetUrlRequestHandler(urlDataService);
+        request = new APIGatewayProxyRequestEvent();
+        when(context.getLogger()).thenReturn(logger);
+    }
+
+    @Test
+    public void verify_handleRequest_with_valid_input() {
+        request.setPathParameters(Collections.singletonMap(TINY_URL, TINY_URL_ID));
+        when(urlDataService.getLongUrl(any(String.class))).thenReturn(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        assertThat(response.getHeaders(), hasEntry("Location", LONG_URL_INPUT));
+    }
+
+    @Test
+    public void verify_handleRequest_with_invalid_input() {
+        request.setPathParameters(Collections.singletonMap(TINY_URL, TINY_URL_ID));
+        when(urlDataService.getLongUrl(any(String.class))).thenReturn(null);
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        Assertions.assertEquals(response.getBody(), "URL not found");
+    }
+
+    @Test
+    public void verify_handleRequest_and_raise_exception() {
+        APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
+        Assertions.assertEquals(response.getStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        Assertions.assertEquals(response.getBody(), "URL not found");
+    }
+
+}
+
+
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/TestConstants.java 1`] = `
+"package com.amazonaws.serverless.lambda;
+
+public class TestConstants {
+    public static final String TINY_URL_OUTPUT = "https://aws.com/t/lzbfxd8mrui8";
+    public static final String LONG_URL_INPUT = "https://aws.amazon.com";
+    public static final String TINY_URL = "tinyUrl";
+    public static final String LONG_URL = "longUrl";
+    public static final String ORIGIN_URL = "https://aws.com";
+    public static final String TINY_URL_ID = "lzbfxd8mrui8";
+    public static final String ORIGIN = "origin";
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/dao/UrlDataServiceTest.java 1`] = `
+"package com.amazonaws.serverless.lambda.dao;
+
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class UrlDataServiceTest {
+    @Mock
+    private DynamoDBMapper dynamoDBMapper;
+    private UrlDataService urlDataService;
+
+    @BeforeEach
+    public void prepare() throws ReflectiveOperationException {
+        urlDataService = new UrlDataService("us-west-2");
+        Class urlDataServiceClass = urlDataService.getClass();
+        Field f = urlDataServiceClass.getDeclaredField("dynamoDBMapper");
+        f.setAccessible(true);
+        f.set(urlDataService, dynamoDBMapper);
+    }
+
+    @Test
+    public void verify_getLongUrl() {
+        when(dynamoDBMapper.load(any(TinyUrl.class))).thenReturn(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
+        TinyUrl tinyUrl = urlDataService.getLongUrl(TINY_URL_ID);
+        Assertions.assertEquals(TINY_URL_ID, tinyUrl.getId());
+        Assertions.assertEquals(LONG_URL_INPUT, tinyUrl.getUrl());
+    }
+
+    @Test
+    public void verify_saveLongUrl() {
+        doNothing().when(dynamoDBMapper)
+                .save(any(TinyUrl.class));
+        urlDataService.saveLongUrl(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
+        verify(dynamoDBMapper, times(1)).save(any(TinyUrl.class));
+    }
+}
+
+
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/backend/pom.xml 1`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>aws-serverless-tinyurl</artifactId>
+    <groupId>com.amazonaws.caws.blueprints</groupId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>lambda</module>
+        <module>cdk</module>
+    </modules>
+
+    <properties>
+        <aws-sdk>2.17.40</aws-sdk>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awscdk</groupId>
+                <artifactId>aws-cdk-lib</artifactId>
+                <version>2.46.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>\${aws-sdk}</version>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>dynamodb</artifactId>
+                <version>\${aws-sdk}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-dynamodb</artifactId>
+                <version>1.12.347</version>
+            </dependency>
+
+            <dependency>
+                <groupId>software.constructs</groupId>
+                <artifactId>constructs</artifactId>
+                <version>10.1.131</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-lambda-java-core</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-lambda-java-events</artifactId>
+                <version>3.11.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.4.0</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.4.0</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>4.7.0</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-library</artifactId>
+                <version>2.2</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.amazonaws.serverless.TinyUrlApp</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--            To enforce Checkstyle-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <maxAllowedViolations>25</maxAllowedViolations>
+                    <failsOnError>false</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                    <outputDirectory>\${project.reporting.outputDirectory}/checkstyle-report</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+
+            <!--            To enforce Code Coverage-->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>\${project.reporting.outputDirectory}/jacoco-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <!-- To enforce code coverage check -->
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.8</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/README.md 1`] = `
+"# Frontend
+
+This web app uses [ReactJS](https://reactjs.org/) in conjunction with the [Cloudscape](https://cloudscape.design/) component library. Please consult
+the respective documentation as you extend the app.
+
+\`canary\` directory contains the script to test the cloudfront website, please refer
+[Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) for making any changes to the script.
+
+## Local Development
+
+Local development requires below pre-requisites.
+
+- [NodeJS v14.x](https://nodejs.org/en/)
+- [npm](https://docs.npmjs.com/)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+
+In the project directory, you can run:
+
+- \`npm install\` To pull the dependencies defined in the \`package.json\` of this project
+
+- \`npm start\` To run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will
+  reload if you make edits. You will also see any lint errors in the console.
+
+- \`npm test\` To run the test runner as defined in \`jest.config.js\`. See Jest documentation for options to configure the testing
+
+- \`npm run build\` To build the app for production to the \`build\` folder. It correctly bundles React in production mode and optimizes the build for the
+  best performance.
+
+## Project resources
+
+The project contains below modules / files
+
+- \`canary\`: Canary test scripts
+
+- \`public\`: HTML resources
+
+- \`src\`: To define the React components and UI logic
+
+- \`jest.config.js\`: For unit test discoverability and execution
+
+- \`package.json\`: To maintain the dependencies
+
+- \`babel.config.js\`: To convert .ts to .js files
+
+- \`tsconfig.json\`: Typescript compilation
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/babel.config.js 1`] = `
+"module.exports = {
+  presets: [
+    ['@babel/preset-env', {targets: {node: 'current'}}],
+      '@babel/preset-react',
+      '@babel/preset-typescript',
+    ]
+};
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/canary/nodejs/node_modules/index.js 1`] = `
+"const synthetics = require('Synthetics');
+const log = require('SyntheticsLogger');
+
+const pageLoadBlueprint = async function () {
+  // Configure the stage of the API using environment variables
+  const url = String(process.env.SITE_URL);
+
+  const page = await synthetics.getPage();
+  const response = await page.goto(url, {
+    waitUntil: 'domcontentloaded',
+    timeout: 30000,
+  });
+  // Wait for page to render. Increase or decrease wait time based on endpoint being monitored.
+  await page.waitFor(15000);
+  // This will take a screenshot that will be included in test output artifacts.
+  await synthetics.takeScreenshot('loaded', 'loaded');
+  const pageTitle = await page.title();
+  log.info('Page title: ' + pageTitle);
+  if (response.status() !== 200) {
+    throw 'Failed to load page!';
+  }
+};
+
+exports.handler = async () => {
+  return await pageLoadBlueprint();
+};"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/README.md 1`] = `
+"# Frontend Infrastructure
+
+This project uses CDK development with TypeScript for developing the frontend infrastructure as code. The \`cdk.json\` file tells the CDK Toolkit how to
+execute your app.
+
+Canary setup uses [Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) to test and
+continuously monitor the application's health.
+
+## Local Development
+
+Local development requires below pre-requisites.
+
+- [NodeJS v14.x](https://nodejs.org/en/)
+- [npm](https://docs.npmjs.com/)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+
+## Useful commands
+
+- \`npm run build\` To compile typescript to js
+- \`npm run watch\` To watch for changes and compile
+- \`npm run test\` To perform the jest unit tests
+- \`cdk synth\` To emit the synthesized CloudFormation template
+- \`cdk diff\` To compare deployed stack with current state
+- \`cdk bootstrap\` To bootstrap the AWS Account
+- \`cdk deploy\` To deploy this stack to your default AWS account/region
+
+## Project resources
+
+The project contains below modules / files
+
+- \`bin\`: CDK App to synthesize the infrastructure
+
+- \`lib\`: To define the Stack definitions for the frontend infrastructure
+
+- \`test\`: To test the infrastructure code
+
+- \`jest.config.js\`: For unit test discoverability and execution
+
+- \`package.json\`: To maintain the dependencies
+
+- \`cdk.json\`: To execute the CDK code
+
+- \`tsconfig.json\`: Typescript compilation
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/bin/frontend.ts 1`] = `
+"#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from 'aws-cdk-lib';
+import { FrontendStack } from '../lib/frontend-stack';
+
+const app = new cdk.App();
+
+const stackName = app.node.tryGetContext('stack_name') || 'TinyUrlFrontend';
+
+new FrontendStack(app, stackName, {
+  /* If you don't specify 'env', this stack will be environment-agnostic.
+   * Account/Region-dependent features and context lookups will not work,
+   * but a single synthesized template can be deployed anywhere.
+   */
+  /* Uncomment the next line to specialize this stack for the AWS Account
+   * and Region that are implied by the current CLI configuration.
+   */
+  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+  /* Uncomment the next line if you know exactly what Account and Region you
+   * want to deploy the stack to.
+   */
+  env: { account: '&lt;&lt;PUT_YOUR_AWS_ACCOUNT_ID&gt;&gt;', region: 'us-west-2' },
+  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
+});
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/cdk.json 1`] = `
+"{
+  "app": "npx ts-node --prefer-ts-exts bin/frontend.ts",
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "**/*.d.ts",
+      "**/*.js",
+      "tsconfig.json",
+      "package*.json",
+      "yarn.lock",
+      "node_modules",
+      "test"
+    ]
+  },
+  "context": {
+    "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
+    "@aws-cdk/core:stackRelativeExports": true,
+    "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
+    "@aws-cdk/aws-lambda:recognizeVersionProps": true,
+    "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
+    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
+    "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": true,
+    "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": true,
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/aws-iam:minimizePolicies": true,
+    "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": true,
+    "@aws-cdk/core:validateSnapshotRemovalPolicy": true,
+    "@aws-cdk/aws-codepipeline:crossAccountKeyAliasStackSafeResourceName": true,
+    "@aws-cdk/aws-s3:createDefaultLoggingPolicy": true,
+    "@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption": true,
+    "@aws-cdk/aws-apigateway:disableCloudWatchRole": true,
+    "@aws-cdk/core:enablePartitionLiterals": true,
+    "@aws-cdk/core:target-partitions": [
+      "aws",
+      "aws-cn"
+    ]
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/jest.config.js 1`] = `
+"module.exports = {
+  testEnvironment: 'node',
+  roots: ['<rootDir>/test'],
+  testMatch: ['**/*.test.ts'],
+  transform: {
+    '^.+\\\\.tsx?$': 'ts-jest'
+  }
+};
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/lib/frontend-stack.ts 1`] = `
+"import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3_deployment from 'aws-cdk-lib/aws-s3-deployment';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import { CfnCanary } from 'aws-cdk-lib/aws-synthetics';
+import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+export class FrontendStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const frontendSourceBucket = new s3.Bucket(this, 'FrontendAppBucket', {
+      websiteIndexDocument: 'index.html',
+    });
+
+    const frontendOriginAccessIdentity = new cloudfront.OriginAccessIdentity(this, 'FrontendAppOIA', {
+      comment: 'Access from CloudFront to the bucket.',
+    });
+
+    frontendSourceBucket.grantRead(frontendOriginAccessIdentity);
+
+    const frontendCloudfront = new cloudfront.CloudFrontWebDistribution(this, 'FrontendAppCloudFront', {
+      originConfigs: [
+        {
+          s3OriginSource: {
+            s3BucketSource: frontendSourceBucket,
+            originAccessIdentity: frontendOriginAccessIdentity,
+          },
+          behaviors: [{ isDefaultBehavior: true }],
+        },
+        {
+          customOriginSource: {
+            domainName: \`\${this.node.tryGetContext('api_domain')}\`,
+            originPath: \`/\${this.node.tryGetContext('api_stage')}\`,
+            httpPort: 80,
+            httpsPort: 443,
+            originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
+            allowedOriginSSLVersions: [cloudfront.OriginSslPolicy.TLS_V1_2],
+          },
+          behaviors: [
+            {
+              pathPattern: '/t/*',
+              allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
+              cachedMethods: cloudfront.CloudFrontAllowedCachedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: cdk.Duration.seconds(0),
+              minTtl: cdk.Duration.seconds(0),
+              maxTtl: cdk.Duration.seconds(0),
+              viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+              forwardedValues: {
+                queryString: true,
+                cookies: {
+                  forward: 'all',
+                },
+                headers: ['Authorization'],
+              },
+            },
+          ],
+        },
+      ],
+      errorConfigurations: [
+        {
+          errorCode: 404,
+          errorCachingMinTtl: 0,
+          responseCode: 200,
+          responsePagePath: '/index.html',
+        },
+      ],
+    });
+
+    new s3_deployment.BucketDeployment(this, 'FrontendAppDeploy', {
+      sources: [s3_deployment.Source.asset('build')],
+      destinationBucket: frontendSourceBucket,
+      distribution: frontendCloudfront,
+      distributionPaths: ['/*'],
+    });
+
+    const frontendUrl = \`https://\${frontendCloudfront.distributionDomainName}/\`;
+    new cdk.CfnOutput(this, 'appUrl', {
+      value: frontendUrl,
+    });
+
+    /*
+    Set the canary name with the length not exceeding 21 characters due to 
+    naming constraint in cloudwatch Synthetics 
+    */
+    const canaryName = id.toLowerCase().substring(0, 21);
+
+    const canaryExecutionConfig = {
+      memoryInMb: 2000,
+      timeout: 45,
+      syntheticRuntimeVersion: 'syn-nodejs-puppeteer-3.8',
+      frequency: 0,
+    };
+
+    /*
+    Expression to set the canary to run only once
+    To run it on a desired frequency, please update the expression
+    https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/API_CanaryScheduleInput.html
+    */
+    const canaryScheduleExpression = \`rate(\${canaryExecutionConfig.frequency} minute)\`;
+
+    const canaryAsset = new Asset(this, 'canaryCode', {
+      path: 'build/canary',
+    });
+
+    const canaryResultsBucketName = \`\${id.toLowerCase()}-canary-results\`;
+    const iamRoleName = 'iamRoleName';
+
+    const canaryResultsBucket = new s3.Bucket(this, canaryResultsBucketName, {
+      bucketName: canaryResultsBucketName,
+    });
+
+    // SyntheticsExecutionRole requires several permissions to AWS resources as defined in
+    // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-synthetics-canary.html#cfn-synthetics-canary-executionrolearn
+
+    // Canary needs following permissions to run on VPC
+    // https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_VPC.html
+
+    const cloudWatchSyntheticsRolePolicy = new iam.PolicyDocument({
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['ec2:CreateNetworkInterface', 'ec2:DescribeNetworkInterfaces', 'ec2:DeleteNetworkInterface'],
+          resources: ['*'],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:PutObject'],
+          resources: [canaryResultsBucket.arnForObjects('*')],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:GetBucketLocation'],
+          resources: [canaryResultsBucket.bucketArn],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['logs:CreateLogStream', 'logs:PutLogEvents', 'logs:CreateLogGroup'],
+          resources: [\`'arn:\${this.partition}:logs:\${this.region}:\${this.account}:log-group:/aws/lambda/cwsyn-*'\`],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['s3:ListAllMyBuckets'],
+          resources: ['*'],
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ['cloudwatch:PutMetricData'],
+          resources: ['*'],
+          conditions: {
+            StringLike: { 'cloudwatch:namespace': '*CloudWatchSynthetics' },
+          },
+        }),
+      ],
+    });
+
+    const cloudWatchSyntheticsRole = new iam.Role(this, iamRoleName, {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      roleName: iamRoleName,
+      path: '/service-role/',
+      description: 'UX Canaries Execution Role',
+      inlinePolicies: { CloudWatchSyntheticsRolePolicy: cloudWatchSyntheticsRolePolicy },
+    });
+
+    new CfnCanary(this, canaryName, {
+      artifactS3Location: \`s3://\${canaryResultsBucket.bucketName}\`,
+      code: {
+        handler: 'index.handler',
+        s3Bucket: canaryAsset.s3BucketName,
+        s3Key: canaryAsset.s3ObjectKey,
+      },
+      executionRoleArn: cloudWatchSyntheticsRole.roleArn,
+      name: canaryName,
+      runConfig: {
+        memoryInMb: canaryExecutionConfig.memoryInMb,
+        timeoutInSeconds: canaryExecutionConfig.timeout,
+        environmentVariables: {
+          SITE_URL: frontendUrl,
+        },
+      },
+      runtimeVersion: canaryExecutionConfig.syntheticRuntimeVersion,
+      schedule: {
+        // durationInSeconds: canaryExecutionConfig.duration,
+        expression: canaryScheduleExpression,
+      },
+      startCanaryAfterCreation: false,
+    });
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/package.json 1`] = `
+"{
+  "name": "frontend",
+  "version": "0.1.0",
+  "bin": {
+    "frontend": "bin/frontend.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.2",
+    "@types/node": "10.17.27",
+    "@types/prettier": "2.6.0",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4",
+    "aws-cdk": "2.38.1",
+    "ts-node": "^10.9.1",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.38.1",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/test/frontend.test.ts 1`] = `
+"// import * as cdk from 'aws-cdk-lib';
+// import { Template } from 'aws-cdk-lib/assertions';
+// import * as Frontend from '../lib/frontend-stack';
+
+// example test. To run these tests, uncomment this file along with the
+// example resource in lib/frontend-stack.ts
+test('SQS Queue Created', () => {
+  //   const app = new cdk.App();
+  //     // WHEN
+  //   const stack = new Frontend.FrontendStack(app, 'MyTestStack');
+  //     // THEN
+  //   const template = Template.fromStack(stack);
+  //   template.hasResourceProperties('AWS::SQS::Queue', {
+  //     VisibilityTimeout: 300
+  //   });
+});
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/cdk/tsconfig.json 1`] = `
+"{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "lib": [
+      "es2019"
+    ],
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "cdk.out"
+  ]
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/jest.config.js 1`] = `
+"/** @type {import('ts-jest').JestConfigWithTsJest} */
+const merge = require('merge');
+const tsPreset = require('ts-jest/jest-preset');
+const cloudscapePreset = require('@cloudscape-design/jest-preset');
+
+module.exports = merge.recursive(tsPreset, cloudscapePreset, {
+  modulePathIgnorePatterns: ['<rootDir>/cdk/'],
+  transform: {
+     "^.+\\\\.css$":"<rootDir>/node_modules/react-scripts/config/jest/cssTransform.js",
+  },
+  testEnvironment: "jsdom"
+});
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/package.json 1`] = `
+"{
+  "name": "bp-tiny-url",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@cloudscape-design/components": "^3.0.74",
+    "@cloudscape-design/global-styles": "^1.0.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.1",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "jest --config ./jest.config.js",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@cloudscape-design/jest-preset": "^2.0.2",
+    "babel-jest": "^27.5.1",
+    "merge": "^2.1.1",
+    "ts-jest": "^27.1.5"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/public/index.html 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Tiny URL App" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the \`public\` folder during the build.
+      Only files inside the \`public\` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running \`npm run build\`.
+    -->
+    <title>Tiny URL App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run \`npm start\` or \`yarn start\`.
+      To create a production bundle, use \`npm run build\` or \`yarn build\`.
+    -->
+  </body>
+</html>
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/public/manifest.json 1`] = `
+"{
+  "short_name": "Sample App",
+  "name": "Sample App",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/public/robots.txt 1`] = `
+"# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/App.css 1`] = `
+".App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/App.test.tsx 1`] = `
+"import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const urlTextArea = screen.getByPlaceholderText(/enter the url to short/i);
+  expect(urlTextArea).toBeEnabled;
+});
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/App.tsx 1`] = `
+"import * as React from 'react';
+import * as cs from '@cloudscape-design/components';
+import { URLService } from './url.api';
+import Spinner from '@cloudscape-design/components/spinner';
+
+const SERVICE = new URLService();
+
+function App() {
+  let [urlInputValue, setUrlInputValue] = React.useState('');
+  let [creating, setCreating] = React.useState(false);
+
+  async function create() {
+    if (isValidUrl(urlInputValue)) {
+      setCreating(true);
+      let apiResponse = await SERVICE.CreateTinyUrl(urlInputValue).finally(() => {
+        setCreating(false);
+      });
+      setUrlInputValue(apiResponse);
+    }
+  }
+
+  function isValidUrl(inputUrl: string) {
+    try {
+      return Boolean(new URL(inputUrl));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function reset() {
+    setUrlInputValue('');
+  }
+
+  function copyToClipboard() {
+    navigator.clipboard.writeText(urlInputValue);
+  }
+
+  return (
+    <form>
+      <cs.Form header={<cs.Header variant="h1">Tiny URL </cs.Header>}>
+        <cs.Textarea
+          onChange={({ detail }) => setUrlInputValue(detail.value)}
+          value={urlInputValue}
+          placeholder="Enter the URL to short"
+        ></cs.Textarea>
+
+        <cs.SpaceBetween direction="horizontal" size="s">
+          <cs.Button disabled={creating} formAction="none" variant="primary" onClick={() => create()}>
+            Create
+          </cs.Button>
+
+          <cs.Popover
+            dismissButton={false}
+            position="bottom"
+            size="small"
+            triggerType="custom"
+            content={<cs.StatusIndicator type="info">URL copied</cs.StatusIndicator>}
+          >
+            <cs.Button formAction="none" onClick={() => copyToClipboard()} iconName="copy">
+              Copy
+            </cs.Button>
+          </cs.Popover>
+          <cs.Button formAction="none" variant="link" onClick={() => reset()}>
+            Clear
+          </cs.Button>
+
+          {creating ? <Spinner /> : <></>}
+        </cs.SpaceBetween>
+      </cs.Form>
+    </form>
+  );
+}
+
+export default App;
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/index.css 1`] = `
+"body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/index.tsx 1`] = `
+"import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root'),
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/react-app-env.d.ts 1`] = `
+"/// <reference types="react-scripts" />
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/reportWebVitals.ts 1`] = `
+"import { ReportHandler } from 'web-vitals';
+
+const reportWebVitals = (onPerfEntry?: ReportHandler) => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/setupTests.ts 1`] = `
+"// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/src/url.api.ts 1`] = `
+"export class URLService {
+  readonly service_url: string;
+
+  constructor() {
+    this.service_url = process.env.REACT_APP_SERVICE_URL || 'undefined';
+  }
+
+  async CreateTinyUrl(urlInputValue: string) {
+    const response = await fetch(\`\${this.service_url}/createTinyUrl\`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        longUrl: urlInputValue,
+      }),
+    });
+    const responseJson = await response.json();
+    return responseJson.tinyUrl;
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots java-default configuration matches src/TinyUrlApp/frontend/tsconfig.json 1`] = `
+"{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src"
+  ]
+}
+"
+`;
