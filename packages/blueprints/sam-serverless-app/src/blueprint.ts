@@ -312,13 +312,29 @@ export class Blueprint extends ParentBlueprint {
     gitSrcPath: string;
     filesToOverride: Array<FileTemplate>;
   }): string {
-    const sourceDir = path.join('/tmp/sam-lambdas', params.cacheDir);
+    const rootSourceDir = '/tmp/sam-lambdas';
+    if (!fs.existsSync(rootSourceDir)) {
+      fs.mkdirSync(rootSourceDir);
+    }
 
-    cp.execFileSync('svn', [
-      'checkout',
-      `https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}}`,
-      `${sourceDir}`,
-    ]);
+    const sourceDir = path.join(rootSourceDir, params.cacheDir);
+    if (!fs.existsSync(sourceDir)) {
+      fs.mkdirSync(sourceDir);
+    }
+
+    // cp.execFileSync('svn', [
+    //   'checkout',
+    //   `https://github.com/aws/aws-sam-cli-app-templates/trunk/${params.runtime}/${params.gitSrcPath}/{{cookiecutter.project_name}}`,
+    //   `${sourceDir}`,
+    // ]);
+
+    const assetPath = path.join('static-assets', 'sam-templates', params.runtime, params.gitSrcPath, '{{cookiecutter.project_name}}', '*');
+
+    //TODO: this is a temporary fix to work around SVN failures.  These assets need to be updated.
+    cp.execSync(`cp -R ./${assetPath} ${sourceDir}/`, {
+      cwd: process.cwd(),
+    });
+
     cp.execFileSync('rm', ['-rf', `${sourceDir}/.svn`, `${sourceDir}/.gitignore`, `${sourceDir}/README.md`, `${sourceDir}/template.yaml`]);
 
     // override any files that need to be overridden

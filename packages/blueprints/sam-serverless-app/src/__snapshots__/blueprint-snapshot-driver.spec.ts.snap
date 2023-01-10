@@ -1764,39 +1764,58 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.js 1`] = `
-"// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.ts 1`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
  * @param {Object} event - API Gateway Lambda Proxy Input Format
  *
- * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html 
- * @param {Object} context
- *
  * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
  * @returns {Object} object - API Gateway Lambda Proxy Output Format
- * 
+ *
  */
-exports.lambdaHandler = async (event, context) => {
+
+export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    let response: APIGatewayProxyResult;
     try {
-        // const ret = await axios(url);
         response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
+            statusCode: 200,
+            body: JSON.stringify({
                 message: 'hello world',
-                // location: ret.data.trim()
-            })
-        }
-    } catch (err) {
+            }),
+        };
+    } catch (err: unknown) {
         console.log(err);
-        return err;
+        response = {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: err instanceof Error ? err.message : 'some error happened',
+            }),
+        };
     }
 
-    return response
+    return response;
+};
+"
+`;
+
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/jest.config.ts 1`] = `
+"/*
+ * For a detailed explanation regarding each configuration property and type check, visit:
+ * https://jestjs.io/docs/configuration
+ */
+
+export default {
+    transform: {
+        '^.+\\\\.ts?$': 'esbuild-jest',
+    },
+    clearMocks: true,
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    coverageProvider: 'v8',
+    testMatch: ['**/tests/unit/*.test.ts'],
 };
 "
 `;
@@ -1827,30 +1846,90 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.js 1`] = `
-"'use strict';
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.test.ts 1`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { lambdaHandler } from '../../app';
 
-const app = require('../../app.js');
-const chai = require('chai');
-const expect = chai.expect;
-var event, context;
-
-describe('Tests index', function () {
+describe('Unit test for app handler', function () {
     it('verifies successful response', async () => {
-        const result = await app.lambdaHandler(event, context)
+        const event: APIGatewayProxyEvent = {
+            httpMethod: 'get',
+            body: '',
+            headers: {},
+            isBase64Encoded: false,
+            multiValueHeaders: {},
+            multiValueQueryStringParameters: {},
+            path: '/hello',
+            pathParameters: {},
+            queryStringParameters: {},
+            requestContext: {
+                accountId: '123456789012',
+                apiId: '1234',
+                authorizer: {},
+                httpMethod: 'get',
+                identity: {
+                    accessKey: '',
+                    accountId: '',
+                    apiKey: '',
+                    apiKeyId: '',
+                    caller: '',
+                    clientCert: {
+                        clientCertPem: '',
+                        issuerDN: '',
+                        serialNumber: '',
+                        subjectDN: '',
+                        validity: { notAfter: '', notBefore: '' },
+                    },
+                    cognitoAuthenticationProvider: '',
+                    cognitoAuthenticationType: '',
+                    cognitoIdentityId: '',
+                    cognitoIdentityPoolId: '',
+                    principalOrgId: '',
+                    sourceIp: '',
+                    user: '',
+                    userAgent: '',
+                    userArn: '',
+                },
+                path: '/hello',
+                protocol: 'HTTP/1.1',
+                requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
+                requestTimeEpoch: 1428582896000,
+                resourceId: '123456',
+                resourcePath: '/hello',
+                stage: 'dev',
+            },
+            resource: '',
+            stageVariables: {},
+        };
+        const result: APIGatewayProxyResult = await lambdaHandler(event);
 
-        expect(result).to.be.an('object');
-        expect(result.statusCode).to.equal(200);
-        expect(result.body).to.be.an('string');
-
-        let response = JSON.parse(result.body);
-
-        expect(response).to.be.an('object');
-        expect(response.message).to.be.equal("hello world");
-        // expect(response.location).to.be.an("string");
+        expect(result.statusCode).toEqual(200);
+        expect(result.body).toEqual(
+            JSON.stringify({
+                message: 'hello world',
+            }),
+        );
     });
 });
 "
+`;
+
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tsconfig.json 1`] = `
+"{
+    "compilerOptions": {
+      "target": "es2020",
+      "strict": true,
+      "preserveConstEnums": true,
+      "noEmit": true,
+      "sourceMap": false,
+      "module":"es2015",
+      "moduleResolution":"node",
+      "esModuleInterop": true, 
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,  
+    },
+    "exclude": ["node_modules", "**/*.test.ts"]
+  }"
 `;
 
 exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
