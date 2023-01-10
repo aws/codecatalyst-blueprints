@@ -1,9 +1,9 @@
 import path from 'path';
 import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
-import { ComputeType, ComputeFleet } from '@caws-blueprint-component/caws-workflows';
+import { ComputeFleet, ComputeType } from '@caws-blueprint-component/caws-workflows';
 import { Options } from './blueprint';
 import { FileTemplateContext, RuntimeMapping } from './models';
-import { java11, python39, nodejs14 } from './templateContents';
+import { java11, nodejs14, python39 } from './templateContents';
 
 // Ideally we would do it the other way around, with this file defining the union of runtimes
 // and the blueprint importing this type, but today the Blueprint Wizard does not support
@@ -23,7 +23,7 @@ export const runtimeMappings: RuntimeMap = {
     handler: 'helloworld.App::handleRequest',
     templateProps: java11,
     cacheDir: 'java11maven',
-    gitSrcPath: 'cookiecutter-aws-sam-hello-java-maven',
+    gitSrcPath: 'hello-maven',
     dependenciesFilePath: 'pom.xml',
     installInstructions:
       'Install [Python 3](https://www.python.org/downloads/)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Maven](https://maven.apache.org/download.cgi)',
@@ -63,7 +63,7 @@ export const runtimeMappings: RuntimeMap = {
     handler: 'helloworld.App::handleRequest',
     templateProps: java11,
     cacheDir: 'java11gradle',
-    gitSrcPath: 'cookiecutter-aws-sam-hello-java-gradle',
+    gitSrcPath: 'hello-gradle',
     dependenciesFilePath: 'build.gradle',
     installInstructions:
       'Install [Python 3](https://www.python.org/downloads/)\n * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)',
@@ -110,7 +110,7 @@ export const runtimeMappings: RuntimeMap = {
     handler: 'app.lambdaHandler',
     templateProps: nodejs14,
     cacheDir: 'nodejs14',
-    gitSrcPath: 'cookiecutter-aws-sam-hello-nodejs',
+    gitSrcPath: 'hello',
     dependenciesFilePath: 'package.json',
     installInstructions:
       'Install [Python 3](https://www.python.org/downloads/)\n * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)',
@@ -161,7 +161,7 @@ export const runtimeMappings: RuntimeMap = {
     handler: 'app.lambda_handler',
     templateProps: python39,
     cacheDir: 'python39',
-    gitSrcPath: 'cookiecutter-aws-sam-hello-python',
+    gitSrcPath: 'hello',
     dependenciesFilePath: 'requirements.txt',
     installInstructions: 'Install [Python3.9](https://www.python.org/downloads/)',
     stepsToRunUnitTests: ['. ./.codecatalyst/scripts/bootstrap.sh', '. ./.codecatalyst/scripts/run-tests.sh'],
