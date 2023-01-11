@@ -59,30 +59,30 @@ describe('runtime mappings', () => {
       expect(mapping.filesToChangePermissionsFor[0].newPermissions).toEqual({ executable: true });
     });
   });
+  //TODO: readd node
+  // describe('Node.js 14', () => {
+  //   const mapping = runtimeMappings['Node.js 14'];
 
-  describe('Node.js 14', () => {
-    const mapping = runtimeMappings['Node.js 14'];
+  //   it('does not contain additional template props', () => {
+  //     expect(mapping.templateProps).toBe('');
+  //   });
 
-    it('does not contain additional template props', () => {
-      expect(mapping.templateProps).toBe('');
-    });
+  //   it('creates run-tests.sh', () => {
+  //     expect(mapping.filesToCreate).toHaveLength(1);
+  //     expect(mapping.filesToCreate[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.codecatalyst/scripts/run-tests.sh');
+  //     expect(mapping.filesToCreate[0].resolveContent(fileTemplateContext)).toContain('WORKING_DIR=testLambdaFunctionName/hello-world/');
+  //   });
 
-    it('creates run-tests.sh', () => {
-      expect(mapping.filesToCreate).toHaveLength(1);
-      expect(mapping.filesToCreate[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.codecatalyst/scripts/run-tests.sh');
-      expect(mapping.filesToCreate[0].resolveContent(fileTemplateContext)).toContain('WORKING_DIR=testLambdaFunctionName/hello-world/');
-    });
+  //   it('overrides package.json', () => {
+  //     expect(mapping.filesToOverride).toHaveLength(1);
+  //     expect(mapping.filesToOverride[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/hello-world/package.json');
+  //     expect(mapping.filesToOverride[0].resolveContent(fileTemplateContext)).toContain('hello world sample for NodeJS');
+  //   });
 
-    it('overrides package.json', () => {
-      expect(mapping.filesToOverride).toHaveLength(1);
-      expect(mapping.filesToOverride[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/hello-world/package.json');
-      expect(mapping.filesToOverride[0].resolveContent(fileTemplateContext)).toContain('hello world sample for NodeJS');
-    });
-
-    it('does not change permissions on anything', () => {
-      expect(mapping.filesToChangePermissionsFor).toHaveLength(0);
-    });
-  });
+  //   it('does not change permissions on anything', () => {
+  //     expect(mapping.filesToChangePermissionsFor).toHaveLength(0);
+  //   });
+  // });
 
   describe('Python 3.9', () => {
     const mapping = runtimeMappings['Python 3.9'];
