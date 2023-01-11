@@ -1,0 +1,18 @@
+{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \"$directory/.cloud9/runners\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "for directory in \"$REPOSITORY_DIR\"/* ; do",
+    "  if [ -d \"$directory/HelloWorldFunction/src\" ]; then",
+    "    TESTS_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $TESTS_DIR/HelloWorldFunction",
+    "mvn test"
+  ],
+  "info": "This runner executes the unit tests inside HelloWorldFunction directory."
+}

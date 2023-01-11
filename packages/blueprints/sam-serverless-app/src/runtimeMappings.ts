@@ -37,6 +37,88 @@ export const runtimeMappings: RuntimeMap = {
           return new SubstitionAsset('maven/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
         },
       },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'run_tests.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.idea/runConfigurations/run_tests.xml').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.idea/runConfigurations/sam_build.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.idea/runConfigurations/sam_start_local_api.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.idea/externalDependencies.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('maven/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('maven/.cloud9/runners/SAM Project Test Runner.run').toString();
+        },
+      },
     ],
     filesToOverride: [
       {
@@ -75,6 +157,88 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(context: FileTemplateContext): string {
           return new SubstitionAsset('gradle/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'run_tests.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.idea/runConfigurations/run_tests.xml').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.idea/runConfigurations/sam_build.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.idea/runConfigurations/sam_start_local_api.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.idea/externalDependencies.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('gradle/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('gradle/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
@@ -123,6 +287,90 @@ export const runtimeMappings: RuntimeMap = {
   //       },
   //       resolveContent(context: FileTemplateContext): string {
   //         return new SubstitionAsset('nodejs/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'all_tests_coverage.xml');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.idea/runConfigurations/all_tests_coverage.xml').subsitite({
+  //           lambdaFunctionName: context.lambdaFunctionName,
+  //         });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.idea/runConfigurations/sam_build.xml').toString();
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+  //           lambdaFunctionName: context.lambdaFunctionName,
+  //         });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.idea/runConfigurations/sam_start_local_api.xml').toString();
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.idea/externalDependencies.xml').toString();
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+  //       },
+  //       resolveContent(context: FileTemplateContext): string {
+  //         return new SubstitionAsset('nodejs/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.vscode/extensions.json').toString();
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.cloud9/runners/SAM Project Builder.run').toString();
+  //       },
+  //     },
+  //     {
+  //       resolvePath(context: FileTemplateContext) {
+  //         return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+  //       },
+  //       resolveContent(): string {
+  //         return new StaticAsset('nodejs/.cloud9/runners/SAM Project Test Runner.run').toString();
   //       },
   //     },
   //   ],
@@ -189,6 +437,108 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(context: FileTemplateContext): string {
           return new SubstitionAsset('python/.coveragerc').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'application_integration_tests.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.idea/runConfigurations/application_integration_tests.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'application_unit_tests.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.idea/runConfigurations/application_unit_tests.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.idea/runConfigurations/sam_build.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.idea/runConfigurations/sam_start_local_api.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.idea/externalDependencies.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('python/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'settings.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.vscode/settings.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('python/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
