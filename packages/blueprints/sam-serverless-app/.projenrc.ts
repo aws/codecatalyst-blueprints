@@ -28,11 +28,11 @@ const project = new ProjenBlueprint({
     'projen',
   ],
   description:
-    'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language',
+    'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java or Python as the programming language',
   packageName: '@caws-blueprint/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
   devDeps: ['@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli', '@types/jest', 'ts-jest', 'ts-node', 'typescript'],
-  keywords: ['sam', 'aws lambda', 'python', 'node', 'nodejs', 'java', 'serverless'],
+  keywords: ['sam', 'aws lambda', 'python', 'java', 'serverless'],
   homepage: 'https://aws.amazon.com/',
   mediaUrls: ['https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg'],
   displayName: 'Serverless application model (SAM) API',

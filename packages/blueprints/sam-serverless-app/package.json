@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.sam-serverless-application",
-  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language",
+  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java or Python as the programming language",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -67,8 +67,6 @@
   "keywords": [
     "aws lambda",
     "java",
-    "node",
-    "nodejs",
     "python",
     "sam",
     "serverless"
@@ -76,7 +74,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.1.28",
+  "version": "0.1.35",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

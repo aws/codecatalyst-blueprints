@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch and Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 8000,
+            "preLaunchTask": "mvn: debug tests"
+        },
+        {
+            "name": "Launch local sam API",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/{{lambdaFunctionName}}/HelloWorldFunction",
+            "preLaunchTask": "sam: start api"
+        }
+    ]
+}
