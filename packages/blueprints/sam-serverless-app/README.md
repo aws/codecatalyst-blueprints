@@ -16,6 +16,7 @@ application URL is available under the output for your workflow.
 
 This project uses:
 
+- Node.js 14
 - Java 11
 - Python 3.9
 
