@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.sam-serverless-application",
-  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language",
+  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Python as the programming language",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
