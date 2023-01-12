@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
-"
-Name: main_fullstack_workflow
+"Name: main_fullstack_workflow
 SchemaVersion: "1.0"
 Triggers:
   - Type: PUSH
@@ -61,7 +60,7 @@ Actions:
     Inputs:
       Sources:
         - WorkflowSource
-    Environment:
+    Environment: &a1
       Name: default_environment
       Connections: []
     Configuration:
@@ -71,9 +70,7 @@ Actions:
     Inputs:
       Artifacts:
         - backend_build_artifacts
-    Environment:
-      Name: default_environment
-      Connections: []
+    Environment: *a1
     DependsOn:
       - BackendBuildAndPackage
       - CDKBootstrapAction
@@ -87,9 +84,7 @@ Actions:
     Inputs:
       Artifacts:
         - frontend_build_artifacts
-    Environment:
-      Name: default_environment
-      Connections: []
+    Environment: *a1
     DependsOn:
       - FrontendBuildAndPackage
       - BackendCDKDeploy
@@ -1505,6 +1500,14 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
         </plugins>
     </build>
 </project>
+"
+`;
+
+exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/blueprint.lifecycle 1`] = `
+"blueprintOwned[]=*/checkstyle-suppressions.xml
+blueprintOwned[]=*/jacocoConsoleReporter.sh
+shared[]={"strategyName":"Allow Blueprint to add files, but do not overwrite existing files","globs":["*/cdk/**","*/src/**"]}
+shared[]={"strategyName":"Prefer Blueprint generated content","globs":["*/cdk/**/jest.config.js","**/tsconfig.json","*/src/**/*.config.json"]}
 "
 `;
 

@@ -28,7 +28,7 @@ const project = new ProjenBlueprint({
     'projen',
   ],
   description:
-    'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Phython as the programming language',
+    'This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java or Python as the programming language',
   packageName: '@caws-blueprint/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
   devDeps: [

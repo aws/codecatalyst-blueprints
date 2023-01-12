@@ -1,6 +1,5 @@
 import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
 import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
-
 import { RuntimeMapping } from './models';
 import { BlueprintRuntimes } from './runtimeMappings';
 
@@ -268,17 +267,18 @@ $ gradle test
 \`\`\`
     `,
   },
-  'Node.js 14': {
-    readmeTestSection: `
-## Running tests
-Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
-\`\`\`
-$ cd hello-world
-$ npm install
-$ npm run test
-\`\`\`
-`,
-  },
+  //TODO: Readd
+  //   'Node.js 14': {
+  //     readmeTestSection: `
+  // ## Running tests
+  // Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
+  // \`\`\`
+  // $ cd hello-world
+  // $ npm install
+  // $ npm run test
+  // \`\`\`
+  // `,
+  //   },
   'Python 3.9': {
     readmeTestSection: `
 ## Running tests
