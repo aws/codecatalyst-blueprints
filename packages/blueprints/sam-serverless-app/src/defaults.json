@@ -3,7 +3,7 @@
     "name": "default_environment",
     "environmentType": "PRODUCTION"
   },
-  "runtime": "Node.js 14",
+  "runtime": "Java 11 Gradle",
   "code": {
     "sourceRepositoryName": "ServerlessAppRepo",
     "cloudFormationStackName": "sam-stack-"
