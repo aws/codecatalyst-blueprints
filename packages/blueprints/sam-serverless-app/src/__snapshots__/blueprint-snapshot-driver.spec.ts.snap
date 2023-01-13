@@ -483,7 +483,7 @@ Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
 $ cd HelloWorldFunction
 $ gradle test
 \`\`\`
-    
+
 
 ## Adding a resource to your serverless application
 The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
@@ -675,7 +675,7 @@ t�_2/�Y�t�S�g9���C�S�Mǟ1��h�t��DE@�v�]��
 ҫ@'�c ���Klϓ��3�1�����c�����DQDDwp>���P�z�p}���@8B gmγ*&_$W��
 ��+�k��r�}�F�A?~��(��AZ��8�����:�ư�q���8�
 ӛ�"��؅Q�c� �?�	z5)��qj��sDP�h�	h��F�9҈����u�>�c��~��iMȈvz5�HM���� �����$?b�)n�I�P�$)S������ݳ��hѠǧB����<���q���0��.Ҷ���x��d�(���WW���w@�M�߉�߭5S<��
-�a�<��u�.�˟�3��Gh���G�At�=��dl�٦@]�������ys����:�m��O�	
+�a�<��u�.�˟�3��Gh���G�At�=��dl�٦@]�������ys����:�m��O�
 �	���8x4�?PK
      A ��,y  �  -   org/gradle/wrapper/GradleUserHomeLookup.class�S�N�@=$v��ԔK
 J)$����E�\`@"\\�@�<E&Y��#ǡ�_Ջ�H}�C���:�K �af����9��?�~�0�Q�Ix&c\\��
@@ -926,7 +926,7 @@ S�5꿗�$뻦
 �b^�)��S��t<Y���'��%S�3bhTшhO���씠�*�*��Ӧ�o���i��3i�Z<�;��e+�R��L)�ɩF�e=��i�<����Ϫ�a}��IǸ�eR(���_U}C��&�Ls�������Ię�&Ҁ��{�D��vv}C~Z���ܣA!��m+=���4�3�{���&�����l�-9]�2��J�8��L�x�ѩ����Ӡ�v�u�NsTOt.��J� Wd'��)��6*��$z��G:��h����#��MG��'\`�a�G�!b/��T��1O�����X"��Մ���kp-��XS�X���ږz'�7D��.��-��X=�1�{��*����7��_��ޯ0�(��.6������k:���QU�u�h�!�X�YQCހx�8@���Zqm�Ct��<�}�Yz�
 דn��B��|:m7x�KH�4��G1�%��s0�Y�P��^>��d%f���sT�CP��\`�g^��
 ���t	����H�@�'�؄N�r�"#��^h���N�oGQ7AUߑ�t$��YFRk�|����y�aC�@��g���pP����n'�I�<:\\(�=�Ě�p�����,���᝛���a����ұ<��V��8�o�ST�=�G����K��Q���~�q�;~�Wq��W�|����\\����T���۰kqS����'��'Q.ᖿQs�w8�Th���DL)� Gc�M�CG!O	�+�m>V6�d�����hd��F��^��w�����މ&�
-a�ࠑ�W�~q���p�N߽̾2BI� 
+a�ࠑ�W�~q���p�N߽̾2BI�
 �7���!�?PK
      A $ľ��  �  <   org/gradle/cli/CommandLineParser$MissingOptionArgState.class��mO�P��w��*��LD��
 �!�	·'�\`0�W�̚�o;��o���B��~ ?��ܶ�K˒��s~�퟿�~�Œ�r:��'I*(uZG
@@ -1989,39 +1989,58 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.js 1`] = `
-"// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.ts 1`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
  * @param {Object} event - API Gateway Lambda Proxy Input Format
  *
- * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html 
- * @param {Object} context
- *
  * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
  * @returns {Object} object - API Gateway Lambda Proxy Output Format
- * 
+ *
  */
-exports.lambdaHandler = async (event, context) => {
+
+export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    let response: APIGatewayProxyResult;
     try {
-        // const ret = await axios(url);
         response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
+            statusCode: 200,
+            body: JSON.stringify({
                 message: 'hello world',
-                // location: ret.data.trim()
-            })
-        }
-    } catch (err) {
+            }),
+        };
+    } catch (err: unknown) {
         console.log(err);
-        return err;
+        response = {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: err instanceof Error ? err.message : 'some error happened',
+            }),
+        };
     }
 
-    return response
+    return response;
+};
+"
+`;
+
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/jest.config.ts 1`] = `
+"/*
+ * For a detailed explanation regarding each configuration property and type check, visit:
+ * https://jestjs.io/docs/configuration
+ */
+
+export default {
+    transform: {
+        '^.+\\\\.ts?$': 'esbuild-jest',
+    },
+    clearMocks: true,
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    coverageProvider: 'v8',
+    testMatch: ['**/tests/unit/*.test.ts'],
 };
 "
 `;
@@ -2036,46 +2055,125 @@ exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1"
+    "esbuild": "^0.14.14"
   },
   "scripts": {
-    "test": "mocha --reporter mocha-junit-reporter tests/unit/",
+    "unit": "jest",
+    "lint": "eslint '*.ts' --quiet --fix",
+    "compile": "tsc",
+    "test": "npm run compile && npm run unit",
     "coverage": "nyc --reporter clover --reporter text npm test"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.92",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "esbuild-jest": "^0.5.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.1",
     "chai": "^4.2.0",
     "mocha": "^9.1.4",
     "mocha-junit-reporter": "^2.0.2",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "ts-mocha": "^10.0.0"
   }
 }
 "
 `;
 
-exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.js 1`] = `
-"'use strict';
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.test.ts 1`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { lambdaHandler } from '../../app';
 
-const app = require('../../app.js');
-const chai = require('chai');
-const expect = chai.expect;
-var event, context;
-
-describe('Tests index', function () {
+describe('Unit test for app handler', function () {
     it('verifies successful response', async () => {
-        const result = await app.lambdaHandler(event, context)
+        const event: APIGatewayProxyEvent = {
+            httpMethod: 'get',
+            body: '',
+            headers: {},
+            isBase64Encoded: false,
+            multiValueHeaders: {},
+            multiValueQueryStringParameters: {},
+            path: '/hello',
+            pathParameters: {},
+            queryStringParameters: {},
+            requestContext: {
+                accountId: '123456789012',
+                apiId: '1234',
+                authorizer: {},
+                httpMethod: 'get',
+                identity: {
+                    accessKey: '',
+                    accountId: '',
+                    apiKey: '',
+                    apiKeyId: '',
+                    caller: '',
+                    clientCert: {
+                        clientCertPem: '',
+                        issuerDN: '',
+                        serialNumber: '',
+                        subjectDN: '',
+                        validity: { notAfter: '', notBefore: '' },
+                    },
+                    cognitoAuthenticationProvider: '',
+                    cognitoAuthenticationType: '',
+                    cognitoIdentityId: '',
+                    cognitoIdentityPoolId: '',
+                    principalOrgId: '',
+                    sourceIp: '',
+                    user: '',
+                    userAgent: '',
+                    userArn: '',
+                },
+                path: '/hello',
+                protocol: 'HTTP/1.1',
+                requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
+                requestTimeEpoch: 1428582896000,
+                resourceId: '123456',
+                resourcePath: '/hello',
+                stage: 'dev',
+            },
+            resource: '',
+            stageVariables: {},
+        };
+        const result: APIGatewayProxyResult = await lambdaHandler(event);
 
-        expect(result).to.be.an('object');
-        expect(result.statusCode).to.equal(200);
-        expect(result.body).to.be.an('string');
-
-        let response = JSON.parse(result.body);
-
-        expect(response).to.be.an('object');
-        expect(response.message).to.be.equal("hello world");
-        // expect(response.location).to.be.an("string");
+        expect(result.statusCode).toEqual(200);
+        expect(result.body).toEqual(
+            JSON.stringify({
+                message: 'hello world',
+            }),
+        );
     });
 });
 "
+`;
+
+exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tsconfig.json 1`] = `
+"{
+    "compilerOptions": {
+      "target": "es2020",
+      "strict": true,
+      "preserveConstEnums": true,
+      "noEmit": true,
+      "sourceMap": false,
+      "module":"es2015",
+      "moduleResolution":"node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+    },
+    "exclude": ["node_modules", "**/*.test.ts"]
+  }"
 `;
 
 exports[`Blueprint snapshots node14 configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
@@ -2856,7 +2954,7 @@ import pytest
 import requests
 
 """
-Make sure env variable AWS_SAM_STACK_NAME exists with the name of the stack we are going to test. 
+Make sure env variable AWS_SAM_STACK_NAME exists with the name of the stack we are going to test.
 """
 
 
