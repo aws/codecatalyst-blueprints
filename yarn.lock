@@ -2007,16 +2007,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.blueprint@npm:0.0.x":
-  version: 0.0.1288
-  resolution: "@caws-blueprint/blueprints.blueprint@npm:0.0.1288::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40caws-blueprint%2Fblueprints.blueprint%2F-%2Fblueprints.blueprint-0.0.1288.tgz"
-  peerDependencies:
-    projen: "*"
-  checksum: def2a7913dd916fe4a4eee9a0d4808881dde768a2155d0b4190da164867f33127f20247dd07716e39b69979314ac1f64c858da13bd9cbe8791f793f0285c9696
-  languageName: node
-  linkType: hard
-
-"@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/blueprints.blueprint@0.0.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
