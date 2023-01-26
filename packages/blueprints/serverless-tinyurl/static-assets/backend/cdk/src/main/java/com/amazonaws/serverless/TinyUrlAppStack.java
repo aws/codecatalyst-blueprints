@@ -35,7 +35,7 @@ public class TinyUrlAppStack extends Stack {
     private static final String GET_URL_LAMBDA_HANDLER = "com.amazonaws.serverless.lambda.GetUrlRequestHandler";
     private static final String CREATE_URL_LAMBDA = "createUrlFunction";
     private static final String CREATE_URL_LAMBDA_HANDLER = "com.amazonaws.serverless.lambda.CreateUrlRequestHandler";
-    private static final String DYNAMODB_TABLE_NAME = "tbl_tiny_url";
+    private static final String DYNAMODB_TABLE_NAME = "{{tbl_tiny_url}}";
     private static final String DYNAMODB_TABLE_PRIMARY_KEY = "id";
     private static final String REST_API_GET_TINY_URL = "{tinyUrl}";
     private static final String REST_API_CREATE_TINY_URL = "createTinyUrl";
