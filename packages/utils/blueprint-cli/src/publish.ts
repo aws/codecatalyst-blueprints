@@ -86,7 +86,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
     {
       query: `mutation {
         createBlueprintUploadUrl(input: {
-          organizationName: "${publisher}",
+          spaceName: "${publisher}",
           publisher: "${publisher}",
           packageSignature: "${packageSignature}",
           name: "${friendlyBlueprintName}",
@@ -97,7 +97,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
     {
       headers: {
         'authority': endpoint,
-        'accespt': 'application/json',
+        'accept': 'application/json',
         'origin': `https://${endpoint}`,
         'cookie': cookie,
         'anti-csrftoken-a2z': indentity.csrfToken,
