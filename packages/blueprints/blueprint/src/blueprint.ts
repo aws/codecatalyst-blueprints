@@ -23,7 +23,7 @@ export class Blueprint extends Project {
 
     this.context = {
       rootDir: path.resolve(this.outdir),
-      organizationName: process.env.CONTEXT_ORGANIZATIONNAME,
+      spaceName: process.env.CONTEXT_SPACENAME,
       projectName: process.env.CONTEXT_PROJECTNAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       npmConfiguration: {

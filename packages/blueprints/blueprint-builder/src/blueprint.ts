@@ -116,7 +116,7 @@ export class Blueprint extends ParentBlueprint {
     });
     console.log('repository:', this.repository.path);
 
-    this.builderOrganizationName = this.options.organizationOverride || this.context.organizationName || '<<unknown-organization>>';
+    this.builderOrganizationName = this.options.organizationOverride || this.context.spaceName || '<<unknown-organization>>';
     const packageName = `@caws-blueprint/${this.builderOrganizationName}.${dashName}`;
 
     this.newBlueprintOptions = {
