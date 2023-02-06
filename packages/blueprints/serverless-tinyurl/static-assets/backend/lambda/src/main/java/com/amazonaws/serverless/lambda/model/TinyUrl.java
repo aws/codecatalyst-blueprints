@@ -3,7 +3,7 @@ package com.amazonaws.serverless.lambda.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName = "tbl_tiny_url")
+@DynamoDBTable(tableName = "{{tbl_tiny_url}}")
 public class TinyUrl {
 
     @DynamoDBHashKey
