@@ -4,7 +4,7 @@ export interface NpmConfiguration {
 }
 
 export interface Context {
-  readonly organizationName?: string;
+  readonly spaceName?: string;
   readonly projectName?: string;
   readonly environmentId?: string;
   readonly rootDir: string;

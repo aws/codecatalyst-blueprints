@@ -1,0 +1,19 @@
+{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \"$directory/.cloud9/runners\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "for directory in \"$REPOSITORY_DIR\"/* ; do",
+    "  if [ -d \"$directory/tests\" ]; then",
+    "    TESTS_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $TESTS_DIR",
+    "pip install -r tests/requirements.txt",
+    "python3 -m pytest tests/unit -v"
+  ],
+  "info": "This runner installs the dependencies, and executes the unit tests inside the tests directory."
+}
