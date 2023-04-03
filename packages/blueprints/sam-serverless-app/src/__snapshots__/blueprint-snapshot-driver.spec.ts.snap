@@ -529,6 +529,18 @@ components:
   - name: docker-store
     volume:
       size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml
+      workingDir: $PROJECT_SOURCE
+      group:
+        kind: build
+        isDefault: true
+      component: aws-runtime
 "
 `;
 
@@ -2199,6 +2211,18 @@ components:
   - name: docker-store
     volume:
       size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml
+      workingDir: $PROJECT_SOURCE
+      group:
+        kind: build
+        isDefault: true
+      component: aws-runtime
 "
 `;
 
@@ -3105,6 +3129,18 @@ components:
   - name: docker-store
     volume:
       size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9
+      workingDir: $PROJECT_SOURCE
+      group:
+        kind: build
+        isDefault: true
+      component: aws-runtime
 "
 `;
 

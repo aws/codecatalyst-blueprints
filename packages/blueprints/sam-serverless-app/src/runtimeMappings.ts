@@ -136,6 +136,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Java 11 Gradle': {
     runtime: 'java11',
@@ -265,6 +276,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Node.js 14': {
     runtime: 'nodejs14.x',
@@ -316,6 +338,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Python 3.9': {
     runtime: 'python3.9',
@@ -474,5 +507,25 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.EC2,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command:
+          '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'bootstrap',
+      //   command: '. ./.codecatalyst/scripts/bootstrap.sh',
+      // },
+      // {
+      //   eventName: 'run-tests',
+      //   command: '. ./.codecatalyst/scripts/run-tests.sh',
+      // },
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+      // },
+    ],
   },
 };
