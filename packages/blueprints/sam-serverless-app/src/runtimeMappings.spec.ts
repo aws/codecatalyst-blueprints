@@ -129,10 +129,46 @@ describe('runtime mappings', () => {
       expect(mapping.templateProps).toBe('');
     });
 
-    it('creates run-tests.sh', () => {
-      expect(mapping.filesToCreate).toHaveLength(1);
+    it('creates eleven files', () => {
+      expect(mapping.filesToCreate).toHaveLength(11);
       expect(mapping.filesToCreate[0].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.codecatalyst/scripts/run-tests.sh');
       expect(mapping.filesToCreate[0].resolveContent(fileTemplateContext)).toContain('WORKING_DIR=testLambdaFunctionName/hello-world/');
+
+      expect(mapping.filesToCreate[1].resolvePath(fileTemplateContext)).toBe(
+        'testRepositoryRelativePath/.idea/runConfigurations/all_tests_coverage.xml',
+      );
+      expect(mapping.filesToCreate[1].resolveContent(fileTemplateContext)).toContain('$PROJECT_DIR$/testLambdaFunctionName/hello-world/package.json');
+      expect(mapping.filesToCreate[2].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.idea/runConfigurations/sam_build.xml');
+      expect(mapping.filesToCreate[2].resolveContent(fileTemplateContext)).toContain('$PROJECT_DIR$');
+      expect(mapping.filesToCreate[3].resolvePath(fileTemplateContext)).toBe(
+        'testRepositoryRelativePath/.idea/runConfigurations/sam_local_invoke.xml',
+      );
+      expect(mapping.filesToCreate[3].resolveContent(fileTemplateContext)).toContain(
+        'sam local invoke testLambdaFunctionNameFunction --event testLambdaFunctionName/events/event.json',
+      );
+      expect(mapping.filesToCreate[4].resolvePath(fileTemplateContext)).toBe(
+        'testRepositoryRelativePath/.idea/runConfigurations/sam_start_local_api.xml',
+      );
+      expect(mapping.filesToCreate[4].resolveContent(fileTemplateContext)).toContain('$PROJECT_DIR$');
+      expect(mapping.filesToCreate[5].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.idea/externalDependencies.xml');
+      expect(mapping.filesToCreate[5].resolveContent(fileTemplateContext)).toContain('aws.toolkit');
+
+      expect(mapping.filesToCreate[6].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.vscode/launch.json');
+      expect(mapping.filesToCreate[6].resolveContent(fileTemplateContext)).toContain('${workspaceFolder}/testLambdaFunctionName');
+
+      expect(mapping.filesToCreate[7].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.vscode/tasks.json');
+      expect(mapping.filesToCreate[7].resolveContent(fileTemplateContext)).toContain('${workspaceFolder}/testLambdaFunctionName');
+
+      expect(mapping.filesToCreate[8].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.vscode/extensions.json');
+      expect(mapping.filesToCreate[8].resolveContent(fileTemplateContext)).toContain('AmazonWebServices.aws-toolkit-vscode');
+
+      expect(mapping.filesToCreate[9].resolvePath(fileTemplateContext)).toBe('testRepositoryRelativePath/.cloud9/runners/SAM Project Builder.run');
+      expect(mapping.filesToCreate[9].resolveContent(fileTemplateContext)).toContain('sam build');
+
+      expect(mapping.filesToCreate[10].resolvePath(fileTemplateContext)).toBe(
+        'testRepositoryRelativePath/.cloud9/runners/SAM Project Test Runner.run',
+      );
+      expect(mapping.filesToCreate[10].resolveContent(fileTemplateContext)).toContain('npm run test');
     });
 
     it('overrides package.json', () => {

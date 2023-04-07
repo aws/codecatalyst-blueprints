@@ -310,6 +310,91 @@ export const runtimeMappings: RuntimeMap = {
           return new SubstitionAsset('nodejs/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
         },
       },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'all_tests_coverage.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.idea/runConfigurations/all_tests_coverage.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/runConfigurations/sam_build.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/runConfigurations/sam_start_local_api.xml').toString();
+        },
+      },
+
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/externalDependencies.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Test Runner.run').toString();
+        },
+      },
     ],
     filesToOverride: [
       {
