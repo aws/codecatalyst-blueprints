@@ -12,6 +12,7 @@ import {
   addGenericCloudFormationDeployAction,
   makeEmptyWorkflow,
   AutoDiscoverReportDefinition,
+  ComputeFleet,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace, WorkspaceDefinition, addPostStartEvent } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
@@ -66,12 +67,19 @@ export interface Options extends ParentOptions {
    * @displayName Runtime Language
    */
   runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
-
   /**
-   * @displayName Code Configuration
+   * @displayName Additional configurations
    * @collapsed true
    */
-  code: {
+  advanced: {
+    /**
+     * Lambda function name must be unqiue to the AWS account it's being deployed to.
+     * @displayName Lambda function name
+     * @defaultEntropy 5
+     * @validationRegex /^[a-zA-Z0-9]{1,56}$/
+     * @validationMessage Must contain only alphanumeric characters and be up to 56 characters in length
+     */
+    functionName: string;
     /**
      * @displayName Code Repository name
      * @validationRegex /(?!.*\.git$)^[a-zA-Z0-9_.-]{3,100}$/
@@ -87,21 +95,11 @@ export interface Options extends ParentOptions {
      * @defaultEntropy 5
      */
     cloudFormationStackName: string;
-  };
-
-  /**
-   * @displayName Lambda function name
-   * @collapsed true
-   */
-  lambda: {
     /**
-     * Lambda function name must be unqiue to the AWS account it's being deployed to.
-     * @displayName Lambda function name
-     * @defaultEntropy 5
-     * @validationRegex /^[a-zA-Z0-9]{1,56}$/
-     * @validationMessage Must contain only alphanumeric characters and be up to 56 characters in length
+     * The compute architecture used to run your workflows
+     * @displayName Workflow build architecture
      */
-    functionName: string;
+    workflowBuildArchitecture: 'x86_64' | 'Arm64';
   };
 }
 
@@ -125,15 +123,22 @@ export class Blueprint extends ParentBlueprint {
       outdir: this.outdir,
       ...defaults,
       runtime: defaults.runtime as Options['runtime'],
+      advanced: {
+        sourceRepositoryName: defaults.advanced.sourceRepositoryName as Options['advanced']['sourceRepositoryName'],
+        cloudFormationStackName: defaults.advanced.cloudFormationStackName as Options['advanced']['cloudFormationStackName'],
+        functionName: defaults.advanced.functionName as Options['advanced']['functionName'],
+        workflowBuildArchitecture: defaults.advanced.workflowBuildArchitecture as Options['advanced']['workflowBuildArchitecture'],
+      },
     };
     const options = Object.assign(typeCheck, options_);
-    options.code.sourceRepositoryName = sanitizePath(options.code.sourceRepositoryName);
+    options.advanced.sourceRepositoryName = sanitizePath(options.advanced.sourceRepositoryName);
     this.options = options;
 
     this.repository = new SourceRepository(this, {
-      title: this.options.code.sourceRepositoryName || 'sam-lambda',
+      title: this.options.advanced.sourceRepositoryName || 'sam-lambda',
     });
-    this.options.lambda = options.lambda;
+    //todo delete after testing
+    //this.options.lambda = options.lambda;
   }
 
   override synth(): void {
@@ -141,7 +146,7 @@ export class Blueprint extends ParentBlueprint {
     const runtimeOptions = runtimeMappings[runtime];
 
     // create an MDE workspace
-    this.createMDEWorkspace({ runtimeOptions });
+    this.createMDEWorkspace({ runtimeOptions, functionName: this.options.advanced.functionName });
 
     // create an environment
     new Environment(this, this.options.environment);
@@ -157,7 +162,7 @@ export class Blueprint extends ParentBlueprint {
     // create additional files required for this runtime
     const context: FileTemplateContext = {
       repositoryRelativePath: this.repository.relativePath,
-      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+      lambdaFunctionName: this.options.advanced?.functionName ?? '.',
     };
     for (const fileTemplate of runtimeOptions.filesToCreate) {
       new SampleFile(this, fileTemplate.resolvePath(context), { contents: fileTemplate.resolveContent(context) });
@@ -171,6 +176,7 @@ export class Blueprint extends ParentBlueprint {
       stepsToRunUnitTests: runtimeOptions.stepsToRunUnitTests,
       autoDiscoveryOverride: runtimeOptions.autoDiscoveryOverride,
       runtimeOptions,
+      workflowBuildArchitecture: this.options.advanced.workflowBuildArchitecture,
     });
 
     // generate the readme
@@ -181,9 +187,9 @@ export class Blueprint extends ParentBlueprint {
         runtime,
         runtimeMapping: runtimeOptions,
         defaultReleaseBranch: 'main',
-        lambdas: [this.options.lambda],
+        functionName: this.options.advanced.functionName,
         environment: this.options.environment,
-        cloudFormationStackName: this.options.code.cloudFormationStackName,
+        cloudFormationStackName: this.options.advanced.cloudFormationStackName,
         workflowName: workflowName,
         sourceRepositoryName: this.repository.title,
       }),
@@ -203,7 +209,7 @@ export class Blueprint extends ParentBlueprint {
     // update permissions
     const permissionChangeContext: FileTemplateContext = {
       repositoryRelativePath: path.join(this.outdir, this.repository.relativePath),
-      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+      lambdaFunctionName: this.options.advanced?.functionName ?? '.',
     };
     for (const filePermissionChange of runtimeOptions.filesToChangePermissionsFor) {
       fs.chmodSync(filePermissionChange.resolvePath(permissionChangeContext), getFilePermissions(filePermissionChange.newPermissions));
@@ -216,6 +222,7 @@ export class Blueprint extends ParentBlueprint {
     stepsToRunUnitTests: Array<string>;
     autoDiscoveryOverride?: AutoDiscoverReportDefinition;
     runtimeOptions: RuntimeMapping;
+    workflowBuildArchitecture: string;
   }): void {
     const { name } = params;
 
@@ -232,7 +239,11 @@ export class Blueprint extends ParentBlueprint {
     };
     addGenericBranchTrigger(workflowDefinition, [defaultBranch]);
 
-    addGenericCompute(workflowDefinition, params.runtimeOptions.computeOptions.Type, params.runtimeOptions.computeOptions.Fleet);
+    let computeFleet = params.runtimeOptions.computeOptions.Fleet;
+    if (this.options.advanced.workflowBuildArchitecture == 'Arm64') {
+      computeFleet = ComputeFleet.LINUX_ARM_64_LARGE;
+    }
+    addGenericCompute(workflowDefinition, params.runtimeOptions.computeOptions.Type, computeFleet);
 
     const buildActionName = `build_for_${stripSpaces(this.options.environment.name)}`;
     const samBuildImageOptions = params.runtimeOptions.samBuildImage
@@ -285,7 +296,7 @@ export class Blueprint extends ParentBlueprint {
       configuration: {
         parameters: {
           region,
-          'name': this.options.code.cloudFormationStackName,
+          'name': this.options.advanced.cloudFormationStackName,
           'template': '.aws-sam/build/packaged.yaml',
           'no-fail-on-empty-changeset': '1',
         },
@@ -341,28 +352,28 @@ export class Blueprint extends ParentBlueprint {
     // override any files that need to be overridden
     const overrideContext: FileTemplateContext = {
       repositoryRelativePath: sourceDir,
-      lambdaFunctionName: this.options.lambda?.functionName ?? '.',
+      lambdaFunctionName: this.options.advanced?.functionName ?? '.',
     };
     for (const fileTemplate of params.filesToOverride) {
       writeFile(fileTemplate.resolvePath(overrideContext), fileTemplate.resolveContent(overrideContext));
     }
 
     // copy the lambda to the new path
-    const newLambdaPath = path.join(this.repository.relativePath, this.options.lambda?.functionName ?? '');
+    const newLambdaPath = path.join(this.repository.relativePath, this.options.advanced?.functionName ?? '');
     new SampleDir(this, newLambdaPath, { sourceDir });
     return sourceDir;
   }
 
   protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string }): void {
+    const lambda = this.options.advanced?.functionName;
     const header = `Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
   Function:
     Timeout: 20\n`;
-    let resources = 'Resources:';
-    let outputs = 'Outputs:';
-    for (const lambda of [this.options.lambda?.functionName]) {
-      resources += `
+
+    const resources = `
+Resources:
   ${lambda}Function:
     Type: AWS::Serverless::Function
     Properties:
@@ -376,10 +387,10 @@ Globals:
              Properties:
                 Path: /${lambda}
                 Method: get`;
-      //Append additional template properties
-      resources += params.templateProps;
+    //Append additional template properties
 
-      outputs += `
+    const outputs = `
+Outputs:
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM
 # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
@@ -392,21 +403,23 @@ Globals:
   ${lambda}FunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt ${lambda}FunctionRole.Arn`;
-    }
 
     const destinationPath = path.join(this.repository.relativePath, 'template.yaml');
     const template = header + resources + '\n' + outputs;
     new SampleFile(this, destinationPath, { contents: template });
   }
 
-  protected createMDEWorkspace(params: { runtimeOptions: RuntimeMapping }) {
+  protected createMDEWorkspace(params: { runtimeOptions: RuntimeMapping; functionName: string }) {
     const devEnvironmentPostStartEvents = params.runtimeOptions.devEnvironmentPostStartEvents;
     const workspaceDefinition: WorkspaceDefinition = SampleWorkspaces.default;
     devEnvironmentPostStartEvents.forEach(postStartEvent => {
       addPostStartEvent(workspaceDefinition, {
         eventName: postStartEvent.eventName,
         command: postStartEvent.command,
-        workingDirectory: postStartEvent.workingDirectory,
+        workingDirectory:
+          postStartEvent?.workingDirectory == 'REPLACE_WITH_FUNCTION_PATH'
+            ? `$PROJECT_SOURCE/${params.functionName}/${params.runtimeOptions.codeUri}`
+            : postStartEvent.workingDirectory,
         component: workspaceDefinition.components[0].name,
       });
     });

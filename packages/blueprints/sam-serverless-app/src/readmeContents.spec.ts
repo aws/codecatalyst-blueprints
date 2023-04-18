@@ -8,7 +8,7 @@ describe('readme contents', () => {
       runtime: 'Java 11 Gradle',
       runtimeMapping,
       defaultReleaseBranch: 'test-release-branch',
-      lambdas: [{ functionName: 'lambda1' }, { functionName: 'lambda2' }],
+      functionName: 'lambda1',
       environment: {
         name: 'test-env-name',
         environmentType: 'PRODUCTION',
@@ -33,7 +33,7 @@ describe('readme contents', () => {
     });
 
     it('incorporates lambdas param', () => {
-      expect(readmeContents).toContain('`lambda1, lambda2` - Source code');
+      expect(readmeContents).toContain('`lambda1` - Source code');
     });
 
     it('incorporates environment param', () => {
@@ -50,26 +50,6 @@ describe('readme contents', () => {
 
     it('incorporates sourceRepositoryName param', () => {
       expect(readmeContents).toContain('Source repository named `test-repo-name`');
-    });
-  });
-
-  describe('when no Lambda functions are passed', () => {
-    const runtimeMapping = runtimeMappings['Java 11 Gradle'];
-    const params = {
-      runtime: 'Java 11 Gradle',
-      runtimeMapping,
-      lambdas: [],
-      environment: {
-        name: 'test-env-name',
-        environmentType: 'PRODUCTION',
-      },
-      cloudFormationStackName: 'test-cfn-stack-name',
-      workflowName: 'test-workflow-name',
-      sourceRepositoryName: 'test-repo-name',
-    };
-
-    it('throws exception', () => {
-      expect(() => generateReadmeContents(params)).toThrow('Readme expects');
     });
   });
 });

@@ -50,7 +50,7 @@ export interface WorkspaceCommand {
   exec: {
     commandLine: string;
     workingDir: string;
-    group: WorkspaceCommandGroup;
+    group?: WorkspaceCommandGroup;
     component: string;
   };
 }

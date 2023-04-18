@@ -141,6 +141,11 @@ export const runtimeMappings: RuntimeMap = {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
       },
+      {
+        eventName: 'test',
+        command: 'mvn test',
+        workingDirectory: 'REPLACE_WITH_FUNCTION_PATH',
+      },
       //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
       // {
       //   eventName: 'sam-build',
@@ -280,6 +285,11 @@ export const runtimeMappings: RuntimeMap = {
       {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      {
+        eventName: 'test',
+        command: 'gradle test',
+        workingDirectory: 'REPLACE_WITH_FUNCTION_PATH',
       },
       //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
       // {
@@ -427,6 +437,11 @@ export const runtimeMappings: RuntimeMap = {
       {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      {
+        eventName: 'test',
+        command: 'npm install && npm run test',
+        workingDirectory: 'REPLACE_WITH_FUNCTION_PATH',
       },
       //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
       // {
@@ -594,7 +609,7 @@ export const runtimeMappings: RuntimeMap = {
     },
     devEnvironmentPostStartEvents: [
       {
-        eventName: 'bootstrap-and-build',
+        eventName: 'bootstrap-build-and-test',
         command:
           '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
       },

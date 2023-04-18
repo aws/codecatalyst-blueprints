@@ -7,7 +7,7 @@ import { BlueprintRuntimes } from './runtimeMappings';
 interface ReadmeParams {
   runtime: string;
   runtimeMapping: RuntimeMapping;
-  lambdas: { functionName: string }[];
+  functionName: string;
   defaultReleaseBranch?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   environment: EnvironmentDefinition<any>;
@@ -17,19 +17,8 @@ interface ReadmeParams {
 }
 
 export function generateReadmeContents(params: ReadmeParams) {
-  const { runtime, runtimeMapping, lambdas, environment, cloudFormationStackName, workflowName, sourceRepositoryName } = params;
+  const { runtime, runtimeMapping, functionName, environment, cloudFormationStackName, workflowName, sourceRepositoryName } = params;
   const defaultReleaseBranch = params.defaultReleaseBranch ?? 'main';
-
-  if (lambdas.length < 1) {
-    throw new Error('Readme expects at least one Lambda function');
-  }
-
-  //Generate input variables
-  let functionNames = '';
-  for (let i = 0; i < lambdas.length - 1; i++) {
-    functionNames += `${lambdas[i].functionName}, `;
-  }
-  functionNames += `${lambdas[lambdas.length - 1].functionName}`;
 
   const readmeContents = `
 ## This Project
@@ -145,7 +134,7 @@ The deployment status can be viewed in the project's workflow.
 This blueprint creates the following Amazon CodeCatalyst resources:
 
 - Source repository named \`${sourceRepositoryName}\` - A Git repository to store, version, and manage the following project assets:
-  - \`${functionNames}\` - Source code and supporting files for the Lambda function of the application, \`${functionNames}\` contains the following:
+  - \`${functionName}\` - Source code and supporting files for the Lambda function of the application, \`${functionName}\` contains the following:
     - \`${runtimeMapping.srcCodePath}\` - Code for the AWS Lambda function of the application
     - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
     - \`${runtimeMapping.testPath}\` - Tests for the AWS Lambda function's code

@@ -21,15 +21,18 @@ export function addPostStartEvent(
   const events: WorkspaceEvents = definition.events ? { ...definition.events, postStart: postStartEvents } : { postStart: postStartEvents };
 
   const commands: WorkspaceCommand[] = definition.commands ?? [];
+  const group = groupKind
+    ? {
+        kind: groupKind,
+        isDefault: groupIsDefault ?? false,
+      }
+    : undefined;
   const newCommand: WorkspaceCommand = {
     id: eventName,
     exec: {
       commandLine: command,
       workingDir: workingDirectory ?? DEFAULT_WORKING_DIR,
-      group: {
-        kind: groupKind ?? WorkspaceCommandGroupKind.BUILD,
-        isDefault: groupIsDefault ?? true,
-      },
+      group,
       component: component,
     },
   };

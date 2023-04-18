@@ -4,11 +4,10 @@
     "environmentType": "PRODUCTION"
   },
   "runtime": "Java 11 Gradle",
-  "code": {
+  "advanced": {
     "sourceRepositoryName": "ServerlessAppRepo",
-    "cloudFormationStackName": "sam-stack-"
-  },
-  "lambda": {
-    "functionName": "SamFirstEndpoint"
+    "cloudFormationStackName": "sam-stack-",
+    "functionName": "SamFirstEndpoint",
+    "workflowBuildArchitecture": "x86_64"
   }
 }
