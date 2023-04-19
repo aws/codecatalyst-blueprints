@@ -152,6 +152,7 @@ export class Blueprint extends ParentBlueprint {
       codeUri: runtimeOptions.codeUri,
       handler: runtimeOptions.handler,
       templateProps: runtimeOptions.templateProps,
+      templateMetadata: runtimeOptions.templateMetadata,
     });
 
     // create additional files required for this runtime
@@ -353,7 +354,7 @@ export class Blueprint extends ParentBlueprint {
     return sourceDir;
   }
 
-  protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string }): void {
+  protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string; templateMetadata?: string }): void {
     const header = `Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -378,7 +379,9 @@ Globals:
                 Method: get`;
       //Append additional template properties
       resources += params.templateProps;
-
+      if (params.templateMetadata) {
+        resources += params.templateMetadata;
+      }
       outputs += `
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM

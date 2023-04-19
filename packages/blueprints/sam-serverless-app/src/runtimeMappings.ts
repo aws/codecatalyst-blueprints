@@ -295,6 +295,16 @@ export const runtimeMappings: RuntimeMap = {
     testPath: 'hello-world/tests',
     handler: 'app.lambdaHandler',
     templateProps: nodejs14,
+    templateMetadata: `
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
+        EntryPoints: 
+        - app.ts
+`,
     cacheDir: 'nodejs14',
     gitSrcPath: 'hello-ts',
     dependenciesFilePath: 'package.json',
