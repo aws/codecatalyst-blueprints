@@ -49,8 +49,8 @@ export interface WorkspaceCommand {
   id: string;
   exec: {
     commandLine: string;
-    workingDir: string;
-    group: WorkspaceCommandGroup;
+    workingDir?: string;
+    group?: WorkspaceCommandGroup;
     component: string;
   };
 }
