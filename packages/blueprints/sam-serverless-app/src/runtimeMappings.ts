@@ -136,6 +136,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Java 11 Gradle': {
     runtime: 'java11',
@@ -265,6 +276,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Node.js 14': {
     runtime: 'nodejs14.x',
@@ -286,6 +308,91 @@ export const runtimeMappings: RuntimeMap = {
         },
         resolveContent(context: FileTemplateContext): string {
           return new SubstitionAsset('nodejs/run-tests.sh').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'all_tests_coverage.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.idea/runConfigurations/all_tests_coverage.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_build.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/runConfigurations/sam_build.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_local_invoke.xml');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.idea/runConfigurations/sam_local_invoke.xml').subsitite({
+            lambdaFunctionName: context.lambdaFunctionName,
+          });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'runConfigurations', 'sam_start_local_api.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/runConfigurations/sam_start_local_api.xml').toString();
+        },
+      },
+
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.idea', 'externalDependencies.xml');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.idea/externalDependencies.xml').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'launch.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.vscode/launch.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'tasks.json');
+        },
+        resolveContent(context: FileTemplateContext): string {
+          return new SubstitionAsset('nodejs/.vscode/tasks.json').subsitite({ lambdaFunctionName: context.lambdaFunctionName });
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.vscode', 'extensions.json');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.vscode/extensions.json').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Builder.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Builder.run').toString();
+        },
+      },
+      {
+        resolvePath(context: FileTemplateContext) {
+          return path.join(context.repositoryRelativePath, '.cloud9', 'runners', 'SAM Project Test Runner.run');
+        },
+        resolveContent(): string {
+          return new StaticAsset('nodejs/.cloud9/runners/SAM Project Test Runner.run').toString();
         },
       },
     ],
@@ -316,6 +423,17 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.LAMBDA,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml',
+      // },
+    ],
   },
   'Python 3.9': {
     runtime: 'python3.9',
@@ -474,5 +592,25 @@ export const runtimeMappings: RuntimeMap = {
       Type: ComputeType.EC2,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
     },
+    devEnvironmentPostStartEvents: [
+      {
+        eventName: 'bootstrap-and-build',
+        command:
+          '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+      },
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      // {
+      //   eventName: 'bootstrap',
+      //   command: '. ./.codecatalyst/scripts/bootstrap.sh',
+      // },
+      // {
+      //   eventName: 'run-tests',
+      //   command: '. ./.codecatalyst/scripts/run-tests.sh',
+      // },
+      // {
+      //   eventName: 'sam-build',
+      //   command: 'sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+      // },
+    ],
   },
 };
