@@ -15,7 +15,7 @@ export class SampleWorkspaces {
       {
         name: 'aws-runtime',
         container: {
-          image: 'public.ecr.aws/aws-mde/universal-image:latest',
+          image: 'public.ecr.aws/aws-mde/universal-image:1.0',
           mountSources: true,
           volumeMounts: [
             {
