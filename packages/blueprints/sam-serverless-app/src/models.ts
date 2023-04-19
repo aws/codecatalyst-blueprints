@@ -9,6 +9,7 @@ export interface RuntimeMapping {
   testPath: string;
   handler: string;
   templateProps: string;
+  templateMetadata?: string;
   cacheDir: string;
   gitSrcPath: string;
   dependenciesFilePath: string;
