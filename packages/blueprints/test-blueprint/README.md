@@ -82,13 +82,22 @@ yarn blueprint:synth:cache
 
 ### Publishing
 
-You must have write access to the 'blueprints' organization in code.aws in order to publish. You'll need to get a `CAWS_COOKIE` and set in in your
-environment.
+You must have write access to `blueprints` space in CodeCatalyst in order to publish. Ask the blueprints team for access.
+
+You'll also need to grab `CAWS_COOKIE` and set in in your environment. Steps to get `CAWS_COOKIE`:
+
+1. Navigate to the space you want to publish your blueprint to
+1. Open Developer Tools by right clicking the webpage and select 'Inspect'
+1. Navigate to Network tab
+1. Click 'Create Project' button -> Select any blueprint
+1. There will be multiple graphql calls show up in Network tab, go through their headers and look for `Cookie` field
+1. Copy only the value of `Cookie` field
 
 ```
 // paste it into your terminal like so:
-export CAWS_COOKIE='session-blhahBlahblahBlah'
+export CAWS_COOKIE='code-aws-sso-session=blahblahblahblah'
 // run from the root
+
 // this publishes a preview version of the blueprint designed development.
 yarn blueprint:preview
 
@@ -96,7 +105,7 @@ yarn blueprint:preview
 yarn blueprint:release
 ```
 
-By default the blueprint will only show up in your organization. Contact the blueprint organization to flag your blueprints as public access.
+By default the blueprint will only show up in your space. Contact the blueprint space to flag your blueprints as public access.
 
 # Create an empty project
 
