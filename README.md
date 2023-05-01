@@ -21,7 +21,6 @@ nvm use
 npm install npm@6.14.13 -g  # we depend on npm v6.14.13
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
-brew install svn            # used during synthesis of SAM blueprint
 ```
 
 Add this to your `~/.bash_profile`:
