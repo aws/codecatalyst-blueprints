@@ -62,7 +62,7 @@ export interface Options extends ParentOptions {
   }>;
 
   /**
-   * Select your lambda code language
+   * Select your Lambda development language
    * @displayName Runtime Language
    */
   runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
