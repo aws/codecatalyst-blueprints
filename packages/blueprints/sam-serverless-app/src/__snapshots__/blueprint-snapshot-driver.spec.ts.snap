@@ -2606,7 +2606,8 @@ Actions:
         - Run: . ./.codecatalyst/scripts/run-tests.sh
         - Run: >-
             sam build --template-file template.yaml --use-container
-            --build-image amazon/aws-sam-cli-build-image-python3.9
+            --build-image public.ecr.aws/sam/build-python3.9:$(sam --version |
+            sed "s/.* //")
         - Run: cd .aws-sam/build/
         - Run: >-
             sam package --output-template-file packaged.yaml --resolve-s3
@@ -3394,7 +3395,7 @@ events:
 commands:
   - id: bootstrap-and-build
     exec:
-      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9
+      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
       workingDir: $PROJECT_SOURCE
       component: aws-runtime
 "
