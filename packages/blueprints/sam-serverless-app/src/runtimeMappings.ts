@@ -141,7 +141,7 @@ export const runtimeMappings: RuntimeMap = {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
       },
-      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events
       // {
       //   eventName: 'sam-build',
       //   command: 'sam build --template-file template.yaml',
@@ -281,7 +281,7 @@ export const runtimeMappings: RuntimeMap = {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
       },
-      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events
       // {
       //   eventName: 'sam-build',
       //   command: 'sam build --template-file template.yaml',
@@ -438,7 +438,7 @@ export const runtimeMappings: RuntimeMap = {
         eventName: 'bootstrap-and-build',
         command: '. ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml',
       },
-      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events
       // {
       //   eventName: 'sam-build',
       //   command: 'sam build --template-file template.yaml',
@@ -608,7 +608,7 @@ export const runtimeMappings: RuntimeMap = {
         command:
           '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
       },
-      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events https://t.corp.amazon.com/V869868907/communication
+      //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events
       // {
       //   eventName: 'bootstrap',
       //   command: '. ./.codecatalyst/scripts/bootstrap.sh',
