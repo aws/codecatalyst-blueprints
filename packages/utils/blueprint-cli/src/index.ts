@@ -7,6 +7,7 @@ import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
+import { ConvertOptions, convertToAssessmentObjects } from './snapshot-converter';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
 
@@ -164,6 +165,23 @@ yargs
         bucketName: argv.bucket,
       });
       log.info(`URL to image '${imageName}': ${imageUrl} \n The URL might take a few minutes to be available.`);
+      process.exit(0);
+    },
+  })
+  .command({
+    command: 'snapshot-converter <pathToConfiguration>',
+    describe: 'converts snapshot and other configurations to a list of assessment objects for Blueprint Health Service',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args.positional('pathToConfiguration', {
+        describe: 'path to user-defined configuration',
+        type: 'string',
+        demandOption: true,
+      });
+    },
+    handler: async (argv: ConvertOptions): Promise<void> => {
+      log.info(argv);
+      const pathToAssessmentObjects = convertToAssessmentObjects(log, argv.pathToConfiguration);
+      log.info(`Blueprint assessment objects created, path to objects: '${pathToAssessmentObjects}'.`);
       process.exit(0);
     },
   })
