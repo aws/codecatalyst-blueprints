@@ -165,7 +165,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('blueprint:resynth:cache', `yarn build:cache && ${resynthCommand} --cache`);
 
     if (options.eslint) {
-      this.eslint?.addIgnorePattern('src/snapshot-*');
+      this.eslint?.addIgnorePattern('src/blueprint-snapshot-*');
     }
   }
 
