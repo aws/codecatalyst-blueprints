@@ -1503,14 +1503,6 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/blueprint.lifecycle 1`] = `
-"blueprintOwned[]=*/checkstyle-suppressions.xml
-blueprintOwned[]=*/jacocoConsoleReporter.sh
-shared[]={"strategyName":"Allow Blueprint to add files, but do not overwrite existing files","globs":["*/cdk/**","*/src/**"]}
-shared[]={"strategyName":"Prefer Blueprint generated content","globs":["*/cdk/**/jest.config.js","**/tsconfig.json","*/src/**/*.config.json"]}
-"
-`;
-
 exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/README.md 1`] = `
 "# Frontend
 

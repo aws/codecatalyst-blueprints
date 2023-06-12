@@ -9,7 +9,7 @@ const log = pino.default({
   level: process.env.LOG_LEVEL || 'debug',
 });
 
-const configurationsLocation = 'src/snapshot-configurations';
+const configurationsLocation = 'src/wizard-configurations';
 const defaultsLocation = 'src/defaults.json';
 const blueprintLocation = './';
 const outputDirectory = './';
