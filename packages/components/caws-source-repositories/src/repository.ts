@@ -12,11 +12,6 @@ export interface SourceRepositoryDefinition {
   title: string;
 }
 
-/**
- * File in which we record ownership preferences and overrides
- */
-export const BLUEPRINT_RESYNTHESIS_OWNERSHIP = 'blueprint.ownership';
-
 export class SourceRepository extends Component {
   public readonly relativePath: string;
   public readonly path: string;

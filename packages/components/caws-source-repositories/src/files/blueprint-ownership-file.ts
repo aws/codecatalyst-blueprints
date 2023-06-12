@@ -1,6 +1,12 @@
+import * as path from 'path';
 import { Strategy } from '../lifecycle/models';
 import { SourceRepository } from '../repository';
 import { File } from './file';
+
+/**
+ * File in which we record ownership preferences and overrides
+ */
+export const BLUEPRINT_OWNERSHIP_FILE = 'blueprint.ownership';
 
 export interface BlueprintOwnershipFileDefinition {
   filePath?: string;
@@ -24,7 +30,7 @@ export interface BlueprintOwnershipFileDefinition {
 }
 
 /**
- * Generic undetermined file, takes a buffer, is written out at synthesis time.
+ * Blueprint ownership file, lays out ownership delegation in a repository.
  */
 export class BlueprintOwnershipFile extends File {
   public static asString = (fileDefinition: BlueprintOwnershipFileDefinition): string => {
@@ -39,6 +45,6 @@ export class BlueprintOwnershipFile extends File {
   };
 
   constructor(protected readonly sourceRepository: SourceRepository, options: BlueprintOwnershipFileDefinition) {
-    super(sourceRepository, options.filePath || '', Buffer.from(BlueprintOwnershipFile.asString(options)));
+    super(sourceRepository, path.join(options.filePath || '', BLUEPRINT_OWNERSHIP_FILE), Buffer.from(BlueprintOwnershipFile.asString(options)));
   }
 }
