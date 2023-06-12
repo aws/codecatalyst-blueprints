@@ -1,4 +1,5 @@
 import { AutoDiscoverReportDefinition, ComputeDefintion } from '@caws-blueprint-component/caws-workflows';
+
 import { WriteFileOptions } from 'projen/lib/util';
 
 export interface RuntimeMapping {
@@ -8,6 +9,7 @@ export interface RuntimeMapping {
   testPath: string;
   handler: string;
   templateProps: string;
+  templateMetadata?: string;
   cacheDir: string;
   gitSrcPath: string;
   dependenciesFilePath: string;
@@ -19,6 +21,7 @@ export interface RuntimeMapping {
   computeOptions: ComputeDefintion;
   autoDiscoveryOverride?: AutoDiscoverReportDefinition;
   samBuildImage?: string;
+  devEnvironmentPostStartEvents: DevEnvironmentPostStartEvent[];
 }
 
 export interface FileTemplate {
@@ -34,4 +37,10 @@ export interface FileTemplateContext {
 export interface FilePermissionChange {
   resolvePath: (context: FileTemplateContext) => string;
   newPermissions: WriteFileOptions;
+}
+
+export interface DevEnvironmentPostStartEvent {
+  eventName: string;
+  command: string;
+  workingDirectory?: string;
 }

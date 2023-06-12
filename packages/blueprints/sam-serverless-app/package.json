@@ -1,6 +1,6 @@
 {
   "name": "@caws-blueprint/blueprints.sam-serverless-application",
-  "description": "This blueprint creates a project that leverages  a serverless application model (SAM) to quickly create and deploy an API. You can choose Java or Python as the programming language",
+  "description": "This blueprint creates a project that leverages a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Python as the programming language",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -26,10 +26,10 @@
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
     "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints",
     "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes",
-    "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/snapshot-configurations",
-    "blueprint:synth:cache": "yarn build:cache && blueprint synth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/snapshot-configurations --cache",
-    "blueprint:resynth": "blueprint resynth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/snapshot-configurations",
-    "blueprint:resynth:cache": "yarn build:cache && blueprint resynth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/snapshot-configurations --cache"
+    "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/wizard-configurations",
+    "blueprint:synth:cache": "yarn build:cache && blueprint synth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/wizard-configurations --cache",
+    "blueprint:resynth": "blueprint resynth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/wizard-configurations",
+    "blueprint:resynth:cache": "yarn build:cache && blueprint resynth ./ --outdir ./ --options ./src/defaults.json --additionalOptionOverrides ./src/wizard-configurations --cache"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -85,7 +85,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.1.35",
+  "version": "0.1.54",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

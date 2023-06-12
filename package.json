@@ -54,5 +54,8 @@
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
     "webpack-cli": "^4.9.1"
+  },
+  "resolutions": {
+    "json5": "^2.0.2"
   }
 }

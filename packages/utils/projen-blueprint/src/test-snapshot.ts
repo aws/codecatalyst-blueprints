@@ -5,7 +5,7 @@ import { BlueprintSnapshotConfiguration } from './blueprint';
 import { generateSpecTs } from './snapshot-testing/gen-spec';
 
 export const SRC_DIR = 'src';
-export const CONFIGS_SUBDIR = 'snapshot-configurations';
+export const CONFIGS_SUBDIR = 'wizard-configurations';
 export const DEFAULT_TEST_CONFIG_FILENAME = 'defaults.json';
 export const SNAPSHOTS_SPEC_FILENAME = 'blueprint-snapshot-driver.spec.ts';
 

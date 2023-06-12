@@ -170,6 +170,7 @@ export class Blueprint extends ParentBlueprint {
         this.sourceRepository,
         `backend/${asset.path().replace(`${backendSourceFolder}/`, '')}`,
         asset.substitute({
+          tbl_tiny_url: `${this.options.advanced.backendStackName}_tbl_tiny_url`,
           backend_stack_name: this.options.advanced.backendStackName,
           bp_aws_account: accountId,
           bp_aws_region: this.options.advanced.region,

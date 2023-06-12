@@ -2,7 +2,7 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceFile, SourceRepository, BlueprintOwnershipFile, MergeStrategies } from '@caws-blueprint-component/caws-source-repositories';
 import {
   WorkflowDefinition,
   Workflow,
@@ -13,7 +13,7 @@ import {
   makeEmptyWorkflow,
   AutoDiscoverReportDefinition,
 } from '@caws-blueprint-component/caws-workflows';
-import { SampleWorkspaces, Workspace } from '@caws-blueprint-component/caws-workspaces';
+import { SampleWorkspaces, Workspace, WorkspaceDefinition, addPostStartEvent } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { SampleDir, SampleFile } from 'projen';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
@@ -62,10 +62,10 @@ export interface Options extends ParentOptions {
   }>;
 
   /**
-   * Select your lambda code language
+   * Select your Lambda development language
    * @displayName Runtime Language
    */
-  runtime: 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
+  runtime: 'Node.js 14' | 'Java 11 Gradle' | 'Java 11 Maven' | 'Python 3.9';
 
   /**
    * @displayName Code Configuration
@@ -132,7 +132,18 @@ export class Blueprint extends ParentBlueprint {
 
     this.repository = new SourceRepository(this, {
       title: this.options.code.sourceRepositoryName || 'sam-lambda',
-      resynthesis: {},
+    });
+
+    new BlueprintOwnershipFile(this.repository, {
+      resynthesis: {
+        strategies: [
+          {
+            identifier: 'never_update',
+            strategy: MergeStrategies.neverUpdate,
+            globs: ['*'],
+          },
+        ],
+      },
     });
     this.options.lambda = options.lambda;
   }
@@ -140,8 +151,9 @@ export class Blueprint extends ParentBlueprint {
   override synth(): void {
     const runtime = this.options.runtime;
     const runtimeOptions = runtimeMappings[runtime];
+
     // create an MDE workspace
-    new Workspace(this, this.repository, SampleWorkspaces.default);
+    this.createMDEWorkspace({ runtimeOptions });
 
     // create an environment
     new Environment(this, this.options.environment);
@@ -152,6 +164,7 @@ export class Blueprint extends ParentBlueprint {
       codeUri: runtimeOptions.codeUri,
       handler: runtimeOptions.handler,
       templateProps: runtimeOptions.templateProps,
+      templateMetadata: runtimeOptions.templateMetadata,
     });
 
     // create additional files required for this runtime
@@ -353,7 +366,7 @@ export class Blueprint extends ParentBlueprint {
     return sourceDir;
   }
 
-  protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string }): void {
+  protected createSamTemplate(params: { runtime: string; codeUri: string; handler: string; templateProps: string; templateMetadata?: string }): void {
     const header = `Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -378,7 +391,9 @@ Globals:
                 Method: get`;
       //Append additional template properties
       resources += params.templateProps;
-
+      if (params.templateMetadata) {
+        resources += params.templateMetadata;
+      }
       outputs += `
 # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
 # Find out more about other implicit resources you can reference within SAM
@@ -397,6 +412,20 @@ Globals:
     const destinationPath = path.join(this.repository.relativePath, 'template.yaml');
     const template = header + resources + '\n' + outputs;
     new SampleFile(this, destinationPath, { contents: template });
+  }
+
+  protected createMDEWorkspace(params: { runtimeOptions: RuntimeMapping }) {
+    const devEnvironmentPostStartEvents = params.runtimeOptions.devEnvironmentPostStartEvents;
+    const workspaceDefinition: WorkspaceDefinition = SampleWorkspaces.default;
+    devEnvironmentPostStartEvents.forEach(postStartEvent => {
+      addPostStartEvent(workspaceDefinition, {
+        eventName: postStartEvent.eventName,
+        command: postStartEvent.command,
+        workingDirectory: postStartEvent.workingDirectory,
+        component: workspaceDefinition.components[0].name,
+      });
+    });
+    new Workspace(this, this.repository, workspaceDefinition);
   }
 }
 
