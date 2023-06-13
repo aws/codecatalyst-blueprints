@@ -33,8 +33,6 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
   //validate options
   //TODO
 
-  console.log(options);
-
   let runtime: SynthesisRunTime = 'ts-node';
   let driverFile: string = '';
 
@@ -52,7 +50,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
 
   //figure out which options we have, call synthesis for each of these options
   const additionalWizardOptionPath: string[] = [];
-  if (options.additionalOptions) {
+  if (options.additionalOptions && fs.existsSync(options.additionalOptions)) {
     fs.readdirSync(options.additionalOptions, { withFileTypes: true }).forEach(overridePath => {
       additionalWizardOptionPath.push(path.join(options.additionalOptions!, overridePath.name));
     });
