@@ -1,5 +1,5 @@
-#!/usr/bin/env node
-
+import * as fs from 'fs';
+import * as path from 'path';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 
@@ -7,7 +7,8 @@ import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
-import { SynthesizeOptions, synth } from './synth-driver/synth';
+import { resynthesize, ResynthesizeCliOptions } from './resynth-driver/resynth';
+import { synthesize, SynthesizeCliOptions, SynthRun } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
 
 const log = pino.default({
@@ -18,6 +19,7 @@ const log = pino.default({
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 yargs
   .default(hideBin(process.argv))
+  //synth command
   .command({
     command: 'synth <blueprint>',
     describe: 'locally synthesize the blueprint',
@@ -35,16 +37,21 @@ yargs
         })
         .option('outdirExact', {
           default: false,
-          describe: 'use given `outdir` exactly, without adding entropy and without using a stable directory',
+          describe: 'in addition to regular synthesis, use given `outdir` exactly',
           type: 'boolean',
         })
         .option('enableStableSynthesis', {
           default: true,
-          describe: 'in addition to regular synthesis, synthesize in a stable directory using a stable cache',
+          describe: 'in addition to regular synthesis, synthesize the defaults to a stable directory',
           type: 'boolean',
         })
-        .option('defaults', {
+        .option('options', {
           description: 'path to defaults.json to feed default values into synthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('additionalOptionOverrides', {
+          description: 'synthesize additional partial options over the default to a stable directory',
           type: 'string',
         })
         .option('cache', {
@@ -53,11 +60,107 @@ yargs
           type: 'boolean',
         });
     },
-    handler: async (argv: SynthesizeOptions): Promise<void> => {
-      await synth(log, argv);
+    handler: async (argv: SynthesizeCliOptions): Promise<void> => {
+      const synthEntropy = String(Math.floor(Date.now() / 100));
+      const runs: SynthRun[] = [
+        {
+          optionOverridePath: argv.options,
+          outputPath: path.resolve(path.join(argv.outdir, 'synth', synthEntropy)),
+        },
+      ];
+
+      if (argv.outdirExact) {
+        runs.push({
+          optionOverridePath: argv.options,
+          outputPath: path.resolve(path.join(argv.outdir)),
+        });
+      }
+      if (argv.enableStableSynthesis) {
+        const defaultSynth = path.join(argv.outdir, 'synth', `00.fresh.${path.parse(argv.options).base}`);
+        runs.push({
+          execPrior: `rm -rf ${defaultSynth}`,
+          optionOverridePath: argv.options,
+          outputPath: path.resolve(defaultSynth),
+        });
+      }
+      if (argv.additionalOptionOverrides) {
+        fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
+          const outputLocation = path.join(argv.outdir, 'synth', `00.fresh.${override.name}`);
+          runs.push({
+            execPrior: `rm -rf ${outputLocation}`,
+            optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
+            outputPath: path.resolve(outputLocation),
+          });
+        });
+      }
+
+      await synthesize(log, {
+        blueprintPath: argv.blueprint,
+        defaultsPath: argv.options || '',
+        useCache: argv.cache,
+        runs,
+      });
       process.exit(0);
     },
   })
+  //resynth command
+  .command({
+    command: 'resynth <blueprint>',
+    describe: 'locally resynthesize the blueprint, using the defaults.json and snapshot configs (if they exist)',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .positional('blueprint', {
+          describe: 'path to the blueprint package directory',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('outdir', {
+          describe: 'output directory for blueprint resynthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('options', {
+          description: 'path to defaults.json to feed default values into synthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('cache', {
+          description: 'Generate and synth from a webpacked cache',
+          default: false,
+          type: 'boolean',
+        })
+        .option('additionalOverrides', {
+          description: 'synthesize additional partial options over the default to a stable directory',
+          type: 'string',
+        });
+    },
+    handler: async (argv: ResynthesizeCliOptions): Promise<void> => {
+      const runs: SynthRun[] = [
+        {
+          optionOverridePath: argv.options,
+          outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
+        },
+      ];
+
+      if (argv.additionalOptionOverrides) {
+        fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
+          runs.push({
+            optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
+            outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
+          });
+        });
+      }
+
+      await resynthesize(log, {
+        blueprintPath: argv.blueprint,
+        defaultsPath: argv.options || '',
+        useCache: argv.cache,
+        runs,
+      });
+      process.exit(0);
+    },
+  })
+  //publish command
   .command({
     command: 'publish <blueprint>',
     describe: 'publishes a blueprint',
@@ -90,6 +193,7 @@ yargs
       process.exit(0);
     },
   })
+  //build-ast command
   .command({
     command: 'build-ast <blueprint>',
     describe: 'builds a blueprint ast',
@@ -111,6 +215,7 @@ yargs
       process.exit(0);
     },
   })
+  //validate options command
   .command({
     command: 'validate-options <ast> <options>',
     describe: 'builds a blueprint ast',
@@ -142,6 +247,7 @@ yargs
       process.exit(0);
     },
   })
+  //upload image command
   .command({
     command: 'upload-image-public <pathToImage>',
     describe: 'uploads an image publicly and returns its URL. This uses your current AWS credentials',

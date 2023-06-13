@@ -5,7 +5,7 @@ const project = new ProjenBlueprintComponent({
   name: 'caws-workspaces',
   license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: [],
+  deps: ['yaml'],
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint', '@caws-blueprint-component/caws-source-repositories'],
   description: 'This is a representation of a caws development environment workspace.',
   packageName: '@caws-blueprint-component/caws-workspaces',

@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript } from 'projen';
 
-import { cleanUpTestSnapshotInfraFiles, generateTestSnapshotInfraFiles } from './test-snapshot';
+import { CONFIGS_SUBDIR, generateTestSnapshotInfraFiles, SRC_DIR } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
   /**
@@ -111,9 +111,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     //set local synthing
     this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options');
 
-    this.setScript('blueprint:synth', 'blueprint synth ./ --outdir ./ --options ./src/defaults.json');
-    this.setScript('blueprint:synth:cache', 'yarn build:cache && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache');
-
     //ignore synths
     this.gitignore.addPatterns('synth');
     this.npmignore?.addPatterns('synth');
@@ -139,21 +136,36 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // force the static assets to always be fully included, regardless of .npmignores
     this.package.addField('files', ['static-assets', 'lib']);
 
+    let synthCommand = 'blueprint synth ./ --outdir ./ --options ./src/defaults.json';
+    let resynthCommand = 'blueprint resynth ./ --outdir ./ --options ./src/defaults.json';
+
     if (finalOpts.blueprintSnapshotConfiguration) {
       if (finalOpts.jest) {
-        this.addDevDeps('globule');
-        this.addDevDeps('ts-deepmerge');
+        this.addDeps('globule');
+        this.addDevDeps('@types/globule');
+
+        this.addDeps('pino@^6.13.4');
+        this.addDevDeps('@types/pino@^6.3.12');
+        this.addDevDeps('pino-pretty@^4.8.0');
+
+        this.addPeerDeps('@caws-blueprint-util/blueprint-cli');
+
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+        synthCommand = `${synthCommand} --additionalOptionOverrides ./${path.join(SRC_DIR, CONFIGS_SUBDIR)}`;
+        resynthCommand = `${resynthCommand} --additionalOptionOverrides ./${path.join(SRC_DIR, CONFIGS_SUBDIR)}`;
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
-        cleanUpTestSnapshotInfraFiles();
       }
-    } else {
-      cleanUpTestSnapshotInfraFiles();
     }
 
+    this.setScript('blueprint:synth', synthCommand);
+    this.setScript('blueprint:synth:cache', `yarn build:cache && ${synthCommand} --cache`);
+
+    this.setScript('blueprint:resynth', resynthCommand);
+    this.setScript('blueprint:resynth:cache', `yarn build:cache && ${resynthCommand} --cache`);
+
     if (options.eslint) {
-      this.eslint?.addIgnorePattern('src/snapshot-*');
+      this.eslint?.addIgnorePattern('src/blueprint-snapshot-*');
     }
   }
 

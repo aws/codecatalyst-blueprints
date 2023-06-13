@@ -41,7 +41,7 @@
     "coverage",
     "!.projenrc.ts",
     "!projenrc/**/*.ts",
-    "src/snapshot-*"
+    "src/blueprint-snapshot-*"
   ],
   "rules": {
     "indent": [

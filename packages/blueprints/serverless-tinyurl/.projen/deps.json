@@ -9,12 +9,21 @@
       "type": "build"
     },
     {
+      "name": "@types/globule",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
     {
       "name": "@types/node",
       "version": "^14",
+      "type": "build"
+    },
+    {
+      "name": "@types/pino",
+      "version": "^6.3.12",
       "type": "build"
     },
     {
@@ -45,10 +54,6 @@
       "type": "build"
     },
     {
-      "name": "globule",
-      "type": "build"
-    },
-    {
       "name": "jest",
       "type": "build"
     },
@@ -67,16 +72,17 @@
       "type": "build"
     },
     {
+      "name": "pino-pretty",
+      "version": "^4.8.0",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
     {
       "name": "standard-version",
       "version": "^9",
-      "type": "build"
-    },
-    {
-      "name": "ts-deepmerge",
       "type": "build"
     },
     {
@@ -91,6 +97,10 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "@caws-blueprint-util/blueprint-cli",
+      "type": "peer"
     },
     {
       "name": "@caws-blueprint-component/caws-environments",
@@ -110,6 +120,15 @@
     },
     {
       "name": "@caws-blueprint/blueprints.blueprint",
+      "type": "runtime"
+    },
+    {
+      "name": "globule",
+      "type": "runtime"
+    },
+    {
+      "name": "pino",
+      "version": "^6.13.4",
       "type": "runtime"
     },
     {

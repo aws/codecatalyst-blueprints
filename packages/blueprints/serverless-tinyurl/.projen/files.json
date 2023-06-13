@@ -9,7 +9,6 @@
     ".projen/tasks.json",
     "LICENSE",
     "src/blueprint-snapshot-driver.spec.ts",
-    "src/snapshot-infrastructure/infrastructure.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],

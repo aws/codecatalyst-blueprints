@@ -2,7 +2,7 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceFile, SourceRepository, BlueprintOwnershipFile, MergeStrategies } from '@caws-blueprint-component/caws-source-repositories';
 import {
   WorkflowDefinition,
   Workflow,
@@ -132,6 +132,18 @@ export class Blueprint extends ParentBlueprint {
 
     this.repository = new SourceRepository(this, {
       title: this.options.code.sourceRepositoryName || 'sam-lambda',
+    });
+
+    new BlueprintOwnershipFile(this.repository, {
+      resynthesis: {
+        strategies: [
+          {
+            identifier: 'never_update',
+            strategy: MergeStrategies.neverUpdate,
+            globs: ['*'],
+          },
+        ],
+      },
     });
     this.options.lambda = options.lambda;
   }

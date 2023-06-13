@@ -44,6 +44,9 @@
     "@caws-blueprint/blueprints.blueprint": "0.0.x",
     "projen": "*"
   },
+  "dependencies": {
+    "yaml": "*"
+  },
   "main": "lib/index.js",
   "license": "MIT",
   "version": "0.1.18",

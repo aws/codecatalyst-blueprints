@@ -117,6 +117,10 @@
       "type": "runtime"
     },
     {
+      "name": "deepmerge",
+      "type": "runtime"
+    },
+    {
       "name": "jmespath",
       "type": "runtime"
     },

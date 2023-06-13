@@ -1791,7 +1791,8 @@ __metadata:
   dependencies:
     "@caws-blueprint-util/projen-blueprint-component": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
-    "@types/glob": "*"
+    "@types/globule": "*"
+    "@types/minimatch": "*"
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1802,7 +1803,10 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     glob: "*"
+    globule: "*"
+    ini: "*"
     json-schema: "*"
+    minimatch: "*"
     mustache: "*"
     npm-check-updates: ^15
     projen: "*"
@@ -1836,6 +1840,7 @@ __metadata:
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.5.5
+    yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-environments": 0.1.x
     "@caws-blueprint-component/caws-source-repositories": 0.1.x
@@ -1864,6 +1869,7 @@ __metadata:
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.5.5
+    yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
@@ -1887,6 +1893,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     axios: ^0.25.0
+    deepmerge: "*"
     eslint: ^8
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
@@ -1897,7 +1904,7 @@ __metadata:
     json-schema: "*"
     npm-check-updates: ^15
     pino: ^6.13.4
-    pino-pretty: ^4.3.0
+    pino-pretty: ^4.8.0
     projen: "*"
     standard-version: ^9
     ts-jest: "*"
@@ -2042,8 +2049,10 @@ __metadata:
     "@caws-blueprint-util/blueprint-cli": 0.1.x
     "@caws-blueprint-util/projen-blueprint": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
+    "@types/globule": "*"
     "@types/jest": "*"
     "@types/node": ^14
+    "@types/pino": ^6.3.12
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
@@ -2055,12 +2064,15 @@ __metadata:
     jest-junit: ^13
     json-schema: "*"
     npm-check-updates: ^15
+    pino: ^6.13.4
+    pino-pretty: ^4.8.0
     projen: "*"
     standard-version: ^9
-    ts-deepmerge: "*"
     ts-jest: "*"
     ts-node: ^10
     typescript: "*"
+  peerDependencies:
+    "@caws-blueprint-util/blueprint-cli": "*"
   languageName: unknown
   linkType: soft
 
@@ -2075,8 +2087,10 @@ __metadata:
     "@caws-blueprint-util/blueprint-cli": 0.1.x
     "@caws-blueprint-util/projen-blueprint": 0.1.x
     "@caws-blueprint/blueprints.blueprint": 0.0.x
+    "@types/globule": "*"
     "@types/jest": "*"
     "@types/node": ^14
+    "@types/pino": ^6.3.12
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
@@ -2088,12 +2102,15 @@ __metadata:
     jest-junit: ^13
     json-schema: "*"
     npm-check-updates: ^15
+    pino: ^6.13.4
+    pino-pretty: ^4.8.0
     projen: "*"
     standard-version: ^9
-    ts-deepmerge: "*"
     ts-jest: "*"
     ts-node: ^10
     typescript: "*"
+  peerDependencies:
+    "@caws-blueprint-util/blueprint-cli": "*"
   languageName: unknown
   linkType: soft
 
@@ -3174,6 +3191,16 @@ __metadata:
     "@types/minimatch": "*"
     "@types/node": "*"
   checksum: 1817b05f5a8aed851d102a65b5e926d5c777bef927ea62b36d635860eef5364f2046bb5a692d135b6f2b28f34e4a9d44ade9396122c0845bcc7636d35f624747
+  languageName: node
+  linkType: hard
+
+"@types/globule@npm:*":
+  version: 1.1.4
+  resolution: "@types/globule@npm:1.1.4::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fglobule%2F-%2Fglobule-1.1.4.tgz"
+  dependencies:
+    "@types/glob": "*"
+    "@types/minimatch": "*"
+  checksum: 6badff5c3686cfa85d65e490f1758afb2afcb3aa89cf5e48c2652bb1c3565da00eddce2a02e122df9213a4702a85b16afe93ed049c2d543d6131fc4c119da93e
   languageName: node
   linkType: hard
 
@@ -5341,7 +5368,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2":
+"deepmerge@npm:*, deepmerge@npm:^4.2.2":
   version: 4.2.2
   resolution: "deepmerge@npm:4.2.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fdeepmerge%2F-%2Fdeepmerge-4.2.2.tgz"
   checksum: a8c43a1ed8d6d1ed2b5bf569fa4c8eb9f0924034baf75d5d406e47e157a451075c4db353efea7b6bcc56ec48116a8ce72fccf867b6e078e7c561904b5897530b
@@ -7381,6 +7408,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ini@npm:*":
+  version: 3.0.1
+  resolution: "ini@npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fini%2F-%2Fini-3.0.1.tgz"
+  checksum: 947b582a822f06df3c22c75c90aec217d604ea11f7a20249530ee5c1cf8f508288439abe17b0e1d9b421bda5f4fae5e7aae0b18cb3ded5ac9d68f607df82f10f
+  languageName: node
+  linkType: hard
+
 "ini@npm:2.0.0, ini@npm:^2.0.0":
   version: 2.0.0
   resolution: "ini@npm:2.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fini%2F-%2Fini-2.0.0.tgz"
@@ -9371,6 +9405,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:*":
+  version: 5.1.1
+  resolution: "minimatch@npm:5.1.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-5.1.1.tgz"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 215edd0978320a3354188f84a537d45841f2449af4df4379f79b9b777e71aa4f5722cc9d1717eabd2a70d38ef76ab7b708d24d83ea6a6c909dfd8833de98b437
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.0.4, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fminimatch%2F-%2Fminimatch-3.1.2.tgz"
@@ -10288,7 +10331,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-pretty@npm:^4.3.0":
+"pino-pretty@npm:^4.8.0":
   version: 4.8.0
   resolution: "pino-pretty@npm:4.8.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fpino-pretty%2F-%2Fpino-pretty-4.8.0.tgz"
   dependencies:
@@ -11999,13 +12042,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-deepmerge@npm:*":
-  version: 5.0.0
-  resolution: "ts-deepmerge@npm:5.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-deepmerge%2F-%2Fts-deepmerge-5.0.0.tgz"
-  checksum: 251557d72a4999fb70edf57e6b3d5afa129a6fdd62d6b06c57de3a931fa45740d3193b2b914632def85ae99f6a1f78657707397811108f3af5f3dbc64ea3d7fc
-  languageName: node
-  linkType: hard
-
 "ts-jest@npm:*":
   version: 28.0.8
   resolution: "ts-jest@npm:28.0.8::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fts-jest%2F-%2Fts-jest-28.0.8.tgz"
@@ -12828,6 +12864,13 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyallist%2F-%2Fyallist-4.0.0.tgz"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"yaml@npm:*":
+  version: 2.2.1
+  resolution: "yaml@npm:2.2.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fyaml%2F-%2Fyaml-2.2.1.tgz"
+  checksum: 84f68cbe462d5da4e7ded4a8bded949ffa912bc264472e5a684c3d45b22d8f73a3019963a32164023bdf3d83cfb6f5b58ff7b2b10ef5b717c630f40bd6369a23
   languageName: node
   linkType: hard
 

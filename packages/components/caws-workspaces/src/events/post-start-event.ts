@@ -1,4 +1,11 @@
-import { WorkspaceCommand, WorkspaceCommandGroupKind, WorkspaceDefinition, WorkspaceEvents, WorkspaceEventsPostStart } from '../workspace-definition';
+import {
+  WorkspaceCommand,
+  WorkspaceCommandGroup,
+  WorkspaceCommandGroupKind,
+  WorkspaceDefinition,
+  WorkspaceEvents,
+  WorkspaceEventsPostStart,
+} from '../workspace-definition';
 
 //https://devfile.io/docs/2.0.0/devfile-schema#commands-exec-working-dir
 export const DEFAULT_WORKING_DIR = '$PROJECT_SOURCE';
@@ -21,12 +28,11 @@ export function addPostStartEvent(
   const events: WorkspaceEvents = definition.events ? { ...definition.events, postStart: postStartEvents } : { postStart: postStartEvents };
 
   const commands: WorkspaceCommand[] = definition.commands ?? [];
-  const group = groupKind
-    ? {
-      kind: groupKind,
-      isDefault: groupIsDefault ?? false,
-    }
-    : undefined;
+  const defaultGrouping: WorkspaceCommandGroup = {
+    kind: groupKind!,
+    isDefault: groupIsDefault ?? false,
+  };
+  const group = groupKind ? defaultGrouping : undefined;
   const newCommand: WorkspaceCommand = {
     id: eventName,
     exec: {

@@ -1,3 +1,4 @@
+import * as crypto from 'crypto';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 import { Role } from '.';
@@ -5,12 +6,16 @@ import { AccountConnection, EnvironmentDefinition } from './environment-definiti
 
 const stripSpaces = (str: string) => (str || '').replace(/\s/g, '');
 
+function hash(string) {
+  return crypto.createHash('sha256').update(string).digest('hex');
+}
+
 /**
- * Generates an extropy string of a max 5 length
+ * Generates a seeded entropy string of a max 5 length
  * @param length number: max 10
  * @returns string
  */
-const getEntropy = (length?: number) => (Math.random() + 1).toString(36).slice(2, 2 + (length || 5));
+const getHashedEntropy = (length: number, str: string) => hash(str).slice(2, 2 + (length || 5));
 
 export class Environment extends Component {
   definition: EnvironmentDefinition<any>;
@@ -54,19 +59,27 @@ export class Environment extends Component {
       });
 
     // create the environment file
-    new YamlFile(blueprint, `environments/${stripSpaces(writtenEnvironment.name || 'env')}-${getEntropy(5)}.yaml`, {
-      readonly: false,
-      marker: false,
-      obj: writtenEnvironment,
-    });
+    new YamlFile(
+      blueprint,
+      `environments/${stripSpaces(writtenEnvironment.name || 'env')}-${getHashedEntropy(5, JSON.stringify(writtenEnvironment))}.yaml`,
+      {
+        readonly: false,
+        marker: false,
+        obj: writtenEnvironment,
+      },
+    );
 
     // create all the linked accounts from the environment
     connectedAccounts.forEach(account => {
-      new YamlFile(blueprint, `aws-account-to-environment/${stripSpaces(account.name || 'account')}-${getEntropy(5)}.yaml`, {
-        readonly: false,
-        marker: false,
-        obj: account,
-      });
+      new YamlFile(
+        blueprint,
+        `aws-account-to-environment/${stripSpaces(account.name || 'account')}-${getHashedEntropy(5, JSON.stringify(account))}.yaml`,
+        {
+          readonly: false,
+          marker: false,
+          obj: account,
+        },
+      );
     });
   }
 
