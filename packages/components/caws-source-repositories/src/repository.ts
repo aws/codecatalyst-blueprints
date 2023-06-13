@@ -65,8 +65,6 @@ export class SourceRepository extends Component {
 
   synthesize(): void {
     const srcDir = path.join(this.blueprint.context.rootDir, sourceRepositoryRootDirectory);
-
-    console.log('doing a synth');
     if (!fs.existsSync(srcDir)) {
       fs.mkdirSync(srcDir);
     }
