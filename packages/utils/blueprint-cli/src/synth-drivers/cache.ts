@@ -25,7 +25,9 @@ export const createCache = (
     }
   });
 
-  writeSynthDriver(path.join(params.buildDirectory, synthDriver), params.builtEntryPoint);
+  writeSynthDriver(path.join(params.buildDirectory, synthDriver), params.builtEntryPoint, {
+    packageJsonLocation: '../package.json',
+  });
 
   createWebpackedBundle(
     {

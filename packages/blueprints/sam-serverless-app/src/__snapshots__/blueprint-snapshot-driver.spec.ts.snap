@@ -59,7 +59,7 @@ Compute:
   Fleet: Linux.x86-64.Large
 Actions:
   build_for_default_environment:
-    Identifier: aws/build-beta@v1
+    Identifier: aws/build@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -84,7 +84,7 @@ Actions:
         - Name: " "
           Role: " "
   deploy_to_default_environment:
-    Identifier: aws/cfn-deploy-gamma@v1
+    Identifier: aws/cfn-deploy@v1
     Inputs:
       Artifacts:
         - build_result
@@ -1710,7 +1710,7 @@ Compute:
   Fleet: Linux.x86-64.Large
 Actions:
   build_for_default_environment:
-    Identifier: aws/build-beta@v1
+    Identifier: aws/build@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -1735,7 +1735,7 @@ Actions:
         - Name: " "
           Role: " "
   deploy_to_default_environment:
-    Identifier: aws/cfn-deploy-gamma@v1
+    Identifier: aws/cfn-deploy@v1
     Inputs:
       Artifacts:
         - build_result
@@ -2621,7 +2621,7 @@ Compute:
   Fleet: Linux.x86-64.Large
 Actions:
   build_for_default_environment:
-    Identifier: aws/build-beta@v1
+    Identifier: aws/build@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -2648,7 +2648,7 @@ Actions:
         - Name: " "
           Role: " "
   deploy_to_default_environment:
-    Identifier: aws/cfn-deploy-gamma@v1
+    Identifier: aws/cfn-deploy@v1
     Inputs:
       Artifacts:
         - build_result

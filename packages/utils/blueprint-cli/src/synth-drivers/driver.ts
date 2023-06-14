@@ -1,7 +1,14 @@
 import * as fs from 'fs';
 
-export const writeSynthDriver = (fileName: string, entrypoint: string): string => {
+export const writeSynthDriver = (
+  fileName: string,
+  entrypoint: string,
+  options?: {
+    packageJsonLocation?: string;
+  },
+): string => {
   const content = `const { Blueprint } = require('./${entrypoint}');
+const packageJson = require('${options?.packageJsonLocation || './package.json'}');
 
 // ============================
 // ============================
@@ -12,6 +19,13 @@ export const writeSynthDriver = (fileName: string, entrypoint: string): string =
   const options = JSON.parse(process.argv[2]);
   const outputdir = process.argv[3];
   const entropy = process.argv[4] ? process.argv[4] : '';
+
+  process.env.CONTEXT_SPACENAME = process.env.CONTEXT_SPACENAME || '<<FAKE_SPACENAME>>';
+  process.env.CONTEXT_PROJECTNAME = process.env.CONTEXT_PROJECTNAME || '<<FAKE_PROJECTNAME>>';
+  process.env.CONTEXT_ENVIRONMENTID = process.env.CONTEXT_ENVIRONMENTID || 'prod';
+
+  process.env.PACKAGE_NAME = process.env.PACKAGE_NAME || packageJson.name || '<<FAKE_BLUEPRINT_PACKAGENAME>>';
+  process.env.PACKAGE_VERSION = process.env.PACKAGE_VERSION || packageJson.version || '<<FAKE_BLUEPRINT_PACKAGEVERSION>>';
 
   console.log("===== Starting synthesis ===== ");
   console.log("options: ", options);

@@ -9,7 +9,7 @@ Triggers:
       - main
 Actions:
   BackendBuildAndPackage:
-    Identifier: aws/build-beta@v1
+    Identifier: aws/build@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -32,7 +32,7 @@ Actions:
         - Run: mvn verify
         - Run: mvn package -Dmaven.test.skip
   FrontendBuildAndPackage:
-    Identifier: aws/build-beta@v1
+    Identifier: aws/build@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -56,7 +56,7 @@ Actions:
         - Run: cp -r canary build
         - Run: cp -r cdk/* .
   CDKBootstrapAction:
-    Identifier: aws/cdk-bootstrap-gamma@v1
+    Identifier: aws/cdk-bootstrap@v1
     Inputs:
       Sources:
         - WorkflowSource
@@ -66,7 +66,7 @@ Actions:
     Configuration:
       Region: us-west-2
   BackendCDKDeploy:
-    Identifier: aws/cdk-deploy-gamma@v1
+    Identifier: aws/cdk-deploy@v1
     Inputs:
       Artifacts:
         - backend_build_artifacts
@@ -80,7 +80,7 @@ Actions:
       CdkRootPath: backend/
       Context: '{"stack_name":"TinyUrlBackend"}'
   FrontendCDKDeploy:
-    Identifier: aws/cdk-deploy-gamma@v1
+    Identifier: aws/cdk-deploy@v1
     Inputs:
       Artifacts:
         - frontend_build_artifacts
