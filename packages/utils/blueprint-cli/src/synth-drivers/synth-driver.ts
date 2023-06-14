@@ -15,6 +15,10 @@ export interface SynthDriverCliOptions extends yargs.Arguments {
   additionalOptions?: string;
   cache?: boolean;
   existingBundle?: string;
+  /**
+   * defaults to '00.synth.'
+   */
+  jobPrefix?: string;
 }
 
 /**
@@ -79,7 +83,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
     driverFile = driverFile || writeSynthDriver(path.join(options.blueprint, 'synth-driver.ts'), path.join(options.blueprint, 'src', 'index.ts'));
 
     wizardOptions.forEach(wizardOption => {
-      const jobname = `00.synth.${path.parse(wizardOption.path).base}`;
+      const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`);
       log.info('==========================================');
       log.info(`[${jobname}]`);

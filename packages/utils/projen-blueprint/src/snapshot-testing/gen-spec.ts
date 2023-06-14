@@ -9,7 +9,7 @@ export function generateSpecTs(options: {
 }): string {
   return `import * as fs from 'fs';
 import * as path from 'path';
-import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-driver/synth';
+import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-drivers/synth-driver';
 import * as globule from 'globule';
 import * as pino from 'pino';
 
@@ -27,23 +27,25 @@ const GLOBS_UNDER_SNAPSHOT: string[] = [${(options.configuration.snapshotGlobs ?
 function runSnapshotSynthesis() {
   // run synthesis into several directories.
 
-  const snapshotRuns: cli.SynthRun[] = [];
+  cli.driveSynthesis(log, {
+    blueprint: blueprintLocation,
+    outdir: path.join(outputDirectory, 'synth'),
+    defaultOptions: defaultsLocation,
+    additionalOptions: configurationsLocation,
+    jobPrefix: '01.snapshot.'
+  } as cli.SynthDriverCliOptions);
+
+  const snapshotRuns: {
+    optionOverridePath: string;
+    outputPath: string;
+  }[] = [];
   fs.readdirSync(configurationsLocation, { withFileTypes: true }).forEach(override => {
     const outputLocation = path.join(outputDirectory, 'synth', \`01.snapshot.\${override.name}\`);
     snapshotRuns.push({
-      execPrior: \`rm -rf \${outputLocation}\`,
       optionOverridePath: path.join(configurationsLocation!, override.name),
       outputPath: path.resolve(outputLocation),
     });
   });
-
-  cli.synthesize(log as any, {
-    useCache: true,
-    blueprintPath: blueprintLocation,
-    defaultsPath: defaultsLocation,
-    runs: snapshotRuns,
-  });
-
   return snapshotRuns;
 }
 
