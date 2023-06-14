@@ -30,6 +30,10 @@ export class Blueprint extends Project {
         token: process.env.NPM_CONFIG_TOKEN,
         registry: process.env.NPM_CONFIG_REGISTRY ?? 'https://template-721779663932.d.codeartifact.us-west-2.amazonaws.com/npm/global-templates/',
       },
+      package: {
+        name: process.env.PACKAGE_NAME,
+        version: process.env.PACKAGE_VERSION,
+      },
     };
 
     for (const component of this.components) {
