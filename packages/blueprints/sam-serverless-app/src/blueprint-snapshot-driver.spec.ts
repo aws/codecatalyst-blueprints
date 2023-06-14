@@ -23,7 +23,7 @@ function runSnapshotSynthesis() {
     outdir: path.join(outputDirectory, 'synth'),
     defaultOptions: defaultsLocation,
     additionalOptions: configurationsLocation,
-    jobPrefix: '01.snapshot.'
+    jobPrefix: '01.snapshot.',
   } as cli.SynthDriverCliOptions);
 
   const snapshotRuns: {
