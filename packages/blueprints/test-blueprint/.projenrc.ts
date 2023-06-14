@@ -38,10 +38,6 @@ const project = new ProjenBlueprint({
 });
 
 // ============================================================
-// Orginal Commands
-// "blueprint:synth": "blueprint synth ./ --outdir ./ --options ./src/defaults.json",
-// "blueprint:synth:cache": "blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
-// "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:synth:cache",
 /**
  * We override the default synth command to ALWAYS build a cache and the AST in order to be able to accurately display blueprint internal files for ease of front-end debugging.
  */
