@@ -23,7 +23,7 @@ function runSnapshotSynthesis() {
     outdir: path.join(outputDirectory, 'synth'),
     defaultOptions: defaultsLocation,
     additionalOptions: configurationsLocation,
-    jobPrefix: '01.snapshot.'
+    jobPrefix: '01.snapshot.',
   } as cli.SynthDriverCliOptions);
 
   const snapshotRuns: {
@@ -31,7 +31,7 @@ function runSnapshotSynthesis() {
     outputPath: string;
   }[] = [];
   fs.readdirSync(configurationsLocation, { withFileTypes: true }).forEach(override => {
-    const outputLocation = path.join(outputDirectory, 'synth', `01.snapshot.${override.name}`);
+    const outputLocation = path.join(outputDirectory, 'synth', '01.snapshot.' + override.name);
     snapshotRuns.push({
       optionOverridePath: path.join(configurationsLocation!, override.name),
       outputPath: path.resolve(outputLocation),
