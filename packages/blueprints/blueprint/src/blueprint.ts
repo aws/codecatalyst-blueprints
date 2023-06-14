@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as path from 'path';
 
-import { Project } from 'projen';
+import { JsonFile, Project } from 'projen';
 import { Context } from './context';
 
 export interface ParentOptions {
@@ -39,6 +39,13 @@ export class Blueprint extends Project {
     for (const component of this.components) {
       component.synthesize = () => {};
     }
+
+    // write the options to the bundle
+    new JsonFile(this, 'options.json', {
+      obj: options,
+      readonly: false,
+      marker: false,
+    });
   }
 
   throwSynthesisError(error: BlueprintSynthesisError) {

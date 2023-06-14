@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Blueprint snapshots java11gradle.json configuration matches options.json 1`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Java 11 Gradle",
+  "code": {
+    "sourceRepositoryName": "gradle-src-repo-name",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "gradle-test-fn-name"
+  },
+  "outdir": "synth/01.snapshot.java11gradle.json"
+}
+"
+`;
+
 exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.cloud9/runners/SAM Project Builder.run 1`] = `
 "{
   "script": [
@@ -1650,6 +1669,25 @@ Outputs:
     Value: !GetAtt gradle-test-fn-nameFunctionRole.Arn"
 `;
 
+exports[`Blueprint snapshots node14.json configuration matches options.json 1`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Node.js 14",
+  "code": {
+    "sourceRepositoryName": "ServerlessAppRepo",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
+  "outdir": "synth/01.snapshot.node14.json"
+}
+"
+`;
+
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Builder.run 1`] = `
 "{
   "script": [
@@ -2548,6 +2586,25 @@ Outputs:
   SamFirstEndpointFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
+`;
+
+exports[`Blueprint snapshots python39.json configuration matches options.json 1`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Python 3.9",
+  "code": {
+    "sourceRepositoryName": "ServerlessAppRepo",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
+  "outdir": "synth/01.snapshot.python39.json"
+}
+"
 `;
 
 exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Builder.run 1`] = `

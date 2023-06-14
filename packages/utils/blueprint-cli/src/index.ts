@@ -124,62 +124,62 @@ yargs
     },
   })
   //resynth command
-  // .command({
-  //   command: 'resynth <blueprint>',
-  //   describe: 'locally resynthesize the blueprint, using the defaults.json any wizard configs (if they exist)',
-  //   builder: (args: yargs.Argv<unknown>) => {
-  //     return args
-  //       .positional('blueprint', {
-  //         describe: 'path to the blueprint package directory',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('outdir', {
-  //         describe: 'output directory for blueprint resynthesis',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('options', {
-  //         description: 'path to defaults.json to feed default values into synthesis',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('cache', {
-  //         description: 'Generate and synth from a webpacked cache',
-  //         default: false,
-  //         type: 'boolean',
-  //       })
-  //       .option('additionalOverrides', {
-  //         description: 'synthesize additional partial options over the default to a stable directory',
-  //         type: 'string',
-  //       });
-  //   },
-  //   handler: async (argv: ResynthesizeCliOptions): Promise<void> => {
-  //     const runs: SynthRun[] = [
-  //       {
-  //         optionOverridePath: argv.options,
-  //         outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
-  //       },
-  //     ];
+  .command({
+    command: 'resynth',
+    describe: 'locally resynthesize the blueprint, using the defaults.json any wizard configs (if they exist)',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .positional('blueprint', {
+          describe: 'path to the blueprint package directory',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('outdir', {
+          describe: 'output directory for blueprint resynthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('options', {
+          description: 'path to defaults.json to feed default values into synthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('cache', {
+          description: 'Generate and synth from a webpacked cache',
+          default: false,
+          type: 'boolean',
+        })
+        .option('additionalOverrides', {
+          description: 'synthesize additional partial options over the default to a stable directory',
+          type: 'string',
+        });
+    },
+    handler: async (_argv: any): Promise<void> => {
+      //   const runs: SynthRun[] = [
+      //     {
+      //       optionOverridePath: argv.options,
+      //       outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
+      //     },
+      //   ];
 
-  //     if (argv.additionalOptionOverrides) {
-  //       fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
-  //         runs.push({
-  //           optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
-  //           outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
-  //         });
-  //       });
-  //     }
+      // if (argv.additionalOptionOverrides) {
+      //   fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
+      //     runs.push({
+      //       optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
+      //       outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
+      //     });
+      //   });
+      // }
 
-  //     await resynthesize(log, {
-  //       blueprintPath: argv.blueprint,
-  //       defaultsPath: argv.options || '',
-  //       useCache: argv.cache,
-  //       runs,
-  //     });
-  //     process.exit(0);
-  //   },
-  // })
+      // await resynthesize(log, {
+      //   blueprintPath: argv.blueprint,
+      //   defaultsPath: argv.options || '',
+      //   useCache: argv.cache,
+      //   runs,
+      // });
+      process.exit(0);
+    },
+  })
   //resynth driver command
   // .command({
   //   command: 'resynth <blueprint>',
