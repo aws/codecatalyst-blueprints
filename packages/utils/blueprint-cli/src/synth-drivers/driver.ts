@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-export const writeSynthDriver = (fileName: string, entrypoint: string) => {
+export const writeSynthDriver = (fileName: string, entrypoint: string): string => {
   const content = `const { Blueprint } = require('./${entrypoint}');
 
 // ============================
@@ -32,4 +32,5 @@ export const writeSynthDriver = (fileName: string, entrypoint: string) => {
   }
 })();`;
   fs.writeFileSync(fileName, content);
+  return fileName;
 };

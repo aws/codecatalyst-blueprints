@@ -1,6 +1,6 @@
 import * as pino from 'pino';
 import yargs from 'yargs';
-import { synthesize, SynthOptions } from '../synth-driver/synth';
+import { synthesize, SynthOptions } from '../synth-drivers/synth';
 
 export interface ResynthesizeCliOptions extends yargs.Arguments {
   blueprint: string;
