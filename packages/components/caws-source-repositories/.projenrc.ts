@@ -9,7 +9,8 @@ const project = new ProjenBlueprintComponent({
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint'],
   description: 'This is a representation of a source repository.',
   packageName: '@caws-blueprint-component/caws-source-repositories',
-  devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node', '@types/minimatch', '@types/globule'],
+  devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node', '@types/minimatch', '@types/globule', '@types/jest'],
+  jest: true,
 });
 
 project.synth();

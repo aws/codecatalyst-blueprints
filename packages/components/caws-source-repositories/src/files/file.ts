@@ -15,7 +15,7 @@ export class File {
     sourceRepository.project.tryRemoveFile(this.path);
 
     sourceRepository.addSynthesisStep(() => {
-      if (sourceRepository.getFiles[filePath]) {
+      if (sourceRepository.getFiles()[filePath]) {
         const location = path.join(sourceRepository.path, filePath);
         fs.mkdirSync(path.parse(location).dir, { recursive: true });
         fs.writeFileSync(location, content);
