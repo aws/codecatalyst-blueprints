@@ -87,6 +87,11 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
       const outputDir = path.join(options.outdir, `${jobname}`);
       log.info('==========================================');
       log.info(`[${jobname}]`);
+      log.info(
+        `npx blueprint synth --options merge[${options.defaultOptions},${wizardOption.path}] --blueprint ${options.blueprint} --outdir ${outputDir} ${
+          (options.cache && '--cache') || ''
+        }`,
+      );
       log.info('==========================================');
       synthesize(log, {
         blueprintPath: options.blueprint,
