@@ -16,7 +16,7 @@ const project = new typescript.TypeScriptProject({
       noImplicitAny: false,
     },
   },
-  license: 'MIT',
+  license: 'Apache-2.0',
   copyrightOwner: 'Amazon.com',
   peerDeps: ['projen'],
   description: 'This is a projen blueprint component. This defines the project configuration a for a blueprint component project.',

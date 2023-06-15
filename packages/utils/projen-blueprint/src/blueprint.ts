@@ -38,7 +38,7 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
 }
 
 const DEFAULT_OPTS = {
-  license: 'MIT',
+  license: 'Apache-2.0',
   sampleCode: false,
   github: false,
   eslint: true,

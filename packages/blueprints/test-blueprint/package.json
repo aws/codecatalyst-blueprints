@@ -59,7 +59,7 @@
     "no-tag"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "",
   "version": "0.0.1196",
   "types": "lib/index.d.ts",

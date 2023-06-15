@@ -64,7 +64,7 @@
     "yargs": "^17.3.1"
   },
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "version": "0.1.17",
   "jest": {
     "testMatch": [
