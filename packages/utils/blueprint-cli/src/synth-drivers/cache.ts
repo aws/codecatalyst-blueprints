@@ -2,20 +2,37 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
+import { writeResynthDriver } from '../resynth-drivers/driver';
 import { writeSynthDriver } from './driver';
 
+export interface CacheResult {
+  synthDriver: string;
+  resynthDriver: string;
+}
 export const createCache = (
+  log: pino.BaseLogger,
   params: {
     buildDirectory: string;
     builtEntryPoint: string;
   },
-  log: pino.BaseLogger,
 ) => {
-  const cacheFile = 'synth-cache.production.js';
+  const synthCacheFile = 'synth-cache.production.js';
   const synthDriver = 'synth-driver.js';
 
+  const resynthDriver = 'resynth-driver.js';
+  const resynthCacheFile = 'resynth-cache.production.js';
+
   // cleanup non-build files from previous runs that may or may not exist
-  const cleanup = ['node_modules', 'node_modules.tar', 'package.json', 'package-lock.json', cacheFile, synthDriver];
+  const cleanup = [
+    'node_modules',
+    'node_modules.tar',
+    'package.json',
+    'package-lock.json',
+    synthCacheFile,
+    synthDriver,
+    resynthDriver,
+    resynthCacheFile,
+  ];
   cleanup.forEach(file => {
     if (fs.existsSync(path.join(params.buildDirectory, file))) {
       cp.execSync(`rm -rf ${file}`, {
@@ -29,14 +46,21 @@ export const createCache = (
     packageJsonLocation: '../package.json',
   });
 
-  createWebpackedBundle(
-    {
-      buildDirectory: params.buildDirectory,
-      exitFile: cacheFile,
-      entryFile: synthDriver,
-    },
-    log,
-  );
+  writeResynthDriver(path.join(params.buildDirectory, resynthDriver), params.builtEntryPoint, {
+    packageJsonLocation: '../package.json',
+  });
+
+  packageDependencies(log, { buildDirectory: params.buildDirectory });
+  createWebpackedBundle(log, {
+    buildDirectory: params.buildDirectory,
+    exitFile: synthCacheFile,
+    entryFile: synthDriver,
+  });
+  createWebpackedBundle(log, {
+    buildDirectory: params.buildDirectory,
+    exitFile: resynthCacheFile,
+    entryFile: resynthDriver,
+  });
 
   // clean up the synth driver
   cp.execSync(`rm ${synthDriver}`, {
@@ -44,34 +68,24 @@ export const createCache = (
     cwd: params.buildDirectory,
   });
 
-  return path.join(params.buildDirectory, cacheFile);
-};
-
-const createWebpackedBundle = (
-  params: {
-    buildDirectory: string;
-    exitFile: string;
-    entryFile: string;
-  },
-  log: pino.BaseLogger,
-) => {
-  //webpack the blueprint
-  const webpackCommand =
-    `npx webpack --entry ./${params.entryFile}` +
-    ' --target node' +
-    ' --output-path ./' +
-    ` --output-filename ${params.exitFile}` +
-    ' --progress' +
-    ' --mode development' +
-    ' --externals projen';
-
-  log.debug('Webpacking with: %s', webpackCommand);
-
-  cp.execSync(webpackCommand, {
+  // clean up the resynth driver
+  cp.execSync(`rm ${resynthDriver}`, {
     stdio: 'inherit',
     cwd: params.buildDirectory,
   });
 
+  return {
+    synthDriver: path.join(params.buildDirectory, synthCacheFile),
+    resynthDriver: path.join(params.buildDirectory, resynthCacheFile),
+  };
+};
+
+const packageDependencies = (
+  log: pino.BaseLogger,
+  params: {
+    buildDirectory: string;
+  },
+) => {
   // This is a a hack until projen can be properly webpacked
   // ==========================================================================
   // Since projen is external we npm install it and ship with that.
@@ -100,7 +114,36 @@ const createWebpackedBundle = (
   cp.execSync('tar -czf node_modules.tar  ./node_modules/', {
     cwd: params.buildDirectory,
   });
+};
 
+const createWebpackedBundle = (
+  log: pino.BaseLogger,
+  params: {
+    buildDirectory: string;
+    exitFile: string;
+    entryFile: string;
+  },
+) => {
+  //webpack the blueprint
+  const webpackCommand =
+    `npx webpack --entry ./${params.entryFile}` +
+    ' --target node' +
+    ' --output-path ./' +
+    ` --output-filename ${params.exitFile}` +
+    ' --progress' +
+    ' --mode development' +
+    ' --externals projen';
+
+  log.debug('Webpacking with: %s', webpackCommand);
+
+  cp.execSync(webpackCommand, {
+    stdio: 'inherit',
+    cwd: params.buildDirectory,
+  });
+
+  // This is a a hack until projen can be properly webpacked
+  // ==========================================================================
+  // Since projen is external we npm install it and ship with that.
   // Set correct reference to projen set it inside the cache
   const exitFilePath = path.join(params.buildDirectory, params.exitFile);
   let data = fs.readFileSync(exitFilePath, 'utf8');

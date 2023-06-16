@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript } from 'projen';
 
-import { CONFIGS_SUBDIR, generateTestSnapshotInfraFiles, SRC_DIR } from './test-snapshot';
+import { generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
   /**
@@ -156,19 +156,16 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         this.addPeerDeps('@caws-blueprint-util/blueprint-cli');
 
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
-
-        synthCommand = `${synthCommand} --additionalOptionOverrides ./${path.join(SRC_DIR, CONFIGS_SUBDIR)}`;
-        resynthCommand = `${resynthCommand} --additionalOptionOverrides ./${path.join(SRC_DIR, CONFIGS_SUBDIR)}`;
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
       }
     }
 
-    this.setScript('blueprint:synth', synthCommand);
-    this.setScript('blueprint:synth:cache', `${synthCommand} --cache`);
+    this.setScript('blueprint:synth', `${synthCommand} $*`);
+    this.setScript('blueprint:synth:cache', `${synthCommand} --cache $*`);
 
-    this.setScript('blueprint:resynth', resynthCommand);
-    this.setScript('blueprint:resynth:cache', `yarn build:cache && ${resynthCommand} --cache`);
+    this.setScript('blueprint:resynth', `${resynthCommand} $*`);
+    this.setScript('blueprint:resynth:cache', `yarn build:cache && ${resynthCommand} --cache  $*`);
 
     if (options.eslint) {
       this.eslint?.addIgnorePattern('src/blueprint-snapshot-*');

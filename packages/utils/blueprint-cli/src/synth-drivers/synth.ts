@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
-import { writeSynthDriver } from './driver';
+import { SYNTH_TS_NAME, writeSynthDriver } from './driver';
 
 export interface SynthesizeCliOptions extends yargs.Arguments {
   outdir: string;
@@ -13,9 +13,12 @@ export interface SynthesizeCliOptions extends yargs.Arguments {
   cache: boolean;
 }
 export type SynthesisRunTime = 'node' | 'ts-node';
+export interface DriverFile {
+  path: string;
+  runtime: SynthesisRunTime;
+}
 export interface SynthOptions {
   blueprintPath: string;
-  runtime: SynthesisRunTime;
   blueprintOptions: any;
   jobname: string;
 
@@ -23,13 +26,13 @@ export interface SynthOptions {
    * Creates the output directory if it doesn't exist
    */
   outputDirectory: string;
-  driverFile?: string;
 
   /**
-   * This nukes files at the synthesis target location prior to synthesis if set.
-   * @default false
+   * Path to existing bundle context codebase
    */
-  cleanTargetLocation?: boolean;
+  existingBundle?: string;
+
+  synthDriver?: DriverFile;
 }
 
 /**
@@ -47,27 +50,23 @@ export interface SynthOptions {
 export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
   validateSynthOptions(log, options);
 
-  const driverFile =
-    options.driverFile || writeSynthDriver(path.join(options.blueprintPath, 'synth-driver.ts'), path.join(options.blueprintPath, 'src', 'index.ts'));
+  const synthDriver: DriverFile = makeSynthDriverFile(log, options);
 
-  log.debug(`Using driver: ${driverFile}`);
+  log.debug(`Using driver:${synthDriver.runtime} ${synthDriver.path}`);
   try {
     // if something already exists at the synthesis location, we remove it.
-    if (options.cleanTargetLocation) {
-      log.debug('cleaning up existing code at synth location: %s', options.outputDirectory);
-      const cleanCommand = `rm -rf ${options.outputDirectory}`;
-      cp.execSync(cleanCommand, {
-        stdio: 'inherit',
-        cwd: options.blueprintPath,
-      });
-    }
+    log.debug('cleaning up existing code at synth location: %s', options.outputDirectory);
+    const cleanCommand = `rm -rf ${options.outputDirectory}`;
+    cp.execSync(cleanCommand, {
+      stdio: 'inherit',
+      cwd: options.blueprintPath,
+    });
 
     const timeStart = Date.now();
     executeSynthesisCommand(log, options.blueprintPath, options.jobname, {
-      driverFile,
+      driver: synthDriver,
       outputDirectory: options.outputDirectory,
       options: options.blueprintOptions,
-      runtime: options.runtime,
       entropy: String(Math.floor(Date.now() / 100)),
     });
     const timeEnd = Date.now();
@@ -77,9 +76,9 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
     throw e;
   } finally {
     // if I wrote the synth driver, then also clean it up.
-    if (!options.driverFile) {
-      log.debug('Cleaning up synth driver: %s', driverFile);
-      cp.execSync(`rm ${driverFile}`, {
+    if (!options.synthDriver) {
+      log.debug('Cleaning up synth driver: %s', synthDriver.path);
+      cp.execSync(`rm ${synthDriver.path}`, {
         stdio: 'inherit',
         cwd: options.blueprintPath,
       });
@@ -88,13 +87,17 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
 }
 
 const validateSynthOptions = (log: pino.BaseLogger, options: SynthOptions) => {
-  const { blueprintPath, runtime, blueprintOptions, jobname, outputDirectory } = options;
-
+  const { blueprintPath, blueprintOptions, jobname, outputDirectory } = options;
   log.debug(`Job: ${jobname}`);
   log.debug(`Using blueprint: ${blueprintPath}`);
-  log.debug(`Using runtime: ${runtime}`);
   log.debug(`Outputting to: ${outputDirectory}`);
   log.debug(`Using options: ${JSON.stringify(blueprintOptions)}`);
+
+  if (options.existingBundle && options.existingBundle == options.outputDirectory) {
+    log.error(
+      `blueprint synthesis is being run with an existing context from ${options.existingBundle} and outputted to ${options.outputDirectory}. They cannot be the same.`,
+    );
+  }
 
   if (!fs.existsSync(blueprintPath)) {
     log.error('blueprint directory does not exist: %s', blueprintPath);
@@ -107,17 +110,12 @@ function executeSynthesisCommand(
   cwd: string,
   jobname: string,
   options: {
-    driverFile: string;
+    driver: DriverFile;
     outputDirectory: string;
     entropy: string;
     options: any;
     executePrior?: string;
     commandPrefix?: string;
-
-    /**
-     * defaults to executing a synthesis with ts-node instead of node.
-     */
-    runtime: 'node' | 'ts-node';
   },
 ) {
   if (options.executePrior) {
@@ -133,8 +131,8 @@ function executeSynthesisCommand(
   });
   const synthCommand = [
     `${options.commandPrefix || ''}`,
-    `npx ${options.runtime} `,
-    `${options.driverFile} `,
+    `npx ${options.driver.runtime} `,
+    `${options.driver.path} `,
     `'${JSON.stringify(options.options)}' `,
     `'${options.outputDirectory}' `,
     `'${options.entropy}'`,
@@ -146,3 +144,14 @@ function executeSynthesisCommand(
     cwd,
   });
 }
+
+const makeSynthDriverFile = (_log: pino.BaseLogger, options: SynthOptions): DriverFile => {
+  if (options.synthDriver) {
+    return options.synthDriver;
+  }
+
+  return {
+    path: writeSynthDriver(path.join(options.blueprintPath, SYNTH_TS_NAME), path.join(options.blueprintPath, 'src', 'index.ts')),
+    runtime: 'ts-node',
+  };
+};

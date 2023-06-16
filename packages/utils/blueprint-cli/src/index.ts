@@ -9,8 +9,9 @@ import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
 // import { resynthesize, ResynthesizeCliOptions } from './resynth/resynth';
+import { ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
 import { createCache } from './synth-drivers/cache';
-import { synthesize, SynthesizeCliOptions, SynthesisRunTime } from './synth-drivers/synth';
+import { synthesize, SynthesizeCliOptions, DriverFile } from './synth-drivers/synth';
 import { SynthDriverCliOptions, driveSynthesis } from './synth-drivers/synth-driver';
 import { doOptionValidation } from './validate-options';
 
@@ -55,29 +56,26 @@ yargs
         });
     },
     handler: async (argv: SynthesizeCliOptions): Promise<void> => {
-      let runtime: SynthesisRunTime = 'ts-node';
-      let driverFile: string | undefined = undefined;
+      let driverFile: DriverFile | undefined;
 
       if (argv.cache) {
-        runtime = 'node';
-        driverFile = createCache(
-          {
-            buildDirectory: path.join(argv.blueprint, 'lib'),
-            builtEntryPoint: './index.js',
-          },
-          log,
-        );
-        log.debug(`creating cache, executing with a driver file at ${driverFile}`);
+        const { synthDriver } = createCache(log, {
+          buildDirectory: path.join(argv.blueprint, 'lib'),
+          builtEntryPoint: './index.js',
+        });
+        driverFile = {
+          runtime: 'node',
+          path: synthDriver,
+        };
+        log.debug(`creating cache with a driver file at ${driverFile.path}`);
       }
 
       await synthesize(log, {
         blueprintPath: argv.blueprint,
-        runtime,
         blueprintOptions: JSON.parse(fs.readFileSync(argv.options, 'utf-8')),
         jobname: path.parse(argv.options).base,
         outputDirectory: argv.outdir,
-        driverFile,
-        cleanTargetLocation: true,
+        synthDriver: driverFile,
       });
       process.exit(0);
     },
@@ -144,99 +142,59 @@ yargs
           type: 'string',
           demandOption: true,
         })
+        .option('existing-bundle', {
+          description: 'path to an existing bundle to use as blueprint context',
+          type: 'string',
+        })
+        .option('prior-blueprint', {
+          description: 'path the prior blueprint',
+          type: 'string',
+        })
+        .option('prior-options', {
+          description: 'path the prior options',
+          type: 'string',
+        })
         .option('cache', {
-          description: 'Generate and synth from a webpacked cache',
+          description: 'Generate and resynth from a webpacked cache',
           default: false,
           type: 'boolean',
-        })
-        .option('additionalOverrides', {
-          description: 'synthesize additional partial options over the default to a stable directory',
-          type: 'string',
         });
     },
-    handler: async (_argv: any): Promise<void> => {
-      //   const runs: SynthRun[] = [
-      //     {
-      //       optionOverridePath: argv.options,
-      //       outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
-      //     },
-      //   ];
+    handler: async (argv: ResynthesizeCliOptions): Promise<void> => {
+      let resynthDriverFile: DriverFile | undefined;
+      let synthDriverFile: DriverFile | undefined;
 
-      // if (argv.additionalOptionOverrides) {
-      //   fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
-      //     runs.push({
-      //       optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
-      //       outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
-      //     });
-      //   });
-      // }
+      if (argv.cache) {
+        const { resynthDriver, synthDriver } = createCache(log, {
+          buildDirectory: path.join(argv.blueprint, 'lib'),
+          builtEntryPoint: './index.js',
+        });
+        resynthDriverFile = {
+          runtime: 'node',
+          path: resynthDriver,
+        };
+        synthDriverFile = {
+          runtime: 'node',
+          path: synthDriver,
+        };
+        log.debug(`Creating cache with a driver file at ${resynthDriverFile.path}`);
+      }
 
-      // await resynthesize(log, {
-      //   blueprintPath: argv.blueprint,
-      //   defaultsPath: argv.options || '',
-      //   useCache: argv.cache,
-      //   runs,
-      // });
+      await resynthesize(log, {
+        blueprint: argv.blueprint,
+        priorBlueprint: argv.priorBlueprint || argv.blueprint,
+        outdir: argv.outdir,
+        optionsLocation: argv.options,
+        priorOptionsLocation: argv.priorOptions || argv.options,
+        existingBundleLocation: argv.existingBundle || '',
+        jobname: path.parse(argv.options).base,
+        resynthDriver: resynthDriverFile,
+        synthDriver: synthDriverFile,
+      });
+
       process.exit(0);
     },
   })
-  //resynth driver command
-  // .command({
-  //   command: 'resynth <blueprint>',
-  //   describe: 'locally resynthesize the blueprint, using the defaults.json any wizard configs (if they exist)',
-  //   builder: (args: yargs.Argv<unknown>) => {
-  //     return args
-  //       .positional('blueprint', {
-  //         describe: 'path to the blueprint package directory',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('outdir', {
-  //         describe: 'output directory for blueprint resynthesis',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('options', {
-  //         description: 'path to defaults.json to feed default values into synthesis',
-  //         type: 'string',
-  //         demandOption: true,
-  //       })
-  //       .option('cache', {
-  //         description: 'Generate and synth from a webpacked cache',
-  //         default: false,
-  //         type: 'boolean',
-  //       })
-  //       .option('additionalOverrides', {
-  //         description: 'synthesize additional partial options over the default to a stable directory',
-  //         type: 'string',
-  //       });
-  //   },
-  //   handler: async (argv: ResynthesizeCliOptions): Promise<void> => {
-  //     const runs: SynthRun[] = [
-  //       {
-  //         optionOverridePath: argv.options,
-  //         outputPath: path.join(argv.outdir, 'synth', `00.resynth.${path.parse(argv.options).base}`),
-  //       },
-  //     ];
-
-  //     if (argv.additionalOptionOverrides) {
-  //       fs.readdirSync(argv.additionalOptionOverrides, { withFileTypes: true }).forEach(override => {
-  //         runs.push({
-  //           optionOverridePath: path.join(argv.additionalOptionOverrides!, override.name),
-  //           outputPath: path.resolve(path.join(argv.outdir, 'synth', `00.resynth.${override.name}`)),
-  //         });
-  //       });
-  //     }
-
-  //     await resynthesize(log, {
-  //       blueprintPath: argv.blueprint,
-  //       defaultsPath: argv.options || '',
-  //       useCache: argv.cache,
-  //       runs,
-  //     });
-  //     process.exit(0);
-  //   },
-  // })
   //publish command
   .command({
     command: 'publish <blueprint>',

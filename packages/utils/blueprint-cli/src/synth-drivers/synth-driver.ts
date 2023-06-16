@@ -5,8 +5,8 @@ import * as deepmerge from 'deepmerge';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { createCache } from './cache';
-import { writeSynthDriver } from './driver';
-import { SynthesisRunTime, synthesize } from './synth';
+import { SYNTH_TS_NAME, writeSynthDriver } from './driver';
+import { DriverFile, synthesize } from './synth';
 
 export interface SynthDriverCliOptions extends yargs.Arguments {
   blueprint: string;
@@ -37,22 +37,69 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
   //validate options
   //TODO
 
-  let runtime: SynthesisRunTime = 'ts-node';
-  let driverFile: string = '';
-
-  if (options.cache) {
-    runtime = 'node';
-    driverFile = createCache(
-      {
-        buildDirectory: path.join(options.blueprint, 'lib'),
-        builtEntryPoint: './index.js',
-      },
-      log,
-    );
-    log.debug(`creating cache, executing with a driver file at ${driverFile}`);
-  }
+  // we want one driver file that we execute multiple times with different options
+  const driver = makeDriverFile(log, options);
 
   //figure out which options we have, call synthesis for each of these options
+  const wizardConfigurations = getWizardOptions(log, options);
+
+  try {
+    wizardConfigurations.forEach(wizardOption => {
+      const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
+      const outputDir = path.join(options.outdir, `${jobname}`);
+      log.info('==========================================');
+      log.info(`[${jobname}]`);
+      log.info(
+        `npx blueprint synth --options merge[${options.defaultOptions},${wizardOption.path}] --blueprint ${options.blueprint} --outdir ${outputDir} ${
+          (options.cache && '--cache') || ''
+        }`,
+      );
+      log.info('==========================================');
+      synthesize(log, {
+        blueprintPath: options.blueprint,
+        synthDriver: driver,
+        blueprintOptions: wizardOption.option,
+        jobname,
+        outputDirectory: outputDir,
+      });
+    });
+  } catch (error) {
+    log.error(error as any);
+  } finally {
+    log.debug('Cleaning up synth driver: %s', driver.path);
+    cp.execSync(`rm ${driver.path}`, {
+      stdio: 'inherit',
+      cwd: options.blueprint,
+    });
+  }
+}
+
+const makeDriverFile = (log: pino.BaseLogger, options: SynthDriverCliOptions): DriverFile => {
+  const driver: DriverFile = {
+    runtime: 'ts-node',
+    path: '',
+  };
+  if (options.cache) {
+    let { synthDriver } = createCache(log, {
+      buildDirectory: path.join(options.blueprint, 'lib'),
+      builtEntryPoint: './index.js',
+    });
+    driver.runtime = 'node';
+    driver.path = synthDriver;
+    log.debug(`creating cache, executing with ${driver.runtime} ${driver.path}`);
+  } else {
+    driver.path = writeSynthDriver(path.join(options.blueprint, SYNTH_TS_NAME), path.join(options.blueprint, 'src', 'index.ts'));
+  }
+  return driver;
+};
+
+/**
+ * construct an array of objects, each representing a deep merged wizard configuration
+ * @param log
+ * @param options
+ * @returns
+ */
+const getWizardOptions = (log: pino.BaseLogger, options: SynthDriverCliOptions): any[] => {
   const additionalWizardOptionPath: string[] = [];
   if (options.additionalOptions && fs.existsSync(options.additionalOptions)) {
     fs.readdirSync(options.additionalOptions, { withFileTypes: true }).forEach(overridePath => {
@@ -79,37 +126,5 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
     };
   });
 
-  try {
-    driverFile = driverFile || writeSynthDriver(path.join(options.blueprint, 'synth-driver.ts'), path.join(options.blueprint, 'src', 'index.ts'));
-
-    wizardOptions.forEach(wizardOption => {
-      const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
-      const outputDir = path.join(options.outdir, `${jobname}`);
-      log.info('==========================================');
-      log.info(`[${jobname}]`);
-      log.info(
-        `npx blueprint synth --options merge[${options.defaultOptions},${wizardOption.path}] --blueprint ${options.blueprint} --outdir ${outputDir} ${
-          (options.cache && '--cache') || ''
-        }`,
-      );
-      log.info('==========================================');
-      synthesize(log, {
-        blueprintPath: options.blueprint,
-        runtime,
-        blueprintOptions: wizardOption.option,
-        jobname,
-        outputDirectory: outputDir,
-        driverFile,
-        cleanTargetLocation: true,
-      });
-    });
-  } catch (error) {
-    log.error(error as any);
-  } finally {
-    log.debug('Cleaning up synth driver: %s', driverFile);
-    cp.execSync(`rm ${driverFile}`, {
-      stdio: 'inherit',
-      cwd: options.blueprint,
-    });
-  }
-}
+  return wizardOptions;
+};

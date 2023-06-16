@@ -55,4 +55,15 @@ const project = new ProjenBlueprint({
 });
 project.package.addDevDeps('ts-node@^10');
 
+project.setScript(
+  'resynth',
+  'blueprint resynth' +
+    ' --blueprint ./' +
+    ' --outdir ./synth/resynth-01' +
+    ' --options ./src/defaults.json' +
+    ' --existing-bundle ./synth/resynth-01/resolved' +
+    ' --prior-blueprint ./' +
+    ' --prior-options ./synth/resynth-01/resolved/options.json',
+);
+
 project.synth();
