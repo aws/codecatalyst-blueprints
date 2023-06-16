@@ -1503,6 +1503,13 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
+exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/blueprint.ownership 1`] = `
+"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
 exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/README.md 1`] = `
 "# Frontend
 

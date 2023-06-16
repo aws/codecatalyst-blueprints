@@ -506,6 +506,13 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/blueprint.ownership 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
 exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/devfile.yaml 1`] = `
 "schemaVersion: 2.0.0
 metadata:
@@ -2471,6 +2478,13 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
   }"
 `;
 
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/blueprint.ownership 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
 "schemaVersion: 2.0.0
 metadata:
@@ -3399,6 +3413,13 @@ def test_lambda_handler(apigw_event):
     assert ret["statusCode"] == 200
     assert "message" in ret["body"]
     assert data["message"] == "hello world"
+"
+`;
+
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/blueprint.ownership 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
 "
 `;
 

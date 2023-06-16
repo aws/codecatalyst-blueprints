@@ -8,6 +8,12 @@ export interface Strategy {
   identifier: string;
 
   /**
+   * The owner of the strategy. Either a Blueprint package or the path to a local file.
+   * @default - the Blueprint's package name
+   */
+  owner?: string;
+
+  /**
    * human friendly description for this strategy
    */
   description?: string;
