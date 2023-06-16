@@ -56,6 +56,7 @@ yargs
         });
     },
     handler: async (argv: SynthesizeCliOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       let driverFile: DriverFile | undefined;
 
       if (argv.cache) {
@@ -117,6 +118,7 @@ yargs
         });
     },
     handler: async (argv: SynthDriverCliOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       await driveSynthesis(log, argv);
       process.exit(0);
     },
@@ -127,7 +129,7 @@ yargs
     describe: 'locally resynthesize the blueprint, using the defaults.json any wizard configs (if they exist)',
     builder: (args: yargs.Argv<unknown>) => {
       return args
-        .positional('blueprint', {
+        .option('blueprint', {
           describe: 'path to the blueprint package directory',
           type: 'string',
           demandOption: true,
@@ -161,6 +163,8 @@ yargs
         });
     },
     handler: async (argv: ResynthesizeCliOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+
       let resynthDriverFile: DriverFile | undefined;
       let synthDriverFile: DriverFile | undefined;
 
@@ -224,6 +228,7 @@ yargs
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       await publish(log, argv.blueprint, argv.publisher, argv.endpoint, argv.cookie);
       process.exit(0);
     },
@@ -246,6 +251,7 @@ yargs
         });
     },
     handler: async (argv: AstOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       await buildAst(log, argv.blueprint, argv.outdir);
       process.exit(0);
     },
@@ -268,6 +274,7 @@ yargs
         });
     },
     handler: async (argv: { ast: string; options: string }): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       const validation = doOptionValidation(argv.ast, argv.options);
       const warnings = validation.filter(error => error.level === 'WARNING');
       const errors = validation.filter(error => error.level === 'ERROR');
@@ -300,6 +307,7 @@ yargs
         });
     },
     handler: async (argv: UploadOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
       log.info(argv);
       const { imageUrl, imageName } = await uploadImagePublicly(log, argv.pathToImage, {
         bucketName: argv.bucket,
@@ -310,3 +318,22 @@ yargs
   })
   .usage('usage: $0 [command] [options]')
   .demandCommand(1).argv;
+
+/**
+ * If an option is passed more than once,respect the last given option.
+ * e.g. yarn resynth --existing-bundle ./synth/resynth-01/resolved-bundle/
+ * @param arg
+ * @returns
+ */
+function useOverrideOptionals<T extends {}>(arg: T): T {
+  function useLastElement<S>(element: S | S[]): S {
+    if (Array.isArray(element)) {
+      return element[element.length - 1];
+    }
+    return element;
+  }
+  for (const [key, value] of Object.entries(arg)) {
+    arg[key] = useLastElement(value);
+  }
+  return arg;
+}

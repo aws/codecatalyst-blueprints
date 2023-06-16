@@ -1,15 +1,5 @@
-import * as fs from 'fs';
-
-export const RESYNTH_TS_NAME = 'resynth-driver.ts';
-export const writeResynthDriver = (
-  fileName: string,
-  entrypoint: string,
-  options?: {
-    packageJsonLocation?: string;
-  },
-): string => {
-  const content = `const { Blueprint } = require('./${entrypoint}');
-const packageJson = require('${options?.packageJsonLocation || './package.json'}');
+const { Blueprint } = require('./src/index.ts');
+const packageJson = require('./package.json');
 
 // ============================
 // ============================
@@ -33,27 +23,24 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
   process.env.PACKAGE_VERSION = process.env.PACKAGE_VERSION || packageJson.version || '<<FAKE_BLUEPRINT_PACKAGEVERSION>>';
 
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
-  
-  console.log("===== Starting synthesis ===== ");
-  console.log("options: ", options);
-  console.log("outputDir: ", outputdir);
+
+  console.log('===== Starting synthesis ===== ');
+  console.log('options: ', options);
+  console.log('outputDir: ', outputdir);
   try {
     const bp = new Blueprint({
       ...options,
-      outdir: outputdir
-    })
+      outdir: outputdir,
+    });
     bp.resynth(ancestorBundleDirectory, existingBundleDirectory, proposedBundleDirectory);
-    
-    console.log("===== Ending synthesis ===== ");
+
+    console.log('===== Ending synthesis ===== ');
   } catch (err) {
     const errorMessage = JSON.stringify(err, Object.getOwnPropertyNames(err));
-    console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
-    console.error(\`\${errorMessage}\`);
-    console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
-    console.log("===== SYNTHESIS FAILED ===== ");
+    console.error(`===== BlueprintSynthesisError-${entropy} =====`);
+    console.error(`${errorMessage}`);
+    console.error(`===== BlueprintSynthesisError-${entropy} =====`);
+    console.log('===== SYNTHESIS FAILED ===== ');
     throw err;
   }
-})();`;
-  fs.writeFileSync(fileName, content);
-  return fileName;
-};
+})();

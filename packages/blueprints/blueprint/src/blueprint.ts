@@ -15,12 +15,14 @@ export interface Options extends ParentOptions {}
 export class Blueprint extends Project {
   public readonly context: Context;
 
+  private readonly options: Options;
+
   constructor(options: Options) {
     super({
       name: 'CodeAwsBlueprint',
       ...options,
     });
-
+    this.options = options;
     this.context = {
       rootDir: path.resolve(this.outdir),
       spaceName: process.env.CONTEXT_SPACENAME,
@@ -53,9 +55,12 @@ export class Blueprint extends Project {
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
+    console.log(`CALLING RESYNTH with: ${ancestorBundle}, ${existingBundle}, ${proposedBundle}`);
+    console.log(JSON.stringify(this.options, null, 2));
     //1. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     const supersetFileSuffixes: string[] = constructFileSet([ancestorBundle, existingBundle, proposedBundle]);
     console.log(supersetFileSuffixes);
+
     //2. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
 
     //3. for each file, match it with a merge strategy. Special case handle of the ownership file
@@ -93,6 +98,6 @@ export class BlueprintSynthesisError extends Error {
     this.name = type;
   }
 }
-function constructFileSet(_bundleEntrys: string[], _options?: {}): string[] {
-  throw new Error('Function not implemented.');
+function constructFileSet(_arg0: string[]): string[] {
+  return [];
 }

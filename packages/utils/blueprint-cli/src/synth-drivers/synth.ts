@@ -68,6 +68,7 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
       outputDirectory: options.outputDirectory,
       options: options.blueprintOptions,
       entropy: String(Math.floor(Date.now() / 100)),
+      existingBundleDirectory: options.existingBundle,
     });
     const timeEnd = Date.now();
 
@@ -114,34 +115,29 @@ function executeSynthesisCommand(
     outputDirectory: string;
     entropy: string;
     options: any;
-    executePrior?: string;
-    commandPrefix?: string;
+    existingBundleDirectory?: string;
   },
 ) {
-  if (options.executePrior) {
-    cp.execSync(options.executePrior, {
-      stdio: 'inherit',
-      cwd,
-    });
-  }
-
   cp.execSync(`mkdir -p ${options.outputDirectory}`, {
     stdio: 'inherit',
     cwd,
   });
   const synthCommand = [
-    `${options.commandPrefix || ''}`,
-    `npx ${options.driver.runtime} `,
-    `${options.driver.path} `,
-    `'${JSON.stringify(options.options)}' `,
-    `'${options.outputDirectory}' `,
+    `npx ${options.driver.runtime}`,
+    `${options.driver.path}`,
+    `'${JSON.stringify(options.options)}'`,
+    `'${options.outputDirectory}'`,
     `'${options.entropy}'`,
-  ].join('');
+  ].join(' ');
 
   logger.debug(`[${jobname}] Synthesis Command: ${synthCommand}`);
   cp.execSync(synthCommand, {
     stdio: 'inherit',
     cwd,
+    env: {
+      EXISTING_BUNDLE_ABS: options.existingBundleDirectory && path.resolve(options.existingBundleDirectory || ''),
+      ...process.env,
+    },
   });
 }
 

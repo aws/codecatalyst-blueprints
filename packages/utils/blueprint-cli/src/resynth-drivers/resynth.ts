@@ -1,6 +1,7 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import { exit } from 'process';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { DriverFile, synthesize } from '../synth-drivers/synth';
@@ -39,16 +40,17 @@ interface ResynthesizeOptions {
  */
 export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions): Promise<void> {
   // todo validate input
+  const proposedOptions = JSON.parse(fs.readFileSync(options.optionsLocation, 'utf-8'));
+  const priorOptions = getPriorOptions(log, options.priorOptionsLocation, options.optionsLocation);
 
   const { ancestorLocation, proposedLocation, existingLocation, resolvedLocation } = setupResynthesisOutputDirectory(log, options.outdir, {
     existingBundle: options.existingBundleLocation,
-    entropy: '00',
   });
 
   // synthesize ancestor files
   synthesize(log, {
     blueprintPath: options.priorBlueprint,
-    blueprintOptions: JSON.parse(fs.readFileSync(options.priorOptionsLocation, 'utf-8')),
+    blueprintOptions: priorOptions,
     jobname: `${path.parse(options.priorOptionsLocation).base}-${ancestorLocation}`,
     outputDirectory: ancestorLocation,
     synthDriver: options.synthDriver,
@@ -58,7 +60,7 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
   // synthesize proposed files
   synthesize(log, {
     blueprintPath: options.blueprint,
-    blueprintOptions: JSON.parse(fs.readFileSync(options.optionsLocation, 'utf-8')),
+    blueprintOptions: proposedOptions,
     jobname: `${path.parse(options.optionsLocation).base}-${proposedLocation}`,
     outputDirectory: proposedLocation,
     synthDriver: options.synthDriver,
@@ -67,7 +69,9 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
 
   // if theres nothing at the existing files, copy-the ancestor files into there too.
   if (fs.readdirSync(existingLocation).length == 0) {
+    log.warn('===============================');
     log.warn(`Nothing found in ${existingLocation}, seeding it with ancestor files as a default`);
+    log.warn('===============================');
     copyFolderSync(log, ancestorLocation, existingLocation);
   }
 
@@ -87,6 +91,8 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     const timeStart = Date.now();
     executeResynthesisCommand(log, options.blueprint, options.jobname, {
       driver: resynthDriver,
+      options: proposedOptions,
+      entropy: String(Math.floor(Date.now() / 100)),
       ancestorBundleDirectory: ancestorLocation,
       existingBundleDirectory: existingLocation,
       proposedBundleDirectory: proposedLocation,
@@ -98,6 +104,7 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
   } catch (e) {
     throw e;
   } finally {
+    exit(0);
     // if I wrote the resynth driver, then also clean it up.
     if (!options.resynthDriver) {
       log.debug('Cleaning up resynth driver: %s', resynthDriver.path);
@@ -135,12 +142,11 @@ const setupResynthesisOutputDirectory = (
   outputDirectory: string,
   options: {
     existingBundle: string;
-    entropy: string;
   },
 ): ResynthesisFileStructure => {
-  const ancestorFilesLocation = path.join(outputDirectory, `ancestor-${options.entropy}`);
-  const proposedFilesLocation = path.join(outputDirectory, `proposed-${options.entropy}`);
-  const existingFilesLocation = path.join(outputDirectory, `existing-${options.entropy}`);
+  const ancestorFilesLocation = path.join(outputDirectory, 'ancestor-bundle');
+  const proposedFilesLocation = path.join(outputDirectory, 'proposed-bundle');
+  const existingFilesLocation = path.join(outputDirectory, 'existing-bundle');
 
   log.debug({
     ancestorFilesLocation,
@@ -153,8 +159,9 @@ const setupResynthesisOutputDirectory = (
   copyFolderSync(log, options.existingBundle, existingFilesLocation);
 
   // clean the rest of the output locations
-  const resolvedFilesLocation = path.join(outputDirectory, `resolved-${options.entropy}`);
+  const resolvedFilesLocation = path.join(outputDirectory, 'resolved-bundle');
   removeFolders(log, [ancestorFilesLocation, proposedFilesLocation, resolvedFilesLocation]);
+  createFolders(log, [ancestorFilesLocation, proposedFilesLocation, resolvedFilesLocation, existingFilesLocation]);
 
   return {
     ancestorLocation: ancestorFilesLocation,
@@ -170,6 +177,8 @@ const executeResynthesisCommand = (
   jobname: string,
   options: {
     driver: DriverFile;
+    options: any;
+    entropy: string;
     ancestorBundleDirectory: string;
     existingBundleDirectory: string;
     proposedBundleDirectory: string;
@@ -184,16 +193,22 @@ const executeResynthesisCommand = (
   const command = [
     `npx ${options.driver.runtime}`,
     `${options.driver.path}`,
+    `'${JSON.stringify(options.options)}'`,
+    `${options.outputDirectory}`,
+    `${options.entropy}`,
     `${options.ancestorBundleDirectory}`,
     `${options.existingBundleDirectory}`,
     `${options.proposedBundleDirectory}`,
-    `${options.outputDirectory}`,
   ].join(' ');
 
   logger.debug(`[${jobname}] reynthesis Command: ${command}`);
   cp.execSync(command, {
     stdio: 'inherit',
     cwd,
+    env: {
+      EXISTING_BUNDLE_ABS: path.resolve(options.existingBundleDirectory),
+      ...process.env,
+    },
   });
 };
 
@@ -209,7 +224,6 @@ const copyFolderSync = (log: pino.BaseLogger, source: string, target: string) =>
   if (fs.lstatSync(source).isDirectory()) {
     fs.readdirSync(source).forEach(file => {
       const curSource = path.join(source, file);
-      log.debug(curSource);
       if (fs.lstatSync(curSource).isDirectory()) {
         copyFolderSync(log, curSource, path.join(target, path.basename(curSource)));
       } else {
@@ -230,6 +244,17 @@ const removeFolders = (_log: pino.BaseLogger, folders: string[]) => {
   });
 };
 
+const createFolders = (_log: pino.BaseLogger, folders: string[]) => {
+  folders.forEach(folder => {
+    if (!fs.existsSync(folder)) {
+      _log.debug(`creating at ${folder}`);
+      fs.mkdirSync(folder, {
+        recursive: true,
+      });
+    }
+  });
+};
+
 const makeResynthDriverFile = (_log: pino.BaseLogger, options: ResynthesizeOptions): DriverFile => {
   if (options.synthDriver) {
     return options.synthDriver;
@@ -239,4 +264,12 @@ const makeResynthDriverFile = (_log: pino.BaseLogger, options: ResynthesizeOptio
     path: writeResynthDriver(path.join(options.blueprint, RESYNTH_TS_NAME), path.join(options.blueprint, 'src', 'index.ts')),
     runtime: 'ts-node',
   };
+};
+
+const getPriorOptions = (log: pino.BaseLogger, priorOptionsLocation: string, optionsLocation: string): any => {
+  if (fs.existsSync(priorOptionsLocation)) {
+    return JSON.parse(fs.readFileSync(priorOptionsLocation, 'utf-8'));
+  }
+  log.warn(`could not find options at ${priorOptionsLocation}, pulling from ${optionsLocation}`);
+  return JSON.parse(fs.readFileSync(optionsLocation, 'utf-8'));
 };

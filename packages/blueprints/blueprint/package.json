@@ -53,6 +53,9 @@
   "peerDependencies": {
     "projen": "*"
   },
+  "dependencies": {
+    "globule": "*"
+  },
   "keywords": [
     "blueprint"
   ],

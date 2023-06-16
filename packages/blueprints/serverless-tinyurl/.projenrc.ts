@@ -61,9 +61,10 @@ project.setScript(
     ' --blueprint ./' +
     ' --outdir ./synth/resynth-01' +
     ' --options ./src/defaults.json' +
-    ' --existing-bundle ./synth/resynth-01/resolved' +
+    ' --existing-bundle ./synth/resynth-01/resolved-bundle' +
     ' --prior-blueprint ./' +
-    ' --prior-options ./synth/resynth-01/resolved/options.json',
+    ' --prior-options ./synth/resynth-01/resolved-bundle/options.json' +
+    ' $*',
 );
 
 project.synth();

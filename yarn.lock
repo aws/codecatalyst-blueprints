@@ -2027,6 +2027,7 @@ __metadata:
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
+    globule: "*"
     json-schema: "*"
     npm-check-updates: ^15
     projen: 0.61.44

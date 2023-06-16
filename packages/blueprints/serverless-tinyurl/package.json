@@ -30,7 +30,7 @@
     "blueprint:synth:cache": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache $*",
     "blueprint:resynth": "blueprint resynth ./ --outdir ./ --options ./src/defaults.json $*",
     "blueprint:resynth:cache": "yarn build:cache && blueprint resynth ./ --outdir ./ --options ./src/defaults.json --cache  $*",
-    "resynth": "blueprint resynth --blueprint ./ --outdir ./synth/resynth-01 --options ./src/defaults.json --existing-bundle ./synth/resynth-01/resolved --prior-blueprint ./ --prior-options ./synth/resynth-01/resolved/options.json"
+    "resynth": "blueprint resynth --blueprint ./ --outdir ./synth/resynth-01 --options ./src/defaults.json --existing-bundle ./synth/resynth-01/resolved-bundle --prior-blueprint ./ --prior-options ./synth/resynth-01/resolved-bundle/options.json $*"
   },
   "author": {
     "name": "Amazon Web Services",
