@@ -15,14 +15,11 @@ export interface Options extends ParentOptions {}
 export class Blueprint extends Project {
   public readonly context: Context;
 
-  private readonly options: Options;
-
   constructor(options: Options) {
     super({
       name: 'CodeAwsBlueprint',
       ...options,
     });
-    this.options = options;
     this.context = {
       rootDir: path.resolve(this.outdir),
       spaceName: process.env.CONTEXT_SPACENAME,
@@ -56,7 +53,7 @@ export class Blueprint extends Project {
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
     console.log(`CALLING RESYNTH with: ${ancestorBundle}, ${existingBundle}, ${proposedBundle}`);
-    console.log(JSON.stringify(this.options, null, 2));
+    console.log('OUTPUTTING TO : ' + this.outdir);
     //1. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     const supersetFileSuffixes: string[] = constructFileSet([ancestorBundle, existingBundle, proposedBundle]);
     console.log(supersetFileSuffixes);
