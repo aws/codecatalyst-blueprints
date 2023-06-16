@@ -62,7 +62,7 @@
     "blueprint"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
   "version": "0.0.1220",
   "types": "lib/index.d.ts",

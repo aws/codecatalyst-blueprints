@@ -3,7 +3,6 @@ import { ProjenBlueprintComponent } from '@caws-blueprint-util/projen-blueprint-
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
   name: 'caws-issues',
-  license: 'MIT',
   copyrightOwner: 'Amazon.com',
   deps: [],
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint'],
