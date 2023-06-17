@@ -9,7 +9,8 @@ import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
 // import { resynthesize, ResynthesizeCliOptions } from './resynth/resynth';
-import { ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
+import { EXISTING_BUNDLE_SUBPATH, ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
+import { ResynthDriverCliOptions, driveResynthesis } from './resynth-drivers/resynth-driver';
 import { createCache } from './synth-drivers/cache';
 import { synthesize, SynthesizeCliOptions, DriverFile } from './synth-drivers/synth';
 import { SynthDriverCliOptions, driveSynthesis } from './synth-drivers/synth-driver';
@@ -184,17 +185,66 @@ yargs
         log.debug(`Creating cache with a driver file at ${resynthDriverFile.path}`);
       }
 
+      const optionsObject = JSON.parse(fs.readFileSync(argv.options, 'utf-8'));
+      let priorOptionsObject = optionsObject;
+      if (argv.priorOptions) {
+        priorOptionsObject = JSON.parse(fs.readFileSync(argv.priorOptions, 'utf-8'));
+      }
+
       await resynthesize(log, {
         blueprint: argv.blueprint,
         priorBlueprint: argv.priorBlueprint || argv.blueprint,
         outdir: argv.outdir,
-        optionsLocation: argv.options,
-        priorOptionsLocation: argv.priorOptions || argv.options,
+        options: optionsObject,
+        priorOptions: priorOptionsObject,
         existingBundleLocation: argv.existingBundle || '',
         jobname: path.parse(argv.options).base,
         resynthDriver: resynthDriverFile,
         synthDriver: synthDriverFile,
       });
+
+      process.exit(0);
+    },
+  })
+  //resynth driver command
+  .command({
+    command: 'drive-resynth',
+    describe: `locally drive resynthesis across multiple wizard configs. Defaults to using the same blueprint and any existing projects with options under ${EXISTING_BUNDLE_SUBPATH}/`,
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('blueprint', {
+          describe: 'path to the blueprint package directory',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('outdir', {
+          describe: 'output directory for blueprint resynthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('default-options', {
+          description: 'path to defaults.json to feed default values into synthesis',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('additional-options', {
+          description: 'path to additonal synthesis options',
+          default: undefined,
+          type: 'string',
+        })
+        .option('existing-bundle', {
+          description: 'path to an existing bundle to use as blueprint context',
+          type: 'string',
+        })
+        .option('cache', {
+          description: 'Generate and resynth from a webpacked cache',
+          default: false,
+          type: 'boolean',
+        });
+    },
+    handler: async (argv: ResynthDriverCliOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      await driveResynthesis(log, argv);
 
       process.exit(0);
     },

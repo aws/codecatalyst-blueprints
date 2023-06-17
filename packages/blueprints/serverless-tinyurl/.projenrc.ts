@@ -57,13 +57,11 @@ project.package.addDevDeps('ts-node@^10');
 
 project.setScript(
   'resynth',
-  'blueprint resynth' +
+  'blueprint drive-resynth' +
     ' --blueprint ./' +
     ' --outdir ./synth/resynth-01' +
-    ' --options ./src/defaults.json' +
-    ' --existing-bundle ./synth/resynth-01/resolved-bundle' +
-    ' --prior-blueprint ./' +
-    ' --prior-options ./synth/resynth-01/resolved-bundle/options.json' +
+    ' --default-options ./src/defaults.json' +
+    ' --additional-options ./src/wizard-configurations' +
     ' $*',
 );
 
