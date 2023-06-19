@@ -4,6 +4,8 @@ import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { SYNTH_TS_NAME, writeSynthDriver } from './driver';
+import { cleanUpDriver } from './synth-driver';
+// import { cleanUpDriver } from './synth-driver';
 
 export interface SynthesizeCliOptions extends yargs.Arguments {
   outdir: string;
@@ -78,11 +80,7 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
   } finally {
     // if I wrote the synth driver, then also clean it up.
     if (!options.synthDriver) {
-      log.debug('Cleaning up synth driver: %s', synthDriver.path);
-      cp.execSync(`rm ${synthDriver.path}`, {
-        stdio: 'inherit',
-        cwd: options.blueprintPath,
-      });
+      cleanUpDriver(log, synthDriver);
     }
   }
 }

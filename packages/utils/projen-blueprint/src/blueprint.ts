@@ -136,13 +136,21 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // force the static assets to always be fully included, regardless of .npmignores
     this.package.addField('files', ['static-assets', 'lib']);
 
-    let synthCommand =
-      'blueprint drive-synth' +
-      ' --blueprint ./' +
-      ' --outdir ./synth' +
-      ' --default-options ./src/defaults.json' +
-      ' --additional-options ./src/wizard-configurations';
-    let resynthCommand = 'blueprint resynth ./ --outdir ./ --options ./src/defaults.json';
+    let synthCommand = [
+      'blueprint drive-synth',
+      '--blueprint ./',
+      '--outdir ./synth',
+      '--default-options ./src/defaults.json',
+      '--additional-options ./src/wizard-configurations',
+    ].join(' ');
+
+    let resynthCommand = [
+      'blueprint drive-resynth',
+      '--blueprint ./',
+      '--outdir ./synth',
+      '--default-options ./src/defaults.json',
+      '--additional-options ./src/wizard-configurations',
+    ].join(' ');
 
     if (finalOpts.blueprintSnapshotConfiguration) {
       if (finalOpts.jest) {

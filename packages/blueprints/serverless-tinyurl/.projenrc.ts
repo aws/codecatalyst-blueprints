@@ -55,14 +55,4 @@ const project = new ProjenBlueprint({
 });
 project.package.addDevDeps('ts-node@^10');
 
-project.setScript(
-  'resynth',
-  'blueprint drive-resynth' +
-    ' --blueprint ./' +
-    ' --outdir ./synth/resynth-01' +
-    ' --default-options ./src/defaults.json' +
-    ' --additional-options ./src/wizard-configurations' +
-    ' $*',
-);
-
 project.synth();

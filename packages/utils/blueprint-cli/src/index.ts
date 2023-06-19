@@ -209,7 +209,7 @@ yargs
   //resynth driver command
   .command({
     command: 'drive-resynth',
-    describe: `locally drive resynthesis across multiple wizard configs. Defaults to using the same blueprint and any existing projects with options under ${EXISTING_BUNDLE_SUBPATH}/`,
+    describe: `locally drive resynthesis across multiple wizard configs. Defaults to using the same blueprint and any existing projects with options under ${EXISTING_BUNDLE_SUBPATH}/. Resynthesis contructs a new synthesis bundle and then attempts to merge it with an exisiting bundle using a common ancestor.`,
     builder: (args: yargs.Argv<unknown>) => {
       return args
         .option('blueprint', {
@@ -234,6 +234,11 @@ yargs
         })
         .option('existing-bundle', {
           description: 'path to an existing bundle to use as blueprint context',
+          type: 'string',
+        })
+        .option('prior-options', {
+          description:
+            'optional path to an json representing the options used for the ancestor codebase. This will be the prior options used for each wizard-option resynth.',
           type: 'string',
         })
         .option('cache', {

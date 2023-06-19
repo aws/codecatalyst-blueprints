@@ -10,6 +10,7 @@ export interface ResynthDriverCliOptions extends yargs.Arguments {
   outdir: string;
   defaultOptions: string;
   additionalOptions?: string;
+  priorOptions?: string;
   existingBundle?: string;
   cache?: boolean;
 }
@@ -45,7 +46,13 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
     wizardConfigurations.forEach(wizardOption => {
       const jobname = `${'00.resynth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`);
-      const priorOptionsLocation = path.join(options.existingBundle || options.outdir, EXISTING_BUNDLE_SUBPATH, 'options.json');
+      let priorOptions = getPriorOptions(log, [
+        options.priorOptions,
+        options.existingBundle && path.join(options.existingBundle, 'options.json'),
+        options.existingBundle && path.join(options.existingBundle, EXISTING_BUNDLE_SUBPATH, 'options.json'),
+        path.join(outputDir, EXISTING_BUNDLE_SUBPATH, 'options.json'),
+      ]);
+      const existingBundle = options.existingBundle || path.join(options.outdir, EXISTING_BUNDLE_SUBPATH);
 
       log.info('==========================================');
       log.info(`[${jobname}]`);
@@ -55,6 +62,9 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
           `--options merge[${options.defaultOptions},${wizardOption.path}]`,
           `--blueprint ${options.blueprint}`,
           `--outdir ${outputDir}`,
+          `--existing-bundle ${existingBundle}`,
+          `--prior-blueprint ${options.blueprint}`,
+          `--prior-options ${priorOptions?.path || `--options merge[${options.defaultOptions},${wizardOption.path}]`}`,
           `${(options.cache && '--cache') || ''}`,
         ].join(' '),
       );
@@ -67,8 +77,8 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
         blueprint: options.blueprint,
         options: wizardOption.option,
         priorBlueprint: options.blueprint,
-        priorOptions: getOptions(log, priorOptionsLocation),
-        existingBundleLocation: options.existingBundle || path.join(options.outdir, EXISTING_BUNDLE_SUBPATH),
+        priorOptions: priorOptions?.option || wizardOption.option,
+        existingBundleLocation: existingBundle,
       });
     });
   } catch (error) {
@@ -80,12 +90,28 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
 }
 
 /**
- * attempts to get options from a location (if they exist), otherwise returns undefined
+ * attempts to get options from each location in order (if they exist), otherwise returns undefined
  * If prioroptionsLocation is passed, but nothing is there, this errors.
  */
-const getOptions = (_log: pino.BaseLogger, optionsLocation: string | undefined): any | undefined => {
-  if (optionsLocation) {
-    return JSON.parse(fs.readFileSync(optionsLocation).toString());
+const getPriorOptions = (
+  log: pino.BaseLogger,
+  optionsLocation: (string | undefined)[],
+):
+  | undefined
+  | {
+      path: string;
+      option: any;
+    } => {
+  const locations = optionsLocation.filter(elemnt => !!elemnt);
+  for (const location of locations) {
+    if (location && fs.existsSync(location)) {
+      return {
+        path: location,
+        option: JSON.parse(fs.readFileSync(location).toString()),
+      };
+    }
   }
+  const error = `could not file options at any of: ${JSON.stringify(locations)}`;
+  log.warn(error);
   return undefined;
 };

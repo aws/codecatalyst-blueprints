@@ -111,7 +111,7 @@ export const makeDriverFile = (
     };
   }
 
-  const runtime = 'node';
+  const runtime = 'ts-node';
   return {
     synthDriver: {
       runtime,

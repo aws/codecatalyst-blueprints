@@ -34,7 +34,7 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
 
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
   
-  console.log("===== Starting synthesis ===== ");
+  console.log("===== Starting resynthesis ===== ");
   console.log("options: ", options);
   console.log("outputDir: ", outputdir);
   try {
@@ -44,13 +44,13 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
     })
     bp.resynth(ancestorBundleDirectory, existingBundleDirectory, proposedBundleDirectory);
     
-    console.log("===== Ending synthesis ===== ");
+    console.log("===== Ending resynthesis ===== ");
   } catch (err) {
     const errorMessage = JSON.stringify(err, Object.getOwnPropertyNames(err));
     console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
     console.error(\`\${errorMessage}\`);
     console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
-    console.log("===== SYNTHESIS FAILED ===== ");
+    console.log("===== RESYNTHESIS FAILED ===== ");
     throw err;
   }
 })();`;

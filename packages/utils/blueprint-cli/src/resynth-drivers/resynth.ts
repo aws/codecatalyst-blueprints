@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { DriverFile, synthesize } from '../synth-drivers/synth';
+import { cleanUpDriver } from '../synth-drivers/synth-driver';
 import { RESYNTH_TS_NAME, writeResynthDriver } from './driver';
 
 export interface ResynthesizeCliOptions extends yargs.Arguments {
@@ -73,9 +74,12 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
   }
 
   // build the resythesis driver
-  const resynthDriver: DriverFile = makeResynthDriverFile(log, options);
+  const resynthDriver: DriverFile = makeResynthDriverFile(log, {
+    blueprintLocation: options.blueprint,
+    resynthDriver: options.resynthDriver,
+  });
 
-  log.debug(`Using driver: ${resynthDriver.path}`);
+  log.debug(`Using resynth driver: ${resynthDriver.path}`);
   try {
     // if something already exists at the output location, we remove it.
     log.debug('cleaning up existing code at resynth resolved output location: %s', resolvedLocation);
@@ -103,11 +107,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
   } finally {
     // if I wrote the resynth driver, then also clean it up.
     if (!options.resynthDriver) {
-      log.debug('Cleaning up resynth driver: %s', resynthDriver.path);
-      cp.execSync(`rm ${resynthDriver.path}`, {
-        stdio: 'inherit',
-        cwd: options.blueprint,
-      });
+      cleanUpDriver(log, resynthDriver);
     }
   }
 }
@@ -255,13 +255,19 @@ const createFolders = (_log: pino.BaseLogger, folders: string[]) => {
   });
 };
 
-const makeResynthDriverFile = (_log: pino.BaseLogger, options: ResynthesizeOptions): DriverFile => {
-  if (options.synthDriver) {
-    return options.synthDriver;
+const makeResynthDriverFile = (
+  _log: pino.BaseLogger,
+  options: {
+    blueprintLocation: string;
+    resynthDriver?: DriverFile;
+  },
+): DriverFile => {
+  if (options.resynthDriver) {
+    return options.resynthDriver;
   }
 
   return {
-    path: writeResynthDriver(path.join(options.blueprint, RESYNTH_TS_NAME), path.join(options.blueprint, 'src', 'index.ts')),
+    path: writeResynthDriver(path.join(options.blueprintLocation, RESYNTH_TS_NAME), path.join(options.blueprintLocation, 'src', 'index.ts')),
     runtime: 'ts-node',
   };
 };
