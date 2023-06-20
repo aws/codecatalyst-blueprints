@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 
-export const SYNTH_TS_NAME = 'synth-driver.ts';
-export const writeSynthDriver = (
+export const RESYNTH_TS_NAME = 'resynth-driver.ts';
+export const writeResynthDriver = (
   fileName: string,
   entrypoint: string,
   options?: {
@@ -13,13 +13,17 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
 
 // ============================
 // ============================
-// Synthetization
+// Resynthetization
 // ============================
 (() => {
-  // node cached-synth.js '{options-selected}' 'outputDirectory'
+  // node cached-resynth.js 'options' 'outputDirectory' 'entropy' 'ancestorBundleDirectory' 'existingBundleDirectory' 'proposedBundleDirectory'
   const options = JSON.parse(process.argv[2]);
   const outputdir = process.argv[3];
   const entropy = process.argv[4] ? process.argv[4] : '';
+
+  const ancestorBundleDirectory = process.argv[5] ? process.argv[5] : '';
+  const existingBundleDirectory = process.argv[6] ? process.argv[6] : '';
+  const proposedBundleDirectory = process.argv[7] ? process.argv[7] : '';
 
   process.env.CONTEXT_SPACENAME = process.env.CONTEXT_SPACENAME || '<<FAKE_SPACENAME>>';
   process.env.CONTEXT_PROJECTNAME = process.env.CONTEXT_PROJECTNAME || '<<FAKE_PROJECTNAME>>';
@@ -30,21 +34,23 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
 
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
   
-  console.log("===== Starting synthesis ===== ");
+  console.log("===== Starting resynthesis ===== ");
   console.log("options: ", options);
   console.log("outputDir: ", outputdir);
   try {
-    new Blueprint({
+    const bp = new Blueprint({
       ...options,
       outdir: outputdir
-    }).synth();
-    console.log("===== Ending synthesis ===== ");
+    })
+    bp.resynth(ancestorBundleDirectory, existingBundleDirectory, proposedBundleDirectory);
+    
+    console.log("===== Ending resynthesis ===== ");
   } catch (err) {
     const errorMessage = JSON.stringify(err, Object.getOwnPropertyNames(err));
     console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
     console.error(\`\${errorMessage}\`);
     console.error(\`===== BlueprintSynthesisError-\${entropy} =====\`);
-    console.log("===== SYNTHESIS FAILED ===== ");
+    console.log("===== RESYNTHESIS FAILED ===== ");
     throw err;
   }
 })();`;

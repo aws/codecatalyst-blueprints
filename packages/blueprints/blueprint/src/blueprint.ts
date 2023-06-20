@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as path from 'path';
 
-import { Project } from 'projen';
+import { JsonFile, Project } from 'projen';
 import { Context } from './context';
 
 export interface ParentOptions {
@@ -20,7 +20,6 @@ export class Blueprint extends Project {
       name: 'CodeAwsBlueprint',
       ...options,
     });
-
     this.context = {
       rootDir: path.resolve(this.outdir),
       spaceName: process.env.CONTEXT_SPACENAME,
@@ -39,10 +38,31 @@ export class Blueprint extends Project {
     for (const component of this.components) {
       component.synthesize = () => {};
     }
+
+    // write the options to the bundle
+    new JsonFile(this, 'options.json', {
+      obj: options,
+      readonly: false,
+      marker: false,
+    });
   }
 
   throwSynthesisError(error: BlueprintSynthesisError) {
     throw error;
+  }
+
+  resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
+    console.log(`CALLING RESYNTH with: ${ancestorBundle}, ${existingBundle}, ${proposedBundle}`);
+    console.log('OUTPUTTING TO : ' + this.outdir);
+    //1. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
+    const supersetFileSuffixes: string[] = constructFileSet([ancestorBundle, existingBundle, proposedBundle]);
+    console.log(supersetFileSuffixes);
+
+    //2. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
+
+    //3. for each file, match it with a merge strategy. Special case handle of the ownership file
+
+    //4. write the result of the merge strategy to the outdirectory/src
   }
 }
 
@@ -74,4 +94,7 @@ export class BlueprintSynthesisError extends Error {
     super(message);
     this.name = type;
   }
+}
+function constructFileSet(_arg0: string[]): string[] {
+  return [];
 }

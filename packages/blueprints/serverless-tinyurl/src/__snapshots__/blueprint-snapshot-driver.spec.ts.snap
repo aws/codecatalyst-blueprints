@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Blueprint snapshots java-default.json configuration matches options.json 1`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "DEVELOPMENT"
+  },
+  "code": {
+    "repositoryName": "TinyUrlApp"
+  },
+  "advanced": {
+    "frontendStackName": "TinyUrlFrontend",
+    "backendStackName": "TinyUrlBackend",
+    "region": "us-west-2"
+  },
+  "outdir": "synth/01.snapshot.java-default.json"
+}
+"
+`;
+
 exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
 "Name: main_fullstack_workflow
 SchemaVersion: "1.0"

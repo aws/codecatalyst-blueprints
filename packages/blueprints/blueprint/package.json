@@ -24,10 +24,10 @@
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
     "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints",
     "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes",
-    "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations",
-    "blueprint:synth:cache": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache",
-    "blueprint:resynth": "blueprint resynth ./ --outdir ./ --options ./src/defaults.json",
-    "blueprint:resynth:cache": "yarn build:cache && blueprint resynth ./ --outdir ./ --options ./src/defaults.json --cache"
+    "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
+    "blueprint:synth:cache": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache $*",
+    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
+    "blueprint:resynth:cache": "yarn build:cache && blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache  $*"
   },
   "author": {
     "name": "caws-blueprints",
@@ -52,6 +52,9 @@
   },
   "peerDependencies": {
     "projen": "*"
+  },
+  "dependencies": {
+    "globule": "*"
   },
   "keywords": [
     "blueprint"
