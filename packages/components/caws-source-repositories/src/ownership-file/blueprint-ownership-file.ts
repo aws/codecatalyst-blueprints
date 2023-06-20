@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint, Ownership } from '@caws-blueprint/blueprints.blueprint';
 import { File } from '../files/file';
 import { MergeStrategies } from '../lifecycle/merge-strategy';
 import { Strategy } from '../lifecycle/models';
@@ -44,89 +44,12 @@ export class BlueprintOwnershipFileSyntaxError extends Error {
  * Blueprint ownership file, lays out ownership delegation in a repository.
  */
 export class BlueprintOwnershipFile extends File {
-  public static asString = (blueprint: Blueprint, fileDefinition: BlueprintOwnershipFileDefinition): string => {
-    let fileContents = '';
-
-    fileDefinition.resynthesis?.strategies.forEach(strategy => {
-      const owner = strategy.owner ?? blueprint.context.package.name;
-      if (!owner) {
-        throw new Error(
-          `Failed to resolve owner for strategy ${strategy.identifier}: no owner was provided, and the blueprint context is missing a package name`,
-        );
-      }
-
-      fileContents += `[${strategy.identifier}] ${owner}\n`;
-
-      if (strategy.description) {
-        // TODO: format description into multiple lines with a max length
-        fileContents += `# ${strategy.description}\n`;
-      }
-
-      fileContents += `# Internal merge strategy: ${strategy.strategy.name || 'custom'}\n`;
-
-      strategy.globs.forEach(glob => {
-        fileContents += `${glob}\n`;
-      });
-
-      fileContents += '\n';
-    });
-
-    return fileContents.trimEnd() + '\n';
-  };
-
-  public static asDefinition = (fileContent: string): BlueprintOwnershipFileDefinition => {
-    const lines = fileContent.split(/\r?\n/);
-
-    const strategies: Strategy[] = [];
-    lines.forEach((line, index) => {
-      const lineNumber = index + 1;
-      const trimmedLine = line.trimStart().trimEnd();
-
-      if (trimmedLine.length === 0 || trimmedLine.startsWith('#')) {
-        return;
-      }
-
-      const strategy = this.parseSectionLine(trimmedLine);
-      if (strategy) {
-        strategies.push({
-          identifier: strategy.identifier,
-          owner: strategy.owner,
-          strategy: MergeStrategies.neverUpdate, // TODO: look up proper merge strategy function
-          globs: [],
-        });
-        return;
-      }
-
-      if (strategies.length === 0) {
-        throw new BlueprintOwnershipFileSyntaxError('encountered unexpected glob outside of a strategy section', lineNumber);
-      }
-      const currentStrategy = strategies[strategies.length - 1];
-      currentStrategy.globs.push(trimmedLine);
-    });
-    return {
-      resynthesis: {
-        strategies,
-      },
-    };
-  };
-
-  private static readonly strategyLineRegex = /^\[(?<identifier>.+)\]\s+(?<owner>.+)$/; // e.g. [my_identifier] @caws-blueprint/my-blueprint
-
-  private static parseSectionLine(line: string): { identifier: string; owner: string } | undefined {
-    const match = line.match(this.strategyLineRegex);
-    if (!match || !match?.groups) {
-      return;
-    }
-
-    const { identifier, owner } = match.groups;
-    return { identifier, owner };
-  }
 
   constructor(protected readonly sourceRepository: SourceRepository, options: BlueprintOwnershipFileDefinition) {
     super(
       sourceRepository,
       path.join(options.filePath ?? '', BLUEPRINT_OWNERSHIP_FILE),
-      Buffer.from(BlueprintOwnershipFile.asString(sourceRepository.blueprint, options)),
+      Buffer.from(Ownership.asString(sourceRepository.blueprint, options)),
     );
   }
 }

@@ -41,19 +41,3 @@ export type MergeStrategyFunction = (
   options?: {},
 ) => File | undefined;
 
-export interface MirroredFilePath {
-  /**
-   * This is a trimmed path to the file starting at the repository root.
-   */
-  localpath: string;
-
-  /**
-   * Absolute path to the existing file location
-   */
-  existingLocation: string | undefined;
-
-  /**
-   * Absolute path to the new file location
-   */
-  newLocation: string | undefined;
-}
