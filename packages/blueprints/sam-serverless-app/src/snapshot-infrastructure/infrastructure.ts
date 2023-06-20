@@ -8,7 +8,7 @@ import { Options } from '../blueprint';
 const PATH_TO_SRC = 'src';
 const PATH_TO_CONFIGS = path.join(PATH_TO_SRC, 'snapshot-configurations');
 // eslint-disable-next-line
-const GLOBS: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
+const GLOBS: string[] = ['**', '!environments/**', '!aws-account-to-environment/**', '!src/**/.codecatalyst/**/DANGER-hard-delete-deployed-resources.yaml'];
 
 type TestConfigFromFile = Omit<Options, 'outdir'>;
 
