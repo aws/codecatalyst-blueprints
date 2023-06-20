@@ -4,7 +4,7 @@ const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
   name: 'caws-workflows',
   copyrightOwner: 'Amazon.com',
-  deps: [],
+  deps: ['js-yaml@^4'],
   peerDeps: [
     'projen',
     '@caws-blueprint-component/caws-source-repositories',
