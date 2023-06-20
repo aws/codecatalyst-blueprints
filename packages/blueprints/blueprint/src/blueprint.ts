@@ -5,7 +5,6 @@ import { JsonFile, Project } from 'projen';
 import { Context } from './context';
 import { filepathSet } from './resynthesis/file-set';
 import { Strategy } from './resynthesis/merge-strategies/models';
-import { match } from 'assert';
 
 export interface ParentOptions {
   outdir: string;
@@ -17,7 +16,7 @@ export interface Options extends ParentOptions {}
 
 export class Blueprint extends Project {
   public readonly context: Context;
-  protected strategies: {[key: string]: Strategy[]} | undefined;
+  protected strategies: {[bundlePath: string]: Strategy[]} | undefined;
 
   constructor(options: Options) {
     super({
@@ -71,11 +70,13 @@ export class Blueprint extends Project {
     //2. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
 
     supersetBundlePaths.forEach(bundlepath => {
-      const matchingStrategies = match(this, deserializedStrategies, bundlepath);
-      const result = applyStrategy(matchingStrategies, bundlepath);
-      if (result) {
-        // write the result to the outdir bundle
-      }
+      console.log(bundlepath);
+      // const strategyMatch = match(this, this.strategies, deserializedStrategies, bundlepath);
+      // strategyMatch()
+      // const result = applyStrategy(strategyMatch, bundlepath);
+      // if (result) {
+      // write the result to the outdir bundle
+      // }
     });
 
     //3. for each file, match it with a merge strategy. Special case handle of the ownership file
