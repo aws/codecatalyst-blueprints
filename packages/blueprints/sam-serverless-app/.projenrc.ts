@@ -9,7 +9,12 @@ const project = new ProjenBlueprint({
   eslint: true,
   jest: true,
   blueprintSnapshotConfiguration: {
-    snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
+    snapshotGlobs: [
+      '**',
+      '!environments/**',
+      '!aws-account-to-environment/**',
+      '!src/**/.codecatalyst/**/DANGER-hard-delete-deployed-resources.yaml',
+    ],
   },
   npmignoreEnabled: true,
   authorName: 'Amazon Web Services',
