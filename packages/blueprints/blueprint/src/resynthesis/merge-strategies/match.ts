@@ -1,8 +1,8 @@
 import globule from 'globule';
 import { MergeStrategies } from './merge-strategy';
-import { MergeStrategyFunction, Strategy } from './models';
+import { Strategy } from './models';
 
-export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): MergeStrategyFunction {
+export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
   const directories = bundlePath.split('/');
 
   while (directories.length > 0) {
@@ -24,10 +24,14 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
   }
 
   // TODO: Default to three way merge once it exists.
-  return MergeStrategies.neverUpdate;
+  return {
+    identifier: 'default_MergeStrategies.neverUpdate',
+    strategy: MergeStrategies.neverUpdate,
+    globs: ['*'],
+  };
 }
 
-function matchStrategies(bundlePath: string, strategies: Strategy[]): MergeStrategyFunction | undefined {
+function matchStrategies(bundlePath: string, strategies: Strategy[]): Strategy | undefined {
   for (let i = strategies.length - 1; i >= 0; i--) {
     const strategy = strategies[i];
 
@@ -37,7 +41,7 @@ function matchStrategies(bundlePath: string, strategies: Strategy[]): MergeStrat
         dot: true,
       })
     ) {
-      return strategy.strategy;
+      return strategy;
     }
   }
 

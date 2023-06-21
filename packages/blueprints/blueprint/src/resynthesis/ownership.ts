@@ -3,6 +3,7 @@ import { MergeStrategies } from './merge-strategies/merge-strategy';
 import { Strategy } from './merge-strategies/models';
 
 export class Ownership {
+  public static DEFAULT_FILE_NAME = '.ownership-file';
   public static asString = (blueprint: Blueprint, fileDefinition: Ownership): string => asOwnershipString(blueprint, fileDefinition);
   public static asObject = (stringContent: string): Ownership => asOwnershipDefintion(stringContent);
 

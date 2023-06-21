@@ -1,25 +1,28 @@
 import { ContextFile } from './models';
 
-type StrategyFunction = (
-  _commonAncestorFile: ContextFile | undefined,
-  _existingFile: ContextFile | undefined,
-  _proposedFile: ContextFile | undefined,
-  _options?: {}) => ContextFile | undefined;
+export type StrategyFunction = (
+  commonAncestorFile: ContextFile | undefined,
+  existingFile: ContextFile | undefined,
+  proposedFile: ContextFile | undefined,
+  options?: {},
+) => ContextFile | undefined;
 
 export class MergeStrategies {
-  public static alwaysUpdate: StrategyFunction = function alwaysUpdate(
+  public static alwaysUpdate(
     _commonAncestorFile: ContextFile | undefined,
     _existingFile: ContextFile | undefined,
-    _proposedFile: ContextFile | undefined,
-    _options?: {}) {
-    return _existingFile;
-  };
+    proposedFile: ContextFile | undefined,
+    _options?: {},
+  ) {
+    return proposedFile;
+  }
 
-  public static neverUpdate: StrategyFunction = function neverUpdate(
+  public static neverUpdate(
     _commonAncestorFile: ContextFile | undefined,
-    _existingFile: ContextFile | undefined,
+    existingFile: ContextFile | undefined,
     _proposedFile: ContextFile | undefined,
-    _options?: {}) {
-    return _existingFile;
-  };
+    _options?: {},
+  ) {
+    return existingFile;
+  }
 }
