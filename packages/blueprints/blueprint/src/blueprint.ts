@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import * as fs from 'fs';
 import * as path from 'path';
 
 import { JsonFile, Project } from 'projen';
 import { Context } from './context';
+import { createContextFile, filepathSet } from './resynthesis/file-set';
+import { StrategyLocations, deserializeStrategies } from './resynthesis/merge-strategies/deserialize-strategies';
+import { match } from './resynthesis/merge-strategies/match';
+import { Strategy } from './resynthesis/merge-strategies/models';
 
 export interface ParentOptions {
   outdir: string;
@@ -14,6 +19,7 @@ export interface Options extends ParentOptions {}
 
 export class Blueprint extends Project {
   public readonly context: Context;
+  protected strategies: StrategyLocations | undefined;
 
   constructor(options: Options) {
     super({
@@ -47,22 +53,46 @@ export class Blueprint extends Project {
     });
   }
 
-  throwSynthesisError(error: BlueprintSynthesisError) {
-    throw error;
+  addStrategy(bundlepath: string, strategy: Strategy) {
+    if (!this.strategies) {
+      this.strategies = {};
+    }
+    if (!this.strategies[bundlepath]) {
+      this.strategies[bundlepath] = [];
+    }
+    this.strategies[bundlepath].push(strategy);
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
-    console.log(`CALLING RESYNTH with: ${ancestorBundle}, ${existingBundle}, ${proposedBundle}`);
-    console.log('OUTPUTTING TO : ' + this.outdir);
-    //1. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
-    const supersetFileSuffixes: string[] = constructFileSet([ancestorBundle, existingBundle, proposedBundle]);
-    console.log(supersetFileSuffixes);
+    //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
+    // only consider files under the source code 'src'
+    const validStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
 
-    //2. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
+    //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
+    const supersetSourcePaths: string[] = filepathSet([ancestorBundle, existingBundle, proposedBundle], ['src/**']);
+    supersetSourcePaths.forEach(sourcePath => {
+      //3. for each file, match it with a merge strategy
+      const strategy = match(sourcePath, validStrategies);
+      const resolvedFile = strategy.strategy(
+        createContextFile(ancestorBundle, sourcePath),
+        createContextFile(existingBundle, sourcePath),
+        createContextFile(proposedBundle, sourcePath),
+      );
+      console.debug(`Resolve: ${strategy.globs} on ${strategy.identifier} on ${sourcePath}`);
+      if (resolvedFile) {
+        //4. write the result of the merge strategy to the outdir/src/path
+        console.debug(`  -> written: ${resolvedFile.path}`);
+        const outputPath = path.join(this.outdir, resolvedFile.path);
+        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+        fs.writeFileSync(outputPath, resolvedFile.buffer);
+      } else {
+        console.debug('  -> removed');
+      }
+    });
+  }
 
-    //3. for each file, match it with a merge strategy. Special case handle of the ownership file
-
-    //4. write the result of the merge strategy to the outdirectory/src
+  throwSynthesisError(error: BlueprintSynthesisError) {
+    throw error;
   }
 }
 
@@ -94,7 +124,4 @@ export class BlueprintSynthesisError extends Error {
     super(message);
     this.name = type;
   }
-}
-function constructFileSet(_arg0: string[]): string[] {
-  return [];
 }

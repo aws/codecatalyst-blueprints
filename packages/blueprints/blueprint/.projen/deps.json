@@ -9,6 +9,10 @@
       "type": "build"
     },
     {
+      "name": "@types/globule",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^14",
       "type": "build"
