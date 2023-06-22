@@ -2,7 +2,7 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceFile, SourceRepository, BlueprintOwnershipFile, MergeStrategies } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceFile, SourceRepository, BlueprintOwnershipFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
   WorkflowDefinition,
   Workflow,
@@ -14,7 +14,7 @@ import {
   AutoDiscoverReportDefinition,
 } from '@caws-blueprint-component/caws-workflows';
 import { SampleWorkspaces, Workspace, WorkspaceDefinition, addPostStartEvent } from '@caws-blueprint-component/caws-workspaces';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { SampleDir, SampleFile } from 'projen';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import defaults from './defaults.json';

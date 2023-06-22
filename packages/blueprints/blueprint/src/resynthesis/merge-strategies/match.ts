@@ -1,5 +1,5 @@
 import globule from 'globule';
-import { MergeStrategies } from './merge-strategy';
+import { MergeStrategies } from './merge-strategies';
 import { Strategy } from './models';
 
 export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {

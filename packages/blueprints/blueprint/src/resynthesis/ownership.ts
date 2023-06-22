@@ -1,5 +1,5 @@
 import { Blueprint } from '../blueprint';
-import { MergeStrategies } from './merge-strategies/merge-strategy';
+import { MergeStrategies } from './merge-strategies/merge-strategies';
 import { Strategy } from './merge-strategies/models';
 
 export class Ownership {

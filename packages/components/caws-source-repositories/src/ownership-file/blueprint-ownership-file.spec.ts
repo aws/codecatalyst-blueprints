@@ -1,9 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { MergeStrategies } from '../lifecycle/merge-strategy';
-import { Strategy } from '../lifecycle/models';
-import { BlueprintOwnershipFile } from './blueprint-ownership-file';
+import { MergeStrategies, Strategy, Blueprint, Ownership } from '@caws-blueprint/blueprints.blueprint';
 
 // correspond with ownership files in the examples directory
 const VALID_TEST_CASES: { name: string; strategies: Strategy[] }[] = [
@@ -49,7 +46,7 @@ describe('BlueprintOwnershipFile', () => {
     const expectedContents = getExampleFile(testCase.name);
 
     expect(
-      BlueprintOwnershipFile.asString(mockBlueprint, {
+      Ownership.asString(mockBlueprint, {
         resynthesis: {
           strategies: testCase.strategies,
         },
@@ -60,7 +57,7 @@ describe('BlueprintOwnershipFile', () => {
   test.each(VALID_TEST_CASES)('successfully deserializes test case: $name', testCase => {
     const contents = getExampleFile(testCase.name);
 
-    expect(BlueprintOwnershipFile.asDefinition(contents)).toMatchObject({
+    expect(Ownership.asObject(contents)).toMatchObject({
       resynthesis: {
         strategies: testCase.strategies,
       },
@@ -69,7 +66,7 @@ describe('BlueprintOwnershipFile', () => {
 
   test.each(INVALID_EXAMPLE_FILES)('throws an error when deserializing: %s', exampleFileName => {
     expect(() => {
-      BlueprintOwnershipFile.asDefinition(getExampleFile(exampleFileName, true));
+      Ownership.asObject(getExampleFile(exampleFileName, true));
     }).toThrow();
   });
 
@@ -81,7 +78,7 @@ describe('BlueprintOwnershipFile', () => {
     } as Blueprint;
 
     expect(() => {
-      BlueprintOwnershipFile.asString(mockBlueprintWithMissingPackageName, {
+      Ownership.asString(mockBlueprintWithMissingPackageName, {
         resynthesis: {
           strategies: [
             {
