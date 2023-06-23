@@ -93,15 +93,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
  * attempts to get options from each location in order (if they exist), otherwise returns undefined
  * If prioroptionsLocation is passed, but nothing is there, this errors.
  */
-const getPriorOptions = (
-  log: pino.BaseLogger,
-  optionsLocation: (string | undefined)[],
-):
-  | undefined
-  | {
-      path: string;
-      option: any;
-    } => {
+const getPriorOptions = (log: pino.BaseLogger, optionsLocation: (string | undefined)[]) => {
   const locations = optionsLocation.filter(elemnt => !!elemnt);
   for (const location of locations) {
     if (location && fs.existsSync(location)) {

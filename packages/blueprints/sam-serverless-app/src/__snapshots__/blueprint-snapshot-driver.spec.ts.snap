@@ -224,6 +224,13 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
+exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.ownership-file 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
 exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.vscode/extensions.json 1`] = `
 "{
     "recommendations": [
@@ -522,13 +529,6 @@ If you still want to deploy without using CI/CD workflows, you can follow these 
 
 ## Additional Resources
 See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
-"
-`;
-
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/blueprint.ownership 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
-# Internal merge strategy: neverUpdate
-*
 "
 `;
 
@@ -1903,6 +1903,13 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
+exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.vscode/extensions.json 1`] = `
 "{
     "recommendations": [
@@ -2516,13 +2523,6 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
   }"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/blueprint.ownership 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
-# Internal merge strategy: neverUpdate
-*
-"
-`;
-
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
 "schemaVersion: 2.0.0
 metadata:
@@ -2861,6 +2861,13 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
         <method v="2" />
     </configuration>
 </component>
+"
+`;
+
+exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
+"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
 "
 `;
 
@@ -3470,13 +3477,6 @@ def test_lambda_handler(apigw_event):
     assert ret["statusCode"] == 200
     assert "message" in ret["body"]
     assert data["message"] == "hello world"
-"
-`;
-
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/blueprint.ownership 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
-# Internal merge strategy: neverUpdate
-*
 "
 `;
 
