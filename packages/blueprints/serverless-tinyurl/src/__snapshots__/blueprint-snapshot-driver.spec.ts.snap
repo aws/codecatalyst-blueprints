@@ -131,8 +131,8 @@ backend/canary/**
 
 [always_update] @caws-blueprint/blueprints.serverless-tinyurl
 # Internal merge strategy: alwaysUpdate
-**/*.config.json
-**/tsconfig.json
+**/jest.config.json
+**/*/tsconfig.json
 "
 `;
 
