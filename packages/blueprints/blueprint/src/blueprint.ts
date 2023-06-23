@@ -102,7 +102,7 @@ export class Blueprint extends Project {
       console.debug(structureMatchReport(maxIdlength, strategy, subdirectory!, filepath!));
       if (resolvedFile) {
         //4. write the result of the merge strategy to the outdir/src/path
-        const outputPath = path.join(this.outdir, resolvedFile.path);
+        const outputPath = path.join(this.outdir, subdirectory!, resolvedFile.path);
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, resolvedFile.buffer);
       } else {
