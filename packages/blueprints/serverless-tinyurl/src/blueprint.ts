@@ -4,6 +4,7 @@ import { Workflow } from '@caws-blueprint-component/caws-workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
+import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -124,20 +125,20 @@ export class Blueprint extends ParentBlueprint {
           {
             identifier: 'never_update',
             strategy: MergeStrategies.neverUpdate,
-            globs: [
-              'backend/lambda/**',
-              'backend/cdk/**',
-              'frontend/cdk/**',
-              'backend/public/**',
-              'backend/src/**',
-              'backend/canary/**',
-              '**/README.md',
-            ],
+            globs: ['backend/lambda/**', 'backend/public/**', 'backend/src/**', 'backend/canary/**', '**/README.md'],
           },
           {
             identifier: 'always_update',
             strategy: MergeStrategies.alwaysUpdate,
-            globs: ['**/jest.config.json', '**/*/tsconfig.json'],
+            globs: ['**/jest.config.js', '**/*/tsconfig.json', '.codecatalyst/*'],
+          },
+          {
+            identifier: 'custom_shared_ownership',
+            strategy: (_ancestor: ContextFile | undefined, _existingFile: ContextFile | undefined, _proposedFile: ContextFile | undefined) => {
+              // resolve btetter;
+              return undefined;
+            },
+            globs: ['backend/cdk/**', 'frontend/cdk/**'],
           },
         ],
       },
