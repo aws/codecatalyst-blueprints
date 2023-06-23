@@ -5,7 +5,7 @@ import * as path from 'path';
 import { JsonFile, Project } from 'projen';
 import { Context } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
-import { createContextFile } from './resynthesis/context-file';
+import { createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies } from './resynthesis/merge-strategies/deserialize-strategies';
 import { match } from './resynthesis/merge-strategies/match';
@@ -74,6 +74,16 @@ export class Blueprint extends Project {
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
     const validStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
+    // used for pretty formatting
+    let maxIdlength = 0;
+    for (const [ownershipFile, strategies] of Object.entries(validStrategies)) {
+      for (const strategy of strategies) {
+        console.log(`<<STRATEGY>> [${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`);
+        maxIdlength = Math.max(strategy.identifier.length, maxIdlength);
+      }
+    }
+    console.log('<<STRATEGY>> [SYS-FALLBACK] [FALLBACK_never_update] matches [*]');
+    maxIdlength = Math.max(maxIdlength, 'STRATEGY-SYS-FALLBACK'.length);
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     // only consider files under the source code 'src'
@@ -81,20 +91,22 @@ export class Blueprint extends Project {
     supersetSourcePaths.forEach(sourcePath => {
       //3. for each file, match it with a merge strategy
       const strategy = match(sourcePath, validStrategies);
+      const { resourcePrefix, subdirectory, filepath } = destructurePath(sourcePath, '');
+
       const resolvedFile = strategy.strategy(
-        createContextFile(ancestorBundle, sourcePath),
-        createContextFile(existingBundle, sourcePath),
-        createContextFile(proposedBundle, sourcePath),
+        createContextFile(ancestorBundle, resourcePrefix!, subdirectory!, filepath!),
+        createContextFile(existingBundle, resourcePrefix!, subdirectory!, filepath!),
+        createContextFile(proposedBundle, resourcePrefix!, subdirectory!, filepath!),
       );
-      console.debug(`Resolve: ${strategy.globs} on ${strategy.identifier} on ${sourcePath}`);
+
+      console.debug(structureMatchReport(maxIdlength, strategy, subdirectory!, filepath!));
       if (resolvedFile) {
         //4. write the result of the merge strategy to the outdir/src/path
-        console.debug(`  -> written: ${resolvedFile.path}`);
         const outputPath = path.join(this.outdir, resolvedFile.path);
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, resolvedFile.buffer);
       } else {
-        console.debug('  -> removed');
+        console.debug('\t -> removed');
       }
     });
   }
@@ -132,4 +144,10 @@ export class BlueprintSynthesisError extends Error {
     super(message);
     this.name = type;
   }
+}
+
+function structureMatchReport(maxStrategyLength: number, strategy: Strategy, repository: string, filepath: string) {
+  return `[${strategy.identifier}] ${' '.repeat(maxStrategyLength - strategy.identifier.length)} [${repository}] [${filepath}] -> [${
+    strategy.globs
+  }]`;
 }

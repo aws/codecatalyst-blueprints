@@ -118,6 +118,24 @@ Compute:
 "
 `;
 
+exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.ownership-file 1`] = `
+"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: neverUpdate
+backend/lambda/**
+backend/cdk/**
+frontend/cdk/**
+backend/public/**
+backend/src/**
+backend/canary/**
+**/README.md
+
+[always_update] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: alwaysUpdate
+**/*.config.json
+**/tsconfig.json
+"
+`;
+
 exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/README.md 1`] = `
 "# Backend
 
@@ -1519,13 +1537,6 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
         </plugins>
     </build>
 </project>
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/blueprint.ownership 1`] = `
-"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
-# Internal merge strategy: neverUpdate
-*
 "
 `;
 

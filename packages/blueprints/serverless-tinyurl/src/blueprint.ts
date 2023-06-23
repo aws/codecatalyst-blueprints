@@ -124,7 +124,20 @@ export class Blueprint extends ParentBlueprint {
           {
             identifier: 'never_update',
             strategy: MergeStrategies.neverUpdate,
-            globs: ['*'],
+            globs: [
+              'backend/lambda/**',
+              'backend/cdk/**',
+              'frontend/cdk/**',
+              'backend/public/**',
+              'backend/src/**',
+              'backend/canary/**',
+              '**/README.md',
+            ],
+          },
+          {
+            identifier: 'always_update',
+            strategy: MergeStrategies.alwaysUpdate,
+            globs: ['**/jest.config.json', '**/*/tsconfig.json'],
           },
         ],
       },

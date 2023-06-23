@@ -17,7 +17,6 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
     }
 
     const relativeBundlePath = bundlePath.startsWith(commonPath) ? bundlePath.slice(commonPath.length) : bundlePath;
-    console.log({ relativeBundlePath, commonPath, bundlePath, ownershipPath });
     const matchedStrategy = matchStrategies(relativeBundlePath, relativeStrategies);
     if (matchedStrategy) {
       return matchedStrategy;
@@ -26,7 +25,7 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
 
   // TODO: Default to three way merge once it exists.
   return {
-    identifier: 'default_MergeStrategies.neverUpdate',
+    identifier: 'FALLBACK_never_update',
     strategy: MergeStrategies.neverUpdate,
     globs: ['*'],
   };

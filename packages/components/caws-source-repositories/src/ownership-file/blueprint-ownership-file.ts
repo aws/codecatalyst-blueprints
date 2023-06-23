@@ -16,10 +16,11 @@ export interface BlueprintOwnershipFileDefinition extends Ownership {
  */
 export class BlueprintOwnershipFile extends File {
   constructor(protected readonly sourceRepository: SourceRepository, options: BlueprintOwnershipFileDefinition) {
-    super(
-      sourceRepository,
-      path.join(options.filePath ?? '', BLUEPRINT_OWNERSHIP_FILE),
-      Buffer.from(Ownership.asString(sourceRepository.blueprint, options)),
-    );
+    const filepath = path.join(options.filePath ?? '', BLUEPRINT_OWNERSHIP_FILE);
+    super(sourceRepository, filepath, Buffer.from(Ownership.asString(sourceRepository.blueprint, options)));
+
+    options.resynthesis?.strategies.forEach(strategy => {
+      this.sourceRepository.blueprint.addStrategy(path.join(sourceRepository.relativePath, filepath), strategy);
+    });
   }
 }

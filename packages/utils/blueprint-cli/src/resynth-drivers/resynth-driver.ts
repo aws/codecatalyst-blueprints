@@ -49,10 +49,9 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
       let priorOptions = getPriorOptions(log, [
         options.priorOptions,
         options.existingBundle && path.join(options.existingBundle, 'options.json'),
-        options.existingBundle && path.join(options.existingBundle, EXISTING_BUNDLE_SUBPATH, 'options.json'),
         path.join(outputDir, EXISTING_BUNDLE_SUBPATH, 'options.json'),
       ]);
-      const existingBundle = options.existingBundle || path.join(options.outdir, EXISTING_BUNDLE_SUBPATH);
+      const existingBundle = options.existingBundle || path.join(outputDir, EXISTING_BUNDLE_SUBPATH);
 
       log.info('==========================================');
       log.info(`[${jobname}]`);

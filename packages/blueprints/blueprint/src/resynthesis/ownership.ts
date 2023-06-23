@@ -1,11 +1,13 @@
 import { Blueprint } from '../blueprint';
-import { MergeStrategies } from './merge-strategies/merge-strategies';
 import { Strategy } from './merge-strategies/models';
 
+interface StrategyIdMap {
+  [identifier: string]: Strategy;
+}
 export class Ownership {
   public static DEFAULT_FILE_NAME = '.ownership-file';
   public static asString = (blueprint: Blueprint, fileDefinition: Ownership): string => asOwnershipString(blueprint, fileDefinition);
-  public static asObject = (stringContent: string): Ownership => asOwnershipDefintion(stringContent);
+  public static asObject = (stringContent: string, inMemoryMapping: StrategyIdMap): Ownership => asOwnershipDefintion(stringContent, inMemoryMapping);
 
   resynthesis?: {
     strategies: Strategy[];
@@ -35,7 +37,7 @@ const asOwnershipString = (blueprint: Blueprint, fileDefinition: Ownership): str
   return fileContents.trimEnd() + '\n';
 };
 
-const asOwnershipDefintion = (fileContent: string): Ownership => {
+const asOwnershipDefintion = (fileContent: string, inMemoryMapping: StrategyIdMap): Ownership => {
   const lines = fileContent.split(/\r?\n/);
 
   const strategies: Strategy[] = [];
@@ -48,11 +50,11 @@ const asOwnershipDefintion = (fileContent: string): Ownership => {
     }
 
     const strategy = parseSectionLine(trimmedLine);
-    if (strategy) {
+    if (strategy && strategy.identifier in inMemoryMapping) {
       strategies.push({
         identifier: strategy.identifier,
         owner: strategy.owner,
-        strategy: MergeStrategies.neverUpdate, // TODO: look up proper merge strategy function
+        strategy: (inMemoryMapping[strategy.identifier] || {}).strategy,
         globs: [],
       });
       return;
