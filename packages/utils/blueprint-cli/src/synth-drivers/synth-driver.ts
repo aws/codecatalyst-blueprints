@@ -72,6 +72,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
         blueprintOptions: wizardOption.option,
         jobname,
         outputDirectory: outputDir,
+        existingBundle: options.existingBundle || '',
       });
     });
   } catch (error) {

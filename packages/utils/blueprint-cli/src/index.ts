@@ -78,6 +78,7 @@ yargs
         jobname: path.parse(argv.options).base,
         outputDirectory: argv.outdir,
         synthDriver: driverFile,
+        existingBundle: argv.existingBundle || '',
       });
       process.exit(0);
     },

@@ -6,19 +6,9 @@ import { SourceRepository } from '../repository';
 /**
  * File in which we record ownership preferences and overrides
  */
-export const BLUEPRINT_OWNERSHIP_FILE = 'blueprint.ownership';
-
+export const BLUEPRINT_OWNERSHIP_FILE = Ownership.DEFAULT_FILE_NAME;
 export interface BlueprintOwnershipFileDefinition extends Ownership {
   filePath?: string;
-}
-
-export class BlueprintOwnershipFileSyntaxError extends Error {
-  lineNumber: number;
-
-  constructor(message: string, lineNumber: number) {
-    super(`Error parsing blueprint ownership file: line ${lineNumber}: ${message}`);
-    this.lineNumber = lineNumber;
-  }
 }
 
 /**

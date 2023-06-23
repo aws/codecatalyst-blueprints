@@ -1,4 +1,4 @@
-import { ContextFile } from './models';
+import { ContextFile } from '../context-file';
 
 export type StrategyFunction = (
   commonAncestorFile: ContextFile | undefined,
