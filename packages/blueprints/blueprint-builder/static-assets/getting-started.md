@@ -110,7 +110,7 @@ Publish a preview version
 
 ```
 yarn blueprint:preview
-yarn blueprint:preview --endpoint 'api-gamma.quokka.codes'// Publish to another (integ) endpoint. You shouldn't normally need to do this.
+yarn blueprint:preview --endpoint 'api-gamma.quokka.codes' // Publish to another (integ) endpoint. You shouldn't normally need to do this.
 ```
 
 You're done!
