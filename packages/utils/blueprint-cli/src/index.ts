@@ -7,7 +7,7 @@ import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
-import { ConvertOptions, convertToAssessmentObjects } from './snapshot-converter';
+import { ConvertOptions, convertToAssessmentObjects } from './snapshot-assessment-converter/snapshot-converter';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
 
@@ -172,15 +172,21 @@ yargs
     command: 'snapshot-converter <pathToConfiguration>',
     describe: 'converts snapshot and other configurations to a list of assessment objects for Blueprint Health Service',
     builder: (args: yargs.Argv<unknown>) => {
-      return args.positional('pathToConfiguration', {
-        describe: 'path to user-defined configuration',
-        type: 'string',
-        demandOption: true,
-      });
+      return args
+        .positional('pathToConfiguration', {
+          describe: 'path to user-defined configuration',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('useLatest', {
+          description: 'Use the lastest blueprint version specified in package.json',
+          default: false,
+          type: 'boolean',
+        });
     },
     handler: async (argv: ConvertOptions): Promise<void> => {
       log.info(argv);
-      const pathToAssessmentObjects = convertToAssessmentObjects(log, argv.pathToConfiguration);
+      const pathToAssessmentObjects = convertToAssessmentObjects(log, argv.pathToConfiguration, argv.useLatest);
       log.info(`Blueprint assessment objects created, path to objects: '${pathToAssessmentObjects}'.`);
       process.exit(0);
     },

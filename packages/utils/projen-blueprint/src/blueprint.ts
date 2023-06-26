@@ -131,7 +131,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       `yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher ${organization} --endpoint public.api.quokka.codes`,
     );
 
-    this.setScript('blueprint:snapshot-converter', 'yarn blueprint snapshot-converter ./user-defined-configuration.json');
+    this.setScript('blueprint:snapshot-converter', 'yarn blueprint snapshot-converter ./user-defined-assessment-configuration.json');
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);
