@@ -2,7 +2,8 @@ import * as path from 'path';
 
 import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { Component, YamlFile } from 'projen';
+import yaml from 'js-yaml';
+import { Component, TextFile } from 'projen';
 // import { ActionDefiniton } from '..';
 import { ComputeDefintion } from './compute';
 import { SourceDefiniton } from './sources';
@@ -27,10 +28,23 @@ export interface WorkflowDefinition {
   };
 }
 
+export interface WorkflowOptions {
+  /**
+   * Additional comments to be added to the top of the generated .yaml file of the workflow.
+   * The comments will be shown on top of the workflow definitions.
+   * Example value: ['Foo', 'Bar']
+   */
+  additionalComments?: string[];
+  /**
+   * Determine if the workflow will be generated as commented out entirely
+   */
+  commented?: boolean;
+}
+
 export const workflowLocation = '.codecatalyst/workflows';
 
 export class Workflow extends Component {
-  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any) {
+  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any, options?: WorkflowOptions) {
     super(blueprint);
 
     const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name}.yaml`;
@@ -38,11 +52,23 @@ export class Workflow extends Component {
     // last write wins
     sourceRepository.project.tryRemoveFile(workflowPath);
 
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, indendedWorkflowLocation), {
+    let yamlContent = yaml.dump(workflow).split('\n');
+
+    if (options?.commented) {
+      yamlContent = yamlContent.map(commentLine);
+    }
+
+    if (options?.additionalComments) {
+      yamlContent = [...options.additionalComments.map(commentLine), ...yamlContent];
+    }
+
+    new TextFile(blueprint, workflowPath, {
       marker: false,
-      obj: {
-        ...workflow,
-      },
+      lines: yamlContent,
     });
   }
+}
+
+function commentLine(line: string) {
+  return '# ' + line;
 }

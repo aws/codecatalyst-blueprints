@@ -75,9 +75,9 @@
     "serverless"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.1.54",
+  "version": "0.1.57",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
