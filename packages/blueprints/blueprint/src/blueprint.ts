@@ -76,13 +76,13 @@ export class Blueprint extends Project {
     const validStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
     // used for pretty formatting
     let maxIdlength = 0;
+    console.log('<<STRATEGY>> [SYS-FALLBACK] [FALLBACK_never_update] matches [*]');
     for (const [ownershipFile, strategies] of Object.entries(validStrategies)) {
       for (const strategy of strategies) {
         console.log(`<<STRATEGY>> [${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`);
         maxIdlength = Math.max(strategy.identifier.length, maxIdlength);
       }
     }
-    console.log('<<STRATEGY>> [SYS-FALLBACK] [FALLBACK_never_update] matches [*]');
     maxIdlength = Math.max(maxIdlength, 'STRATEGY-SYS-FALLBACK'.length);
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src

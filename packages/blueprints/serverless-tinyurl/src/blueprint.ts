@@ -2,9 +2,9 @@ import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@ca
 import { SourceRepository, SourceFile, SubstitionAsset, BlueprintOwnershipFile } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow } from '@caws-blueprint-component/caws-workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
+import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
 import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
-import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.

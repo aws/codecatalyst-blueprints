@@ -19,8 +19,8 @@ const getStrategyIds = (strategies: StrategyLocations): { [identifier: string]: 
 export const deserializeStrategies = (existingBundle: string, strategyMatch: StrategyLocations): StrategyLocations => {
   const inMemStrategies = getStrategyIds(strategyMatch);
   const validStrategies: StrategyLocations = {};
-
   const ownershipFiles = walkFiles(existingBundle, [`src/**/*${Ownership.DEFAULT_FILE_NAME}`]);
+
   ownershipFiles.forEach(ownerfile => {
     const ownershipObject = Ownership.asObject(fs.readFileSync(path.join(existingBundle, ownerfile)).toString(), inMemStrategies);
     const relevantStrategies: Strategy[] = [];

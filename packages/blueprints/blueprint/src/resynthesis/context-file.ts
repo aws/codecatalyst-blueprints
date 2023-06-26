@@ -23,7 +23,7 @@ export interface DestructuredPath {
 
 export function destructurePath(absoluteFilePath: string, absoluteBundlePath: string): DestructuredPath {
   const relativePath = path.relative(absoluteBundlePath, absoluteFilePath);
-  const splitpath = relativePath.split('/');
+  const splitpath = path.posix.normalize(relativePath).split('/');
 
   let resourcePrefix = splitpath.shift();
   if (!resourcePrefix) {

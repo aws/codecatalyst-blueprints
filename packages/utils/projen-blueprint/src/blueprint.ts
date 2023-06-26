@@ -118,14 +118,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // set upload to aws script
     const organization = options.publishingOrganization || '<<replace-organization>>';
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
-    this.setScript(
-      'blueprint:preview',
-      `yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher ${organization}`,
-    );
 
     this.setScript(
-      'blueprint:preview:prod',
-      `yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher ${organization} --endpoint public.api.quokka.codes`,
+      'blueprint:preview',
+      `yarn bump:preview && yarn blueprint:synth --cache && yarn package && blueprint publish ./ --publisher ${organization} $*`,
     );
 
     //add additional metadata fields to package.json
@@ -170,10 +166,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     }
 
     this.setScript('blueprint:synth', `${synthCommand} $*`);
-    this.setScript('blueprint:synth:cache', `${synthCommand} --cache $*`);
-
     this.setScript('blueprint:resynth', `${resynthCommand} $*`);
-    this.setScript('blueprint:resynth:cache', `yarn build:cache && ${resynthCommand} --cache  $*`);
 
     if (options.eslint) {
       this.eslint?.addIgnorePattern('src/blueprint-snapshot-*');

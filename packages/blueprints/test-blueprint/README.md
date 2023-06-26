@@ -77,7 +77,7 @@ this command:
 
 ```
 yarn build
-yarn blueprint:synth:cache
+yarn blueprint:synth --cache
 ```
 
 ### Publishing
