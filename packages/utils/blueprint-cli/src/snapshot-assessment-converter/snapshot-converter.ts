@@ -1,36 +1,33 @@
 import fs from 'fs';
 import path from 'path';
+import Ajv from 'ajv';
 
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 
-import {
-  BlueprintAssessmentObject,
-  // BlueprintHealthAssessmentWorkflowRequirement,
-  // BlueprintHealthAssessmentCleanupWorkflow,
-  // BlueprintHealthAssessmentDevEnvironmentIDEConfiguration,
-  // IdeConfiguration,
-  ScheduleType,
-} from './model';
+import { BlueprintAssessmentObjectSchema, MinimalBlueprintAssessmentObject, FullBlueprintAssessmentObject } from './constants';
+import { BlueprintAssessmentObject, ScheduleType } from './model';
 
 export interface ConvertOptions extends yargs.Arguments {
   pathToConfiguration: string;
   useLatest: boolean;
 }
-//const currentDirectory = process.cwd();
-const currentDirectory = path.join(process.cwd(), '/../../blueprints/sam-serverless-app');
+
+const currentDirectory = process.cwd();
 
 /**
  * Converts configurations to BHS assessment objects.
  */
 export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefinedConfiguration: string, useLatest: boolean): string => {
+  generateDefaultConfiguration(log);
+
   const userDefinedConfiguration = loadUserDefinedConfiguration(log, pathToUserDefinedConfiguration);
-  const packageJson = loadPackageJson(log, path.join(currentDirectory, '/package.json'));
+  const packageJson = loadFile(log, path.join(currentDirectory, '/package.json'));
   const snapshotConfigurationsFolderPath = path.join(currentDirectory, '/src/snapshot-configurations');
   const assessmentObjects: object[] = [];
 
   if (snapshotConfigurationsExist(snapshotConfigurationsFolderPath)) {
-    log.info('Snapshot configurations found');
+    log.info('Snapshot configurations folder found');
     try {
       const snapshotConfigurationsFileNames = fs.readdirSync(snapshotConfigurationsFolderPath);
       snapshotConfigurationsFileNames.forEach(snapshotConfigurationsFileName => {
@@ -42,7 +39,8 @@ export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefin
         assessmentObjects.push(assessmentObject);
       });
     } catch (error) {
-      log.error('Error reading folder:', error);
+      log.error(`Can not read snapshot configuration file. Detailed error: \n\n ${error}`);
+      process.exit(1);
     }
   } else {
     log.info('Snapshot configuration not found, converting to assessment object using only default snapshot configuration');
@@ -53,44 +51,51 @@ export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefin
   const defaultAssessmentObject = createAssessmentObject(log, defaultSnapshotConfigurationFilePath, userDefinedConfiguration, packageJson, useLatest);
   assessmentObjects.push(defaultAssessmentObject);
 
+  validateAssessmentObjects(log, assessmentObjects);
+
   const assessmentObjectsString = JSON.stringify(assessmentObjects, null, 2);
-  const pathToAssessmentObjectsDirectory = './src/snapshot-assessment-converter/assessments';
-  const pathToAssessmentObjectsFile = `${pathToAssessmentObjectsDirectory}/assessment-objects.json`;
+  const pathToAssessmentObjectsDirectory = path.join(currentDirectory, '/src/snapshot-assessment-converter/assessments');
+  const pathToAssessmentObjectsFile = path.join(pathToAssessmentObjectsDirectory, '/assessment-objects.json');
   if (!fs.existsSync(pathToAssessmentObjectsDirectory)) {
     fs.mkdirSync(pathToAssessmentObjectsDirectory, { recursive: true });
   }
-
-  // create folder: /src/snapshot-assessment-converter/
-  // In that folder, we have two folders:
-  // Input: config/config.json + config/minimal.json + config/full.json
-  // Output: assessments/assessment-objects.json
-
   fs.writeFileSync(pathToAssessmentObjectsFile, assessmentObjectsString);
 
   return pathToAssessmentObjectsFile;
 };
 
 const loadUserDefinedConfiguration = (log: pino.BaseLogger, pathToUserDefinedConfiguration: string): BlueprintAssessmentObject => {
+  let userDefinedConfigurationBuffer: Buffer;
+
   try {
-    const userDefinedConfigurationBuffer = fs.readFileSync(pathToUserDefinedConfiguration);
+    userDefinedConfigurationBuffer = fs.readFileSync(pathToUserDefinedConfiguration);
     log.info('User-defined assessment configuration found');
-    return JSON.parse(userDefinedConfigurationBuffer.toString());
   } catch (error) {
-    log.error('User-defined assessment configuration not found');
-    throw new Error(`User-defined assessment configuration file can not be found at the specified path. Please make sure the path is valid and the file exists. \n
-    Specified path: ${pathToUserDefinedConfiguration} \n`);
+    log.error(`User-defined assessment configuration file can not be found at the specified path. Please make sure the path is valid and the file is a valid json file. \n
+    Specified path: ${pathToUserDefinedConfiguration}`);
+    process.exit(1);
+  }
+
+  try {
+    const userDefinedConfiguration = JSON.parse(userDefinedConfigurationBuffer.toString());
+    return userDefinedConfiguration;
+  } catch (error) {
+    log.error(`Error parsing user-defined assessment configuration. Please make sure it is a valid json object. \n
+    Detailed error: \n\n ${error}`);
+    process.exit(1);
   }
 };
 
-const loadPackageJson = (log: pino.BaseLogger, pathToPackageJson: string): object => {
+const loadFile = (log: pino.BaseLogger, pathToFile: string): object => {
+  const fileName = path.basename(pathToFile);
   try {
-    const packageJsonBuffer = fs.readFileSync(pathToPackageJson);
-    log.info('package.json found');
-    return JSON.parse(packageJsonBuffer.toString());
+    const fileBuffer = fs.readFileSync(pathToFile);
+    log.info(`${fileName} found`);
+    return JSON.parse(fileBuffer.toString());
   } catch (error) {
-    log.error('package.json not found');
-    throw new Error(`package.json can not be found in the specified path. Please make sure the specified path is correct. \n
-    Specified path: ${pathToPackageJson} \n`);
+    log.error(`${fileName} can not be found in the specified path. Please make sure the specified path is correct. \n
+    Specified path: ${pathToFile}`);
+    process.exit(1);
   }
 };
 
@@ -185,15 +190,10 @@ const createAssessmentObject = (
       }
     }
 
-    // TODO: use instanceof (or similar function) to check if the final shape is valid
-    // if (assessmentObject instanceof BlueprintAssessmentObject){
-    // }
-
-    log.info('This is placeholder log');
-
     return assessmentObject;
   } catch (error) {
-    throw new Error(`Something went wrong while creating assessment object. Error: ${error}`);
+    log.error(`Something went wrong while creating assessment object. Detailed error: ${error}`);
+    process.exit(1);
   }
 };
 
@@ -226,4 +226,47 @@ const trimString = (str: string): string => {
   }
 
   return str;
+};
+
+const validateAssessmentObjects = (log: pino.BaseLogger, assessmentObjects: object[]): void => {
+  const ajv = new Ajv();
+  const validate = ajv.compile(BlueprintAssessmentObjectSchema);
+  const isValid = validate(assessmentObjects);
+  if (isValid) {
+    log.info('Converted blueprint assessment object is valid');
+  } else {
+    log.error(`The converted blueprint assessment object is not valid. Please make sure all the fields are filled properly. \n
+    Detailed error: \n\n ${JSON.stringify(validate.errors)}`);
+    process.exit(1);
+  }
+};
+
+const generateDefaultConfiguration = (log: pino.BaseLogger): void => {
+  try {
+    const pathToConfigFolder = path.join(currentDirectory, 'src/snapshot-assessment-converter/config');
+    if (fs.existsSync(pathToConfigFolder)) {
+      log.info('Configuration folder found, skip creating default configuration files');
+    } else {
+      log.info('Configuration folder not found, creating default configuration files');
+
+      createFile(log, pathToConfigFolder, '/minimal.json', MinimalBlueprintAssessmentObject);
+      createFile(log, pathToConfigFolder, '/full.json', FullBlueprintAssessmentObject);
+      createFile(log, pathToConfigFolder, '/user-defined-assessment-configuration.json', MinimalBlueprintAssessmentObject);
+    }
+  } catch (error) {
+    log.error(`Error accessing config folder. Detailed error: \n\n ${error}`);
+    process.exit(1);
+  }
+};
+
+const createFile = (log: pino.BaseLogger, pathToFolder: string, fileName: string, jsonObject: object): void => {
+  try {
+    fs.mkdirSync(pathToFolder, { recursive: true });
+    const pathToFile = path.join(pathToFolder, fileName);
+    const jsonObjectString = JSON.stringify(jsonObject, null, 2);
+    fs.writeFileSync(pathToFile, jsonObjectString);
+  } catch (error) {
+    log.error(`Error making directory or writing to file. Detailed error: \n\n ${error}`);
+    process.exit(1);
+  }
 };

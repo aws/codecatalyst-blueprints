@@ -113,6 +113,10 @@
       "type": "runtime"
     },
     {
+      "name": "ajv",
+      "type": "runtime"
+    },
+    {
       "name": "axios",
       "type": "runtime"
     },

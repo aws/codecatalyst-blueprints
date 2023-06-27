@@ -15,15 +15,15 @@ export interface BlueprintAssessmentObject {
     };
     workflowsStep?: {
       timeoutInMinutes?: number;
-      verifyWorkflowsExist?: BlueprintHealthAssessmentWorkflowRequirement[]; // we need to have at least one element in list
-      verifyWorkflowRunsSucceed?: BlueprintHealthAssessmentWorkflowRequirement[]; // we need to have at least one element in list
+      verifyWorkflowsExist?: BlueprintHealthAssessmentWorkflowRequirement[];
+      verifyWorkflowRunsSucceed?: BlueprintHealthAssessmentWorkflowRequirement[];
     };
     cleanupStep?: {
       timeoutInMinutes?: number;
-      cleanupWorkflows: BlueprintHealthAssessmentCleanupWorkflow[]; // we need to have at least one element in list
+      cleanupWorkflows: BlueprintHealthAssessmentCleanupWorkflow[];
     };
     devEnvironmentStep?: {
-      devEnvironmentConfigurations: BlueprintHealthAssessmentDevEnvironmentIDEConfiguration[]; // we need to have at least one element in list
+      devEnvironmentConfigurations: BlueprintHealthAssessmentDevEnvironmentIDEConfiguration[];
     };
   };
 }
@@ -46,7 +46,7 @@ export interface BlueprintHealthAssessmentDevEnvironmentIDEConfiguration {
   ides: IdeConfiguration[];
   persistentStorage: DevEnvironmentPeristentStorage;
   startDevEnvironmentOnCreate?: boolean;
-  validateDevEnvironment?: BlueprintHealthAssessmentValidateDevEnvironmentConfiguration[]; // we need to have at least one element in list
+  validateDevEnvironment?: BlueprintHealthAssessmentValidateDevEnvironmentConfiguration[];
 }
 
 export interface IdeConfiguration {
