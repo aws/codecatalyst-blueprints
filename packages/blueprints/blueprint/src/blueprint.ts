@@ -41,10 +41,13 @@ export type AWS_REGIONS =
   | 'us-east-1'
   | 'us-east-2'
   | 'us-west-1'
-  | 'us-west-2';
+  | 'us-west-2'
+  | '*';
 
 //@ts-ignore
 export type Region<T extends AWS_REGIONS[]> = string;
+
+export type AWS_REGIONS_US = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2'];
 
 export class Blueprint extends Project {
   public readonly context: Context;
