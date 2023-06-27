@@ -1,0 +1,10 @@
+{
+  "environment": {
+    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "environmentType": "PRODUCTION"
+  },
+  "nested": {
+    "stringInput": "default string value"
+  },
+  "dropdown": "third-option"
+}
