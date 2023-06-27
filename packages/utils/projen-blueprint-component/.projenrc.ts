@@ -29,7 +29,7 @@ const version = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).version;
 project.package.addVersion(version || '0.0.0');
 
 // force node types
-project.addDevDeps('@types/node@^14');
+project.addDevDeps('@types/node@^18');
 
 // modify bumping tasks
 project.removeTask('release');

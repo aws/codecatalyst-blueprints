@@ -151,7 +151,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     if (finalOpts.blueprintSnapshotConfiguration) {
       if (finalOpts.jest) {
         this.addDeps('globule');
-        this.addDevDeps('@types/globule');
 
         this.addDeps('pino@^6.13.4');
         this.addDevDeps('@types/pino@^6.3.12');

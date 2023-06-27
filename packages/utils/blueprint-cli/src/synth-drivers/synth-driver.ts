@@ -4,11 +4,11 @@ import * as path from 'path';
 import * as deepmerge from 'deepmerge';
 import * as pino from 'pino';
 import yargs from 'yargs';
-import { RESYNTH_TS_NAME, writeResynthDriver } from '../resynth-drivers/driver';
-import { PROPOSED_BUNDLE_SUBPATH } from '../resynth-drivers/resynth';
 import { createCache } from './cache';
 import { SYNTH_TS_NAME, writeSynthDriver } from './driver';
 import { DriverFile, synthesize } from './synth';
+import { RESYNTH_TS_NAME, writeResynthDriver } from '../resynth-drivers/driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '../resynth-drivers/resynth';
 
 export interface SynthDriverCliOptions extends yargs.Arguments {
   blueprint: string;

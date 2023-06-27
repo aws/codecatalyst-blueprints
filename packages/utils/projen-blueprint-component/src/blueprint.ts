@@ -39,7 +39,7 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
     this.addDevDeps('ts-node@^10');
 
     // force node types
-    this.addDevDeps('@types/node@^14');
+    this.addDevDeps('@types/node@^18');
 
     // modify bumping tasks
     this.removeTask('release');

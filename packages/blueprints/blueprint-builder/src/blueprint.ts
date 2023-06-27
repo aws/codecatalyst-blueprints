@@ -234,7 +234,7 @@ export class Blueprint extends ParentBlueprint {
     const mainpy = new StaticAsset('starter-assets/main.py');
     new SourceFile(this.repository, 'static-assets/main.py', mainpy.toString());
 
-    new SourceFile(this.repository, '.nvmrc', 'v14.18.0');
+    new SourceFile(this.repository, '.nvmrc', 'v18.16.1');
 
     const gettingStarted = new StaticAsset('getting-started.md');
     new SourceFile(this.repository, 'GETTING_STARTED.md', gettingStarted.toString());

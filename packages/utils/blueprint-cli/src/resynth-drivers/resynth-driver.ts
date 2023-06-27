@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
-import { cleanUpDriver, getWizardOptions, makeDriverFile } from '../synth-drivers/synth-driver';
 import { EXISTING_BUNDLE_SUBPATH, resynthesize } from './resynth';
+import { cleanUpDriver, getWizardOptions, makeDriverFile } from '../synth-drivers/synth-driver';
 
 export interface ResynthDriverCliOptions extends yargs.Arguments {
   blueprint: string;
