@@ -23,6 +23,8 @@ const configurationsLocation = '${options.snapshotConfigsLocation}';
 const defaultsLocation = '${options.defaultsLocation}';
 const blueprintLocation = './';
 const outputDirectory = './';
+
+// prettier-ignore
 const GLOBS_UNDER_SNAPSHOT: string[] = [
   ${(options.configuration.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(',\n\t')}
 ];

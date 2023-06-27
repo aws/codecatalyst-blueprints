@@ -14,11 +14,13 @@ const configurationsLocation = 'src/wizard-configurations';
 const defaultsLocation = 'src/defaults.json';
 const blueprintLocation = './';
 const outputDirectory = './';
+
+// prettier-ignore
 const GLOBS_UNDER_SNAPSHOT: string[] = [
   '**',
-  '!environments/**',
-  '!aws-account-to-environment/**',
-  '!src/**/DANGER-hard-delete-deployed-resources.yaml',
+	'!environments/**',
+	'!aws-account-to-environment/**',
+	'!src/**/DANGER-hard-delete-deployed-resources.yaml'
 ];
 
 function runSnapshotSynthesis() {

@@ -46,7 +46,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged --ignore-path **/blueprint-snapshot-driver.spec.ts",
+      "pre-commit": "pretty-quick --staged",
       "pre-push": "yarn build"
     }
   },
