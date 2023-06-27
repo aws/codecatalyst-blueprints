@@ -16,7 +16,7 @@ const blueprint = new ProjenBlueprint({
   packageName: '@caws-blueprint/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/globule'],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],

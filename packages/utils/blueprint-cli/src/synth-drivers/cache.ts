@@ -2,8 +2,8 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
-import { writeResynthDriver } from '../resynth-drivers/driver';
 import { writeSynthDriver } from './driver';
+import { writeResynthDriver } from '../resynth-drivers/driver';
 
 export interface CacheResult {
   synthDriver: string;

@@ -16,9 +16,9 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 (2) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
-brew install nvm            # blueprints work only with Node 14.x
+brew install nvm            # blueprints work only with Node 18.x
 nvm use
-npm install npm@6.14.13 -g  # we depend on npm v6.14.13
+npm install npm@9.7.2 -g  # we depend on npm v9.7.2
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
 brew install svn            # used during synthesis of SAM blueprint

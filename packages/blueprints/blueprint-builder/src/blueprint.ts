@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as cp from 'child_process';
 import * as path from 'path';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { SourceRepository, SourceFile, StaticAsset } from '@caws-blueprint-component/caws-source-repositories';
 import { buildIndex } from '@caws-blueprint-util/blueprint-utils';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 
 import * as decamelize from 'decamelize';
 import { YamlFile } from 'projen';
@@ -234,7 +234,7 @@ export class Blueprint extends ParentBlueprint {
     const mainpy = new StaticAsset('starter-assets/main.py');
     new SourceFile(this.repository, 'static-assets/main.py', mainpy.toString());
 
-    new SourceFile(this.repository, '.nvmrc', 'v14.18.0');
+    new SourceFile(this.repository, '.nvmrc', 'v18.16.1');
 
     const gettingStarted = new StaticAsset('getting-started.md');
     new SourceFile(this.repository, 'GETTING_STARTED.md', gettingStarted.toString());

@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import * as yaml from 'js-yaml';
 import { Component, TextFile } from 'projen';
 import { ComputeDefintion } from './compute';

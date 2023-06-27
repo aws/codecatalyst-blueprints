@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { Strategy } from './models';
 import { Ownership } from '../ownership';
 import { walkFiles } from '../walk-files';
-import { Strategy } from './models';
 
 export type StrategyLocations = { [bundlePath: string]: Strategy[] };
 

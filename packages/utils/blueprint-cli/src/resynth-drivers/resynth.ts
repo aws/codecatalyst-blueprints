@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
+import { RESYNTH_TS_NAME, writeResynthDriver } from './driver';
 import { DriverFile, synthesize } from '../synth-drivers/synth';
 import { cleanUpDriver } from '../synth-drivers/synth-driver';
-import { RESYNTH_TS_NAME, writeResynthDriver } from './driver';
 
 export interface ResynthesizeCliOptions extends yargs.Arguments {
   blueprint: string;

@@ -1,3 +1,4 @@
+import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { Environment } from '@caws-blueprint-component/caws-environments';
 import {
   convertToWorkflowEnvironment,
@@ -8,7 +9,6 @@ import {
   WorkflowBuilder,
   WorkflowEnvironment,
 } from '@caws-blueprint-component/caws-workflows';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 
 export function makeWorkflowDefintion(
   blueprint: Blueprint,

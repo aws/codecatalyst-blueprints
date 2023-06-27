@@ -1,4 +1,6 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
+import { WorkflowDefinition } from './workflow';
 import { ComputeDefintion, TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../actions/action-cdk-bootstrap';
@@ -6,8 +8,6 @@ import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions
 import { addGenericCloudFormationCleanupAction, CfnCleanupActionParameters } from '../actions/action-cfn-cleanup';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
-import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
-import { WorkflowDefinition } from './workflow';
 
 export class WorkflowBuilder {
   definition: WorkflowDefinition;

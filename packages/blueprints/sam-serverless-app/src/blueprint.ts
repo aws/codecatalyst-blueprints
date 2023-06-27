@@ -1,6 +1,7 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceFile, SourceRepository, BlueprintOwnershipFile } from '@caws-blueprint-component/caws-source-repositories';
 import {
@@ -17,7 +18,6 @@ import {
 } from '@caws-blueprint-component/caws-workflows';
 import { DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME } from '@caws-blueprint-component/caws-workflows/lib/actions/action-cfn-cleanup';
 import { SampleWorkspaces, Workspace, WorkspaceDefinition, addPostStartEvent } from '@caws-blueprint-component/caws-workspaces';
-import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { SampleDir, SampleFile } from 'projen';
 import { getFilePermissions, writeFile } from 'projen/lib/util';
 import defaults from './defaults.json';

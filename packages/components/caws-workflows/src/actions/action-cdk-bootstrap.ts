@@ -1,6 +1,4 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { WorkflowEnvironment } from '../environment/workflow-environment';
-import { WorkflowDefinition } from '../workflow/workflow';
 import {
   getDefaultActionIdentifier,
   ActionIdentifierAlias,
@@ -9,6 +7,8 @@ import {
   OutputDefinition,
   InputsDefinition,
 } from './action';
+import { WorkflowEnvironment } from '../environment/workflow-environment';
+import { WorkflowDefinition } from '../workflow/workflow';
 
 export interface CdkBootstrapActionConfiguration {
   Region: string;

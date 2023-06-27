@@ -69,6 +69,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addVersion(version || '0.0.0');
     this.addDevDeps('ts-node@^10');
 
+    /**
+     * We explicitly set the version of projen to cut down on author errors.
+     * This is not strictly nessassary. Authors may override this by putting
+     * this.addDevDeps('projen@something-else') in their package
+     */
+    this.addDevDeps('projen@0.71.112');
+
     // modify bumping tasks
     this.removeTask('release');
     this.removeTask('bump');
@@ -151,7 +158,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     if (finalOpts.blueprintSnapshotConfiguration) {
       if (finalOpts.jest) {
         this.addDeps('globule');
-        this.addDevDeps('@types/globule');
 
         this.addDeps('pino@^6.13.4');
         this.addDevDeps('@types/pino@^6.3.12');
@@ -175,12 +181,5 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
   synth(): void {
     super.synth();
-
-    // yarn install appends '\n' while projen removes it. This results in annoying commit diffs. Fixing once and for all.
-    const pkgJson = this.tryFindFile('package.json');
-    pkgJson &&
-      fs.writeFileSync(pkgJson.absolutePath, '\n', {
-        flag: 'a+',
-      });
   }
 }
