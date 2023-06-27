@@ -49,10 +49,9 @@
   "dependencies": {
     "camelcase": "5.3.x",
     "decamelize": "5.0.x",
-    "globule": "*",
-    "ini": "*",
-    "minimatch": "*",
-    "mustache": "*"
+    "glob": "^10",
+    "minimatch": "^9",
+    "mustache": "^4"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",

@@ -175,11 +175,11 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
   synth(): void {
     super.synth();
 
-    // yarn install appends '\n' while projen removes it. This results in annoying commit diffs. Fixing once and for all.
-    const pkgJson = this.tryFindFile('package.json');
-    pkgJson &&
-      fs.writeFileSync(pkgJson.absolutePath, '\n', {
-        flag: 'a+',
-      });
+    // // yarn install appends '\n' while projen removes it. This results in annoying commit diffs. Fixing once and for all.
+    // const pkgJson = this.tryFindFile('package.json');
+    // pkgJson &&
+    //   fs.writeFileSync(pkgJson.absolutePath, '\n', {
+    //     flag: 'a+',
+    //   });
   }
 }

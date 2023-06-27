@@ -3,12 +3,12 @@
 // import { CfnDeployActionConfiguration } from "./action-cfn-deploy";
 // import { TestActionConfiguration } from "./action-test-reports";
 
-import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { BuildActionConfiguration } from './action-build';
 import { CdkBootstrapActionConfiguration } from './action-cdk-bootstrap';
 import { CdkDeployActionYamlOutput } from './action-cdk-deploy';
 import { CfnDeployActionConfiguration } from './action-cfn-deploy';
 import { TestActionConfiguration } from './action-test-reports';
+import { WorkflowEnvironment } from '../environment/workflow-environment';
 
 export enum ActionIdentifierAlias {
   build = 'build',

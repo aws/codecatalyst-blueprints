@@ -97,11 +97,7 @@
       "type": "runtime"
     },
     {
-      "name": "globule",
-      "type": "runtime"
-    },
-    {
-      "name": "ini",
+      "name": "glob",
       "type": "runtime"
     },
     {

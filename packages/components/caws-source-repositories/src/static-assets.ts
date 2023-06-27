@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as pathing from 'path';
-import * as globule from 'globule';
+import * as glob from 'glob';
 import * as Mustache from 'mustache';
 
 const STATIC_ASSET_DIRECTORY = 'static-assets';
@@ -9,8 +9,8 @@ const STATIC_ASSET_DIRECTORY = 'static-assets';
  * Helper that makes working with static assets easier.
  */
 export class StaticAsset {
-  static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: globule.IOptions): T[] {
-    return globule
+  static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: any): T[] {
+    return glob
       .sync(pathing.join(globPath ?? '**/*'), {
         cwd: STATIC_ASSET_DIRECTORY,
         nodir: true,
