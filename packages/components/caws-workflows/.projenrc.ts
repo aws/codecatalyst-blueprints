@@ -3,9 +3,8 @@ import { ProjenBlueprintComponent } from '@caws-blueprint-util/projen-blueprint-
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
   name: 'caws-workflows',
-  license: 'MIT',
   copyrightOwner: 'Amazon.com',
-  deps: ['yaml'],
+  deps: ['js-yaml'],
   peerDeps: [
     'projen',
     '@caws-blueprint-component/caws-source-repositories',
@@ -14,7 +13,7 @@ const project = new ProjenBlueprintComponent({
   ],
   description: 'This is a representation of a caws workflow.',
   packageName: '@caws-blueprint-component/caws-workflows',
-  devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node'],
+  devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node', '@types/js-yaml'],
 });
 
 project.synth();

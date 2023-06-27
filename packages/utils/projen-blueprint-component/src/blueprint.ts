@@ -18,7 +18,7 @@ export interface ProjenComponentBlueprintOptions extends typescript.TypeScriptPr
 export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
   constructor(options: ProjenComponentBlueprintOptions) {
     super({
-      license: 'MIT',
+      license: 'Apache-2.0',
       projenrcTs: true,
       sampleCode: false,
       github: false,

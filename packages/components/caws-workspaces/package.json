@@ -48,7 +48,7 @@
     "yaml": "*"
   },
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "version": "0.2.0",
   "types": "lib/index.d.ts",
   "preferGlobal": true,

@@ -68,7 +68,8 @@
     "@caws-blueprint/blueprints.blueprint": "0.2.x",
     "globule": "*",
     "pino": "^6.13.4",
-    "projen": "*"
+    "projen": "*",
+    "ts-deepmerge": "*"
   },
   "keywords": [
     "aws lambda",
@@ -80,7 +81,7 @@
     "serverless"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
   "version": "0.2.0",
   "jest": {

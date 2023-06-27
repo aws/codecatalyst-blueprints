@@ -7,7 +7,6 @@ const project = new ProjenBlueprint({
   name: 'serverless-tinyurl',
   displayName: 'AWS Serverless Tiny URL Application in Java',
   defaultReleaseBranch: 'main',
-  license: 'MIT',
   projenrcTs: true,
   sampleCode: false,
   github: false,

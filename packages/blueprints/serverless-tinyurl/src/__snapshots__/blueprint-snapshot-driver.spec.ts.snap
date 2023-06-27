@@ -29,7 +29,7 @@ exports[`Blueprint snapshots java-default.json configuration matches proposed-bu
 
 exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
 "Name: main_fullstack_workflow
-SchemaVersion: "1.0"
+SchemaVersion: '1.0'
 Triggers:
   - Type: PUSH
     Branches:
@@ -48,11 +48,11 @@ Actions:
           - cdk/target/**/*
           - lambda/target/**/*
         ExcludePaths:
-          - "*/.aws/workflows/*"
+          - '*/.aws/workflows/*'
       Artifacts:
         - Name: backend_build_artifacts
           Files:
-            - "**/*"
+            - '**/*'
     Configuration:
       Steps:
         - Run: cd backend
@@ -72,7 +72,7 @@ Actions:
       Artifacts:
         - Name: frontend_build_artifacts
           Files:
-            - "**/*"
+            - '**/*'
     Configuration:
       Steps:
         - Run: cd frontend
@@ -87,7 +87,7 @@ Actions:
     Inputs:
       Sources:
         - WorkflowSource
-    Environment: &a1
+    Environment: &ref_0
       Name: default_environment
       Connections: []
     Configuration:
@@ -97,7 +97,7 @@ Actions:
     Inputs:
       Artifacts:
         - backend_build_artifacts
-    Environment: *a1
+    Environment: *ref_0
     DependsOn:
       - BackendBuildAndPackage
       - CDKBootstrapAction
@@ -111,7 +111,7 @@ Actions:
     Inputs:
       Artifacts:
         - frontend_build_artifacts
-    Environment: *a1
+    Environment: *ref_0
     DependsOn:
       - FrontendBuildAndPackage
       - BackendCDKDeploy
@@ -119,7 +119,8 @@ Actions:
       StackName: TinyUrlFrontend
       Region: us-west-2
       CdkRootPath: frontend/
-      Context: '{"stack_name":"TinyUrlFrontend","api_domain":"\${BackendCDKDeploy.ApiDomain}","api_stage":"\${BackendCDKDeploy.ApiStage}"}'
+      Context: >-
+        {"stack_name":"TinyUrlFrontend","api_domain":"\${BackendCDKDeploy.ApiDomain}","api_stage":"\${BackendCDKDeploy.ApiStage}"}
 Compute:
   Type: EC2
   Fleet: Linux.x86-64.Large
