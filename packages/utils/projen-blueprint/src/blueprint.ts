@@ -11,6 +11,13 @@ export interface BlueprintSnapshotConfiguration {
   snapshotGlobs?: string[];
 }
 
+export interface BlueprintHealthConfiguration {
+  /**
+   * Set this to true if you want to use the converter to create blueprint assessment objects
+   */
+  enableConverter?: boolean;
+}
+
 export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
   /**
    * List of media url links
@@ -35,6 +42,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * Blueprint snapshot configuration
    */
   readonly blueprintSnapshotConfiguration?: BlueprintSnapshotConfiguration;
+
+  /**
+   * Blueprint health configuration
+   */
+  readonly blueprintHealthConfiguration?: BlueprintHealthConfiguration;
 }
 
 const DEFAULT_OPTS = {
@@ -132,8 +144,8 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     );
 
     this.setScript(
-      'blueprint:snapshot-converter',
-      'yarn blueprint snapshot-converter ./src/snapshot-assessment-converter/config/user-defined-assessment-configuration.json',
+      'blueprint:convert-to-assessment',
+      'yarn blueprint convert-to-assessment ./src/snapshot-assessment-converter/config/user-defined-assessment-configuration.json',
     );
 
     //add additional metadata fields to package.json

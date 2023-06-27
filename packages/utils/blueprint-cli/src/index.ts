@@ -169,8 +169,8 @@ yargs
     },
   })
   .command({
-    command: 'snapshot-converter <pathToConfiguration>',
-    describe: 'converts snapshot and other configurations to a list of assessment objects for Blueprint Health Service',
+    command: 'convert-to-assessment <pathToConfiguration>',
+    describe: 'converts snapshots and other configurations to assessment objects',
     builder: (args: yargs.Argv<unknown>) => {
       return args
         .positional('pathToConfiguration', {
@@ -186,8 +186,8 @@ yargs
     },
     handler: async (argv: ConvertOptions): Promise<void> => {
       log.info(argv);
-      const pathToAssessmentObjects = convertToAssessmentObjects(log, argv.pathToConfiguration, argv.useLatest);
-      log.info(`Blueprint assessment objects created, path to objects: '${pathToAssessmentObjects}'.`);
+      const pathToAssessmentObjectsDirectory = convertToAssessmentObjects(log, argv.pathToConfiguration, argv.useLatest);
+      log.info(`Blueprint assessment objects created, path to folder of objects: '${pathToAssessmentObjectsDirectory}'.`);
       process.exit(0);
     },
   })

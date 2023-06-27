@@ -28,7 +28,7 @@
     "blueprint:synth:cache": "yarn build:cache && blueprint synth ./ --outdir ./ --options ./src/defaults.json --cache",
     "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints",
     "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes",
-    "blueprint:snapshot-converter": "yarn blueprint snapshot-converter ./src/snapshot-assessment-converter/config/user-defined-assessment-configuration.json"
+    "blueprint:convert-to-assessment": "yarn blueprint convert-to-assessment ./src/snapshot-assessment-converter/config/user-defined-assessment-configuration.json"
   },
   "author": {
     "name": "Amazon Web Services",

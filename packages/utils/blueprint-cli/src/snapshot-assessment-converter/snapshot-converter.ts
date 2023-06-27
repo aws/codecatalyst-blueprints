@@ -5,7 +5,7 @@ import Ajv from 'ajv';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 
-import { BlueprintAssessmentObjectSchema, MinimalBlueprintAssessmentObject, FullBlueprintAssessmentObject } from './constants';
+import { BlueprintAssessmentObjectSchema, DefaultBlueprintAssessmentObject } from './constants';
 import { BlueprintAssessmentObject, ScheduleType } from './model';
 
 export interface ConvertOptions extends yargs.Arguments {
@@ -24,7 +24,6 @@ export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefin
   const userDefinedConfiguration = loadUserDefinedConfiguration(log, pathToUserDefinedConfiguration);
   const packageJson = loadFile(log, path.join(currentDirectory, '/package.json'));
   const snapshotConfigurationsFolderPath = path.join(currentDirectory, '/src/snapshot-configurations');
-  const assessmentObjects: object[] = [];
 
   if (snapshotConfigurationsExist(snapshotConfigurationsFolderPath)) {
     log.info('Snapshot configurations folder found');
@@ -33,10 +32,7 @@ export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefin
       snapshotConfigurationsFileNames.forEach(snapshotConfigurationsFileName => {
         log.info(`Creating assessment object using snapshot configuration '${snapshotConfigurationsFileName}'`);
         const snapshotConfigurationFilePath = path.join(snapshotConfigurationsFolderPath, snapshotConfigurationsFileName);
-
-        const assessmentObject = createAssessmentObject(log, snapshotConfigurationFilePath, userDefinedConfiguration, packageJson, useLatest);
-
-        assessmentObjects.push(assessmentObject);
+        createAssessmentObject(log, snapshotConfigurationFilePath, userDefinedConfiguration, packageJson, useLatest);
       });
     } catch (error) {
       log.error(`Can not read snapshot configuration file. Detailed error: \n\n ${error}`);
@@ -48,20 +44,10 @@ export const convertToAssessmentObjects = (log: pino.BaseLogger, pathToUserDefin
 
   log.info('Creating assessment object using default snapshot configuration (defaults.json)');
   const defaultSnapshotConfigurationFilePath = path.join(currentDirectory, '/src/defaults.json');
-  const defaultAssessmentObject = createAssessmentObject(log, defaultSnapshotConfigurationFilePath, userDefinedConfiguration, packageJson, useLatest);
-  assessmentObjects.push(defaultAssessmentObject);
+  createAssessmentObject(log, defaultSnapshotConfigurationFilePath, userDefinedConfiguration, packageJson, useLatest);
 
-  validateAssessmentObjects(log, assessmentObjects);
-
-  const assessmentObjectsString = JSON.stringify(assessmentObjects, null, 2);
   const pathToAssessmentObjectsDirectory = path.join(currentDirectory, '/src/snapshot-assessment-converter/assessments');
-  const pathToAssessmentObjectsFile = path.join(pathToAssessmentObjectsDirectory, '/assessment-objects.json');
-  if (!fs.existsSync(pathToAssessmentObjectsDirectory)) {
-    fs.mkdirSync(pathToAssessmentObjectsDirectory, { recursive: true });
-  }
-  fs.writeFileSync(pathToAssessmentObjectsFile, assessmentObjectsString);
-
-  return pathToAssessmentObjectsFile;
+  return pathToAssessmentObjectsDirectory;
 };
 
 const loadUserDefinedConfiguration = (log: pino.BaseLogger, pathToUserDefinedConfiguration: string): BlueprintAssessmentObject => {
@@ -114,7 +100,7 @@ const createAssessmentObject = (
   userDefinedConfiguration: BlueprintAssessmentObject,
   packageJson: any,
   useLatest: boolean,
-): object => {
+): void => {
   try {
     const snapshotConfigurationBuffer = fs.readFileSync(snapshotConfigurationFilePath);
     const snapshotConfiguration = JSON.parse(snapshotConfigurationBuffer.toString());
@@ -190,7 +176,16 @@ const createAssessmentObject = (
       }
     }
 
-    return assessmentObject;
+    validateAssessmentObject(log, assessmentObject);
+
+    const assessmentObjectString = JSON.stringify(assessmentObject, null, 2);
+    const pathToAssessmentObjectDirectory = path.join(currentDirectory, '/src/snapshot-assessment-converter/assessments');
+    const assessmentObjectFullFileName = path.basename(snapshotConfigurationFilePath);
+    const pathToAssessmentObjectFile = path.join(pathToAssessmentObjectDirectory, assessmentObjectFullFileName);
+    if (!fs.existsSync(pathToAssessmentObjectDirectory)) {
+      fs.mkdirSync(pathToAssessmentObjectDirectory, { recursive: true });
+    }
+    fs.writeFileSync(pathToAssessmentObjectFile, assessmentObjectString);
   } catch (error) {
     log.error(`Something went wrong while creating assessment object. Detailed error: ${error}`);
     process.exit(1);
@@ -228,10 +223,10 @@ const trimString = (str: string): string => {
   return str;
 };
 
-const validateAssessmentObjects = (log: pino.BaseLogger, assessmentObjects: object[]): void => {
+const validateAssessmentObject = (log: pino.BaseLogger, assessmentObject: object): void => {
   const ajv = new Ajv();
   const validate = ajv.compile(BlueprintAssessmentObjectSchema);
-  const isValid = validate(assessmentObjects);
+  const isValid = validate(assessmentObject);
   if (isValid) {
     log.info('Converted blueprint assessment object is valid');
   } else {
@@ -248,10 +243,7 @@ const generateDefaultConfiguration = (log: pino.BaseLogger): void => {
       log.info('Configuration folder found, skip creating default configuration files');
     } else {
       log.info('Configuration folder not found, creating default configuration files');
-
-      createFile(log, pathToConfigFolder, '/minimal.json', MinimalBlueprintAssessmentObject);
-      createFile(log, pathToConfigFolder, '/full.json', FullBlueprintAssessmentObject);
-      createFile(log, pathToConfigFolder, '/user-defined-assessment-configuration.json', MinimalBlueprintAssessmentObject);
+      createFile(log, pathToConfigFolder, '/user-defined-assessment-configuration.json', DefaultBlueprintAssessmentObject);
     }
   } catch (error) {
     log.error(`Error accessing config folder. Detailed error: \n\n ${error}`);
