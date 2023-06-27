@@ -14,7 +14,13 @@ const configurationsLocation = 'src/wizard-configurations';
 const defaultsLocation = 'src/defaults.json';
 const blueprintLocation = './';
 const outputDirectory = './';
-const GLOBS_UNDER_SNAPSHOT: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
+
+// prettier-ignore
+const GLOBS_UNDER_SNAPSHOT: string[] = [
+  '**',
+	'!environments/**',
+	'!aws-account-to-environment/**'
+];
 
 function runSnapshotSynthesis() {
   // run synthesis into several directories.
