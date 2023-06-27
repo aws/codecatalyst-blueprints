@@ -35,7 +35,6 @@ export type AWS_REGIONS =
   | 'eu-west-1'
   | 'eu-west-2'
   | 'eu-west-3'
-  | 'il-central-1'
   | 'me-central-1'
   | 'me-south-1'
   | 'sa-east-1'
