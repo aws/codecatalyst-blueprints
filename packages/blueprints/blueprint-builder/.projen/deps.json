@@ -69,10 +69,6 @@
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint-util/blueprint-utils",
-      "type": "runtime"
-    },
-    {
       "name": "@caws-blueprint-util/projen-blueprint",
       "type": "runtime"
     },
