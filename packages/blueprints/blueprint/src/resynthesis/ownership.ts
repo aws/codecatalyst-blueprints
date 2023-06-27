@@ -1,5 +1,5 @@
-import { Blueprint } from '../blueprint';
 import { Strategy } from './merge-strategies/models';
+import { Blueprint } from '../blueprint';
 
 interface StrategyIdMap {
   [identifier: string]: Strategy;

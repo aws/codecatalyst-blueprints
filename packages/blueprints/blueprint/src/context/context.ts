@@ -1,5 +1,5 @@
-import { ContextFile } from '../resynthesis/context-file';
 import { TraversalOptions } from './traverse';
+import { ContextFile } from '../resynthesis/context-file';
 
 export interface NpmConfiguration {
   readonly registry?: string;

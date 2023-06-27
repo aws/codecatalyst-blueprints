@@ -9,10 +9,6 @@
       "type": "build"
     },
     {
-      "name": "@types/globule",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },

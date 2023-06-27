@@ -1,7 +1,7 @@
-import { Ownership } from '../ownership';
-import { matchesGlob } from '../walk-files';
 import { MergeStrategies } from './merge-strategies';
 import { Strategy } from './models';
+import { Ownership } from '../ownership';
+import { matchesGlob } from '../walk-files';
 
 export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
   const directories = bundlePath.split('/');

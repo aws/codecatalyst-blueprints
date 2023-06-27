@@ -9,15 +9,7 @@
       "type": "build"
     },
     {
-      "name": "@types/globule",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
-      "type": "build"
-    },
-    {
-      "name": "@types/minimatch",
       "type": "build"
     },
     {

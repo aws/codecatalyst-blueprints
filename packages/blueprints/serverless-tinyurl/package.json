@@ -34,7 +34,6 @@
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.2.x",
     "@caws-blueprint-util/projen-blueprint": "0.2.x",
-    "@types/globule": "*",
     "@types/jest": "*",
     "@types/node": "^16",
     "@types/pino": "^6.3.12",
