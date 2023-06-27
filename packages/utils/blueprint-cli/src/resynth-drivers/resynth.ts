@@ -155,8 +155,10 @@ const setupResynthesisOutputDirectory = (
   });
 
   // save the existing code
-  removeFolders(log, [existingFilesLocation]);
-  copyFolderSync(log, options.existingBundle, existingFilesLocation);
+  if (options.existingBundle != existingFilesLocation) {
+    removeFolders(log, [existingFilesLocation]);
+    copyFolderSync(log, options.existingBundle, existingFilesLocation);
+  }
 
   // clean the rest of the output locations
   const resolvedFilesLocation = path.join(outputDirectory, RESOLVED_BUNDLE_SUBPATH);

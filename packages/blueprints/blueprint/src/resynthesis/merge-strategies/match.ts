@@ -1,4 +1,5 @@
-import globule from 'globule';
+import { Ownership } from '../ownership';
+import { matchesGlob } from '../walk-files';
 import { MergeStrategies } from './merge-strategies';
 import { Strategy } from './models';
 
@@ -7,7 +8,7 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
 
   while (directories.length > 0) {
     directories.pop();
-    const ownershipPath = [...directories, '.blueprint-ownership'].join('/');
+    const ownershipPath = [...directories, Ownership.DEFAULT_FILE_NAME].join('/');
     const commonPath = directories.join('/') + '/';
 
     const relativeStrategies = strategies[ownershipPath];
@@ -16,7 +17,6 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
     }
 
     const relativeBundlePath = bundlePath.startsWith(commonPath) ? bundlePath.slice(commonPath.length) : bundlePath;
-    console.log({ relativeBundlePath, commonPath, bundlePath, ownershipPath });
     const matchedStrategy = matchStrategies(relativeBundlePath, relativeStrategies);
     if (matchedStrategy) {
       return matchedStrategy;
@@ -25,7 +25,7 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
 
   // TODO: Default to three way merge once it exists.
   return {
-    identifier: 'default_MergeStrategies.neverUpdate',
+    identifier: 'FALLBACK_never_update',
     strategy: MergeStrategies.neverUpdate,
     globs: ['*'],
   };
@@ -34,16 +34,9 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
 function matchStrategies(bundlePath: string, strategies: Strategy[]): Strategy | undefined {
   for (let i = strategies.length - 1; i >= 0; i--) {
     const strategy = strategies[i];
-
-    if (
-      globule.isMatch(strategy.globs, bundlePath, {
-        matchBase: true,
-        dot: true,
-      })
-    ) {
+    if (matchesGlob(bundlePath, strategy.globs)) {
       return strategy;
     }
   }
-
   return;
 }

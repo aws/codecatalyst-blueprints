@@ -32,7 +32,7 @@ export interface SynthOptions {
   /**
    * Path to existing bundle context codebase
    */
-  existingBundle?: string;
+  existingBundle: string;
 
   synthDriver?: DriverFile;
 }

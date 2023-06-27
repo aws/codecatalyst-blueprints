@@ -78,6 +78,7 @@ yargs
         jobname: path.parse(argv.options).base,
         outputDirectory: argv.outdir,
         synthDriver: driverFile,
+        existingBundle: argv.existingBundle || '',
       });
       process.exit(0);
     },
@@ -120,6 +121,12 @@ yargs
     },
     handler: async (argv: SynthDriverCliOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
+      if (argv.cache) {
+        log.info('Building a production cache. Emulating the wizard');
+      } else {
+        log.info('Running in quick mode. Run this command with --cache to emulate the wizard');
+      }
+
       await driveSynthesis(log, argv);
       process.exit(0);
     },
@@ -249,8 +256,13 @@ yargs
     },
     handler: async (argv: ResynthDriverCliOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      await driveResynthesis(log, argv);
+      if (argv.cache) {
+        log.info('Building a production cache. Emulating the wizard');
+      } else {
+        log.info('Running in quick mode. Run this command with --cache to emulate the wizard');
+      }
 
+      await driveResynthesis(log, argv);
       process.exit(0);
     },
   })
@@ -271,15 +283,15 @@ yargs
           type: 'string',
         })
         .option('cookie', {
-          description: 'the code.aws cookie to use for authorization',
+          description: 'the code catalyst cookie to use for authorization. Get this from webauth.',
           demandOption: false,
           type: 'string',
         })
         .option('endpoint', {
-          description: 'the code.aws endpoint to publish against',
+          description: 'the code catalyst endpoint to publish against',
           demandOption: false,
           type: 'string',
-          default: 'api-gamma.quokka.codes',
+          default: 'public.console.codecatalyst.aws',
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {

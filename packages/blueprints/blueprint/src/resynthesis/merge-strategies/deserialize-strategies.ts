@@ -6,27 +6,27 @@ import { Strategy } from './models';
 
 export type StrategyLocations = { [bundlePath: string]: Strategy[] };
 
-const getStrategyIds = (strategies: StrategyLocations): Set<string> => {
-  const ids = new Set<string>();
+const getStrategyIds = (strategies: StrategyLocations): { [identifier: string]: Strategy } => {
+  const ids: { [id: string]: Strategy } = {};
   for (const strategyList of Object.values(strategies)) {
     for (const strategy of strategyList) {
-      ids.add(strategy.identifier);
+      ids[strategy.identifier] = strategy;
     }
   }
   return ids;
 };
 
 export const deserializeStrategies = (existingBundle: string, strategyMatch: StrategyLocations): StrategyLocations => {
-  const validBlueprintStrategies = getStrategyIds(strategyMatch);
+  const inMemStrategies = getStrategyIds(strategyMatch);
   const validStrategies: StrategyLocations = {};
-
   const ownershipFiles = walkFiles(existingBundle, [`src/**/*${Ownership.DEFAULT_FILE_NAME}`]);
+
   ownershipFiles.forEach(ownerfile => {
-    const ownershipObject = Ownership.asObject(fs.readFileSync(path.join(existingBundle, ownerfile)).toString());
+    const ownershipObject = Ownership.asObject(fs.readFileSync(path.join(existingBundle, ownerfile)).toString(), inMemStrategies);
     const relevantStrategies: Strategy[] = [];
-    ownershipObject.resynthesis?.strategies.forEach(strategy => {
-      if (validBlueprintStrategies.has(strategy.identifier)) {
-        relevantStrategies.push(strategy);
+    ownershipObject.resynthesis?.strategies.forEach(deserializedStrategy => {
+      if (deserializedStrategy.identifier in inMemStrategies) {
+        relevantStrategies.push(deserializedStrategy);
       }
     });
     validStrategies[ownerfile] = relevantStrategies;

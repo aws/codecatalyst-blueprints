@@ -1,11 +1,13 @@
 import { Blueprint } from '../blueprint';
-import { MergeStrategies } from './merge-strategies/merge-strategies';
 import { Strategy } from './merge-strategies/models';
 
+interface StrategyIdMap {
+  [identifier: string]: Strategy;
+}
 export class Ownership {
   public static DEFAULT_FILE_NAME = '.ownership-file';
   public static asString = (blueprint: Blueprint, fileDefinition: Ownership): string => asOwnershipString(blueprint, fileDefinition);
-  public static asObject = (stringContent: string): Ownership => asOwnershipDefintion(stringContent);
+  public static asObject = (stringContent: string, inMemoryMapping: StrategyIdMap): Ownership => asOwnershipDefintion(stringContent, inMemoryMapping);
 
   resynthesis?: {
     strategies: Strategy[];
@@ -35,34 +37,33 @@ const asOwnershipString = (blueprint: Blueprint, fileDefinition: Ownership): str
   return fileContents.trimEnd() + '\n';
 };
 
-const asOwnershipDefintion = (fileContent: string): Ownership => {
+const asOwnershipDefintion = (fileContent: string, inMemoryMapping: StrategyIdMap): Ownership => {
   const lines = fileContent.split(/\r?\n/);
 
   const strategies: Strategy[] = [];
   lines.forEach((line, index) => {
-    const lineNumber = index + 1;
     const trimmedLine = line.trimStart().trimEnd();
 
-    if (trimmedLine.length === 0 || trimmedLine.startsWith('#')) {
+    if (trimmedLine.length === 0) {
       return;
     }
+    const destructuredLine = parseLine(trimmedLine);
 
-    const strategy = parseSectionLine(trimmedLine);
-    if (strategy) {
+    if (destructuredLine.type == LineType.GLOB) {
+      if (strategies.length === 0) {
+        throw new Error(`Encountered unexpected glob outside of a strategy section at line: ${index + 1}`);
+      }
+      strategies[strategies.length - 1].globs.push(trimmedLine);
+    }
+
+    if (destructuredLine.type == LineType.STRATEGY) {
       strategies.push({
-        identifier: strategy.identifier,
-        owner: strategy.owner,
-        strategy: MergeStrategies.neverUpdate, // TODO: look up proper merge strategy function
+        identifier: destructuredLine.identifier,
+        owner: destructuredLine.owner,
+        strategy: (inMemoryMapping[destructuredLine.identifier] || {}).strategy,
         globs: [],
       });
-      return;
     }
-
-    if (strategies.length === 0) {
-      throw new Error(`Encountered unexpected glob outside of a strategy section ${lineNumber}`);
-    }
-    const currentStrategy = strategies[strategies.length - 1];
-    currentStrategy.globs.push(trimmedLine);
   });
   return {
     resynthesis: {
@@ -72,12 +73,45 @@ const asOwnershipDefintion = (fileContent: string): Ownership => {
 };
 
 const STRATEGY_LINE_REGEX = /^\[(?<identifier>.+)\]\s+(?<owner>.+)$/; // e.g. [my_identifier] @caws-blueprint/my-blueprint
-function parseSectionLine(line: string): { identifier: string; owner: string } | undefined {
+enum LineType {
+  COMMENT = 'COMMENT',
+  STRATEGY = 'STRATEGY',
+  GLOB = 'GLOB',
+}
+interface GlobLine {
+  type: LineType.GLOB;
+  glob: string;
+}
+interface CommentLine {
+  type: LineType.COMMENT;
+  text: string;
+}
+interface StrategyLine {
+  type: LineType.STRATEGY;
+  identifier: string;
+  owner: string;
+}
+function parseLine(line: string): GlobLine | CommentLine | StrategyLine {
+  line = line.trim();
   const match = line.match(STRATEGY_LINE_REGEX);
-  if (!match || !match?.groups) {
-    return;
+  if (match && match?.groups) {
+    const { identifier, owner } = match.groups;
+    return {
+      type: LineType.STRATEGY,
+      identifier,
+      owner,
+    };
   }
 
-  const { identifier, owner } = match.groups;
-  return { identifier, owner };
+  if (line.startsWith('#')) {
+    return {
+      type: LineType.COMMENT,
+      text: line,
+    };
+  }
+
+  return {
+    type: LineType.GLOB,
+    glob: line,
+  };
 }

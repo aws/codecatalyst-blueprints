@@ -49,10 +49,9 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
       let priorOptions = getPriorOptions(log, [
         options.priorOptions,
         options.existingBundle && path.join(options.existingBundle, 'options.json'),
-        options.existingBundle && path.join(options.existingBundle, EXISTING_BUNDLE_SUBPATH, 'options.json'),
         path.join(outputDir, EXISTING_BUNDLE_SUBPATH, 'options.json'),
       ]);
-      const existingBundle = options.existingBundle || path.join(options.outdir, EXISTING_BUNDLE_SUBPATH);
+      const existingBundle = options.existingBundle || path.join(outputDir, EXISTING_BUNDLE_SUBPATH);
 
       log.info('==========================================');
       log.info(`[${jobname}]`);
@@ -93,15 +92,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
  * attempts to get options from each location in order (if they exist), otherwise returns undefined
  * If prioroptionsLocation is passed, but nothing is there, this errors.
  */
-const getPriorOptions = (
-  log: pino.BaseLogger,
-  optionsLocation: (string | undefined)[],
-):
-  | undefined
-  | {
-      path: string;
-      option: any;
-    } => {
+const getPriorOptions = (log: pino.BaseLogger, optionsLocation: (string | undefined)[]) => {
   const locations = optionsLocation.filter(elemnt => !!elemnt);
   for (const location of locations) {
     if (location && fs.existsSync(location)) {

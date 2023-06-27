@@ -103,13 +103,14 @@ yarn blueprint:synth
 
 # production (executes a synthesis across a built cache). This is the command the wizard executes, but it might take longer because it needs to build that cache first
 
-yarn blueprint:synth:cache
+yarn blueprint:synth --cache
 ```
 
 Publish a preview version
 
 ```
 yarn blueprint:preview
+yarn blueprint:preview --endpoint 'api-gamma.quokka.codes' // Publish to another (integ) endpoint. You shouldn't normally need to do this.
 ```
 
 You're done!
@@ -136,7 +137,7 @@ this command:
 
 ```
 yarn build
-yarn blueprint:synth:cache
+yarn blueprint:synth --cache
 ```
 
 ### Publishing

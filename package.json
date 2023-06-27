@@ -12,12 +12,10 @@
     "components:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-component/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
     "components-utils:publish": "yarn components:publish && yarn utils:publish",
-    "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview",
-    "blueprints:preview:prod": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview:prod",
-    "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth",
-    "blueprints:synth:cache": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth:cache",
-    "blueprints:resynth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:resynth",
-    "blueprints:resynth:cache": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:resynth:cache"
+    "test:update": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test:update",
+    "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview $*",
+    "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth $*",
+    "blueprints:resynth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:resynth $*"
   },
   "packageManager": "yarn@3.1.0",
   "workspaces": {

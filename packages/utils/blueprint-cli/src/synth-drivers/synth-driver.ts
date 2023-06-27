@@ -5,6 +5,7 @@ import * as deepmerge from 'deepmerge';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { RESYNTH_TS_NAME, writeResynthDriver } from '../resynth-drivers/driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '../resynth-drivers/resynth';
 import { createCache } from './cache';
 import { SYNTH_TS_NAME, writeSynthDriver } from './driver';
 import { DriverFile, synthesize } from './synth';
@@ -53,7 +54,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
 
     wizardConfigurations.forEach(wizardOption => {
       const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
-      const outputDir = path.join(options.outdir, `${jobname}`);
+      const outputDir = path.join(options.outdir, `${jobname}`, PROPOSED_BUNDLE_SUBPATH);
       log.info('==========================================');
       log.info(`[${jobname}]`);
       log.info(
@@ -72,6 +73,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
         blueprintOptions: wizardOption.option,
         jobname,
         outputDirectory: outputDir,
+        existingBundle: options.existingBundle || '',
       });
     });
   } catch (error) {

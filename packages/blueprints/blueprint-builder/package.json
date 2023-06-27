@@ -22,19 +22,16 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:cache": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
-    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints",
-    "blueprint:preview:prod": "yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher blueprints --endpoint public.api.quokka.codes",
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth --cache && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
-    "blueprint:synth:cache": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache $*",
-    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
-    "blueprint:resynth:cache": "yarn build:cache && blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --cache  $*"
+    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
   "author": {
     "name": "caws-blueprints",
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.1.x",
+    "@caws-blueprint-util/blueprint-cli": "0.2.x",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -50,11 +47,11 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-source-repositories": "0.1.x",
-    "@caws-blueprint-component/caws-workflows": "0.1.x",
-    "@caws-blueprint-util/blueprint-utils": "0.1.x",
-    "@caws-blueprint-util/projen-blueprint": "0.1.x",
-    "@caws-blueprint/blueprints.blueprint": "0.0.x",
+    "@caws-blueprint-component/caws-source-repositories": "0.2.x",
+    "@caws-blueprint-component/caws-workflows": "0.2.x",
+    "@caws-blueprint-util/blueprint-utils": "0.2.x",
+    "@caws-blueprint-util/projen-blueprint": "0.2.x",
+    "@caws-blueprint/blueprints.blueprint": "0.2.x",
     "camelcase": "1.x",
     "decamelize": "5.0.x",
     "projen": "0.31.0",
@@ -66,7 +63,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.0.1220",
+  "version": "0.2.0",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

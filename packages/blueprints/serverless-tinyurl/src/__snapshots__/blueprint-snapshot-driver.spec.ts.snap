@@ -1,6 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Blueprint snapshots java-default.json configuration matches options.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/environments/default_environment-7a474.yaml 1`] = `
+"
+name: default_environment
+description: default_environment
+environmentType: DEVELOPMENT
+"
+`;
+
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/options.json 1`] = `
 "{
   "environment": {
     "name": "default_environment",
@@ -14,12 +22,12 @@ exports[`Blueprint snapshots java-default.json configuration matches options.jso
     "backendStackName": "TinyUrlBackend",
     "region": "us-west-2"
   },
-  "outdir": "synth/01.snapshot.java-default.json"
+  "outdir": "synth/01.snapshot.java-default.json/proposed-bundle"
 }
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
 "Name: main_fullstack_workflow
 SchemaVersion: "1.0"
 Triggers:
@@ -118,7 +126,29 @@ Compute:
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/README.md 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/.ownership-file 1`] = `
+"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: neverUpdate
+backend/lambda/**
+backend/public/**
+backend/src/**
+backend/canary/**
+**/README.md
+
+[always_update] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: alwaysUpdate
+**/jest.config.js
+**/*/tsconfig.json
+.codecatalyst/*
+
+[custom_shared_ownership] @caws-blueprint/blueprints.serverless-tinyurl
+# Internal merge strategy: strategy
+backend/cdk/**
+frontend/cdk/**
+"
+`;
+
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/README.md 1`] = `
 "# Backend
 
 The backend is deployed as a RESTful API using AWS Serverless technologies:
@@ -180,20 +210,20 @@ See the Amazon CodeCatalyst user guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk.json 1`] = `
 "{
   "app": "mvn exec:java -pl cdk -Dexec.mainClass=com.amazonaws.serverless.TinyUrlApp"
 }"
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/cdk.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk/cdk.json 1`] = `
 "{
   "app": "mvn compile"
 }
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/pom.xml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk/pom.xml 1`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -241,7 +271,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlApp.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlApp.java 1`] = `
 "package com.amazonaws.serverless;
 
 import software.amazon.awscdk.App;
@@ -271,7 +301,7 @@ public class TinyUrlApp {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlAppStack.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlAppStack.java 1`] = `
 "package com.amazonaws.serverless;
 
 import software.amazon.awscdk.CfnOutput;
@@ -413,7 +443,7 @@ public class TinyUrlAppStack extends Stack {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/test/java/com/amazonaws/serverless/TinyUrlStackTest.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/cdk/src/test/java/com/amazonaws/serverless/TinyUrlStackTest.java 1`] = `
 "package com.amazonaws.serverless;
 
 
@@ -442,7 +472,7 @@ public class TinyUrlStackTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/checkstyle.xml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/checkstyle.xml 1`] = `
 "<?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
 		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
@@ -624,7 +654,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/checkstyle-suppressions.xml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/checkstyle-suppressions.xml 1`] = `
 "<?xml version="1.0"?>
 
 <!DOCTYPE suppressions PUBLIC
@@ -640,7 +670,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/jacocoConsoleReporter.sh 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/jacocoConsoleReporter.sh 1`] = `
 "for file in $(find . -type f -name "jacoco.csv"); do
     awk -F, \\
     '{ instructions += $4 + $5; covered += $5 } END \\
@@ -652,14 +682,14 @@ done
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/cdk.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/cdk.json 1`] = `
 "{
   "app": "mvn compile"
 }
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/pom.xml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/pom.xml 1`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -799,7 +829,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandler.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandler.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -892,7 +922,7 @@ public class CreateUrlRequestHandler extends TinyUrlRequestHandler {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/GetUrlRequestHandler.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/GetUrlRequestHandler.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -949,7 +979,7 @@ public class GetUrlRequestHandler extends TinyUrlRequestHandler {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/HandlerConstants.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/HandlerConstants.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 public final class HandlerConstants {
@@ -966,7 +996,7 @@ public final class HandlerConstants {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/TinyUrlRequestHandler.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/TinyUrlRequestHandler.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -993,7 +1023,7 @@ public abstract class TinyUrlRequestHandler implements RequestHandler<APIGateway
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/dao/UrlDataService.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/dao/UrlDataService.java 1`] = `
 "package com.amazonaws.serverless.lambda.dao;
 
 import com.amazonaws.serverless.lambda.model.TinyUrl;
@@ -1027,7 +1057,7 @@ public class UrlDataService {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/model/TinyUrl.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/model/TinyUrl.java 1`] = `
 "package com.amazonaws.serverless.lambda.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
@@ -1068,7 +1098,7 @@ public class TinyUrl {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandlerTest.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandlerTest.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 
@@ -1150,7 +1180,7 @@ public class CreateUrlRequestHandlerTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/GetUrlRequestHandlerTest.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/GetUrlRequestHandlerTest.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -1226,7 +1256,7 @@ public class GetUrlRequestHandlerTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/TestConstants.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/TestConstants.java 1`] = `
 "package com.amazonaws.serverless.lambda;
 
 public class TestConstants {
@@ -1241,7 +1271,7 @@ public class TestConstants {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/dao/UrlDataServiceTest.java 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/dao/UrlDataServiceTest.java 1`] = `
 "package com.amazonaws.serverless.lambda.dao;
 
 import com.amazonaws.serverless.lambda.model.TinyUrl;
@@ -1304,7 +1334,7 @@ public class UrlDataServiceTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/pom.xml 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/backend/pom.xml 1`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1522,14 +1552,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/blueprint.ownership 1`] = `
-"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
-# Internal merge strategy: neverUpdate
-*
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/README.md 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/README.md 1`] = `
 "# Frontend
 
 This web app uses [ReactJS](https://reactjs.org/) in conjunction with the [Cloudscape](https://cloudscape.design/) component library. Please consult
@@ -1582,7 +1605,7 @@ See the Amazon CodeCatalyst user guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/babel.config.js 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/babel.config.js 1`] = `
 "module.exports = {
   presets: [
     ['@babel/preset-env', {targets: {node: 'current'}}],
@@ -1593,7 +1616,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/canary/nodejs/node_modules/index.js 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/canary/nodejs/node_modules/index.js 1`] = `
 "const synthetics = require('Synthetics');
 const log = require('SyntheticsLogger');
 
@@ -1622,7 +1645,7 @@ exports.handler = async () => {
 };"
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/README.md 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/README.md 1`] = `
 "# Frontend Infrastructure
 
 This project uses CDK development with TypeScript for developing the frontend infrastructure as code. The \`cdk.json\` file tells the CDK Toolkit how to
@@ -1673,7 +1696,7 @@ See the Amazon CodeCatalyst user guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/bin/frontend.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/bin/frontend.ts 1`] = `
 "#!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
@@ -1701,7 +1724,7 @@ new FrontendStack(app, stackName, {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/cdk.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/cdk.json 1`] = `
 "{
   "app": "npx ts-node --prefer-ts-exts bin/frontend.ts",
   "watch": {
@@ -1747,7 +1770,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/jest.config.js 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/jest.config.js 1`] = `
 "module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/test'],
@@ -1759,7 +1782,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/lib/frontend-stack.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/lib/frontend-stack.ts 1`] = `
 "import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -1954,7 +1977,7 @@ export class FrontendStack extends cdk.Stack {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/package.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/package.json 1`] = `
 "{
   "name": "frontend",
   "version": "0.1.0",
@@ -1986,7 +2009,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/test/frontend.test.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/test/frontend.test.ts 1`] = `
 "// import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
 // import * as Frontend from '../lib/frontend-stack';
@@ -2006,7 +2029,7 @@ test('SQS Queue Created', () => {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/tsconfig.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/cdk/tsconfig.json 1`] = `
 "{
   "compilerOptions": {
     "target": "es2019",
@@ -2040,7 +2063,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/jest.config.js 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/jest.config.js 1`] = `
 "/** @type {import('ts-jest').JestConfigWithTsJest} */
 const merge = require('merge');
 const tsPreset = require('ts-jest/jest-preset');
@@ -2056,7 +2079,7 @@ module.exports = merge.recursive(tsPreset, cloudscapePreset, {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/package.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/package.json 1`] = `
 "{
   "name": "bp-tiny-url",
   "version": "0.1.0",
@@ -2115,7 +2138,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/index.html 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/public/index.html 1`] = `
 "<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -2157,7 +2180,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/manifest.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/public/manifest.json 1`] = `
 "{
   "short_name": "Sample App",
   "name": "Sample App",
@@ -2170,14 +2193,14 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/robots.txt 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/public/robots.txt 1`] = `
 "# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.css 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/App.css 1`] = `
 ".App {
   text-align: center;
 }
@@ -2219,7 +2242,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.test.tsx 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/App.test.tsx 1`] = `
 "import { render, screen } from '@testing-library/react';
 import App from './App';
 
@@ -2231,7 +2254,7 @@ test('renders learn react link', () => {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.tsx 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/App.tsx 1`] = `
 "import * as React from 'react';
 import * as cs from '@cloudscape-design/components';
 import { URLService } from './url.api';
@@ -2309,7 +2332,7 @@ export default App;
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/index.css 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/index.css 1`] = `
 "body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -2324,7 +2347,7 @@ code {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/index.tsx 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/index.tsx 1`] = `
 "import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -2344,12 +2367,12 @@ reportWebVitals();
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/react-app-env.d.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/react-app-env.d.ts 1`] = `
 "/// <reference types="react-scripts" />
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/reportWebVitals.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/reportWebVitals.ts 1`] = `
 "import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {
@@ -2368,7 +2391,7 @@ export default reportWebVitals;
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/setupTests.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/setupTests.ts 1`] = `
 "// jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
@@ -2377,7 +2400,7 @@ import '@testing-library/jest-dom';
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/url.api.ts 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/src/url.api.ts 1`] = `
 "export class URLService {
   readonly service_url: string;
 
@@ -2403,7 +2426,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/tsconfig.json 1`] = `
+exports[`Blueprint snapshots java-default.json configuration matches proposed-bundle/src/TinyUrlApp/frontend/tsconfig.json 1`] = `
 "{
   "compilerOptions": {
     "target": "es5",
