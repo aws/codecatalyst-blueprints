@@ -97,10 +97,6 @@
       "type": "runtime"
     },
     {
-      "name": "glob",
-      "type": "runtime"
-    },
-    {
       "name": "globule",
       "type": "runtime"
     },

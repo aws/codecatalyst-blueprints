@@ -49,7 +49,6 @@
   "dependencies": {
     "camelcase": "5.3.x",
     "decamelize": "5.0.x",
-    "glob": "*",
     "globule": "*",
     "ini": "*",
     "minimatch": "*",
