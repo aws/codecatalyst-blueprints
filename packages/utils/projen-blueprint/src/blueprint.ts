@@ -69,6 +69,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addVersion(version || '0.0.0');
     this.addDevDeps('ts-node@^10');
 
+    /**
+     * We explicitly set the version of projen to cut down on author errors.
+     * This is not strictly nessassary. Authors may override this by putting
+     * this.addDevDeps('projen@something-else') in their package
+     */
+    this.addDevDeps('projen@^0.71.112');
+
     // modify bumping tasks
     this.removeTask('release');
     this.removeTask('bump');
