@@ -23,7 +23,9 @@ const configurationsLocation = '${options.snapshotConfigsLocation}';
 const defaultsLocation = '${options.defaultsLocation}';
 const blueprintLocation = './';
 const outputDirectory = './';
-const GLOBS_UNDER_SNAPSHOT: string[] = [${(options.configuration.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(', ')}];
+const GLOBS_UNDER_SNAPSHOT: string[] = [
+  ${(options.configuration.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(',\n\t')}
+];
 
 function runSnapshotSynthesis() {
   // run synthesis into several directories.

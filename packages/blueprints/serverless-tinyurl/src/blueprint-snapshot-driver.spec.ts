@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-drivers/synth-driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '@caws-blueprint-util/blueprint-cli/lib/resynth-drivers/resynth';
 import * as globule from 'globule';
 import * as pino from 'pino';
 
@@ -31,7 +32,7 @@ function runSnapshotSynthesis() {
     outputPath: string;
   }[] = [];
   fs.readdirSync(configurationsLocation, { withFileTypes: true }).forEach(override => {
-    const outputLocation = path.join(outputDirectory, 'synth', '01.snapshot.' + override.name);
+    const outputLocation = path.join(outputDirectory, 'synth', '01.snapshot.' + override.name, PROPOSED_BUNDLE_SUBPATH);
     snapshotRuns.push({
       optionOverridePath: path.join(configurationsLocation!, override.name),
       outputPath: path.resolve(outputLocation),
