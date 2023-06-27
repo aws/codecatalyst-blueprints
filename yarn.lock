@@ -1860,7 +1860,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: "*"
+    projen: 0.71.112
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.5.5
@@ -1917,7 +1917,7 @@ __metadata:
     npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
-    projen: "*"
+    projen: 0.71.112
     standard-version: ^9
     ts-deepmerge: "*"
     ts-jest: "*"
@@ -1954,7 +1954,7 @@ __metadata:
     npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
-    projen: "*"
+    projen: 0.71.112
     standard-version: ^9
     ts-jest: "*"
     ts-node: ^10
@@ -1982,7 +1982,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: ^2.25.4
     npm-check-updates: ^16
-    projen: "*"
+    projen: 0.71.112
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.5.5
@@ -10633,7 +10633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"projen@npm:*":
+"projen@npm:*, projen@npm:0.71.112":
   version: 0.71.112
   resolution: "projen@npm:0.71.112"
   dependencies:

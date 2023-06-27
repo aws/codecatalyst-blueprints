@@ -41,7 +41,7 @@
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "^2.25.4",
     "npm-check-updates": "^16",
-    "projen": "^0.71.112",
+    "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
     "typescript": "^4.5.5"

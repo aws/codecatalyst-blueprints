@@ -74,7 +74,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
      * This is not strictly nessassary. Authors may override this by putting
      * this.addDevDeps('projen@something-else') in their package
      */
-    this.addDevDeps('projen@^0.71.112');
+    this.addDevDeps('projen@0.71.112');
 
     // modify bumping tasks
     this.removeTask('release');
