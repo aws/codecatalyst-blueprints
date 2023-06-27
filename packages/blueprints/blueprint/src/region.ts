@@ -30,5 +30,4 @@ export type AWS_REGIONS =
   | 'us-west-2'
   | '*';
 
-//@ts-ignore
-export type Region<T extends AWS_REGIONS[]> = string;
+export type Region<T extends AWS_REGIONS[]> = T | string;
