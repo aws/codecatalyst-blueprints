@@ -26,6 +26,7 @@
     "@caws-blueprint-component/caws-source-repositories": "0.2.x",
     "@caws-blueprint-util/projen-blueprint-component": "0.2.x",
     "@caws-blueprint/blueprints.blueprint": "0.2.x",
+    "@types/js-yaml": "^4",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -47,10 +48,10 @@
     "projen": "*"
   },
   "dependencies": {
-    "yaml": "*"
+    "js-yaml": "^4"
   },
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "version": "0.2.0",
   "types": "lib/index.d.ts",
   "preferGlobal": true,

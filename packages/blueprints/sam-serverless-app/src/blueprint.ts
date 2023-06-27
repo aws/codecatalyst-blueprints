@@ -12,7 +12,10 @@ import {
   addGenericCloudFormationDeployAction,
   makeEmptyWorkflow,
   AutoDiscoverReportDefinition,
+  WorkflowBuilder,
+  emptyWorkflow,
 } from '@caws-blueprint-component/caws-workflows';
+import { DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME } from '@caws-blueprint-component/caws-workflows/lib/actions/action-cfn-cleanup';
 import { SampleWorkspaces, Workspace, WorkspaceDefinition, addPostStartEvent } from '@caws-blueprint-component/caws-workspaces';
 import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { SampleDir, SampleFile } from 'projen';
@@ -103,6 +106,13 @@ export interface Options extends ParentOptions {
      */
     functionName: string;
   };
+
+  /**
+   * This is an intentionally hidden field that determines if the cleanup workflow will be generated as commented out.
+   * This will be set to true during blueprint health assessment run for cleanup workflow to run as expected.
+   * @hidden true
+   */
+  uncommentCleanupWorkflow?: boolean;
 }
 
 /**
@@ -184,6 +194,34 @@ export class Blueprint extends ParentBlueprint {
       stepsToRunUnitTests: runtimeOptions.stepsToRunUnitTests,
       autoDiscoveryOverride: runtimeOptions.autoDiscoveryOverride,
       runtimeOptions,
+    });
+
+    // create the cleanup workflow
+    const cleanupWorkflow = new WorkflowBuilder(this, emptyWorkflow);
+    cleanupWorkflow.setName(DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME);
+    cleanupWorkflow.addCfnCleanupAction({
+      actionName: `delete_${this.options.code.cloudFormationStackName}`,
+      environment: {
+        Name: this.options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
+        Connections: [
+          {
+            Name: this.options.environment.awsAccountConnection?.name || ' ',
+            Role: this.options.environment.awsAccountConnection?.buildRole?.name || ' ',
+          },
+        ],
+      },
+      stackName: this.options.code.cloudFormationStackName,
+      region: 'us-west-2',
+    });
+    const additionalComments = [
+      'The following workflow is intentionally disabled by the blueprint author to prevent project contributors from accidentally executing it.',
+      'This workflow will attempt to delete all the deployed resources from the blueprint.',
+      'The deletion action cannot be undone, please proceed at your own risk.',
+      'To utilize it, please uncomment all the succeeding lines.',
+    ];
+    new Workflow(this, this.repository, cleanupWorkflow.definition, {
+      additionalComments: this.options.uncommentCleanupWorkflow ? undefined : additionalComments,
+      commented: !this.options.uncommentCleanupWorkflow,
     });
 
     // generate the readme

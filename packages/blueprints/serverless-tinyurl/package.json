@@ -83,7 +83,7 @@
     "tiny-url application"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "",
   "version": "0.2.0",
   "jest": {

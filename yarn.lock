@@ -1831,6 +1831,7 @@ __metadata:
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint-util/projen-blueprint-component": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/js-yaml": ^4
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1838,13 +1839,13 @@ __metadata:
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
+    js-yaml: ^4
     json-schema: "*"
     npm-check-updates: ^15
     projen: "*"
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.5.5
-    yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-environments": 0.2.x
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
@@ -2074,6 +2075,7 @@ __metadata:
     pino-pretty: ^4.8.0
     projen: "*"
     standard-version: ^9
+    ts-deepmerge: "*"
     ts-jest: "*"
     ts-node: ^10
     typescript: "*"
@@ -3275,6 +3277,13 @@ __metadata:
   version: 0.15.0
   resolution: "@types/jmespath@npm:0.15.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2F%40types%2Fjmespath%2F-%2Fjmespath-0.15.0.tgz"
   checksum: d11f2a939d06fcfef9c67eada0bdbb22230ccddfc1bd90f3e7a88180d6da72fd37fea3a604da854b2b10eaad1d51756c6ec990c7cb5958c89c73259666c6dc51
+  languageName: node
+  linkType: hard
+
+"@types/js-yaml@npm:^4":
+  version: 4.0.5
+  resolution: "@types/js-yaml@npm:4.0.5"
+  checksum: 7dcac8c50fec31643cc9d6444b5503239a861414cdfaa7ae9a38bc22597c4d850c4b8cec3d82d73b3fbca408348ce223b0408d598b32e094470dfffc6d486b4d
   languageName: node
   linkType: hard
 
@@ -8861,6 +8870,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-yaml@npm:^4":
+  version: 4.1.0
+  resolution: "js-yaml@npm:4.1.0"
+  dependencies:
+    argparse: ^2.0.1
+  bin:
+    js-yaml: bin/js-yaml.js
+  checksum: c7830dfd456c3ef2c6e355cc5a92e6700ceafa1d14bba54497b34a99f0376cecbb3e9ac14d3e5849b426d5a5140709a66237a8c991c675431271c4ce5504151a
+  languageName: node
+  linkType: hard
+
 "js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Fjs-yaml%2F-%2Fjs-yaml-4.1.0.tgz"
@@ -12045,6 +12065,13 @@ __metadata:
   version: 3.0.1
   resolution: "trim-newlines@npm:3.0.1::__archiveUrl=https%3A%2F%2Ftemplate-721779663932.d.codeartifact.us-west-2.amazonaws.com%3A443%2Fnpm%2Fglobal-templates%2Ftrim-newlines%2F-%2Ftrim-newlines-3.0.1.tgz"
   checksum: b530f3fadf78e570cf3c761fb74fef655beff6b0f84b29209bac6c9622db75ad1417f4a7b5d54c96605dcd72734ad44526fef9f396807b90839449eb543c6206
+  languageName: node
+  linkType: hard
+
+"ts-deepmerge@npm:*":
+  version: 6.1.0
+  resolution: "ts-deepmerge@npm:6.1.0"
+  checksum: 8cdfe7eac402f0d0b2c776c1a4cd1b32df6a0dd71ea88586eb34a73b86975d4f59d39ee0c426c2169c1ae7773ac4557394ffea0ec20845c9c832d6bb0a29b16d
   languageName: node
   linkType: hard
 

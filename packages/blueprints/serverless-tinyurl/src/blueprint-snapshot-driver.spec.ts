@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-drivers/synth-driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '@caws-blueprint-util/blueprint-cli/lib/resynth-drivers/resynth';
 import * as globule from 'globule';
 import * as pino from 'pino';
 
@@ -13,7 +14,13 @@ const configurationsLocation = 'src/wizard-configurations';
 const defaultsLocation = 'src/defaults.json';
 const blueprintLocation = './';
 const outputDirectory = './';
-const GLOBS_UNDER_SNAPSHOT: string[] = ['**', '!environments/**', '!aws-account-to-environment/**'];
+
+// prettier-ignore
+const GLOBS_UNDER_SNAPSHOT: string[] = [
+  '**',
+	'!environments/**',
+	'!aws-account-to-environment/**'
+];
 
 function runSnapshotSynthesis() {
   // run synthesis into several directories.
@@ -31,7 +38,7 @@ function runSnapshotSynthesis() {
     outputPath: string;
   }[] = [];
   fs.readdirSync(configurationsLocation, { withFileTypes: true }).forEach(override => {
-    const outputLocation = path.join(outputDirectory, 'synth', '01.snapshot.' + override.name);
+    const outputLocation = path.join(outputDirectory, 'synth', '01.snapshot.' + override.name, PROPOSED_BUNDLE_SUBPATH);
     snapshotRuns.push({
       optionOverridePath: path.join(configurationsLocation!, override.name),
       outputPath: path.resolve(outputLocation),

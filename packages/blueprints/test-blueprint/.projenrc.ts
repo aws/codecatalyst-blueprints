@@ -7,7 +7,6 @@ const project = new ProjenBlueprint({
   name: 'test-blueprint',
   displayName: 'Test Blueprint [Internal]',
   defaultReleaseBranch: 'main',
-  license: 'MIT',
   projenrcTs: true,
   sampleCode: false,
   github: false,
