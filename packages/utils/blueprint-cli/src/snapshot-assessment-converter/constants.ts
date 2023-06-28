@@ -1,12 +1,3 @@
-import { ScheduleType } from './model';
-
-export const DefaultBlueprintAssessmentObject: Record<string, any> = {
-  schedule: {
-    scheduleType: ScheduleType.ONCE,
-  },
-  timeoutInMinutes: 60,
-};
-
 export const BlueprintAssessmentObjectSchema: Record<string, any> = {
   type: 'object',
   properties: {

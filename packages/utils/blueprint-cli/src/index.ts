@@ -7,7 +7,7 @@ import { hideBin } from 'yargs/helpers';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
-import { ConvertOptions, convertToAssessmentObjects } from './snapshot-assessment-converter/snapshot-converter';
+import { ConvertOptions, convertToAssessmentObjects } from './snapshot-assessment-converter/assessment-converter';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
 
@@ -178,15 +178,31 @@ yargs
           type: 'string',
           demandOption: true,
         })
+        .option('continuous', {
+          describe: 'If schedule type is continuous',
+          type: 'boolean',
+          default: false,
+          demandOption: false,
+        })
         .option('useLatest', {
           description: 'Use the lastest blueprint version specified in package.json',
-          default: false,
           type: 'boolean',
+          default: false,
+          demandOption: false,
         });
     },
     handler: async (argv: ConvertOptions): Promise<void> => {
       log.info(argv);
-      const pathToAssessmentObjectsDirectory = convertToAssessmentObjects(log, argv.pathToConfiguration, argv.useLatest);
+      const currentDirectory = process.cwd();
+      const outputDirectory = '/src/snapshot-assessment-converter';
+      const pathToAssessmentObjectsDirectory = convertToAssessmentObjects(
+        log,
+        currentDirectory,
+        outputDirectory,
+        argv.pathToConfiguration,
+        argv.continuous,
+        argv.useLatest,
+      );
       log.info(`Blueprint assessment objects created, path to folder of objects: '${pathToAssessmentObjectsDirectory}'.`);
       process.exit(0);
     },
