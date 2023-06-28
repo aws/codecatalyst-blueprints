@@ -21,10 +21,11 @@
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
-    "build:cache": "yarn blueprint:synth --cache",
-    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth --cache && yarn package && blueprint publish ./ --publisher blueprints $*",
+    "build:lib": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth --cache && yarn build:lib && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options && blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --additionalOptionOverrides ./src/wizard-configurations --cache $*",
-    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
+    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
+    "build:cache": "yarn blueprint:synth --cache"
   },
   "author": {
     "name": "blueprints",

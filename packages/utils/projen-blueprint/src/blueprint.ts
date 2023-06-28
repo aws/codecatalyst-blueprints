@@ -127,7 +127,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('blueprint:validate-options', 'blueprint validate-options ./lib/ast.json ./lib/defaults.json');
 
     //set local synthing
-    this.setScript('build:cache', 'yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options');
+    this.setScript('build:lib', 'yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options');
 
     //ignore synths
     this.gitignore.addPatterns('synth');
@@ -139,7 +139,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
     this.setScript(
       'blueprint:preview',
-      `yarn bump:preview && yarn blueprint:synth --cache && yarn package && blueprint publish ./ --publisher ${organization} $*`,
+      [
+        'yarn build:lib',
+        'yarn bump:preview',
+        'yarn blueprint:synth --cache',
+        'yarn package',
+        `blueprint publish ./ --publisher ${organization} $*`,
+      ].join(' && '),
     );
 
     //add additional metadata fields to package.json

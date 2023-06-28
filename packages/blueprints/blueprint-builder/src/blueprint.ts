@@ -20,8 +20,8 @@ export interface Options extends ParentOptions {
 
   /**
    * Who is the author of the blueprint?
-   * @validationRegex /^[a-zA-Z0-9_]+$/
-   * @validationMessage Must contain only upper and lowercase letters, numbers and underscores
+   * @validationRegex /^[a-zA-Z0-9_-\s]+$/
+   * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes
    */
   authorName: string;
 
@@ -31,8 +31,8 @@ export interface Options extends ParentOptions {
   advancedSettings?: {
     /**
      * Blueprint Tags. These get added to the package.json
-     * @validationRegex /^[a-zA-Z0-9_ ]+$/
-     * @validationMessage Must contain only upper and lowercase letters, numbers, underscores and spaces
+     * @validationRegex /^[a-z-]+$/
+     * @validationMessage Tags should be lower dashcased
      */
     tags?: string[];
 
