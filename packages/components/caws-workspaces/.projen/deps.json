@@ -68,6 +68,11 @@
       "type": "build"
     },
     {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "override"
+    },
+    {
       "name": "@caws-blueprint-component/caws-source-repositories",
       "type": "peer"
     },
@@ -78,6 +83,11 @@
     {
       "name": "projen",
       "type": "peer"
+    },
+    {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "runtime"
     },
     {
       "name": "yaml",

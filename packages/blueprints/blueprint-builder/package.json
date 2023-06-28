@@ -31,8 +31,8 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
-    "@types/node": "^16",
+    "@caws-blueprint-util/blueprint-cli": "0.2.*",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -43,17 +43,20 @@
     "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "4.x"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-source-repositories": "0.2.x",
-    "@caws-blueprint-component/caws-workflows": "0.2.x",
-    "@caws-blueprint-util/projen-blueprint": "0.2.x",
-    "@caws-blueprint/blueprints.blueprint": "0.2.x",
+    "@caws-blueprint-component/caws-source-repositories": "0.2.*",
+    "@caws-blueprint-component/caws-workflows": "0.2.*",
+    "@caws-blueprint-util/projen-blueprint": "0.2.*",
+    "@caws-blueprint/blueprints.blueprint": "0.2.*",
     "camelcase": "1.x",
     "decamelize": "5.0.x",
-    "projen": "0.31.0",
+    "projen": "0.71.112",
     "typescript": "4.x"
+  },
+  "resolutions": {
+    "projen": "0.71.112"
   },
   "keywords": [
     "blueprint"
@@ -61,7 +64,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.2.0",
+  "version": "0.2.1-preview.10",
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"

@@ -28,7 +28,7 @@
       "name": "bump",
       "steps": [
         {
-          "exec": "npm version patch -no-git-tag-version"
+          "exec": "npm version patch -no-git-tag-version --no-workspaces-update"
         }
       ]
     },
@@ -36,7 +36,7 @@
       "name": "bump:preview",
       "steps": [
         {
-          "exec": "npm version prerelease --preid preview -no-git-tag-version"
+          "exec": "npm version prerelease --preid preview -no-git-tag-version --no-workspaces-update"
         }
       ]
     },
@@ -189,19 +189,19 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='projen,camelcase,decamelize,typescript'"
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='camelcase,decamelize,projen,typescript'"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='projen,camelcase,decamelize,typescript'"
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='camelcase,decamelize,projen,typescript'"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='projen,camelcase,decamelize,typescript'"
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='camelcase,decamelize,projen,typescript'"
         },
         {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='projen,camelcase,decamelize,typescript'"
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='camelcase,decamelize,projen,typescript'"
         },
         {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='projen,camelcase,decamelize,typescript'"
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='camelcase,decamelize,projen,typescript'"
         },
         {
           "exec": "yarn install --check-files"

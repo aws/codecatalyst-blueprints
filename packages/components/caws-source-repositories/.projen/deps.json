@@ -81,6 +81,11 @@
       "type": "build"
     },
     {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "override"
+    },
+    {
       "name": "@caws-blueprint/blueprints.blueprint",
       "type": "peer"
     },
@@ -106,6 +111,11 @@
     },
     {
       "name": "mustache",
+      "type": "runtime"
+    },
+    {
+      "name": "projen",
+      "version": "0.71.112",
       "type": "runtime"
     }
   ],

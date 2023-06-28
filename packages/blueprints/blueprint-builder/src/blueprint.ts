@@ -112,7 +112,6 @@ export class Blueprint extends ParentBlueprint {
 
     new ProjenBlueprint({
       outdir: repository.relativePath,
-      parent: this,
       ...newBlueprintOptions,
       overridePackageVersion: '0.0.0',
     });

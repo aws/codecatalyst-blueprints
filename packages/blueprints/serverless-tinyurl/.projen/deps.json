@@ -14,7 +14,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^16",
+      "version": "^18",
       "type": "build"
     },
     {
@@ -70,7 +70,6 @@
     },
     {
       "name": "projen",
-      "version": "0.71.112",
       "type": "build"
     },
     {
@@ -90,6 +89,11 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "override"
     },
     {
       "name": "@caws-blueprint-util/blueprint-cli",
@@ -126,6 +130,7 @@
     },
     {
       "name": "projen",
+      "version": "0.71.112",
       "type": "runtime"
     }
   ],

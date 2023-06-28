@@ -31,9 +31,9 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
-    "@caws-blueprint-util/projen-blueprint": "0.2.x",
-    "@types/node": "^16",
+    "@caws-blueprint-util/blueprint-cli": "0.2.*",
+    "@caws-blueprint-util/projen-blueprint": "0.2.*",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -41,16 +41,20 @@
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
     "npm-check-updates": "^16",
-    "projen": "*",
+    "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "^4.8.2"
+    "typescript": "4.x"
   },
   "peerDependencies": {
     "projen": "*"
   },
   "dependencies": {
-    "globule": "*"
+    "globule": "*",
+    "projen": "0.71.112"
+  },
+  "resolutions": {
+    "projen": "0.71.112"
   },
   "keywords": [
     "blueprint"

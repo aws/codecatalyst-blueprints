@@ -35,6 +35,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * Blueprint snapshot configuration
    */
   readonly blueprintSnapshotConfiguration?: BlueprintSnapshotConfiguration;
+
+  /**
+   * defaults to 0.71.112 if not set.
+   */
+  readonly projenVersion?: string;
 }
 
 const DEFAULT_OPTS = {
@@ -69,22 +74,28 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addVersion(version || '0.0.0');
     this.addDevDeps('ts-node@^10');
 
+    // force node types
+    this.addDevDeps('@types/node@^18');
+
     /**
      * We explicitly set the version of projen to cut down on author errors.
      * This is not strictly nessassary. Authors may override this by putting
-     * this.addDevDeps('projen@something-else') in their package
+     * this.package.addDeps('projen@something-else');
+     * this.addPackageResolutions('projen@something-else') in their package
      */
-    this.addDevDeps('projen@0.71.112');
+    const projenVersion = options.projenVersion || '0.71.112';
+    this.package.addDeps(`projen@${projenVersion}`);
+    this.package.addPackageResolutions(`projen@${projenVersion}`);
 
     // modify bumping tasks
     this.removeTask('release');
     this.removeTask('bump');
     this.addTask('bump', {
-      exec: 'npm version patch -no-git-tag-version',
+      exec: 'npm version patch -no-git-tag-version --no-workspaces-update',
     });
 
     this.addTask('bump:preview', {
-      exec: 'npm version prerelease --preid preview -no-git-tag-version',
+      exec: 'npm version prerelease --preid preview -no-git-tag-version --no-workspaces-update',
     });
 
     // Our version of Projen adds `--updateSnapshot` to the *test* task. We do not want this because we

@@ -22,7 +22,7 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
+    "@caws-blueprint-util/blueprint-cli": "0.2.*",
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -31,13 +31,13 @@
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
     "npm-check-updates": "^16",
-    "projen": "*",
+    "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "^4.x"
   },
   "peerDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
+    "@caws-blueprint-util/blueprint-cli": "0.2.*",
     "projen": "*"
   },
   "main": "lib/index.js",
