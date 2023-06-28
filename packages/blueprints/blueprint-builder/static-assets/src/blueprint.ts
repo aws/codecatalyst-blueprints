@@ -1,8 +1,7 @@
-import * as fs from 'fs';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
 import { SourceRepository, SourceFile, StaticAsset } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, NodeWorkflowDefinitionSamples, WorkflowBuilder, convertToWorkflowEnvironment } from '@caws-blueprint-component/caws-workflows';
+import { Workflow, WorkflowBuilder, convertToWorkflowEnvironment } from '@caws-blueprint-component/caws-workflows';
 import defaults from './defaults.json';
 
 /**
@@ -90,7 +89,7 @@ export class Blueprint extends ParentBlueprint {
     });
 
     // create an environment, if I have one
-    let environment: Environment = undefined;
+    let environment: Environment | undefined = undefined;
     if (options.environment) {
       environment = new Environment(this, options.environment);
     }

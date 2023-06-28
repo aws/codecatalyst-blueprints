@@ -15,6 +15,7 @@ export interface ResynthesizeCliOptions extends yargs.Arguments {
   priorOptions?: string;
   existingBundle?: string;
   cache?: boolean;
+  cleanUp: boolean;
 }
 
 interface ResynthesizeOptions {
@@ -27,6 +28,7 @@ interface ResynthesizeOptions {
   synthDriver?: DriverFile;
   options: any;
   priorOptions: any;
+  cleanUp: boolean;
 }
 
 /**
@@ -53,6 +55,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     outputDirectory: ancestorLocation,
     synthDriver: options.synthDriver,
     existingBundle: existingLocation,
+    cleanUp: options.cleanUp,
   });
 
   // synthesize proposed files
@@ -63,6 +66,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     outputDirectory: proposedLocation,
     synthDriver: options.synthDriver,
     existingBundle: existingLocation,
+    cleanUp: options.cleanUp,
   });
 
   // if theres nothing at the existing files, copy-the ancestor files into there too.
@@ -106,7 +110,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     throw e;
   } finally {
     // if I wrote the resynth driver, then also clean it up.
-    if (!options.resynthDriver) {
+    if (!options.resynthDriver && options.cleanUp) {
       cleanUpDriver(log, resynthDriver);
     }
   }

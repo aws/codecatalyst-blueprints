@@ -50,6 +50,11 @@ yargs
           type: 'string',
           default: undefined,
         })
+        .option('clean-up', {
+          description: 'clean up synthesis drivers',
+          default: true,
+          type: 'boolean',
+        })
         .option('cache', {
           description: 'Generate and synth from a webpacked cache',
           type: 'boolean',
@@ -79,6 +84,7 @@ yargs
         outputDirectory: argv.outdir,
         synthDriver: driverFile,
         existingBundle: argv.existingBundle || '',
+        cleanUp: argv.cleanUp,
       });
       process.exit(0);
     },
@@ -108,6 +114,11 @@ yargs
           description: 'path to additonal synthesis options',
           default: undefined,
           type: 'string',
+        })
+        .option('clean-up', {
+          description: 'clean up synthesis drivers',
+          default: true,
+          type: 'boolean',
         })
         .option('cache', {
           description: 'run synth against a cache',
@@ -164,6 +175,11 @@ yargs
           description: 'path the prior options',
           type: 'string',
         })
+        .option('clean-up', {
+          description: 'clean up synthesis drivers',
+          default: true,
+          type: 'boolean',
+        })
         .option('cache', {
           description: 'Generate and resynth from a webpacked cache',
           default: false,
@@ -208,6 +224,7 @@ yargs
         jobname: path.parse(argv.options).base,
         resynthDriver: resynthDriverFile,
         synthDriver: synthDriverFile,
+        cleanUp: argv.cleanUp,
       });
 
       process.exit(0);
@@ -247,6 +264,11 @@ yargs
           description:
             'optional path to an json representing the options used for the ancestor codebase. This will be the prior options used for each wizard-option resynth.',
           type: 'string',
+        })
+        .option('clean-up', {
+          description: 'clean up synthesis drivers',
+          default: true,
+          type: 'boolean',
         })
         .option('cache', {
           description: 'Generate and resynth from a webpacked cache',

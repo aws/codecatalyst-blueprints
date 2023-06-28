@@ -13,6 +13,7 @@ export interface ResynthDriverCliOptions extends yargs.Arguments {
   priorOptions?: string;
   existingBundle?: string;
   cache?: boolean;
+  cleanUp: boolean;
 }
 
 /**
@@ -78,13 +79,16 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
         priorBlueprint: options.blueprint,
         priorOptions: priorOptions?.option || wizardOption.option,
         existingBundleLocation: existingBundle,
+        cleanUp: options.cleanUp,
       });
     });
   } catch (error) {
     log.error(error as any);
   } finally {
-    cleanUpDriver(log, synthDriver);
-    cleanUpDriver(log, resynthDriver);
+    if (options.cleanUp) {
+      cleanUpDriver(log, synthDriver);
+      cleanUpDriver(log, resynthDriver);
+    }
   }
 }
 

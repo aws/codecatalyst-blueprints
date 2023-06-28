@@ -13,6 +13,7 @@ export interface SynthesizeCliOptions extends yargs.Arguments {
   options: string;
   existingBundle?: string;
   cache: boolean;
+  cleanUp: boolean;
 }
 export type SynthesisRunTime = 'node' | 'ts-node';
 export interface DriverFile {
@@ -35,6 +36,7 @@ export interface SynthOptions {
   existingBundle: string;
 
   synthDriver?: DriverFile;
+  cleanUp: boolean;
 }
 
 /**
@@ -79,7 +81,7 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
     throw e;
   } finally {
     // if I wrote the synth driver, then also clean it up.
-    if (!options.synthDriver) {
+    if (!options.synthDriver && options.cleanUp) {
       cleanUpDriver(log, synthDriver);
     }
   }

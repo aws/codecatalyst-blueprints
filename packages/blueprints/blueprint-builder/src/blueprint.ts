@@ -44,7 +44,6 @@ export interface Options extends ParentOptions {
 }
 
 export class Blueprint extends ParentBlueprint {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(options_: Options) {
     super(options_);
     /**
@@ -111,9 +110,15 @@ export class Blueprint extends ParentBlueprint {
     console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
 
     new ProjenBlueprint({
+      parent: this,
       outdir: repository.relativePath,
       ...newBlueprintOptions,
       overridePackageVersion: '0.0.0',
+    }).synth();
+
+    // copy-paste additional code over it
+    StaticAsset.findAll().forEach(asset => {
+      new File(repository, asset.path(), asset.content());
     });
 
     /**
@@ -130,9 +135,5 @@ export class Blueprint extends ParentBlueprint {
         'project.synth();',
       ].join('\n'),
     );
-
-    StaticAsset.findAll().forEach(asset => {
-      new File(repository, asset.path(), asset.content());
-    });
   }
 }

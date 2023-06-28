@@ -77,6 +77,9 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     // force node types
     this.addDevDeps('@types/node@^18');
 
+    // force typescript
+    this.addDevDeps('typescript@^4.x');
+
     /**
      * We explicitly set the version of projen to cut down on author errors.
      * This is not strictly nessassary. Authors may override this by putting
@@ -142,7 +145,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       [
         'yarn build:lib',
         'yarn bump:preview',
-        'yarn blueprint:synth --cache',
+        'yarn blueprint:synth --cache --clean-up false',
         'yarn package',
         `blueprint publish ./ --publisher ${organization} $*`,
       ].join(' && '),

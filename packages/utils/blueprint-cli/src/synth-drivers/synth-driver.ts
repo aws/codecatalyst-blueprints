@@ -21,6 +21,7 @@ export interface SynthDriverCliOptions extends yargs.Arguments {
    * defaults to '00.synth.'
    */
   jobPrefix?: string;
+  cleanUp: boolean;
 }
 
 /**
@@ -74,13 +75,16 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
         jobname,
         outputDirectory: outputDir,
         existingBundle: options.existingBundle || '',
+        cleanUp: options.cleanUp,
       });
     });
   } catch (error) {
     log.error(error as any);
   } finally {
-    cleanUpDriver(log, synthDriver);
-    cleanUpDriver(log, resynthDriver);
+    if (options.cleanUp) {
+      cleanUpDriver(log, synthDriver);
+      cleanUpDriver(log, resynthDriver);
+    }
   }
 }
 
