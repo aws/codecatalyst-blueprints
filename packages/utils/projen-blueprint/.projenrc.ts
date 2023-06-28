@@ -32,7 +32,7 @@ project.package.addVersion(version || '0.0.0');
 project.removeTask('release');
 project.removeTask('bump');
 project.addTask('bump', {
-  exec: 'npm version patch -no-git-tag-version',
+  exec: 'npm version patch -no-git-tag-version --no-workspaces-update',
 });
 
 project.package.addField('preferGlobal', true);

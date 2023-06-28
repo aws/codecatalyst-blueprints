@@ -28,7 +28,7 @@
       "name": "bump",
       "steps": [
         {
-          "exec": "npm version patch -no-git-tag-version"
+          "exec": "npm version patch -no-git-tag-version --no-workspaces-update"
         }
       ]
     },
