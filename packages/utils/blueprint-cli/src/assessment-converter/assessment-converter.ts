@@ -31,12 +31,18 @@ export const convertToAssessmentObjects = (
   const packageJson = loadFile(log, path.join(rootDirectory, '/package.json'));
   const outputDirectory = path.join(rootDirectory, outputDirectoryFromRoot);
 
+  let defaultsJsonExistsInWizardOptionsFolder: boolean = false;
+
   if (folderExists(wizardOptionsFolderPath)) {
-    log.info('Wizard options folder found');
     const wizardOptionsFileNames = loadFolder(log, wizardOptionsFolderPath);
 
     wizardOptionsFileNames.forEach(wizardOptionsFileName => {
       log.info(`Creating assessment object using wizard options '${wizardOptionsFileName}'`);
+
+      if (wizardOptionsFileName === 'defaults.json') {
+        defaultsJsonExistsInWizardOptionsFolder = true;
+      }
+
       const wizardOptionsFilePath = path.join(wizardOptionsFolderPath, wizardOptionsFileName);
       const wizardOptions = loadFile(log, wizardOptionsFilePath);
       createAssessmentObject(log, outputDirectory, continuous, useLatest, packageJson, wizardOptions, wizardOptionsFileName, configurations);
@@ -45,10 +51,19 @@ export const convertToAssessmentObjects = (
     log.info('Snapshot configuration not found, converting to assessment object using only default wizard options');
   }
 
-  const defaultWizardOptionsFileName = 'defaults.json';
-  log.info(`Creating assessment object using default wizard options (${defaultWizardOptionsFileName})`);
+  let defaultWizardOptionsFileName = 'defaults.json';
+  log.info(`Creating assessment object using default wizard options (located in '/src/${defaultWizardOptionsFileName}')`);
   const defaultWizardOptionsFilePath = path.join(rootDirectory, `/src/${defaultWizardOptionsFileName}`);
   const defaultWizardOptions = loadFile(log, defaultWizardOptionsFilePath);
+
+  // this covers the edge case where 'defaults.json' exists in the wizard options folder
+  // which its assessment object would be overwritten by the assessment object generated from '/src/defaults.json'
+  if (defaultsJsonExistsInWizardOptionsFolder) {
+    const suffix = '_fromSrcFolder';
+    const fileExtension = defaultWizardOptionsFileName.split('.').pop();
+    defaultWizardOptionsFileName = defaultWizardOptionsFileName.replace(`.${fileExtension}`, `${suffix}.${fileExtension}`);
+  }
+
   createAssessmentObject(
     log,
     outputDirectory,

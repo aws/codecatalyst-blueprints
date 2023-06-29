@@ -63,6 +63,34 @@ describe('Verifies all functions are working as expected', () => {
     });
   });
 
+  describe("Test function 'convertToAssessmentObjects' success case: with wizard options containing 'defaults.json'", () => {
+    const fileName = 'defaults.json';
+    const filePath = path.join(outputDirectory, fileName);
+
+    afterAll(() => {
+      if (fs.existsSync(filePath)) {
+        fs.rmdirSync(directoryToRemove, { recursive: true });
+      }
+    });
+
+    it('should return the path to assessment objects directory', () => {
+      writeToFile(log, validAssessmentObject, directoryToRemove, fileName);
+      const wizardOptionsFolderPath = directoryToRemove;
+      const assessmentObjectsFolderPath = convertToAssessmentObjects(
+        log,
+        rootDirectory,
+        outputDirectoryFromRoot,
+        true,
+        true,
+        wizardOptionsFolderPath,
+      );
+      expect(assessmentObjectsFolderPath).toBe(outputDirectory);
+
+      const targetFilePath = path.join(assessmentObjectsFolderPath, 'defaults_fromSrcFolder.json');
+      expect(fs.existsSync(targetFilePath)).toBe(true);
+    });
+  });
+
   describe("Test function 'convertToAssessmentObjects' success case: without wizard options", () => {
     const fileName = 'defaults.json';
     const filePath = path.join(outputDirectory, fileName);
