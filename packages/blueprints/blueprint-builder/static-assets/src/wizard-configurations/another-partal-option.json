@@ -1,5 +1,5 @@
 {
     "nested": {
-        "stringInput": "a different string value"
+        "stringInput": "a_different_string_value"
     }
 }

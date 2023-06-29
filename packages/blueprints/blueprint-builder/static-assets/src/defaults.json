@@ -4,7 +4,7 @@
     "environmentType": "PRODUCTION"
   },
   "nested": {
-    "stringInput": "default string value"
+    "stringInput": "default_string_value"
   },
   "dropdown": "third-option"
 }

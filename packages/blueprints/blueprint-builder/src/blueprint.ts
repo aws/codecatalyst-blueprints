@@ -1,6 +1,6 @@
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@caws-blueprint-component/caws-source-repositories';
-import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
 import * as decamelize from 'decamelize';
 import defaults from './defaults.json';
 
@@ -44,6 +44,9 @@ export interface Options extends ParentOptions {
 }
 
 export class Blueprint extends ParentBlueprint {
+  repository: SourceRepository;
+  newBlueprintOptions: any;
+
   constructor(options_: Options) {
     super(options_);
     /**
@@ -67,11 +70,12 @@ export class Blueprint extends ParentBlueprint {
     const repository = new SourceRepository(this, {
       title: dashName,
     });
+    this.repository = repository;
 
     const spaceName = this.context.spaceName || '<<unknown-organization>>';
     const packageName = `@caws-blueprint/${spaceName}.${dashName}`;
 
-    const newBlueprintOptions = {
+    const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
       publishingOrganization: spaceName,
       packageName,
@@ -84,6 +88,7 @@ export class Blueprint extends ParentBlueprint {
       github: false,
       eslint: true,
       jest: false,
+      gettingStarted: true,
       npmignoreEnabled: true,
       tsconfig: {
         compilerOptions: {
@@ -108,13 +113,7 @@ export class Blueprint extends ParentBlueprint {
       ],
     };
     console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
-
-    new ProjenBlueprint({
-      parent: this,
-      outdir: repository.relativePath,
-      ...newBlueprintOptions,
-      overridePackageVersion: '0.0.0',
-    }).synth();
+    this.newBlueprintOptions = newBlueprintOptions;
 
     // copy-paste additional code over it
     StaticAsset.findAll().forEach(asset => {
@@ -135,5 +134,15 @@ export class Blueprint extends ParentBlueprint {
         'project.synth();',
       ].join('\n'),
     );
+  }
+
+  synth(): void {
+    super.synth();
+
+    new ProjenBlueprint({
+      outdir: this.repository.path,
+      ...this.newBlueprintOptions,
+      overridePackageVersion: '0.0.0',
+    }).synth();
   }
 }

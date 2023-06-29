@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { typescript } from 'projen';
+import { SourceCode, typescript } from 'projen';
 
+import { generateGettingStarted } from './getting-started/getting-started';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
@@ -40,6 +41,12 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * defaults to 0.71.112 if not set.
    */
   readonly projenVersion?: string;
+
+  /**
+   * Generate a getting started page for new builders
+   * @default false
+   */
+  gettingStarted?: boolean;
 }
 
 const DEFAULT_OPTS = {
@@ -49,6 +56,7 @@ const DEFAULT_OPTS = {
   eslint: true,
   jest: false,
   npmignoreEnabled: true,
+  gettingStarted: false,
   tsconfig: {
     compilerOptions: {
       esModuleInterop: true,
@@ -101,6 +109,15 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       exec: 'npm version prerelease --preid preview -no-git-tag-version --no-workspaces-update',
     });
 
+    if (options.gettingStarted) {
+      const gettingStarted = new SourceCode(this, 'GETTING_STARTED.md');
+      generateGettingStarted()
+        .split('\n')
+        .forEach(line => {
+          gettingStarted.line(line);
+        });
+    }
+
     // Our version of Projen adds `--updateSnapshot` to the *test* task. We do not want this because we
     // rely on snapshot testing to prevent regressions. Newer versions of Projen (0.63+) support removing
     // this param in an idiomatic way:
@@ -143,6 +160,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript(
       'blueprint:preview',
       [
+        'rm -rf ./lib/',
         'yarn build:lib',
         'yarn bump:preview',
         'yarn blueprint:synth --cache --clean-up false',
