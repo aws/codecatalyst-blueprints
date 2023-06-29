@@ -1595,12 +1595,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@caws-blueprint-component/caws-environments@0.2.*, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
+"@caws-blueprint-component/caws-environments@0.2.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1614,7 +1614,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
@@ -1623,8 +1623,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-issue@workspace:packages/components/caws-issues"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1638,17 +1638,17 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-source-repositories@0.2.*, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
+"@caws-blueprint-component/caws-source-repositories@0.2.x, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/jest": "*"
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
@@ -1671,19 +1671,19 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-workflows@0.2.*, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
+"@caws-blueprint-component/caws-workflows@0.2.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
   dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.*
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/js-yaml": ^4
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
@@ -1699,20 +1699,20 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.*
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-workspaces@0.2.*, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
+"@caws-blueprint-component/caws-workspaces@0.2.x, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
   dependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1727,20 +1727,20 @@ __metadata:
     typescript: ^4.x
     yaml: "*"
   peerDependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/blueprint-cli@0.2.*, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
+"@caws-blueprint-util/blueprint-cli@0.2.x, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
   dependencies:
     "@aws-sdk/client-cloudfront": "*"
     "@aws-sdk/client-s3": "*"
     "@aws-sdk/client-sts": "*"
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.*
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
     "@types/jest": 26.0.24
     "@types/jmespath": "*"
     "@types/node": ^18
@@ -1772,7 +1772,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/projen-blueprint-component@0.2.*, @caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
+"@caws-blueprint-util/projen-blueprint-component@0.2.x, @caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component"
   dependencies:
@@ -1793,11 +1793,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-util/projen-blueprint@0.2.*, @caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint":
+"@caws-blueprint-util/projen-blueprint@0.2.x, @caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint"
   dependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1811,7 +1811,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
     projen: "*"
   languageName: unknown
   linkType: soft
@@ -1820,11 +1820,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
   dependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-component/caws-workflows": 0.2.*
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
-    "@caws-blueprint-util/projen-blueprint": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1842,12 +1842,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.blueprint@0.2.*, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/blueprints.blueprint@0.2.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
-    "@caws-blueprint-util/projen-blueprint": 0.2.*
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1870,13 +1870,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app"
   dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.*
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-component/caws-workflows": 0.2.*
-    "@caws-blueprint-component/caws-workspaces": 0.2.*
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
-    "@caws-blueprint-util/projen-blueprint": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/jest": "*"
     "@types/node": ^18
     "@types/pino": ^6.3.12
@@ -1899,7 +1899,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
   languageName: unknown
   linkType: soft
 
@@ -1907,13 +1907,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl"
   dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.*
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-component/caws-workflows": 0.2.*
-    "@caws-blueprint-component/caws-workspaces": 0.2.*
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
-    "@caws-blueprint-util/projen-blueprint": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/jest": "*"
     "@types/node": ^18
     "@types/pino": ^6.3.12
@@ -1935,7 +1935,7 @@ __metadata:
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
   languageName: unknown
   linkType: soft
 
@@ -1943,12 +1943,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint"
   dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.*
-    "@caws-blueprint-component/caws-source-repositories": 0.2.*
-    "@caws-blueprint-component/caws-workflows": 0.2.*
-    "@caws-blueprint-util/blueprint-cli": 0.2.*
-    "@caws-blueprint-util/projen-blueprint": 0.2.*
-    "@caws-blueprint/blueprints.blueprint": 0.2.*
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5

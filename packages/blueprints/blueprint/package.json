@@ -31,8 +31,8 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.*",
-    "@caws-blueprint-util/projen-blueprint": "0.2.*",
+    "@caws-blueprint-util/blueprint-cli": "0.2.x",
+    "@caws-blueprint-util/projen-blueprint": "0.2.x",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
