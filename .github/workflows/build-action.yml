@@ -22,7 +22,9 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
-      - run: npx -v
+      # We are seeing a very large slow down in startup execution in with npx (npm v9.7.2). 
+      # Setting to older version of npm to speed up execution.
+      - run: npm install -g npm@6.14.13
       - run: yarn --immutable-cache
       - run: yarn build
       - run: yarn blueprints:synth --cache
