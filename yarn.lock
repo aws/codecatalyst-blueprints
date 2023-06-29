@@ -1838,7 +1838,7 @@ __metadata:
     projen: 0.71.112
     standard-version: ^9
     ts-node: ^10
-    typescript: 4.x
+    typescript: ^4.x
   languageName: unknown
   linkType: soft
 
@@ -1860,7 +1860,7 @@ __metadata:
     projen: 0.71.112
     standard-version: ^9
     ts-node: ^10
-    typescript: 4.x
+    typescript: ^4.x
   peerDependencies:
     projen: "*"
   languageName: unknown
@@ -1897,7 +1897,7 @@ __metadata:
     ts-deepmerge: "*"
     ts-jest: "*"
     ts-node: ^10
-    typescript: 4.x
+    typescript: ^4.x
   peerDependencies:
     "@caws-blueprint-util/blueprint-cli": 0.2.*
   languageName: unknown
@@ -1933,7 +1933,7 @@ __metadata:
     standard-version: ^9
     ts-jest: "*"
     ts-node: ^10
-    typescript: 4.x
+    typescript: ^4.x
   peerDependencies:
     "@caws-blueprint-util/blueprint-cli": 0.2.*
   languageName: unknown
