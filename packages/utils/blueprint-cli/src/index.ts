@@ -191,7 +191,7 @@ yargs
           demandOption: false,
         })
         .option('useLatest', {
-          description: 'use the lastest blueprint version specified in package.json',
+          description: 'use the latest blueprint version specified in package.json',
           type: 'boolean',
           default: false,
           demandOption: false,
