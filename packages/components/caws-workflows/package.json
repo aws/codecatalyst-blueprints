@@ -50,9 +50,6 @@
     "js-yaml": "^4",
     "projen": "0.71.112"
   },
-  "resolutions": {
-    "projen": "0.71.112"
-  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.2.0",

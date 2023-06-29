@@ -10470,29 +10470,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"projen@npm:*":
-  version: 0.71.114
-  resolution: "projen@npm:0.71.114"
-  dependencies:
-    "@iarna/toml": ^2.2.5
-    case: ^1.6.3
-    chalk: ^4.1.2
-    comment-json: 4.2.2
-    conventional-changelog-config-spec: ^2.1.0
-    fast-json-patch: ^3.1.1
-    glob: ^8
-    ini: ^2.0.0
-    semver: ^7.5.3
-    shx: ^0.3.4
-    xmlbuilder2: ^3.1.1
-    yaml: ^2.2.2
-    yargs: ^17.7.2
-  bin:
-    projen: bin/projen
-  checksum: ee172abc16349a85dca23da181dca8519150b5c33892a365479506e2b1ff1c0a3bb2f2a437a1028ca3a3c29f3dfb06ac8ffb54b931b7e09bdb8a32096d3f4939
-  languageName: node
-  linkType: hard
-
 "projen@npm:0.71.112":
   version: 0.71.112
   resolution: "projen@npm:0.71.112"

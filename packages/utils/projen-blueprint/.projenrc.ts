@@ -24,6 +24,8 @@ const project = new typescript.TypeScriptProject({
   devDeps: ['projen', 'ts-node@^10'],
 });
 
+project.addDevDeps('@types/node@^18');
+
 // keep consistent versions
 const version = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).version;
 project.package.addVersion(version || '0.0.0');

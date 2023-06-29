@@ -76,11 +76,6 @@
       "type": "build"
     },
     {
-      "name": "projen",
-      "version": "0.71.112",
-      "type": "override"
-    },
-    {
       "name": "@caws-blueprint-component/caws-environments",
       "type": "peer"
     },

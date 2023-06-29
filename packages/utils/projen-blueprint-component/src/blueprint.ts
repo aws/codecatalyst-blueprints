@@ -53,7 +53,6 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
      */
     const projenVersion = options.projenVersion || '0.71.112';
     this.package.addDeps(`projen@${projenVersion}`);
-    this.package.addPackageResolutions(`projen@${projenVersion}`);
 
     // modify bumping tasks
     this.removeTask('release');
