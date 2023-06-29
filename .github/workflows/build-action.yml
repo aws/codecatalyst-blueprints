@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
+      - run: npx -v
       - run: yarn --immutable-cache
       - run: yarn build
       - run: yarn blueprints:synth --cache
