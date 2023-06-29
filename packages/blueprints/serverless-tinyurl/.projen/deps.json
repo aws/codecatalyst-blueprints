@@ -88,6 +88,7 @@
     },
     {
       "name": "typescript",
+      "version": "^4.x",
       "type": "build"
     },
     {

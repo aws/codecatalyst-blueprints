@@ -110,7 +110,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     throw e;
   } finally {
     // if I wrote the resynth driver, then also clean it up.
-    if (!options.resynthDriver && options.cleanUp) {
+    if (!options.resynthDriver && options.cleanUp === true) {
       cleanUpDriver(log, resynthDriver);
     }
   }

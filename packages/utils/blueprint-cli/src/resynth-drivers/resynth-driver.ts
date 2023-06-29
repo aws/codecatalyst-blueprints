@@ -85,7 +85,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
   } catch (error) {
     log.error(error as any);
   } finally {
-    if (options.cleanUp) {
+    if (options.cleanUp === true) {
       cleanUpDriver(log, synthDriver);
       cleanUpDriver(log, resynthDriver);
     }

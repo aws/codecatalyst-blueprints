@@ -38,6 +38,7 @@ function runSnapshotSynthesis() {
     defaultOptions: defaultsLocation,
     additionalOptions: configurationsLocation,
     jobPrefix: '01.snapshot.',
+    cleanUp: true,
   } as cli.SynthDriverCliOptions);
 
   const snapshotRuns: {

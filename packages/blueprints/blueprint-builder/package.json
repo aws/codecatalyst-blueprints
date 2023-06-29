@@ -21,7 +21,7 @@
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
-    "build:lib": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
+    "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
     "blueprint:preview": "yarn build:lib && yarn bump:preview && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
@@ -43,7 +43,7 @@
     "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "4.x"
+    "typescript": "^4.x"
   },
   "dependencies": {
     "@caws-blueprint-component/caws-source-repositories": "0.2.*",

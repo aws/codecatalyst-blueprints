@@ -81,7 +81,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
   } catch (error) {
     log.error(error as any);
   } finally {
-    if (options.cleanUp) {
+    if (options.cleanUp === true) {
       cleanUpDriver(log, synthDriver);
       cleanUpDriver(log, resynthDriver);
     }

@@ -81,7 +81,7 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
     throw e;
   } finally {
     // if I wrote the synth driver, then also clean it up.
-    if (!options.synthDriver && options.cleanUp) {
+    if (!options.synthDriver && options.cleanUp === true) {
       cleanUpDriver(log, synthDriver);
     }
   }
