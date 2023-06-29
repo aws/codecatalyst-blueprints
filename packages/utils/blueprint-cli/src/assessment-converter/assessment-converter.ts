@@ -82,8 +82,8 @@ export const loadFile = (log: pino.BaseLogger, filePath?: string): object | unde
   try {
     return JSON.parse(fileBuffer.toString());
   } catch (error) {
-    log.error(`'Failed to parse file ${fileName}' to json object. Please make sure the file is a valid json file. \n
-    Specified path: ${filePath}`);
+    log.error(`Failed to parse file '${fileName}' to json object. Please make sure the file is a valid json file. \n
+    Detailed error: \n\n ${error}`);
     throw new Error('Error parsing file to json object');
   }
 };
@@ -101,7 +101,7 @@ export const loadFolder = (log: pino.BaseLogger, folderPath: string): string[] =
   try {
     return fs.readdirSync(folderPath);
   } catch (error) {
-    log.error(`Failed to read folder path '${folderPath}'. \n Detailed error: \n ${error}`);
+    log.error(`Failed to read folder path '${folderPath}'. \n Detailed error: \n\n ${error}`);
     throw new Error('Failed to read folder path');
   }
 };
@@ -258,7 +258,7 @@ export const writeToFile = (log: pino.BaseLogger, jsonObject: object, outputDire
   try {
     fs.writeFileSync(outputFilePath, jsonObjectString);
   } catch (error) {
-    log.error(`Failed to write to file '${outputFilePath}'. \n Detailed error: \n ${error}`);
+    log.error(`Failed to write to file '${outputFilePath}'. \n Detailed error: \n\n ${error}`);
     throw new Error('Failed to write to file');
   }
 };
