@@ -2,9 +2,10 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "test": "npx -v",
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
-    "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
+    "build": "echo npx -v && PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
@@ -57,5 +58,8 @@
   },
   "resolutions": {
     "projen": "0.71.112"
+  },
+  "engines": {
+    "npm": "6.14.13"
   }
 }
