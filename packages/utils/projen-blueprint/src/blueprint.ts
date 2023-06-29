@@ -143,7 +143,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       `yarn bump:preview && yarn blueprint:synth:cache && yarn package && blueprint publish ./ --publisher ${organization} --endpoint public.api.quokka.codes`,
     );
 
-    this.setScript('blueprint:convert-to-assessment', 'yarn blueprint convert-to-assessment .');
+    this.setScript('blueprint:convert-to-assessment', 'yarn blueprint convert-to-assessment');
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);

@@ -4,10 +4,10 @@ import * as pino from 'pino';
 import * as yargs from 'yargs';
 
 import { hideBin } from 'yargs/helpers';
+import { ConvertOptions, convertToAssessmentObjects } from './assessment-converter/assessment-converter';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
-import { ConvertOptions, convertToAssessmentObjects } from './snapshot-assessment-converter/assessment-converter';
 import { SynthesizeOptions, synth } from './synth-driver/synth';
 import { doOptionValidation } from './validate-options';
 
@@ -169,23 +169,29 @@ yargs
     },
   })
   .command({
-    command: 'convert-to-assessment <pathToConfiguration>',
-    describe: 'converts snapshots and other configurations to assessment objects',
+    command: 'convert-to-assessment',
+    describe: 'converts wizard options and user-defined configurations to assessment objects',
     builder: (args: yargs.Argv<unknown>) => {
       return args
-        .positional('pathToConfiguration', {
-          describe: 'path to user-defined configuration',
+        .option('wizard-options-folder-path', {
+          describe: "path to wizard options folder, this is default to 'src/snapshot-configurations' folder",
           type: 'string',
-          demandOption: true,
+          default: './src/snapshot-configurations',
+          demandOption: false,
+        })
+        .option('configurations-file-path', {
+          describe: 'path to user-defined assessment configurations file, this is used to configure the assessment object',
+          type: 'string',
+          demandOption: false,
         })
         .option('continuous', {
-          describe: 'If schedule type is continuous',
+          describe: 'if schedule type is continuous',
           type: 'boolean',
           default: false,
           demandOption: false,
         })
         .option('useLatest', {
-          description: 'Use the lastest blueprint version specified in package.json',
+          description: 'use the lastest blueprint version specified in package.json',
           type: 'boolean',
           default: false,
           demandOption: false,
@@ -193,17 +199,18 @@ yargs
     },
     handler: async (argv: ConvertOptions): Promise<void> => {
       log.info(argv);
-      const currentDirectory = process.cwd();
-      const outputDirectory = '/src/snapshot-assessment-converter';
-      const pathToAssessmentObjectsDirectory = convertToAssessmentObjects(
+      const rootDirectory = process.cwd();
+      const outputDirectoryFromRoot = '/src/assessment-objects';
+      const assessmentObjectsFolderPath = convertToAssessmentObjects(
         log,
-        currentDirectory,
-        outputDirectory,
-        argv.pathToConfiguration,
+        rootDirectory,
+        outputDirectoryFromRoot,
         argv.continuous,
         argv.useLatest,
+        argv.wizardOptionsFolderPath,
+        argv.configurationsFilePath,
       );
-      log.info(`Blueprint assessment objects created, path to folder of objects: '${pathToAssessmentObjectsDirectory}'.`);
+      log.info(`Blueprint assessment objects created, path to folder of objects: '${assessmentObjectsFolderPath}'.`);
       process.exit(0);
     },
   })
