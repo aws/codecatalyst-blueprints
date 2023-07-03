@@ -21,10 +21,11 @@
     "projen": "npx projen --no-post",
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
-    "build:cache": "yarn blueprint:synth --cache",
-    "blueprint:preview": "yarn bump:preview && yarn blueprint:synth --cache && yarn package && blueprint publish ./ --publisher blueprints $*",
+    "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
+    "blueprint:preview": "yarn build:lib && yarn bump:preview && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options && blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --additionalOptionOverrides ./src/wizard-configurations --cache $*",
-    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
+    "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
+    "build:cache": "yarn blueprint:synth --cache"
   },
   "author": {
     "name": "blueprints",
@@ -33,7 +34,7 @@
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.2.x",
     "@caws-blueprint-util/projen-blueprint": "0.2.x",
-    "@types/node": "^16",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -44,14 +45,17 @@
     "projen": "0.71.112",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "^4.x"
   },
   "dependencies": {
     "@caws-blueprint-component/caws-environments": "0.2.x",
     "@caws-blueprint-component/caws-source-repositories": "0.2.x",
     "@caws-blueprint-component/caws-workflows": "0.2.x",
     "@caws-blueprint/blueprints.blueprint": "0.2.x",
-    "projen": "*"
+    "projen": "0.71.112"
+  },
+  "resolutions": {
+    "projen": "0.71.112"
   },
   "keywords": [
     "no-tag"

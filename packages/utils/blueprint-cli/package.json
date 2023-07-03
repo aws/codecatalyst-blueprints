@@ -42,12 +42,12 @@
     "jest-junit": "^15",
     "npm-check-updates": "^16",
     "pino-pretty": "^4.8.0",
-    "projen": "*",
+    "projen": "0.71.112",
     "standard-version": "^9",
     "ts-jest": "*",
     "ts-loader": "^9.4.1",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "^4.x"
   },
   "dependencies": {
     "@aws-sdk/client-cloudfront": "*",
@@ -58,6 +58,7 @@
     "jmespath": "*",
     "pino": "^6.13.4",
     "pino-pretty": "^4.8.0",
+    "projen": "0.71.112",
     "ts-node": "^10.5.0",
     "typescript": "*",
     "yargs": "^17.3.1"

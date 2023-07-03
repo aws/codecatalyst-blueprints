@@ -40,7 +40,7 @@
     "standard-version": "^9",
     "ts-jest": "*",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "^4.x"
   },
   "peerDependencies": {
     "@caws-blueprint/blueprints.blueprint": "0.2.x",
@@ -51,7 +51,8 @@
     "decamelize": "5.0.x",
     "glob": "^10",
     "minimatch": "^9",
-    "mustache": "^4"
+    "mustache": "^4",
+    "projen": "0.71.112"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",

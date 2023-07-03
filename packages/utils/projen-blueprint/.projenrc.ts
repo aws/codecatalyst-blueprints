@@ -24,6 +24,8 @@ const project = new typescript.TypeScriptProject({
   devDeps: ['projen', 'ts-node@^10'],
 });
 
+project.addDevDeps('@types/node@^18');
+
 // keep consistent versions
 const version = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).version;
 project.package.addVersion(version || '0.0.0');
@@ -32,7 +34,7 @@ project.package.addVersion(version || '0.0.0');
 project.removeTask('release');
 project.removeTask('bump');
 project.addTask('bump', {
-  exec: 'npm version patch -no-git-tag-version',
+  exec: 'npm version patch -no-git-tag-version --no-workspaces-update',
 });
 
 project.package.addField('preferGlobal', true);
@@ -42,4 +44,5 @@ project.setScript('projen', 'npx projen --no-post');
 project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
 project.setScript('npm:push', 'yarn npm publish');
 
+project.package.addField('files', ['lib', 'static-assets']);
 project.synth();

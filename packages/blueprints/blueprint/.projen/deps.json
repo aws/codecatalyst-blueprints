@@ -10,7 +10,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^16",
+      "version": "^18",
       "type": "build"
     },
     {
@@ -61,7 +61,13 @@
     },
     {
       "name": "typescript",
+      "version": "^4.x",
       "type": "build"
+    },
+    {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "override"
     },
     {
       "name": "projen",
@@ -69,6 +75,11 @@
     },
     {
       "name": "globule",
+      "type": "runtime"
+    },
+    {
+      "name": "projen",
+      "version": "0.71.112",
       "type": "runtime"
     }
   ],

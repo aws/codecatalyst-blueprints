@@ -38,7 +38,7 @@
     "projen": "*",
     "standard-version": "^9",
     "ts-node": "^10",
-    "typescript": "^4.5.5"
+    "typescript": "^4.x"
   },
   "peerDependencies": {
     "@caws-blueprint-component/caws-environments": "0.2.x",
@@ -47,7 +47,8 @@
     "projen": "*"
   },
   "dependencies": {
-    "js-yaml": "^4"
+    "js-yaml": "^4",
+    "projen": "0.71.112"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",

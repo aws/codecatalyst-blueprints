@@ -1,13 +1,9 @@
 {
   "blueprintName": "create-empty-application",
-  "organizationOverride": "<<unknown-organization>>",
-  "blueprintToExtend": "@caws-blueprint/blueprints.blueprint",
   "description": "This blueprint creates an empty application.",
-  "authorName": "none",
+  "authorName": "Amazing author",
   "advancedSettings": {
-    "version": "latest",
-    "license": "MIT",
-    "projenVersion": "*",
-    "tags": ["blueprint"]
+    "license": "Apache-2.0",
+    "tags": ["first-label", "second-label"]
   }
 }

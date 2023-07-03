@@ -129,6 +129,11 @@
       "type": "runtime"
     },
     {
+      "name": "projen",
+      "version": "0.71.112",
+      "type": "runtime"
+    },
+    {
       "name": "ts-node",
       "type": "runtime"
     },
