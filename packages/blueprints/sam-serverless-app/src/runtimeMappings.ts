@@ -597,7 +597,7 @@ export const runtimeMappings: RuntimeMap = {
       },
     ],
     filesToChangePermissionsFor: [],
-    samBuildImage: 'amazon/aws-sam-cli-build-image-python3.9',
+    samBuildImage: 'public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")',
     computeOptions: {
       Type: ComputeType.EC2,
       Fleet: ComputeFleet.LINUX_X86_64_LARGE,
@@ -606,7 +606,7 @@ export const runtimeMappings: RuntimeMap = {
       {
         eventName: 'bootstrap-and-build',
         command:
-          '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+          '. ./.codecatalyst/scripts/bootstrap.sh && . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file template.yaml --use-container --build-image public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")',
       },
       //TODO: uncomment and separate onmi command once dev environments supports multiple postStart events
       // {
@@ -619,7 +619,7 @@ export const runtimeMappings: RuntimeMap = {
       // },
       // {
       //   eventName: 'sam-build',
-      //   command: 'sam build --template-file template.yaml --use-container --build-image amazon/aws-sam-cli-build-image-python3.9',
+      //   command: 'sam build --template-file template.yaml --use-container --build-image public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")',
       // },
     ],
   },
