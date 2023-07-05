@@ -1,30 +1,23 @@
-import path from 'path';
-import { IResolver, TextFile } from 'projen';
+import { File } from './file';
 import { SourceRepository } from '../repository';
 
 export interface Options {
   /**
    * Mark this file as readonly.
+   * @deprecated - declare readonly status through the ownership file construct
    * @default false
    */
   readonly?: boolean;
 }
 
-export class SourceFile extends TextFile {
+export class SourceFile extends File {
   sourceRepository: SourceRepository;
   filepath: string;
 
-  constructor(sourceRepository: SourceRepository, filePath: string, content: string, options?: Options) {
+  constructor(sourceRepository: SourceRepository, filePath: string, content: string, _options?: Options) {
     sourceRepository._trackFile(filePath, Buffer.from(content, 'utf8'));
-    super(sourceRepository.blueprint, path.join(sourceRepository.relativePath, filePath), {
-      readonly: false,
-      ...options,
-    });
+    super(sourceRepository, filePath, Buffer.from(content));
     this.sourceRepository = sourceRepository;
     this.filepath = filePath;
-  }
-
-  protected synthesizeContent(_: IResolver): string | undefined {
-    return this.sourceRepository.getFiles()[this.filepath]?.toString();
   }
 }
