@@ -44,5 +44,4 @@ project.setScript('projen', 'npx projen --no-post');
 project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
 project.setScript('npm:push', 'yarn npm publish');
 
-project.package.addField('files', ['lib', 'static-assets']);
 project.synth();
