@@ -46,7 +46,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged",
+      "pre-commit": "pretty-quick --staged && trufflehog git file://. --fail --only-verified",
       "pre-push": "yarn build"
     }
   },
