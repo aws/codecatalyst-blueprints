@@ -16,6 +16,7 @@
     "test:update": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test:update",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview $*",
     "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth $*",
+    "blueprints:synth:cache": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth --cache",
     "blueprints:resynth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:resynth $*"
   },
   "packageManager": "yarn@3.1.0",
