@@ -172,7 +172,10 @@ export const getWizardOptions = (
     return {
       path: overridePath,
       option: deepmerge.all([defaultOptions, partialOverride], {
-        arrayMerge(target, _source, _options?) {
+        arrayMerge(target, source, _options) {
+          if (source) {
+            return source;
+          }
           return target;
         },
       }),

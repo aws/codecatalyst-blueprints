@@ -1,8 +1,7 @@
-import * as path from 'path';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
-import * as yaml from 'js-yaml';
-import { Component, TextFile } from 'projen';
+import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { Component } from 'projen';
+import * as YAML from 'yaml';
 import { ComputeDefintion } from './compute';
 import { SourceDefiniton } from './sources';
 import { TriggerDefiniton } from './triggers';
@@ -44,21 +43,22 @@ export class Workflow extends Component {
   constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any, options?: WorkflowOptions) {
     super(blueprint);
 
-    const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name}.yaml`;
-    const workflowPath = path.join(sourceRepository.relativePath, indendedWorkflowLocation);
-
-    sourceRepository.project.tryRemoveFile(workflowPath);
-    let yamlContent = yaml.dump(workflow).split('\n');
+    /**
+     * Since we can pass in any object. Make sure it is parsable.
+     */
+    workflow = JSON.parse(JSON.stringify(workflow));
+    let yamlContent = YAML.stringify(workflow, {
+      indent: 2,
+    });
     if (options?.commented) {
-      yamlContent = yamlContent.map(commentLine);
+      yamlContent = yamlContent.split('\n').map(commentLine).join('\n');
     }
     if (options?.additionalComments) {
-      yamlContent = [...options.additionalComments.map(commentLine), ...yamlContent];
+      yamlContent = [options.additionalComments.map(commentLine).join('\n'), yamlContent].join('\n');
     }
-    new TextFile(blueprint, workflowPath, {
-      marker: false,
-      lines: yamlContent,
-    });
+
+    const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name || 'no-name-workflow'}.yaml`;
+    new SourceFile(sourceRepository, indendedWorkflowLocation, yamlContent);
   }
 }
 

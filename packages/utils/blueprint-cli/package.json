@@ -54,8 +54,8 @@
     "@aws-sdk/client-s3": "*",
     "@aws-sdk/client-sts": "*",
     "axios": "^0.25.0",
-    "deepmerge": "*",
-    "jmespath": "*",
+    "deepmerge": "^4.3.1",
+    "jmespath": "^0.15.0",
     "pino": "^6.13.4",
     "pino-pretty": "^4.8.0",
     "projen": "0.71.112",
@@ -65,7 +65,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

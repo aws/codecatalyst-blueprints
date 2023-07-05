@@ -17,10 +17,6 @@
       "type": "build"
     },
     {
-      "name": "@types/js-yaml",
-      "type": "build"
-    },
-    {
       "name": "@types/node",
       "version": "^18",
       "type": "build"
@@ -92,12 +88,12 @@
       "type": "peer"
     },
     {
-      "name": "js-yaml",
+      "name": "projen",
+      "version": "0.71.112",
       "type": "runtime"
     },
     {
-      "name": "projen",
-      "version": "0.71.112",
+      "name": "yaml",
       "type": "runtime"
     }
   ],

@@ -68,7 +68,7 @@ GRADLE_DIR=gradle-test-fn-name/HelloWorldFunction
 
 exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "Name: build-and-release
-SchemaVersion: '1.0'
+SchemaVersion: "1.0"
 Triggers:
   - Type: PUSH
     Branches:
@@ -89,20 +89,19 @@ Actions:
       Artifacts:
         - Name: build_result
           Files:
-            - '**/*'
+            - "**/*"
     Configuration:
       Steps:
         - Run: . ./.codecatalyst/scripts/run-tests.sh
         - Run: sam build --template-file template.yaml
         - Run: cd .aws-sam/build/
-        - Run: >-
-            sam package --output-template-file packaged.yaml --resolve-s3
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3
             --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
   deploy_to_default_environment:
     Identifier: aws/cfn-deploy@v1
     Inputs:
@@ -111,14 +110,14 @@ Actions:
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
     Configuration:
       Parameters:
         region: us-west-2
         name: sam-stack-
         template: .aws-sam/build/packaged.yaml
-        no-fail-on-empty-changeset: '1'
+        no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
 "
 `;
@@ -1746,7 +1745,7 @@ npm --prefix $WORKING_DIR run coverage
 
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "Name: build-and-release
-SchemaVersion: '1.0'
+SchemaVersion: "1.0"
 Triggers:
   - Type: PUSH
     Branches:
@@ -1767,20 +1766,19 @@ Actions:
       Artifacts:
         - Name: build_result
           Files:
-            - '**/*'
+            - "**/*"
     Configuration:
       Steps:
         - Run: . ./.codecatalyst/scripts/run-tests.sh
         - Run: sam build --template-file template.yaml
         - Run: cd .aws-sam/build/
-        - Run: >-
-            sam package --output-template-file packaged.yaml --resolve-s3
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3
             --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
   deploy_to_default_environment:
     Identifier: aws/cfn-deploy@v1
     Inputs:
@@ -1789,14 +1787,14 @@ Actions:
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
     Configuration:
       Parameters:
         region: us-west-2
         name: sam-stack-
         template: .aws-sam/build/packaged.yaml
-        no-fail-on-empty-changeset: '1'
+        no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
 "
 `;
@@ -2684,7 +2682,7 @@ PYTHONPATH=SamFirstEndpoint pytest --junitxml=test_results.xml --cov-report xml:
 
 exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
 "Name: build-and-release
-SchemaVersion: '1.0'
+SchemaVersion: "1.0"
 Triggers:
   - Type: PUSH
     Branches:
@@ -2705,24 +2703,21 @@ Actions:
       Artifacts:
         - Name: build_result
           Files:
-            - '**/*'
+            - "**/*"
     Configuration:
       Steps:
         - Run: . ./.codecatalyst/scripts/bootstrap.sh
         - Run: . ./.codecatalyst/scripts/run-tests.sh
-        - Run: >-
-            sam build --template-file template.yaml --use-container
-            --build-image public.ecr.aws/sam/build-python3.9:$(sam --version |
-            sed "s/.* //")
+        - Run: sam build --template-file template.yaml --use-container --build-image
+            public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
         - Run: cd .aws-sam/build/
-        - Run: >-
-            sam package --output-template-file packaged.yaml --resolve-s3
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3
             --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
   deploy_to_default_environment:
     Identifier: aws/cfn-deploy@v1
     Inputs:
@@ -2731,14 +2726,14 @@ Actions:
     Environment:
       Name: default_environment
       Connections:
-        - Name: ' '
-          Role: ' '
+        - Name: " "
+          Role: " "
     Configuration:
       Parameters:
         region: us-west-2
         name: sam-stack-
         template: .aws-sam/build/packaged.yaml
-        no-fail-on-empty-changeset: '1'
+        no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
 "
 `;

@@ -1684,7 +1684,6 @@ __metadata:
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint-util/projen-blueprint-component": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/js-yaml": ^4
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1692,12 +1691,12 @@ __metadata:
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
-    js-yaml: ^4
     npm-check-updates: ^16
     projen: "*"
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
+    yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-environments": 0.2.x
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
@@ -1749,14 +1748,14 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     axios: ^0.25.0
-    deepmerge: "*"
+    deepmerge: ^4.3.1
     eslint: ^8
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     jest: 27.0.x
     jest-junit: ^15
-    jmespath: "*"
+    jmespath: ^0.15.0
     npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
@@ -3095,13 +3094,6 @@ __metadata:
   version: 0.15.0
   resolution: "@types/jmespath@npm:0.15.0"
   checksum: d11f2a939d06fcfef9c67eada0bdbb22230ccddfc1bd90f3e7a88180d6da72fd37fea3a604da854b2b10eaad1d51756c6ec990c7cb5958c89c73259666c6dc51
-  languageName: node
-  linkType: hard
-
-"@types/js-yaml@npm:^4":
-  version: 4.0.5
-  resolution: "@types/js-yaml@npm:4.0.5"
-  checksum: 7dcac8c50fec31643cc9d6444b5503239a861414cdfaa7ae9a38bc22597c4d850c4b8cec3d82d73b3fbca408348ce223b0408d598b32e094470dfffc6d486b4d
   languageName: node
   linkType: hard
 
@@ -5176,7 +5168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:*, deepmerge@npm:^4.2.2":
+"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 2024c6a980a1b7128084170c4cf56b0fd58a63f2da1660dcfe977415f27b17dbe5888668b59d0b063753f3220719d5e400b7f113609489c90160bb9a5518d052
@@ -8724,13 +8716,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jmespath@npm:*":
-  version: 0.16.0
-  resolution: "jmespath@npm:0.16.0"
-  checksum: 2d602493a1e4addfd1350ac8c9d54b1b03ed09e305fd863bab84a4ee1f52868cf939dd1a08c5cdea29ce9ba8f86875ebb458b6ed45dab3e1c3f2694503fb2fd9
-  languageName: node
-  linkType: hard
-
 "jmespath@npm:^0.15.0":
   version: 0.15.0
   resolution: "jmespath@npm:0.15.0"
@@ -8764,7 +8749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4, js-yaml@npm:^4.1.0":
+"js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
   dependencies:

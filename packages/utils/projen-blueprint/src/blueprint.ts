@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { SourceCode, typescript } from 'projen';
+import { SourceCode, typescript, javascript } from 'projen';
 
 import { generateGettingStarted } from './getting-started/getting-started';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
@@ -72,8 +72,18 @@ const DEFAULT_OPTS = {
  */
 export class ProjenBlueprint extends typescript.TypeScriptProject {
   constructor(options: ProjenBlueprintOptions) {
+    let additionalOptions = {};
+    if (options.jest) {
+      additionalOptions = {
+        jestOptions: {
+          updateSnapshot: javascript.UpdateSnapshot.NEVER,
+        },
+      };
+    }
+
     const finalOpts = {
       ...DEFAULT_OPTS,
+      ...additionalOptions,
       ...options,
     };
     super(finalOpts);
@@ -116,27 +126,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         .forEach(line => {
           gettingStarted.line(line);
         });
-    }
-
-    // Our version of Projen adds `--updateSnapshot` to the *test* task. We do not want this because we
-    // rely on snapshot testing to prevent regressions. Newer versions of Projen (0.63+) support removing
-    // this param in an idiomatic way:
-    // https://github.com/projen/projen/commit/c84c8f9a64d95c5b6c0d0f20d156f94c5a7f90f2
-    // Until then, we remove this argument manually.
-    const testTask = this.tasks.tryFind('test');
-    if (testTask) {
-      testTask.reset();
-      // The following logic is a simplification of what Projen does, so there may be projects where
-      // the updated jest invocation doesn't work, but it works well enough for our blueprints.
-      if (finalOpts.eslint) {
-        const eslintTask = this.tasks.tryFind('eslint');
-        if (eslintTask) {
-          testTask.spawn(eslintTask);
-        }
-      }
-      if (finalOpts.jest) {
-        testTask.exec('jest --ci --passWithNoTests --verbose');
-      }
     }
 
     // set custom scripts
