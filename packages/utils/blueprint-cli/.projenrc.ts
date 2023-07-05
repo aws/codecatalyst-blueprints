@@ -15,6 +15,7 @@ const project = new ProjenBlueprintComponent({
     'pino-pretty',
     'typescript',
     'jmespath',
+    'deepmerge',
   ],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',

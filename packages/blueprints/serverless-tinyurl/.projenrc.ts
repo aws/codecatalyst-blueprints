@@ -12,6 +12,7 @@ const project = new ProjenBlueprint({
   github: false,
   eslint: true,
   jest: true,
+
   npmignoreEnabled: true,
   tsconfig: {
     compilerOptions: {

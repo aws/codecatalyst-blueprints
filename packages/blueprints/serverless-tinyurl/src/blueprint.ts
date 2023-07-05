@@ -1,7 +1,8 @@
+import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
+import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, SourceFile, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, SourceFile, SubstitionAsset, BlueprintOwnershipFile } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow } from '@caws-blueprint-component/caws-workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
 
@@ -114,7 +115,34 @@ export class Blueprint extends ParentBlueprint {
     const backendSourceFolder = 'backend';
 
     const accountId = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
-    this.sourceRepository = new SourceRepository(this, { title: this.options.code.repositoryName });
+    this.sourceRepository = new SourceRepository(this, {
+      title: this.options.code.repositoryName,
+    });
+
+    new BlueprintOwnershipFile(this.sourceRepository, {
+      resynthesis: {
+        strategies: [
+          {
+            identifier: 'never_update',
+            strategy: MergeStrategies.neverUpdate,
+            globs: ['backend/lambda/**', 'backend/public/**', 'backend/src/**', 'backend/canary/**', '**/README.md'],
+          },
+          {
+            identifier: 'always_update',
+            strategy: MergeStrategies.alwaysUpdate,
+            globs: ['**/jest.config.js', '**/*/tsconfig.json', '.codecatalyst/*'],
+          },
+          {
+            identifier: 'custom_shared_ownership',
+            strategy: (_ancestor: ContextFile | undefined, _existingFile: ContextFile | undefined, _proposedFile: ContextFile | undefined) => {
+              // resolve btetter;
+              return undefined;
+            },
+            globs: ['backend/cdk/**', 'frontend/cdk/**'],
+          },
+        ],
+      },
+    });
 
     // copy frontend code
     const frontendFrameworkFolder = frontendReactSourceFolder + '/**';

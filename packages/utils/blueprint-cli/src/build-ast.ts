@@ -31,7 +31,7 @@ const supportInlineJson = (log: pino.BaseLogger, annotation: string, node: Node,
 };
 
 export async function buildAst(log: pino.BaseLogger, blueprint: string, outdir: string): Promise<void> {
-  log.debug('Creating AST from: ' + blueprint);
+  log.debug('Creating Abstract Syntax tree (AST) from: ' + blueprint);
   const blueprintPath = path.resolve(blueprint);
   const outdirPath = path.resolve(outdir);
 
