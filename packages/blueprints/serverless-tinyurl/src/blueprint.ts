@@ -150,10 +150,6 @@ export class Blueprint extends ParentBlueprint {
       new SourceFile(this.sourceRepository, `frontend/${asset.path().replace(`${frontendReactSourceFolder}/`, '')}`, asset.toString());
     });
 
-    SubstitionAsset.findAll(frontendFrameworkFolder).forEach(asset => {
-      new SourceFile(this.sourceRepository, `frontend/${asset.path().replace(`${frontendReactSourceFolder}/`, '')}`, asset.toString());
-    });
-
     // copy frontend canary
     const frontendCanaryFolder = frontendCanarySourceFolder + '/**';
     SubstitionAsset.findAll(frontendCanaryFolder).forEach(asset => {
