@@ -1841,7 +1841,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint/blueprints.blueprint@0.2.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@caws-blueprint/blueprints.blueprint@npm:0.2.x":
+  version: 0.2.1
+  resolution: "@caws-blueprint/blueprints.blueprint@npm:0.2.1"
+  dependencies:
+    globule: "*"
+    projen: 0.71.112
+  peerDependencies:
+    projen: "*"
+  checksum: 5c2a5b66e3596b46bf225014fb52f9fa0b9ee4aa4b29c9a469a82f8e474bc8c0282e7d4f772a2e48354eff8352fc5da64a1c9097fa8e08b5bb815bbf7894bc8d
+  languageName: node
+  linkType: hard
+
+"@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
