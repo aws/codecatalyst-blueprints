@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+
 import { Component } from 'projen';
+import { File } from './files/file';
+import { makeValidFolder } from './utilities';
 
 export const sourceRepositoryRootDirectory = 'src';
 
@@ -10,55 +12,12 @@ export interface SourceRepositoryDefinition {
   title: string;
 }
 
-export const BAD_SOURCE_CHARACTERS = [
-  '!',
-  '?',
-  '@',
-  '#',
-  '$',
-  '%',
-  '^',
-  '&',
-  '*',
-  '(',
-  ')',
-  '+',
-  '=',
-  '{',
-  '}',
-  '[',
-  ']',
-  '|',
-  '\\',
-  '/',
-  '>',
-  '<',
-  '~',
-  '`',
-  "'",
-  '"',
-  ';',
-  ':',
-  ' ',
-];
-export const makeValidFolder = (
-  name: string,
-  options?: {
-    separator?: string;
-    maxlength?: number;
-    invalidChars?: string[];
-  },
-): string => {
-  const { maxlength = 100, invalidChars = BAD_SOURCE_CHARACTERS } = options || {};
-  const result = name.replace(new RegExp(`[${invalidChars.join('\\')}]`, 'g'), '').substring(0, maxlength);
-  return result;
-};
-
 export class SourceRepository extends Component {
   public readonly relativePath: string;
   public readonly path: string;
   public readonly title: string;
   public readonly blueprint: Blueprint;
+  private readonly files: { [filePath: string]: Buffer } = {};
 
   // functions that get executed at the end of a synthesis of a repository.
   public readonly synthesisSteps: (() => void)[];
@@ -73,21 +32,52 @@ export class SourceRepository extends Component {
     this.synthesisSteps = [];
   }
 
+  /**
+   * Internally used to reason about which files exist in this repository.
+   * If you're adding files without using the constructs, such as using fs.writeFile
+   * directly, you'll need to make sure you track those files too. Used for resynthesis
+   * @param location
+   * @param content
+   */
+  _trackFile(location: string, content: Buffer) {
+    this.files[location] = content;
+  }
+
+  getFiles() {
+    return this.files;
+  }
+
+  /**
+   * Wrapper around new File(...)
+   * @param location
+   * @param content
+   */
+  addFile(location: string, content: Buffer) {
+    new File(this, location, content);
+  }
+
+  removeFile(location: string) {
+    if (this.files[location]) {
+      delete this.files[location];
+    }
+    this.blueprint.tryRemoveFile(path.join(this.relativePath, location));
+  }
+
   synthesize(): void {
     const srcDir = path.join(this.blueprint.context.rootDir, sourceRepositoryRootDirectory);
     if (!fs.existsSync(srcDir)) {
       fs.mkdirSync(srcDir);
     }
-
-    const repoDir = path.join(srcDir, this.sourceRepository.title);
-    if (!fs.existsSync(repoDir)) {
-      fs.mkdirSync(repoDir);
-    }
-    super.synthesize();
-    this.synthesisSteps.forEach(step => step());
+    this.writeSynthesis();
   }
 
   addSynthesisStep(postSynthFunction: () => void) {
     this.synthesisSteps.push(postSynthFunction);
+  }
+
+  private writeSynthesis() {
+    console.log('running synthesis into ' + this.path);
+    super.synthesize();
+    this.synthesisSteps.forEach(step => step());
   }
 }

@@ -5,9 +5,7 @@ const blueprint = new ProjenBlueprint({
   name: 'blueprint-builder',
   displayName: 'Blueprint Builder',
   authorName: 'caws-blueprints',
-
   projenrcTs: true,
-
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
   deps: [
@@ -18,7 +16,6 @@ const blueprint = new ProjenBlueprint({
     '@caws-blueprint/blueprints.blueprint',
     '@caws-blueprint-component/caws-source-repositories',
     '@caws-blueprint-component/caws-workflows',
-    '@caws-blueprint-util/blueprint-utils',
     '@caws-blueprint-util/projen-blueprint',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */

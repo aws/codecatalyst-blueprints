@@ -1,12 +1,13 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
+import { WorkflowDefinition } from './workflow';
 import { ComputeDefintion, TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../actions/action-cdk-bootstrap';
 import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions/action-cdk-deploy';
+import { addGenericCloudFormationCleanupAction, CfnCleanupActionParameters } from '../actions/action-cfn-cleanup';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
-import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
-import { WorkflowDefinition } from './workflow';
 
 export class WorkflowBuilder {
   definition: WorkflowDefinition;
@@ -61,6 +62,14 @@ export class WorkflowBuilder {
 
   addCfnDeployAction(configuration: CfnDeployActionParameters) {
     addGenericCloudFormationDeployAction({
+      ...configuration,
+      blueprint: this.blueprint,
+      workflow: this.definition,
+    });
+  }
+
+  addCfnCleanupAction(configuration: CfnCleanupActionParameters) {
+    addGenericCloudFormationCleanupAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,

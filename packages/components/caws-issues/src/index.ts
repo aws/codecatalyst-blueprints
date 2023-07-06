@@ -16,7 +16,6 @@ export interface IssueDefinition {
 export class Issue extends Component {
   constructor(blueprint: Blueprint, issue: IssueDefinition) {
     super(blueprint);
-
     new YamlFile(blueprint, path.join(blueprint.context.rootDir, `issues/${issue.issueStore}/${issue.title}.yaml`), {
       obj: issue,
     });

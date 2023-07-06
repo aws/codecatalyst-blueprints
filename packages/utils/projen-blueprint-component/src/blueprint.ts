@@ -7,6 +7,11 @@ export interface ProjenComponentBlueprintOptions extends typescript.TypeScriptPr
    * Override package version. I hope you know what you're doing.
    */
   readonly overridePackageVersion?: string;
+
+  /**
+   * Overrides the projen version. I hope you know what you're doing.
+   */
+  readonly projenVersion?: string;
 }
 
 /**
@@ -18,7 +23,7 @@ export interface ProjenComponentBlueprintOptions extends typescript.TypeScriptPr
 export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
   constructor(options: ProjenComponentBlueprintOptions) {
     super({
-      license: 'MIT',
+      license: 'Apache-2.0',
       projenrcTs: true,
       sampleCode: false,
       github: false,
@@ -39,13 +44,22 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
     this.addDevDeps('ts-node@^10');
 
     // force node types
-    this.addDevDeps('@types/node@^14');
+    this.addDevDeps('@types/node@^18');
+
+    /**
+     * We explicitly set the version of projen to cut down on author errors.
+     * This is not strictly nessassary. Authors may override this by putting
+     * this.addPackageResolutions('projen@something-else') in their package
+     */
+    const projenVersion = options.projenVersion || '0.71.112';
+    this.package.addDeps(`projen@${projenVersion}`);
 
     // modify bumping tasks
     this.removeTask('release');
     this.removeTask('bump');
+
     this.addTask('bump', {
-      exec: 'npm version patch -no-git-tag-version',
+      exec: 'npm version patch -no-git-tag-version --no-workspaces-update',
     });
 
     this.package.addField('preferGlobal', true);
@@ -58,12 +72,5 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
 
   synth(): void {
     super.synth();
-
-    // yarn install appends '\n' while projen removes it. This results in annoying commit diffs. Fixing once and for all.
-    const pkgJson = this.tryFindFile('package.json');
-    pkgJson &&
-      fs.writeFileSync(pkgJson.absolutePath, '\n', {
-        flag: 'a+',
-      });
   }
 }

@@ -1,7 +1,7 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { WorkflowDefinition } from '../workflow/workflow';
-import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
 
 export interface DeployInputConfiguration {
   Artifacts: string[];
@@ -54,11 +54,12 @@ export interface CfnDeployActionParameters {
   actionName: string;
 }
 
-export function addGenericCloudFormationDeployAction(params: CfnDeployActionParameters & {
-  blueprint: Blueprint;
-  workflow: WorkflowDefinition;
-
-}): string {
+export function addGenericCloudFormationDeployAction(
+  params: CfnDeployActionParameters & {
+    blueprint: Blueprint;
+    workflow: WorkflowDefinition;
+  },
+): string {
   const { blueprint, workflow, inputs, environment, configuration } = params;
   const actionName = (params.actionName || 'DeployCloudFormationStack').replace(new RegExp('-', 'g'), '_');
 

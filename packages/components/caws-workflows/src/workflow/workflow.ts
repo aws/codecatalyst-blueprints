@@ -1,13 +1,10 @@
-import * as path from 'path';
-
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { Component, YamlFile } from 'projen';
-// import { ActionDefiniton } from '..';
+import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { Component } from 'projen';
+import * as YAML from 'yaml';
 import { ComputeDefintion } from './compute';
 import { SourceDefiniton } from './sources';
 import { TriggerDefiniton } from './triggers';
-// import { SourceDefiniton, TriggerDefiniton, ActionDefiniton } from '..';
 
 export enum RunModeDefiniton {
   PARALLEL = 'PARALLEL',
@@ -27,22 +24,51 @@ export interface WorkflowDefinition {
   };
 }
 
+export interface WorkflowOptions {
+  /**
+   * Additional comments to be added to the top of the generated .yaml file of the workflow.
+   * The comments will be shown on top of the workflow definitions.
+   * Example value: ['Foo', 'Bar']
+   */
+  additionalComments?: string[];
+  /**
+   * Determine if the workflow will be generated as commented out entirely
+   */
+  commented?: boolean;
+
+  /**
+   * Options for generating the YAML string, this comes from yaml.stringify
+   */
+  YAMLOptions?: YAML.DocumentOptions & YAML.SchemaOptions & YAML.ParseOptions & YAML.CreateNodeOptions & YAML.ToStringOptions;
+}
+
 export const workflowLocation = '.codecatalyst/workflows';
 
 export class Workflow extends Component {
-  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any) {
+  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any, options?: WorkflowOptions) {
     super(blueprint);
 
-    const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name}.yaml`;
-    const workflowPath = path.join(sourceRepository.relativePath, indendedWorkflowLocation);
-    // last write wins
-    sourceRepository.project.tryRemoveFile(workflowPath);
-
-    new YamlFile(blueprint, path.join(sourceRepository.relativePath, indendedWorkflowLocation), {
-      marker: false,
-      obj: {
-        ...workflow,
-      },
+    /**
+     * Since we can pass in any object. Make sure it is parsable.
+     */
+    workflow = JSON.parse(JSON.stringify(workflow));
+    let yamlContent = YAML.stringify(workflow, {
+      indent: 2,
+      lineWidth: 0,
+      ...options?.YAMLOptions,
     });
+    if (options?.commented) {
+      yamlContent = yamlContent.split('\n').map(commentLine).join('\n');
+    }
+    if (options?.additionalComments) {
+      yamlContent = [options.additionalComments.map(commentLine).join('\n'), yamlContent].join('\n');
+    }
+
+    const indendedWorkflowLocation = `${workflowLocation}/${workflow.Name || 'no-name-workflow'}.yaml`;
+    new SourceFile(sourceRepository, indendedWorkflowLocation, yamlContent);
   }
+}
+
+function commentLine(line: string) {
+  return '# ' + line;
 }

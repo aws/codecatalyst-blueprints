@@ -1,1 +1,0 @@
-{"environment":{"name":"default_environment","environmentType":"PRODUCTION"},"runtime":"Python 3.9","advanced":{"sourceRepositoryName":"ServerlessAppRepo","cloudFormationStackName":"sam-stack-","functionName":"SamFirstEndpoint","workflowBuildArchitecture":"x86_64"},"outdir":"outdir-test-blueprintXE1yju"}

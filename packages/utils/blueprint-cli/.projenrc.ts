@@ -3,7 +3,6 @@ import { ProjenBlueprintComponent } from '@caws-blueprint-util/projen-blueprint-
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
   name: 'blueprint-cli',
-  license: 'MIT',
   copyrightOwner: 'Amazon.com',
   deps: [
     '@aws-sdk/client-s3',
@@ -16,6 +15,7 @@ const project = new ProjenBlueprintComponent({
     'pino-pretty',
     'typescript',
     'jmespath',
+    'deepmerge',
   ],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',
