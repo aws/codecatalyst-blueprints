@@ -1,4 +1,4 @@
-import { ContextFile } from '../context-file';
+import { StrategyFunction } from './merge-strategies';
 
 /**
  * Lifecycle control over a repository allows a blueprint to reason about which files should and should not exist after a resynthesis.
@@ -23,17 +23,10 @@ export interface Strategy {
   /**
    * Merge strategy function
    */
-  strategy: MergeStrategyFunction;
+  strategy: StrategyFunction;
 
   /**
    * File globs subject to this strategy
    */
   globs: string[];
 }
-
-export type MergeStrategyFunction = (
-  commonAncestorFile: ContextFile | undefined,
-  existingFile: ContextFile | undefined,
-  proposedFile: ContextFile | undefined,
-  options?: {},
-) => ContextFile | undefined;

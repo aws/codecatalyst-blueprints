@@ -15,6 +15,8 @@
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
     "test": "npx projen test",
+    "test:update": "npx projen test:update",
+    "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
@@ -33,6 +35,8 @@
   "devDependencies": {
     "@caws-blueprint-util/blueprint-cli": "0.2.x",
     "@caws-blueprint-util/projen-blueprint": "0.2.x",
+    "@types/diff-match-patch": "1.x",
+    "@types/jest": "*",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -40,9 +44,12 @@
     "eslint-import-resolver-node": "*",
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
+    "jest": "*",
+    "jest-junit": "^15",
     "npm-check-updates": "^16",
     "projen": "0.71.112",
     "standard-version": "^9",
+    "ts-jest": "*",
     "ts-node": "^10",
     "typescript": "^4.x"
   },
@@ -50,6 +57,7 @@
     "projen": "*"
   },
   "dependencies": {
+    "diff-match-patch": "1.x",
     "globule": "*",
     "projen": "0.71.112"
   },
@@ -63,6 +71,46 @@
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
   "version": "0.2.6",
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+    ],
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "cobertura",
+      "text"
+    ],
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.dev.json"
+      }
+    }
+  },
   "types": "lib/index.d.ts",
   "mediaUrls": [
     "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png"
