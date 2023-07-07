@@ -23,10 +23,9 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
     }
   }
 
-  // TODO: Default to three way merge once it exists.
   return {
-    identifier: 'FALLBACK_never_update',
-    strategy: MergeStrategies.neverUpdate,
+    identifier: 'FALLBACK_three_way_merge',
+    strategy: MergeStrategies.threeWayMerge,
     globs: ['*'],
   };
 }

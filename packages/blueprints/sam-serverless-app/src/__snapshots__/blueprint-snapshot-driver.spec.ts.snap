@@ -95,8 +95,7 @@ Actions:
         - Run: . ./.codecatalyst/scripts/run-tests.sh
         - Run: sam build --template-file template.yaml
         - Run: cd .aws-sam/build/
-        - Run: sam package --output-template-file packaged.yaml --resolve-s3
-            --template-file template.yaml --region us-west-2
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:
@@ -1772,8 +1771,7 @@ Actions:
         - Run: . ./.codecatalyst/scripts/run-tests.sh
         - Run: sam build --template-file template.yaml
         - Run: cd .aws-sam/build/
-        - Run: sam package --output-template-file packaged.yaml --resolve-s3
-            --template-file template.yaml --region us-west-2
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:
@@ -2708,11 +2706,9 @@ Actions:
       Steps:
         - Run: . ./.codecatalyst/scripts/bootstrap.sh
         - Run: . ./.codecatalyst/scripts/run-tests.sh
-        - Run: sam build --template-file template.yaml --use-container --build-image
-            public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
+        - Run: sam build --template-file template.yaml --use-container --build-image public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
         - Run: cd .aws-sam/build/
-        - Run: sam package --output-template-file packaged.yaml --resolve-s3
-            --template-file template.yaml --region us-west-2
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
     Environment:
       Name: default_environment
       Connections:

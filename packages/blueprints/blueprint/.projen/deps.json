@@ -9,6 +9,15 @@
       "type": "build"
     },
     {
+      "name": "@types/diff-match-patch",
+      "version": "1.x",
+      "type": "build"
+    },
+    {
+      "name": "@types/jest",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^18",
       "type": "build"
@@ -41,6 +50,15 @@
       "type": "build"
     },
     {
+      "name": "jest",
+      "type": "build"
+    },
+    {
+      "name": "jest-junit",
+      "version": "^15",
+      "type": "build"
+    },
+    {
       "name": "npm-check-updates",
       "version": "^16",
       "type": "build"
@@ -52,6 +70,10 @@
     {
       "name": "standard-version",
       "version": "^9",
+      "type": "build"
+    },
+    {
+      "name": "ts-jest",
       "type": "build"
     },
     {
@@ -72,6 +94,11 @@
     {
       "name": "projen",
       "type": "peer"
+    },
+    {
+      "name": "diff-match-patch",
+      "version": "1.x",
+      "type": "runtime"
     },
     {
       "name": "globule",
