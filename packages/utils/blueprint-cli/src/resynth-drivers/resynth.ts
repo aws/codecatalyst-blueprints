@@ -216,6 +216,9 @@ const executeResynthesisCommand = (
       ...process.env,
     },
   });
+  if (!fs.existsSync(path.join(cwd, options.driver.path))) {
+    console.error('Did you forget to build?');
+  }
 };
 
 const copyFolderSync = (log: pino.BaseLogger, source: string, target: string) => {
