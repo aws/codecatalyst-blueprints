@@ -1847,17 +1847,23 @@ __metadata:
   dependencies:
     "@caws-blueprint-util/blueprint-cli": 0.2.x
     "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@types/diff-match-patch": 1.x
+    "@types/jest": "*"
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
+    diff-match-patch: 1.x
     eslint: ^8
     eslint-import-resolver-node: "*"
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     globule: "*"
+    jest: "*"
+    jest-junit: ^15
     npm-check-updates: ^16
     projen: 0.71.112
     standard-version: ^9
+    ts-jest: "*"
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
@@ -2999,6 +3005,13 @@ __metadata:
   dependencies:
     "@babel/types": ^7.20.7
   checksum: 58341e23c649c0eba134a1682d4f20d027fad290d92e5740faa1279978f6ed476fc467ae51ce17a877e2566d805aeac64eae541168994367761ec883a4150221
+  languageName: node
+  linkType: hard
+
+"@types/diff-match-patch@npm:1.x":
+  version: 1.0.32
+  resolution: "@types/diff-match-patch@npm:1.0.32"
+  checksum: 8431ab2bf2f0e96ece30beddeae3bc8024429bd6071f1ab695c3f64112b2551446fc4a746a44a7a7d14e47ffce622333286c1c78869cfb510c775a9e8c47a1b1
   languageName: node
   linkType: hard
 
@@ -5260,6 +5273,13 @@ __metadata:
   version: 3.1.0
   resolution: "detect-newline@npm:3.1.0"
   checksum: ae6cd429c41ad01b164c59ea36f264a2c479598e61cba7c99da24175a7ab80ddf066420f2bec9a1c57a6bead411b4655ff15ad7d281c000a89791f48cbe939e7
+  languageName: node
+  linkType: hard
+
+"diff-match-patch@npm:1.x":
+  version: 1.0.5
+  resolution: "diff-match-patch@npm:1.0.5"
+  checksum: 841522d01b09cccbc4e4402cf61514a81b906349a7d97b67222390f2d35cf5df277cb23959eeed212d5e46afb5629cebab41b87918672c5a05c11c73688630e3
   languageName: node
   linkType: hard
 
