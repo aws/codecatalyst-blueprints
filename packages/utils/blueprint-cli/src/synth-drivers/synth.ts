@@ -139,6 +139,9 @@ function executeSynthesisCommand(
       ...process.env,
     },
   });
+  if (!fs.existsSync(path.join(cwd, options.driver.path))) {
+    console.error('Did you forget to build?');
+  }
 }
 
 const makeSynthDriverFile = (_log: pino.BaseLogger, options: SynthOptions): DriverFile => {
