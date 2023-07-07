@@ -3,6 +3,9 @@ import { Strategy } from './models';
 import { Ownership } from '../ownership';
 import { matchesGlob } from '../walk-files';
 
+export const FALLBACK_STRATEGY = MergeStrategies.threeWayMerge;
+export const FALLBACK_STRATEGY_ID = `FALLBACK_${FALLBACK_STRATEGY.name}`;
+
 export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
   const directories = bundlePath.split('/');
 
@@ -24,8 +27,8 @@ export function match(bundlePath: string, strategies: { [bundlepath: string]: St
   }
 
   return {
-    identifier: 'FALLBACK_three_way_merge',
-    strategy: MergeStrategies.threeWayMerge,
+    identifier: FALLBACK_STRATEGY_ID,
+    strategy: FALLBACK_STRATEGY,
     globs: ['*'],
   };
 }

@@ -8,7 +8,7 @@ import { TraversalOptions, traverse } from './context/traverse';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies } from './resynthesis/merge-strategies/deserialize-strategies';
-import { match } from './resynthesis/merge-strategies/match';
+import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
 
 export interface ParentOptions {
@@ -76,14 +76,14 @@ export class Blueprint extends Project {
     const validStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
     // used for pretty formatting
     let maxIdlength = 0;
-    console.log('<<STRATEGY>> [SYS-FALLBACK] [FALLBACK_never_update] matches [*]');
+    console.log(`<<STRATEGY>> [SYS-FALLBACK] [${FALLBACK_STRATEGY_ID}] matches [*]`);
     for (const [ownershipFile, strategies] of Object.entries(validStrategies)) {
       for (const strategy of strategies) {
         console.log(`<<STRATEGY>> [${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`);
         maxIdlength = Math.max(strategy.identifier.length, maxIdlength);
       }
     }
-    maxIdlength = Math.max(maxIdlength, 'STRATEGY-SYS-FALLBACK'.length);
+    maxIdlength = Math.max(maxIdlength, FALLBACK_STRATEGY_ID.length);
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     // only consider files under the source code 'src'
@@ -147,7 +147,5 @@ export class BlueprintSynthesisError extends Error {
 }
 
 function structureMatchReport(maxStrategyLength: number, strategy: Strategy, repository: string, filepath: string) {
-  return `[${strategy.identifier}] ${' '.repeat(maxStrategyLength - strategy.identifier.length)} [${repository}] [${filepath}] -> [${
-    strategy.globs
-  }]`;
+  return `[${strategy.identifier}]${' '.repeat(maxStrategyLength - strategy.identifier.length)} [${repository}] [${filepath}] -> [${strategy.globs}]`;
 }
