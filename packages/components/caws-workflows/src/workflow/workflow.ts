@@ -35,6 +35,11 @@ export interface WorkflowOptions {
    * Determine if the workflow will be generated as commented out entirely
    */
   commented?: boolean;
+
+  /**
+   * Options for generating the YAML string, this comes from yaml.stringify
+   */
+  YAMLOptions?: YAML.DocumentOptions & YAML.SchemaOptions & YAML.ParseOptions & YAML.CreateNodeOptions & YAML.ToStringOptions;
 }
 
 export const workflowLocation = '.codecatalyst/workflows';
@@ -49,6 +54,8 @@ export class Workflow extends Component {
     workflow = JSON.parse(JSON.stringify(workflow));
     let yamlContent = YAML.stringify(workflow, {
       indent: 2,
+      lineWidth: 0,
+      ...options?.YAMLOptions,
     });
     if (options?.commented) {
       yamlContent = yamlContent.split('\n').map(commentLine).join('\n');

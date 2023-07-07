@@ -21,7 +21,6 @@ nvm use
 npm install npm@9.7.2 -g  # we depend on npm v9.7.2
 npm install yarn ts-node webpack webpack-cli -g
 brew install jq
-brew install svn            # used during synthesis of SAM blueprint
 ```
 
 Add this to your `~/.bash_profile`:
