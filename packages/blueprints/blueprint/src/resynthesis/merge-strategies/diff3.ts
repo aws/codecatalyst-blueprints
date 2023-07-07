@@ -43,10 +43,10 @@ export class Diff3 {
     o: number;
     b: number;
   } = {
-    a: 0,
-    o: 0,
-    b: 0,
-  };
+      a: 0,
+      o: 0,
+      b: 0,
+    };
 
   private readonly matches: {
     a: Map<number, number>;
