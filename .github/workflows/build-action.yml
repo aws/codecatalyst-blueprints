@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
-      # We are seeing a very large slow down in startup execution in with npx (npm v9.7.2). 
+      # We are seeing a very large slow down in startup execution in with npx (npm v9.7.2).
       # Setting to older version of npm to speed up execution.
       - run: npm install -g npm@6.14.13
       - run: yarn --immutable-cache
@@ -30,3 +30,15 @@ jobs:
       - run: yarn test
       - run: yarn blueprints:synth --cache
       - run: yarn blueprints:resynth --cache
+  TruffleHog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug
