@@ -20,6 +20,8 @@ interface PublishingJob {
   uploadUrl: string;
 }
 
+const mb = 1_024_000;
+
 export async function publish(log: pino.BaseLogger, blueprint: string, publisher: string, endpoint: string, cookie?: string): Promise<void> {
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
@@ -116,7 +118,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
   const publishingJob = gqlResponse.data.data.createBlueprintUploadUrl as PublishingJob;
   log.info('Starting publishing job id: %s', publishingJob.publishingJobId);
 
-  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(fullPackagePath));
+  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(fullPackagePath), { maxBodyLength: 100 * mb });
   if (uploadResponse.status != 200) {
     log.error('failed to upload template package: %s', uploadResponse.status);
     process.exit(254);
