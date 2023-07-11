@@ -16,6 +16,15 @@ const getStrategyIds = (strategies: StrategyLocations): { [identifier: string]: 
   return ids;
 };
 
+export const merge = (orginal: StrategyLocations, overrides: StrategyLocations): StrategyLocations => {
+  const result: StrategyLocations = {};
+  const allLocations = new Set([...Object.keys(orginal), ...Object.keys(overrides)]);
+  allLocations.forEach(location => {
+    result[location] = [...(orginal[location] || []), ...(overrides[location] || [])];
+  });
+  return result;
+};
+
 export const deserializeStrategies = (existingBundle: string, strategyMatch: StrategyLocations): StrategyLocations => {
   const inMemStrategies = getStrategyIds(strategyMatch);
   const validStrategies: StrategyLocations = {};

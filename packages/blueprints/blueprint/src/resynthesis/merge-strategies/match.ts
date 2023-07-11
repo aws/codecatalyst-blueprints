@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { MergeStrategies } from './merge-strategies';
 import { Strategy } from './models';
 import { Ownership } from '../ownership';
@@ -6,20 +7,24 @@ import { matchesGlob } from '../walk-files';
 export const FALLBACK_STRATEGY = MergeStrategies.threeWayMerge;
 export const FALLBACK_STRATEGY_ID = `FALLBACK_${FALLBACK_STRATEGY.name}`;
 
-export function match(bundlePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
-  const directories = bundlePath.split('/');
+export function match(sourceCodePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
+  const directories = sourceCodePath.split('/');
 
   while (directories.length > 0) {
     directories.pop();
-    const ownershipPath = [...directories, Ownership.DEFAULT_FILE_NAME].join('/');
-    const commonPath = directories.join('/') + '/';
 
-    const relativeStrategies = strategies[ownershipPath];
+    // path we would expect for if the ownership is declared in memory at this location
+    const syntheticPath = path.join(...directories);
+    // path we would expect for a ownership override file at this location
+    const ownershipPath = path.join(syntheticPath, Ownership.DEFAULT_FILE_NAME);
+
+    const commonPath = directories.join('/') + '/';
+    const relativeStrategies = strategies[ownershipPath] || strategies[syntheticPath];
     if (!relativeStrategies) {
       continue;
     }
 
-    const relativeBundlePath = bundlePath.startsWith(commonPath) ? bundlePath.slice(commonPath.length) : bundlePath;
+    const relativeBundlePath = sourceCodePath.startsWith(commonPath) ? sourceCodePath.slice(commonPath.length) : sourceCodePath;
     const matchedStrategy = matchStrategies(relativeBundlePath, relativeStrategies);
     if (matchedStrategy) {
       return matchedStrategy;

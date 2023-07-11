@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint, Strategy } from '@caws-blueprint/blueprints.blueprint';
 
 import { Component } from 'projen';
 import { File } from './files/file';
@@ -30,6 +30,14 @@ export class SourceRepository extends Component {
     this.relativePath = path.join(sourceRepositoryRootDirectory, sourceRepository.title);
     this.path = path.join(this.blueprint.context.rootDir, this.relativePath);
     this.synthesisSteps = [];
+  }
+
+  getResynthStrategies(_options?: {}): Strategy[] {
+    return this.blueprint.getResynthStrategies(path.join(this.relativePath));
+  }
+
+  setResynthStrategies(strategies: Strategy[], _options?: {}) {
+    this.blueprint.setResynthStrategies(path.join(this.relativePath), strategies);
   }
 
   /**

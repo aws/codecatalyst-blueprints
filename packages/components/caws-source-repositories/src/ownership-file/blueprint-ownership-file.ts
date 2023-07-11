@@ -12,15 +12,11 @@ export interface BlueprintOwnershipFileDefinition extends Ownership {
 }
 
 /**
- * Blueprint ownership file, lays out ownership delegation in a repository.
+ * Blueprint ownership file, lays out ownership delegation in a file in a repository.
  */
 export class BlueprintOwnershipFile extends SourceFile {
   constructor(readonly sourceRepository: SourceRepository, options: BlueprintOwnershipFileDefinition) {
     const filepath = path.join(options.filePath ?? '', BLUEPRINT_OWNERSHIP_FILE);
     super(sourceRepository, filepath, Ownership.asString(sourceRepository.blueprint, options));
-
-    options.resynthesis?.strategies.forEach(strategy => {
-      this.sourceRepository.blueprint.addStrategy(path.join(sourceRepository.relativePath, filepath), strategy);
-    });
   }
 }
