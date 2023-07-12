@@ -19,7 +19,7 @@ export function match(sourceCodePath: string, strategies: { [bundlepath: string]
     const ownershipPath = path.join(syntheticPath, Ownership.DEFAULT_FILE_NAME);
 
     const commonPath = directories.join('/') + '/';
-    const relativeStrategies = [...strategies[syntheticPath], ...strategies[ownershipPath]];
+    const relativeStrategies = [...(strategies[syntheticPath] || []), ...(strategies[ownershipPath] || [])];
     if (!relativeStrategies.length) {
       continue;
     }
