@@ -1,10 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { constructLocalStrategy } from './local';
 import { Strategy } from './models';
+import { BlueprintSynthesisError, BlueprintSynthesisErrorTypes } from '../../blueprint';
 import { Ownership } from '../ownership';
 import { walkFiles } from '../walk-files';
 
 export type StrategyLocations = { [bundlePath: string]: Strategy[] };
+export const LOCAL_STRATEGY_ID = 'local';
 
 const getStrategyIds = (strategies: StrategyLocations): { [identifier: string]: Strategy } => {
   const ids: { [id: string]: Strategy } = {};
@@ -31,10 +34,21 @@ export const deserializeStrategies = (existingBundle: string, strategyMatch: Str
   const ownershipFiles = walkFiles(existingBundle, [`src/**/*${Ownership.DEFAULT_FILE_NAME}`]);
 
   ownershipFiles.forEach(ownerfile => {
-    const ownershipObject = Ownership.asObject(fs.readFileSync(path.join(existingBundle, ownerfile)).toString(), inMemStrategies);
+    const ownershipPath = path.join(existingBundle, ownerfile);
+    const ownershipObject = Ownership.asObject(fs.readFileSync(ownershipPath).toString(), inMemStrategies);
     const relevantStrategies: Strategy[] = [];
     ownershipObject.resynthesis?.strategies.forEach(deserializedStrategy => {
-      if (deserializedStrategy.identifier in inMemStrategies) {
+      if (deserializedStrategy.identifier === LOCAL_STRATEGY_ID) {
+        if (!deserializedStrategy.owner) {
+          throw new BlueprintSynthesisError({
+            message: `Failed to resolve command for local strategy: ${deserializedStrategy.identifier}`,
+            type: BlueprintSynthesisErrorTypes.ValidationError,
+          });
+        }
+
+        deserializedStrategy.strategy = constructLocalStrategy(deserializedStrategy.owner, ownershipPath);
+        relevantStrategies.push(deserializedStrategy);
+      } else if (deserializedStrategy.identifier in inMemStrategies) {
         relevantStrategies.push(deserializedStrategy);
       }
     });

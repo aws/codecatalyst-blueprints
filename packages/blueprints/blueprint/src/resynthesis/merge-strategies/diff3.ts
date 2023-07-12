@@ -1,7 +1,7 @@
 import { diff_match_patch, Diff, DIFF_DELETE, DIFF_EQUAL, DIFF_INSERT } from 'diff-match-patch';
 
 const DMP = new diff_match_patch();
-const CONFLICT_MARKER_LENGTH = 7;
+export const CONFLICT_MARKER_LENGTH = 7;
 
 function diffLines(a: string, b: string, dmp: diff_match_patch = DMP): Diff[] {
   const lines = dmp.diff_linesToChars_(a, b);
@@ -43,10 +43,10 @@ export class Diff3 {
     o: number;
     b: number;
   } = {
-      a: 0,
-      o: 0,
-      b: 0,
-    };
+    a: 0,
+    o: 0,
+    b: 0,
+  };
 
   private readonly matches: {
     a: Map<number, number>;
