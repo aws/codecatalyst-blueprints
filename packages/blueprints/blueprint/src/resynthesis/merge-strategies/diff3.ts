@@ -1,7 +1,7 @@
 import { diff_match_patch, Diff, DIFF_DELETE, DIFF_EQUAL, DIFF_INSERT } from 'diff-match-patch';
 
 const DMP = new diff_match_patch();
-const CONFLICT_MARKER_LENGTH = 7;
+export const CONFLICT_MARKER_LENGTH = 7;
 
 function diffLines(a: string, b: string, dmp: diff_match_patch = DMP): Diff[] {
   const lines = dmp.diff_linesToChars_(a, b);
