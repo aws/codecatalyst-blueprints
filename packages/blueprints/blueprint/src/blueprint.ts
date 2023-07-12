@@ -7,9 +7,10 @@ import { Context } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
-import { StrategyLocations, deserializeStrategies } from './resynthesis/merge-strategies/deserialize-strategies';
+import { StrategyLocations, deserializeStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
+import { Ownership } from './resynthesis/ownership';
 
 export interface ParentOptions {
   outdir: string;
@@ -25,7 +26,7 @@ export class Blueprint extends Project {
 
   constructor(options: Options) {
     super({
-      name: 'CodeAwsBlueprint',
+      name: 'CodeCatalystBlueprint',
       ...options,
     });
     this.context = {
@@ -61,25 +62,33 @@ export class Blueprint extends Project {
     });
   }
 
-  addStrategy(bundlepath: string, strategy: Strategy) {
+  setResynthStrategies(bundlepath: string, strategies: Strategy[]) {
     if (!this.strategies) {
       this.strategies = {};
     }
-    if (!this.strategies[bundlepath]) {
-      this.strategies[bundlepath] = [];
-    }
-    this.strategies[bundlepath].push(strategy);
+    this.strategies[bundlepath] = strategies;
+  }
+
+  getResynthStrategies(bundlepath: string): Strategy[] {
+    return (this.strategies || {})[bundlepath] || [];
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
-    const validStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
+    const overriddenStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
+    const validStrategies = merge(this.strategies || {}, overriddenStrategies);
+
     // used for pretty formatting
     let maxIdlength = 0;
+    console.log('<<STRATEGY>> Last <<STRATEGY>> Wins:');
     console.log(`<<STRATEGY>> [SYS-FALLBACK] [${FALLBACK_STRATEGY_ID}] matches [*]`);
     for (const [ownershipFile, strategies] of Object.entries(validStrategies)) {
       for (const strategy of strategies) {
-        console.log(`<<STRATEGY>> [${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`);
+        console.log(
+          structureStrategyReport(ownershipFile, strategy, {
+            overriden: ownershipFile.includes(Ownership.DEFAULT_FILE_NAME),
+          }),
+        );
         maxIdlength = Math.max(strategy.identifier.length, maxIdlength);
       }
     }
@@ -148,4 +157,18 @@ export class BlueprintSynthesisError extends Error {
 
 function structureMatchReport(maxStrategyLength: number, strategy: Strategy, repository: string, filepath: string) {
   return `[${strategy.identifier}]${' '.repeat(maxStrategyLength - strategy.identifier.length)} [${repository}] [${filepath}] -> [${strategy.globs}]`;
+}
+
+function structureStrategyReport(
+  ownershipFile: string,
+  strategy: Strategy,
+  options: {
+    overriden: boolean;
+  },
+) {
+  let overrideText = '';
+  if (options.overriden) {
+    overrideText = '[Overridden] ';
+  }
+  return `<<STRATEGY>> ${overrideText}[${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`;
 }

@@ -1,4 +1,4 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
+import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@caws-blueprint-component/caws-source-repositories';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
 import * as decamelize from 'decamelize';
@@ -71,6 +71,13 @@ export class Blueprint extends ParentBlueprint {
       title: dashName,
     });
     this.repository = repository;
+    this.repository.setResynthStrategies([
+      {
+        identifier: 'never_update_sample_code',
+        strategy: MergeStrategies.neverUpdate,
+        globs: ['static-assets/**', 'src/**'],
+      },
+    ]);
 
     const spaceName = this.context.spaceName || '<<unknown-organization>>';
     const packageName = `@caws-blueprint/${spaceName}.${dashName}`;

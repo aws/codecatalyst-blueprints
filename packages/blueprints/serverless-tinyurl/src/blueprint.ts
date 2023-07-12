@@ -119,28 +119,30 @@ export class Blueprint extends ParentBlueprint {
       title: this.options.code.repositoryName,
     });
 
+    this.sourceRepository.setResynthStrategies([
+      {
+        identifier: 'never_update',
+        strategy: MergeStrategies.neverUpdate,
+        globs: ['backend/lambda/**', 'backend/public/**', 'backend/src/**', 'backend/canary/**', '**/README.md'],
+      },
+      {
+        identifier: 'always_update',
+        strategy: MergeStrategies.alwaysUpdate,
+        globs: ['**/jest.config.js', '**/*/tsconfig.json', '.codecatalyst/*'],
+      },
+      {
+        identifier: 'custom_shared_ownership',
+        strategy: (_ancestor: ContextFile | undefined, _existingFile: ContextFile | undefined, _proposedFile: ContextFile | undefined) => {
+          // resolve btetter;
+          return undefined;
+        },
+        globs: ['backend/cdk/**', 'frontend/cdk/**'],
+      },
+    ]);
+
     new BlueprintOwnershipFile(this.sourceRepository, {
       resynthesis: {
-        strategies: [
-          {
-            identifier: 'never_update',
-            strategy: MergeStrategies.neverUpdate,
-            globs: ['backend/lambda/**', 'backend/public/**', 'backend/src/**', 'backend/canary/**', '**/README.md'],
-          },
-          {
-            identifier: 'always_update',
-            strategy: MergeStrategies.alwaysUpdate,
-            globs: ['**/jest.config.js', '**/*/tsconfig.json', '.codecatalyst/*'],
-          },
-          {
-            identifier: 'custom_shared_ownership',
-            strategy: (_ancestor: ContextFile | undefined, _existingFile: ContextFile | undefined, _proposedFile: ContextFile | undefined) => {
-              // resolve btetter;
-              return undefined;
-            },
-            globs: ['backend/cdk/**', 'frontend/cdk/**'],
-          },
-        ],
+        strategies: this.sourceRepository.getResynthStrategies(),
       },
     });
 
