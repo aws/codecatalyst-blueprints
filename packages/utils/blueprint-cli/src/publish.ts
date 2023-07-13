@@ -118,7 +118,10 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
   const publishingJob = gqlResponse.data.data.createBlueprintUploadUrl as PublishingJob;
   log.info('Starting publishing job id: %s', publishingJob.publishingJobId);
 
-  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(fullPackagePath), { maxBodyLength: 100 * mb });
+  const uploadResponse = await axios.default.put(publishingJob.uploadUrl, fs.readFileSync(fullPackagePath), {
+    // allow publishing of packages up to 5 gb
+    maxBodyLength: 5 * 1000 * mb,
+  });
   if (uploadResponse.status != 200) {
     log.error('failed to upload template package: %s', uploadResponse.status);
     process.exit(254);
