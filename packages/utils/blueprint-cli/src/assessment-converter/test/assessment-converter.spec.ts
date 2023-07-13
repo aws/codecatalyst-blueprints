@@ -3,6 +3,7 @@ import path from 'path';
 
 import * as pino from 'pino';
 
+import * as validAssessmentObject from './valid-assessment-object.json';
 import {
   convertToAssessmentObjects,
   createAssessmentObject,
@@ -16,7 +17,6 @@ import {
   writeToFile,
 } from '../assessment-converter';
 import { BlueprintAssessmentObject } from '../models';
-import * as validAssessmentObject from './valid-assessment-object.json';
 
 const log = pino.default({
   prettyPrint: true,
