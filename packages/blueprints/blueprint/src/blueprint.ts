@@ -7,7 +7,7 @@ import { Context } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
-import { StrategyLocations, deserializeStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
+import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
 import { Ownership } from './resynthesis/ownership';
@@ -76,7 +76,7 @@ export class Blueprint extends Project {
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
     const overriddenStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
-    const validStrategies = merge(this.strategies || {}, overriddenStrategies);
+    const validStrategies = merge(this.strategies || {}, filterStrategies(overriddenStrategies, this.context.package));
 
     // used for pretty formatting
     let maxIdlength = 0;
