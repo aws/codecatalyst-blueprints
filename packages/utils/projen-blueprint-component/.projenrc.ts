@@ -29,13 +29,13 @@ const version = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).version;
 project.package.addVersion(version || '0.0.0');
 
 // force node types
-project.addDevDeps('@types/node@^14');
+project.addDevDeps('@types/node@^18');
 
 // modify bumping tasks
 project.removeTask('release');
 project.removeTask('bump');
 project.addTask('bump', {
-  exec: 'npm version patch -no-git-tag-version',
+  exec: 'npm version patch -no-git-tag-version --no-workspaces-update',
 });
 
 project.package.addField('preferGlobal', true);
@@ -46,9 +46,3 @@ project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yar
 project.setScript('npm:push', 'yarn npm publish');
 
 project.synth();
-
-const pkgJson = project.tryFindFile('package.json');
-pkgJson &&
-  fs.writeFileSync(pkgJson.absolutePath, '\n', {
-    flag: 'a+',
-  });

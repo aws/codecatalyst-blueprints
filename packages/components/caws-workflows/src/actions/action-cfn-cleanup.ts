@@ -1,7 +1,7 @@
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { WorkflowDefinition } from '../workflow/workflow';
 import { ActionDefiniton, ActionIdentifierAlias, getDefaultActionIdentifier } from './action';
 import { BuildActionParameters } from './action-build';
+import { WorkflowDefinition } from '../workflow/workflow';
 
 export const DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME = 'DANGER-hard-delete-deployed-resources';
 

@@ -1,4 +1,5 @@
 import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { UpdateSnapshot } from 'projen/lib/javascript/jest';
 
 const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
@@ -9,13 +10,14 @@ const blueprint = new ProjenBlueprint({
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
   peerDeps: ['projen'],
+  deps: ['diff-match-patch@1.x', 'globule'],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
   packageName: '@caws-blueprint/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint'],
+  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/diff-match-patch@1.x'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],
@@ -24,6 +26,10 @@ const blueprint = new ProjenBlueprint({
   mediaUrls: [
     'https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png',
   ],
+  jest: true,
+  jestOptions: {
+    updateSnapshot: UpdateSnapshot.NEVER,
+  },
 });
 
 blueprint.synth();

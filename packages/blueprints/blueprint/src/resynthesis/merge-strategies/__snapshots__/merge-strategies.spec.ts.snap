@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`merge strategy: alwaysUpdate matches snapshot for example: empty-a 1`] = `
+"hello world b
+"
+`;
+
+exports[`merge strategy: alwaysUpdate matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('b', 0));
+        }
+
+        System.out.println("Finished");
+    }
+    
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toLowerCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        // insert a comment:
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: alwaysUpdate matches snapshot for example: no-conflict 1`] = `
+"first line
+second line
+"
+`;
+
+exports[`merge strategy: alwaysUpdate matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: alwaysUpdate matches snapshot for example: simple 1`] = `
+"modified in b
+"
+`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: empty-a 1`] = `""`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('a', 0));
+        }
+
+        System.out.println("Finished");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toUpperCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: no-conflict 1`] = `
+"first line
+inserted from a
+second line
+third line
+"
+`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: simple 1`] = `
+"modified in a
+"
+`;
+
+exports[`merge strategy: onlyAdd matches snapshot for example: empty-a 1`] = `""`;
+
+exports[`merge strategy: onlyAdd matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('a', 0));
+        }
+
+        System.out.println("Finished");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toUpperCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: onlyAdd matches snapshot for example: no-conflict 1`] = `
+"first line
+inserted from a
+second line
+third line
+"
+`;
+
+exports[`merge strategy: onlyAdd matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: onlyAdd matches snapshot for example: simple 1`] = `
+"modified in a
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: empty-a 1`] = `
+"<<<<<<< existing
+
+=======
+hello world b
+>>>>>>> proposed
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+<<<<<<< existing
+            System.out.println(result.getOrDefault('a', 0));
+=======
+            System.out.println(result.getOrDefault('b', 0));
+>>>>>>> proposed
+        }
+
+        System.out.println("Finished");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+<<<<<<< existing
+            char c = Character.toUpperCase(input.charAt(i));
+=======
+            char c = Character.toLowerCase(input.charAt(i));
+>>>>>>> proposed
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        // insert a comment:
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: no-conflict 1`] = `
+"first line
+inserted from a
+second line
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: simple 1`] = `
+"<<<<<<< existing
+modified in a
+=======
+modified in b
+>>>>>>> proposed
+"
+`;

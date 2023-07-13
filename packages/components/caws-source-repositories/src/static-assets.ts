@@ -9,7 +9,7 @@ const STATIC_ASSET_DIRECTORY = 'static-assets';
  * Helper that makes working with static assets easier.
  */
 export class StaticAsset {
-  static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: glob.IOptions): T[] {
+  static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: any): T[] {
     return glob
       .sync(pathing.join(globPath ?? '**/*'), {
         cwd: STATIC_ASSET_DIRECTORY,

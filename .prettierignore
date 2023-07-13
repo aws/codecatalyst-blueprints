@@ -4,6 +4,5 @@
 *.yml
 .eslintrc
 
-resource-association-api
 coverage
 dist
