@@ -60,21 +60,4 @@ project.addTask(makeAssessmentSchemaScript, {
 });
 project.setScript('build', `yarn ${makeAssessmentSchemaScript} && npx projen build`);
 
-project.addTask('build-quick', {
-  steps: [
-    {
-      exec: 'tsc --build',
-    },
-    {
-      exec: 'eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools projenrc .projenrc.ts',
-    },
-    {
-      exec: 'mkdir -p dist/js',
-    },
-    {
-      exec: 'mv $(npm pack) dist/js/',
-    },
-  ],
-});
-
 project.synth();

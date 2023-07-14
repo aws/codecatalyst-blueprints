@@ -6,7 +6,6 @@
   },
   "scripts": {
     "build": "yarn make-assessment-schemas && npx projen build",
-    "build-quick": "npx projen build-quick",
     "bump": "npx projen bump",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
