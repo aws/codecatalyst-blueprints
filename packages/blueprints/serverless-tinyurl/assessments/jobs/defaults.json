@@ -1,5 +1,16 @@
 {
   "spaceName": "blueprints",
+  "blueprintName": "@caws-blueprint/blueprints.serverless-tinyurl",
+  "blueprintVersion": "0.2.1-preview.1",
+  "name": "defaults.json",
+  "schedule": {
+    "scheduleType": "ONCE"
+  },
   "timeoutInMinutes": 60,
-  "this is an invalid field": "abc"
+  "stepConfigurations": {
+    "createStep": {
+      "assessmentProjectName": "08f26_serverless-tinyurl_defaults-json",
+      "blueprintOptionsOverrides": "{\"environment\":{\"name\":\"default_environment\",\"environmentType\":\"DEVELOPMENT\"},\"code\":{\"repositoryName\":\"TinyUrlApp\"},\"advanced\":{\"frontendStackName\":\"TinyUrlFrontend\",\"backendStackName\":\"TinyUrlBackend\",\"region\":\"us-west-2\"}}"
+    }
+  }
 }
