@@ -1,42 +1,83 @@
-// import fs from 'fs';
-// import path from 'path';
+import * as pino from 'pino';
+import { createAssessment } from './create-assessment';
+import { ScheduleType } from './models';
 
-// import * as pino from 'pino';
+const log = pino.default({
+  prettyPrint: true,
+  level: process.env.LOG_LEVEL || 'debug',
+});
 
-// import * as validAssessmentObject from './valid-assessment-object.json';
-// import {
-//   convertToAssessmentObjects,
-//   createAssessmentObject,
-//   folderExists,
-//   getDefaultAssessmentObject,
-//   getEntropy,
-//   loadFile,
-//   loadFolder,
-//   trimString,
-//   validateAssessmentObject,
-//   writeToFile,
-// } from '../generate-assessment';
-// import { BlueprintAssessmentObject } from '../models';
+const isolatedCreateAssessmentOptions = {
+  blueprint: {
+    package: 'my-npm-package',
+    version: 'package-version-string',
+    space: 'example-space',
+  },
+  assessment: {
+    name: 'test-assessment-name',
+    additionalConfig: {},
+  },
+  wizardOptions: {},
+  continuous: false,
+};
 
-// const log = pino.default({
-//   prettyPrint: true,
-//   level: process.env.LOG_LEVEL || 'debug',
-// });
-
-// const rootDirectory = path.join(process.cwd(), '../../blueprints/sam-serverless-app/');
-// const outputDirectoryFromRoot = '/src/test/assessment-objects';
-// const outputDirectory = path.join(rootDirectory, outputDirectoryFromRoot);
-// const directoryToRemove = path.join(rootDirectory, 'src/test');
-
-describe('Generate Assessment', () => {
-  it('Temp pass spec', () => {
-    expect(1).toBe(1);
+describe(createAssessment.name, () => {
+  beforeEach(() => {
+    // mock pino log to silence logs in terminal during test
+    jest.spyOn(log, 'info').mockImplementation(() => {});
+    jest.spyOn(log, 'error').mockImplementation(() => {});
   });
-  //   beforeEach(() => {
-  //     // mock pino log to silence logs in terminal during 'yarn build'
-  //     jest.spyOn(log, 'info').mockImplementation(() => {});
-  //     jest.spyOn(log, 'error').mockImplementation(() => {});
-  //   });
+
+  it('should use the blueprint to create the assessment target', () => {
+    const updatedBlueprintTarget = {
+      package: 'my-better-package',
+      version: 'my-better-version',
+      space: 'my-better-space',
+    };
+    const assessment = createAssessment(log, {
+      ...isolatedCreateAssessmentOptions,
+      blueprint: updatedBlueprintTarget,
+    });
+
+    expect(assessment.blueprintName).toBe(updatedBlueprintTarget.package);
+    expect(assessment.blueprintVersion).toBe(updatedBlueprintTarget.version);
+    expect(assessment.spaceName).toBe(updatedBlueprintTarget.space);
+  });
+
+  it('should change the assessment name based on the assessment.name', () => {
+    const assessment = createAssessment(log, {
+      ...isolatedCreateAssessmentOptions,
+      assessment: {
+        ...isolatedCreateAssessmentOptions.assessment,
+        name: 'my-better-name',
+      },
+    });
+
+    expect(assessment.name).toBe('my-better-name');
+  });
+
+  it('should use the additonal configuration to override any keys on the resultant object', () => {
+    const assessment = createAssessment(log, {
+      ...isolatedCreateAssessmentOptions,
+      assessment: {
+        ...isolatedCreateAssessmentOptions.assessment,
+        additionalConfig: {
+          timeoutInMinutes: 900,
+        },
+      },
+    });
+
+    expect(assessment.timeoutInMinutes).toBe(900);
+  });
+
+  it('should be set to continuous mode', () => {
+    const assessment = createAssessment(log, {
+      ...isolatedCreateAssessmentOptions,
+      continuous: true,
+    });
+
+    expect(assessment.schedule.scheduleType).toBe(ScheduleType.CONTINUOUS);
+  });
 
   //   afterEach(() => {
   //     jest.restoreAllMocks();

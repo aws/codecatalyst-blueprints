@@ -5,7 +5,7 @@ import * as pino from 'pino';
 import * as yargs from 'yargs';
 
 import { hideBin } from 'yargs/helpers';
-import { GenerateAssessmentCLIOptions, generateAssessment } from './assessment/generate-assessment';
+import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessment/generate-assessment-cli';
 import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
@@ -455,7 +455,7 @@ yargs
       } else {
         log.info(`Using --configuration ${argv.configuration}`);
       }
-      const { assessment, out } = generateAssessment(log, argv);
+      const { assessment, out } = generateAssessmentCLI(log, argv);
 
       log.info(`Writing assessment to ${out}`);
       if (!fs.existsSync(out)) {
@@ -490,9 +490,9 @@ yargs
         fullSchema: argv.full,
       });
       if (validationResult) {
-        log.info(`[Success] Assessment at ${argv.path} is passes schema validation`);
+        log.info(`[Success] Assessment at ${argv.path} is passes schema validation. See BlueprintAssessmentObject`);
       } else {
-        log.error(`[Failure] Assessment at ${argv.path} does NOT pass schema validation`);
+        log.error(`[Failure] Assessment at ${argv.path} does NOT pass schema validation. See BlueprintAssessmentObject`);
         log.error(JSON.stringify(reasons, null, 2));
       }
       process.exit(0);

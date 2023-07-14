@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import * as yargs from 'yargs';
-import * as schema from './__generated__/blueprint-assessment-object-schema.json';
-import * as paritalSchema from './__generated__/partial-blueprint-assessment-object-schema.json';
+import schema from './__generated__/blueprint-assessment-object-schema.json';
+import partialSchema from './__generated__/partial-blueprint-assessment-object-schema.json';
 
 export interface ValidateAssessmentCLIOptions extends yargs.Arguments {
   path: string;
@@ -24,7 +24,7 @@ export const validateAssessment = (
   if (options.fullSchema) {
     validationFunction = ajv.compile(schema);
   } else {
-    validationFunction = ajv.compile(paritalSchema);
+    validationFunction = ajv.compile(partialSchema);
   }
   validationResult = validationFunction(object);
   const reasons = validationFunction.errors || [];

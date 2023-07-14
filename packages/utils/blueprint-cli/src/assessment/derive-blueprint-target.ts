@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import pino from 'pino';
-import { BlueprintTarget } from './generate-assessment';
+
+export interface BlueprintTarget {
+  package: string;
+  version: string;
+  space: string;
+}
 
 export const deriveBlueprintTarget = (
   log: pino.BaseLogger,
