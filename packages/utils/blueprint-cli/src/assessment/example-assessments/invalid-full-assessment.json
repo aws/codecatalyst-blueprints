@@ -1,0 +1,64 @@
+{
+    "spaceName": "sample-space-name",
+    "name": "sample-assessment-name",
+    "blueprintName": "sample-blueprint-name",
+    "blueprintVersion": "sample-blueprint-version",
+    "timeoutInMinutes": 60,
+    "stepConfigurations": {
+      "createStep": {
+        "assessmentProjectName": "sample-assessment-project-name",
+        "blueprintOptionsOverrides": "{}"
+      },
+      "someOtherStep": {
+        "thisDoesNotExist": "extraOption"
+      },
+      "workflowsStep": {
+        "timeoutInMinutes": 60,
+        "verifyWorkflowsExist": [
+          {
+            "workflowNameRegex": "[(A-Z)(a-z)]",
+            "expectedCount": 1
+          }
+        ],
+        "verifyWorkflowRunsSucceed": [
+          {
+            "workflowNameRegex": "[(A-Z)(a-z)]",
+            "expectedCount": 1
+          }
+        ]
+      },
+      "cleanupStep": {
+        "timeoutInMinutes": 60,
+        "cleanupWorkflows": [
+          {
+            "workflowNameRegex": "[(A-Z)(a-z)]"
+          }
+        ]
+      },
+      "devEnvironmentStep": {
+        "devEnvironmentConfigurations": [
+          {
+            "sourceRepositoryRegex": "[(A-Z)(a-z)]",
+            "sourceBranchName": "sample-source-branch-name",
+            "alias": "sample-alias",
+            "instanceType": "dev.standard1.medium",
+            "inactivityTimeoutMinutes": 60,
+            "ides": [
+              {
+                "name": "Cloud9",
+                "runtime": "public.ecr.aws/q6e8p2q0/cloud9-ide-runtime:latest"
+              }
+            ],
+            "persistentStorage": 16,
+            "startDevEnvironmentOnCreate": true,
+            "validateDevEnvironment": [
+              {
+                "validateDevEnvironment": true,
+                "validatePostStartEvents": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }

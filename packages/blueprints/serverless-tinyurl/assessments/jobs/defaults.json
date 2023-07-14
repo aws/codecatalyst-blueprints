@@ -1,0 +1,5 @@
+{
+  "spaceName": "blueprints",
+  "timeoutInMinutes": 60,
+  "this is an invalid field": "abc"
+}

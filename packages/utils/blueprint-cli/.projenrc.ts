@@ -45,4 +45,36 @@ const project = new ProjenBlueprintComponent({
   },
 });
 
+const makeAssessmentSchemaScript = 'make-assessment-schemas';
+project.addTask(makeAssessmentSchemaScript, {
+  steps: [
+    {
+      say: 'generate full assessment schema',
+      exec: "npx ts-json-schema-generator --path 'src/assessment/models.ts' --type BlueprintAssessmentObject > src/assessment/__generated__/blueprint-assessment-object-schema.json",
+    },
+    {
+      say: 'generate partial assessment schema',
+      exec: "npx ts-json-schema-generator --path 'src/assessment/models.ts' --type PartialBlueprintAssessmentObject > src/assessment/__generated__/partial-blueprint-assessment-object-schema.json",
+    },
+  ],
+});
+project.setScript('build', `yarn ${makeAssessmentSchemaScript} && npx projen build`);
+
+project.addTask('build-quick', {
+  steps: [
+    {
+      exec: 'tsc --build',
+    },
+    {
+      exec: 'eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools projenrc .projenrc.ts',
+    },
+    {
+      exec: 'mkdir -p dist/js',
+    },
+    {
+      exec: 'mv $(npm pack) dist/js/',
+    },
+  ],
+});
+
 project.synth();
