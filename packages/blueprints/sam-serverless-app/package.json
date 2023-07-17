@@ -126,6 +126,7 @@
     }
   },
   "types": "lib/index.d.ts",
+  "publishingSpace": "blueprints",
   "mediaUrls": [
     "https://media.amazonwebservices.com/blog/2018/sam_squirrel_1.jpg"
   ],

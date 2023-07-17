@@ -12,6 +12,10 @@ export interface BlueprintSnapshotConfiguration {
   snapshotGlobs?: string[];
 }
 
+export interface BlueprintHealthConfiguration {
+  // placeholder interface for enabling blueprint health service verification on your blueprint.
+}
+
 export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
   /**
    * List of media url links
@@ -24,8 +28,14 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
 
   /**
    * Publishing organization
+   * @deprecated use publishingSpace instead
    */
   readonly publishingOrganization?: string;
+
+  /**
+   * The CodeCatalyst space that owns this blueprint
+   */
+  readonly publishingSpace?: string;
 
   /**
    * Override package version. I hope you know what you're doing.
@@ -36,6 +46,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * Blueprint snapshot configuration
    */
   readonly blueprintSnapshotConfiguration?: BlueprintSnapshotConfiguration;
+
+  /**
+   * Generate tooling to interface with the Blueprint health service
+   */
+  readonly blueprintHealthConfiguration?: BlueprintHealthConfiguration;
 
   /**
    * defaults to 0.71.112 if not set.
@@ -143,7 +158,8 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.npmignore?.addPatterns('synth');
 
     // set upload to aws script
-    const organization = options.publishingOrganization || '<<replace-organization>>';
+    const space = options.publishingSpace || options.publishingOrganization || '<<replace-organization>>';
+    this.package.addField('publishingSpace', space);
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
     this.setScript(
@@ -153,9 +169,14 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         'yarn bump:preview',
         'yarn blueprint:synth --cache --clean-up false',
         'yarn package',
-        `blueprint publish ./ --publisher ${organization} $*`,
+        `blueprint publish ./ --publisher ${space} $*`,
       ].join(' && '),
     );
+
+    if (finalOpts.blueprintHealthConfiguration) {
+      this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');
+      this.setScript('blueprint:validate-assessment', 'yarn blueprint validate-assessment $*');
+    }
 
     //add additional metadata fields to package.json
     this.package.addField('mediaUrls', options.mediaUrls);

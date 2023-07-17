@@ -31,6 +31,11 @@ export interface Diff3Options {
   bLabel?: string;
 }
 
+const currentLine = {
+  a: 0,
+  o: 0,
+  b: 0,
+};
 export class Diff3 {
   private readonly lines: {
     a: string[];
@@ -42,11 +47,7 @@ export class Diff3 {
     a: number;
     o: number;
     b: number;
-  } = {
-      a: 0,
-      o: 0,
-      b: 0,
-    };
+  } = currentLine;
 
   private readonly matches: {
     a: Map<number, number>;

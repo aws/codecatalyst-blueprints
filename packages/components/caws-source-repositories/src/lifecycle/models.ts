@@ -40,4 +40,3 @@ export type MergeStrategyFunction = (
   proposedFile: File | undefined,
   options?: {},
 ) => File | undefined;
-

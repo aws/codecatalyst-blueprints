@@ -1,0 +1,265 @@
+{
+  "$ref": "#/definitions/BlueprintAssessmentObject",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "BlueprintAssessmentObject": {
+      "additionalProperties": false,
+      "properties": {
+        "blueprintName": {
+          "type": "string"
+        },
+        "blueprintVersion": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "schedule": {
+          "additionalProperties": false,
+          "properties": {
+            "cronSchedule": {
+              "type": "string"
+            },
+            "scheduleType": {
+              "$ref": "#/definitions/ScheduleType"
+            }
+          },
+          "required": [
+            "scheduleType"
+          ],
+          "type": "object"
+        },
+        "spaceName": {
+          "type": "string"
+        },
+        "stepConfigurations": {
+          "additionalProperties": false,
+          "properties": {
+            "cleanupStep": {
+              "additionalProperties": false,
+              "properties": {
+                "cleanupWorkflows": {
+                  "items": {
+                    "$ref": "#/definitions/BlueprintHealthAssessmentCleanupWorkflow"
+                  },
+                  "type": "array"
+                },
+                "timeoutInMinutes": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "cleanupWorkflows"
+              ],
+              "type": "object"
+            },
+            "createStep": {
+              "additionalProperties": false,
+              "properties": {
+                "assessmentProjectName": {
+                  "type": "string"
+                },
+                "blueprintOptionsOverrides": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "assessmentProjectName"
+              ],
+              "type": "object"
+            },
+            "devEnvironmentStep": {
+              "additionalProperties": false,
+              "properties": {
+                "devEnvironmentConfigurations": {
+                  "items": {
+                    "$ref": "#/definitions/BlueprintHealthAssessmentDevEnvironmentIDEConfiguration"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "devEnvironmentConfigurations"
+              ],
+              "type": "object"
+            },
+            "workflowsStep": {
+              "additionalProperties": false,
+              "properties": {
+                "timeoutInMinutes": {
+                  "type": "number"
+                },
+                "verifyWorkflowRunsSucceed": {
+                  "items": {
+                    "$ref": "#/definitions/BlueprintHealthAssessmentWorkflowRequirement"
+                  },
+                  "type": "array"
+                },
+                "verifyWorkflowsExist": {
+                  "items": {
+                    "$ref": "#/definitions/BlueprintHealthAssessmentWorkflowRequirement"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "createStep"
+          ],
+          "type": "object"
+        },
+        "timeoutInMinutes": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "spaceName",
+        "name",
+        "blueprintName",
+        "schedule",
+        "timeoutInMinutes",
+        "stepConfigurations"
+      ],
+      "type": "object"
+    },
+    "BlueprintHealthAssessmentCleanupWorkflow": {
+      "additionalProperties": false,
+      "properties": {
+        "workflowNameRegex": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflowNameRegex"
+      ],
+      "type": "object"
+    },
+    "BlueprintHealthAssessmentDevEnvironmentIDEConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "ides": {
+          "items": {
+            "$ref": "#/definitions/IdeConfiguration"
+          },
+          "type": "array"
+        },
+        "inactivityTimeoutMinutes": {
+          "type": "number"
+        },
+        "instanceType": {
+          "$ref": "#/definitions/DevEnvironmentInstanceType"
+        },
+        "persistentStorage": {
+          "$ref": "#/definitions/DevEnvironmentPeristentStorage"
+        },
+        "sourceBranchName": {
+          "type": "string"
+        },
+        "sourceRepositoryRegex": {
+          "type": "string"
+        },
+        "startDevEnvironmentOnCreate": {
+          "type": "boolean"
+        },
+        "validateDevEnvironment": {
+          "items": {
+            "$ref": "#/definitions/BlueprintHealthAssessmentValidateDevEnvironmentConfiguration"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "sourceRepositoryRegex",
+        "alias",
+        "instanceType",
+        "inactivityTimeoutMinutes",
+        "ides",
+        "persistentStorage"
+      ],
+      "type": "object"
+    },
+    "BlueprintHealthAssessmentValidateDevEnvironmentConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "validateDevEnvironment": {
+          "type": "boolean"
+        },
+        "validatePostStartEvents": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "validateDevEnvironment"
+      ],
+      "type": "object"
+    },
+    "BlueprintHealthAssessmentWorkflowRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "expectedCount": {
+          "type": "number"
+        },
+        "workflowNameRegex": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflowNameRegex",
+        "expectedCount"
+      ],
+      "type": "object"
+    },
+    "DevEnvironmentCloud9Runtimes": {
+      "enum": [
+        "public.ecr.aws/q6e8p2q0/cloud9-ide-runtime:2.5.1",
+        "public.ecr.aws/q6e8p2q0/cloud9-ide-runtime:latest"
+      ],
+      "type": "string"
+    },
+    "DevEnvironmentIdes": {
+      "const": "Cloud9",
+      "type": "string"
+    },
+    "DevEnvironmentInstanceType": {
+      "enum": [
+        "dev.standard1.small",
+        "dev.standard1.medium",
+        "dev.standard1.large",
+        "dev.standard2.xlarge"
+      ],
+      "type": "string"
+    },
+    "DevEnvironmentPeristentStorage": {
+      "enum": [
+        16,
+        32,
+        64
+      ],
+      "type": "number"
+    },
+    "IdeConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/DevEnvironmentIdes"
+        },
+        "runtime": {
+          "$ref": "#/definitions/DevEnvironmentCloud9Runtimes"
+        }
+      },
+      "type": "object"
+    },
+    "ScheduleType": {
+      "enum": [
+        "ONCE",
+        "CONTINUOUS"
+      ],
+      "type": "string"
+    }
+  }
+}

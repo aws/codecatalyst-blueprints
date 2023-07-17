@@ -8,6 +8,7 @@ const project = new ProjenBlueprintComponent({
     '@aws-sdk/client-s3',
     '@aws-sdk/client-cloudfront',
     '@aws-sdk/client-sts',
+    'ajv',
     'pino',
     'yargs',
     'ts-node',
@@ -29,6 +30,7 @@ const project = new ProjenBlueprintComponent({
     'pino-pretty',
     'ts-jest',
     'ts-loader',
+    'ts-json-schema-generator',
     'ts-node',
   ],
   bin: {
@@ -43,5 +45,20 @@ const project = new ProjenBlueprintComponent({
     },
   },
 });
+
+const makeAssessmentSchemaScript = 'make-assessment-schemas';
+project.addTask(makeAssessmentSchemaScript, {
+  steps: [
+    {
+      say: 'generate full assessment schema',
+      exec: "npx ts-json-schema-generator --path 'src/assessment/models.ts' --type BlueprintAssessmentObject > src/assessment/__generated__/blueprint-assessment-object-schema.json",
+    },
+    {
+      say: 'generate partial assessment schema',
+      exec: "npx ts-json-schema-generator --path 'src/assessment/models.ts' --type PartialBlueprintAssessmentObject > src/assessment/__generated__/partial-blueprint-assessment-object-schema.json",
+    },
+  ],
+});
+project.setScript('build', `yarn ${makeAssessmentSchemaScript} && npx projen build`);
 
 project.synth();

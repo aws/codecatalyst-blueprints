@@ -12,7 +12,6 @@ const project = new ProjenBlueprint({
   github: false,
   eslint: true,
   jest: true,
-
   npmignoreEnabled: true,
   tsconfig: {
     compilerOptions: {
@@ -23,6 +22,7 @@ const project = new ProjenBlueprint({
   blueprintSnapshotConfiguration: {
     snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
   },
+  blueprintHealthConfiguration: {},
   copyrightOwner: 'caws-blueprints',
   deps: [
     '@caws-blueprint/blueprints.blueprint',
