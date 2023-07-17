@@ -3,7 +3,7 @@ import pino from 'pino';
 
 export interface BlueprintTarget {
   package: string;
-  version: string;
+  version?: string;
   space: string;
 }
 
@@ -23,7 +23,7 @@ export const deriveBlueprintTarget = (
     const target = {
       space: configuration.spaceName || packageJson.publishingSpace,
       package: configuration.blueprintName || packageJson.name,
-      version: configuration.blueprintVersion || packageJson.version,
+      version: configuration.blueprintVersion,
     };
     log.info('Now targetting...');
     log.info(target);

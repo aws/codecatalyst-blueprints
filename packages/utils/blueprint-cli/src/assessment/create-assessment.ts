@@ -13,7 +13,7 @@ export interface MinimalAssessmentDefault {
   stepConfigurations: {
     createStep: {
       assessmentProjectName: string;
-      blueprintOptionsOverrides: any;
+      blueprintOptionsOverrides: string;
     };
   };
 }
@@ -47,7 +47,7 @@ export const createAssessment = (
       stepConfigurations: {
         createStep: {
           assessmentProjectName: createDefaultProjectName(log, options.blueprint, options.assessment.name),
-          blueprintOptionsOverrides: {},
+          blueprintOptionsOverrides: '{}',
         },
       },
     },

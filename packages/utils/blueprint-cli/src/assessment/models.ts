@@ -3,7 +3,7 @@ export interface BlueprintAssessmentObject {
   spaceName: string;
   name: string;
   blueprintName: string;
-  blueprintVersion: string;
+  blueprintVersion?: string;
   schedule: {
     scheduleType: ScheduleType;
     cronSchedule?: string;
