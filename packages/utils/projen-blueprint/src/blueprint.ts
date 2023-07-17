@@ -13,10 +13,7 @@ export interface BlueprintSnapshotConfiguration {
 }
 
 export interface BlueprintHealthConfiguration {
-  /**
-   * Set this to true if you want to use the converter to create blueprint assessment objects
-   */
-  enableConverter?: boolean;
+  // placeholder interface for enabling blueprint health service verification on your blueprint.
 }
 
 export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOptions {
@@ -31,8 +28,14 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
 
   /**
    * Publishing organization
+   * @deprecated use publishingSpace instead
    */
   readonly publishingOrganization?: string;
+
+  /**
+   * The CodeCatalyst space that owns this blueprint
+   */
+  readonly publishingSpace?: string;
 
   /**
    * Override package version. I hope you know what you're doing.
@@ -155,7 +158,8 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.npmignore?.addPatterns('synth');
 
     // set upload to aws script
-    const organization = options.publishingOrganization || '<<replace-organization>>';
+    const space = options.publishingSpace || options.publishingOrganization || '<<replace-organization>>';
+    this.package.addField('publishingSpace', space);
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
     this.setScript(
@@ -165,12 +169,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         'yarn bump:preview',
         'yarn blueprint:synth --cache --clean-up false',
         'yarn package',
-        `blueprint publish ./ --publisher ${organization} $*`,
+        `blueprint publish ./ --publisher ${space} $*`,
       ].join(' && '),
     );
 
-    if (finalOpts.blueprintHealthConfiguration?.enableConverter) {
-      this.setScript('blueprint:convert-to-assessment', 'yarn blueprint convert-to-assessment');
+    if (finalOpts.blueprintHealthConfiguration) {
+      this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');
+      this.setScript('blueprint:validate-assessment', 'yarn blueprint validate-assessment $*');
     }
 
     //add additional metadata fields to package.json

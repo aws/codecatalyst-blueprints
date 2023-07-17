@@ -11,7 +11,7 @@
     "stepConfigurations": {
       "createStep": {
         "assessmentProjectName": "sample-assessment-project-name",
-        "blueprintOptionsOverrides": {}
+        "blueprintOptionsOverrides": "{}"
       },
       "workflowsStep": {
         "timeoutInMinutes": 60,

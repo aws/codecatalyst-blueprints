@@ -5,7 +5,8 @@ import * as pino from 'pino';
 import * as yargs from 'yargs';
 
 import { hideBin } from 'yargs/helpers';
-import { ConvertOptions, convertToAssessmentObjects } from './assessment-converter/assessment-converter';
+import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessment/generate-assessment-cli';
+import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish';
@@ -406,49 +407,94 @@ yargs
       process.exit(0);
     },
   })
+  //generate-assessment
   .command({
-    command: 'convert-to-assessment',
-    describe: 'converts wizard options and user-defined configurations to assessment objects',
+    command: 'generate-assessment',
+    describe: 'generates an assessment object from a wizard configuration',
     builder: (args: yargs.Argv<unknown>) => {
       return args
-        .option('wizard-options-folder-path', {
-          describe: "path to wizard options folder, this is default to 'src/snapshot-configurations' folder",
+        .option('wizard-option', {
+          describe: 'path to a wizard options',
           type: 'string',
-          default: './src/snapshot-configurations',
+          demandOption: true,
+        })
+        .option('version', {
+          description:
+            'which version of the blueprint should the assessment evaluate. This will override specification in the configuration (if it exists)',
+          type: 'string',
           demandOption: false,
         })
-        .option('configurations-file-path', {
-          describe: 'path to user-defined assessment configurations file, this is used to configure the assessment object',
+        .option('configuration', {
+          describe: 'path to optional configuration object used to override assessment options',
           type: 'string',
           demandOption: false,
         })
         .option('continuous', {
-          describe: 'if schedule type is continuous',
+          describe: 'set to true if you want the assessment to be continually scheduled.',
           type: 'boolean',
           default: false,
           demandOption: false,
         })
-        .option('useLatest', {
-          description: 'use the latest blueprint version specified in package.json',
+        .option('package-json', {
+          describe: 'path to package.json. Used for deriving the assessment target blueprint information',
+          type: 'string',
+          default: './package.json',
+          demandOption: false,
+        })
+        .option('out', {
+          describe: 'outputs the assessment at this location. Creates a file if it does not exist',
+          type: 'string',
+          demandOption: false,
+        });
+    },
+    handler: async (argv: GenerateAssessmentCLIOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      log.info(`Using --wizard-option ${argv.wizardOption}`);
+      if (!argv.configuration) {
+        log.warn('No --configuration is passed. No assessment overrides are being used');
+      } else {
+        log.info(`Using --configuration ${argv.configuration}`);
+      }
+      const { assessment, out } = generateAssessmentCLI(log, argv);
+
+      log.info(`Writing assessment to ${out}`);
+      if (!fs.existsSync(out)) {
+        fs.mkdirSync(path.dirname(out), { recursive: true });
+      }
+      fs.writeFileSync(out, JSON.stringify(assessment, null, 2));
+      process.exit(0);
+    },
+  })
+  //validate-assessment
+  .command({
+    command: 'validate-assessment',
+    describe: 'validates a full or partial assessment object',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('path', {
+          describe: 'path to an assessment object',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('full', {
+          description: 'True if this is intended to be a fully qualified assessment object',
           type: 'boolean',
           default: false,
           demandOption: false,
         });
     },
-    handler: async (argv: ConvertOptions): Promise<void> => {
-      log.info(argv);
-      const rootDirectory = process.cwd();
-      const outputDirectoryFromRoot = '/src/assessment-objects';
-      const assessmentObjectsFolderPath = convertToAssessmentObjects(
-        log,
-        rootDirectory,
-        outputDirectoryFromRoot,
-        argv.continuous,
-        argv.useLatest,
-        argv.wizardOptionsFolderPath,
-        argv.configurationsFilePath,
-      );
-      log.info(`Blueprint assessment objects created, path to folder of objects: '${assessmentObjectsFolderPath}'.`);
+    handler: async (argv: ValidateAssessmentCLIOptions): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      const assessmentJson = JSON.parse(fs.readFileSync(argv.path).toString());
+      const { validationResult, reasons } = validateAssessment(assessmentJson, {
+        fullSchema: argv.full,
+      });
+      if (validationResult) {
+        log.info(`[Success] Assessment at ${argv.path} is passes schema validation. See BlueprintAssessmentObject`);
+      } else {
+        log.error(`[Failure] Assessment at ${argv.path} does NOT pass schema validation. See BlueprintAssessmentObject`);
+        log.error(JSON.stringify(reasons, null, 2));
+      }
       process.exit(0);
     },
   })

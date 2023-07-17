@@ -1,3 +1,4 @@
+export type PartialBlueprintAssessmentObject = Partial<BlueprintAssessmentObject>;
 export interface BlueprintAssessmentObject {
   spaceName: string;
   name: string;
