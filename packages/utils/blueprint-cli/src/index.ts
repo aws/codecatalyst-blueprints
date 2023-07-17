@@ -442,7 +442,7 @@ yargs
           demandOption: false,
         })
         .option('out', {
-          describe: 'outputs the assessment at this location. Creates a file it it doesnt exist',
+          describe: 'outputs the assessment at this location. Creates a file if it does not exist',
           type: 'string',
           demandOption: false,
         });

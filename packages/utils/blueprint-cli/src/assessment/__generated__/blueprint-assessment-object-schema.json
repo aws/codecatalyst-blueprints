@@ -118,7 +118,6 @@
         "spaceName",
         "name",
         "blueprintName",
-        "blueprintVersion",
         "schedule",
         "timeoutInMinutes",
         "stepConfigurations"
