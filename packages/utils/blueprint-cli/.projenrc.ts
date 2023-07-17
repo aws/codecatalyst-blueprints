@@ -30,6 +30,7 @@ const project = new ProjenBlueprintComponent({
     'pino-pretty',
     'ts-jest',
     'ts-loader',
+    'ts-json-schema-generator',
     'ts-node',
   ],
   bin: {

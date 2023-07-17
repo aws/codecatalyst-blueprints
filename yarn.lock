@@ -1763,7 +1763,7 @@ __metadata:
     projen: 0.71.112
     standard-version: ^9
     ts-jest: "*"
-    ts-json-schema-generator: ^1.2.0
+    ts-json-schema-generator: "*"
     ts-loader: ^9.4.1
     ts-node: ^10
     typescript: ^4.x
@@ -12139,7 +12139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-json-schema-generator@npm:^1.2.0":
+"ts-json-schema-generator@npm:*":
   version: 1.2.0
   resolution: "ts-json-schema-generator@npm:1.2.0"
   dependencies:

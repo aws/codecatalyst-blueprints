@@ -84,6 +84,10 @@
       "type": "build"
     },
     {
+      "name": "ts-json-schema-generator",
+      "type": "build"
+    },
+    {
       "name": "ts-loader",
       "type": "build"
     },
