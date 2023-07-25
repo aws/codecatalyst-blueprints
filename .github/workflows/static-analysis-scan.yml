@@ -1,0 +1,25 @@
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+name: Semgrep Scan
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: |
+          semgrep scan \
+            --error \
+            --metrics=off \
+            --config="p/typescript"
