@@ -1,3 +1,5 @@
+<img src="./image-assets/amazon-web-services.png">
+
 ## Welcome to blueprint development
 
 Blueprints and their components are usually published to public NPM. For now, since code.aws is still in early beta access we publish blueprints and
@@ -9,6 +11,8 @@ project as they evolve. You'll have to make updates to the `projenrc.ts` as your
 ```
 yarn projen
 ```
+
+<img src="./image-assets/codecatalystdiagram.jpg">
 
 ### Public Blueprints
 
