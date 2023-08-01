@@ -8,6 +8,7 @@ import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions
 import { addGenericCloudFormationCleanupAction, CfnCleanupActionParameters } from '../actions/action-cfn-cleanup';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
+import { addGenericKubernetesDeployAction, KubernetesDeployActionParameters } from '../actions/action-eks';
 
 export class WorkflowBuilder {
   definition: WorkflowDefinition;
@@ -98,5 +99,13 @@ export class WorkflowBuilder {
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+  }
+
+  addKubernetesDeployAction(configuration: KubernetesDeployActionParameters) {
+    addGenericKubernetesDeployAction({
+      ...configuration,
+      blueprint: this.blueprint,
+      workflow: this.definition,
+    })
   }
 }
