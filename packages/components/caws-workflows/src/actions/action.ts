@@ -8,6 +8,7 @@ import { CdkBootstrapActionConfiguration } from './action-cdk-bootstrap';
 import { CdkDeployActionYamlOutput } from './action-cdk-deploy';
 import { CfnDeployActionConfiguration } from './action-cfn-deploy';
 import { TestActionConfiguration } from './action-test-reports';
+import { KubernetesDeployActionConfiguration } from './action-eks';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 
 export enum ActionIdentifierAlias {
@@ -16,6 +17,7 @@ export enum ActionIdentifierAlias {
   test = 'test',
   cdkDeploy = 'cdkDeploy',
   cdkBootstrap = 'cdkBootstrap',
+  kubernetesDeploy = 'kubernetesDeploy'
 }
 
 const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
@@ -39,6 +41,10 @@ const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } =
     default: 'aws/cdk-bootstrap-gamma@v1',
     prod: 'aws/cdk-bootstrap@v1',
   },
+  kubernetesDeploy: {
+    default: 'aws/kubernetes-deploy-gamma@v1',
+    prod: 'aws/kubernetes-deploy@v1',
+  }
 };
 
 export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environmentIdentifier: string = 'default'): string | undefined {
@@ -51,7 +57,8 @@ type TypeSupportedActions =
   | CfnDeployActionConfiguration
   | TestActionConfiguration
   | CdkDeployActionYamlOutput
-  | CdkBootstrapActionConfiguration;
+  | CdkBootstrapActionConfiguration
+  | KubernetesDeployActionConfiguration;
 export interface ActionDefiniton {
   Identifier?: string;
   Compute?: TypeSupportedCompute | string;
