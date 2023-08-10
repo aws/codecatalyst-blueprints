@@ -6,8 +6,8 @@ const project = new ProjenBlueprintComponent({
   copyrightOwner: 'Amazon.com',
   deps: [],
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint'],
-  description: 'This is a representation of a caws issue.',
-  packageName: '@caws-blueprint-component/caws-issue',
+  description: 'This is a representation of a caws issues.',
+  packageName: '@caws-blueprint-component/caws-issues',
   devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node'],
 });
 
