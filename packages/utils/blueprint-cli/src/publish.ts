@@ -3,9 +3,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as stream from 'stream';
 import * as util from 'util';
+import { SSOServiceException } from '@aws-sdk/client-sso';
 import * as axios from 'axios';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
+import { codecatalystVerifyIdentity } from './codecatalyst-client';
 import { verifyIdentity } from './verify-identity';
 
 export interface PublishOptions extends yargs.Arguments {
@@ -26,12 +28,6 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
   if (!fs.existsSync(blueprint)) {
     log.error('blueprint directory does not exist: %s', blueprint);
     process.exit(255);
-  }
-
-  cookie = cookie ?? process.env.CAWS_COOKIE;
-  if (!cookie) {
-    log.error('CAWS_COOKIE was not provided by cli or environment');
-    process.exit(200);
   }
 
   const packageJsonPath = path.join(blueprint, 'package.json');
@@ -78,9 +74,40 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
     process.exit(254);
   }
 
-  log.info('Verifying identity...');
-  const indentity = await verifyIdentity({ endpoint, cookie });
-  log.info(`Publishing as ${indentity.name} at ${indentity.email}`);
+  let header;
+
+  cookie = cookie ?? process.env.CAWS_COOKIE;
+  if (cookie) {
+    log.info('Cookie found. Verifying identity...');
+    const identity = await verifyIdentity({ endpoint, cookie });
+    log.info(`Publishing as ${identity.name} at ${identity.email}`);
+
+    header = {
+      'authority': endpoint,
+      'accept': 'application/json',
+      'origin': `https://${endpoint}`,
+      'cookie': cookie,
+      'anti-csrftoken-a2z': identity.csrfToken,
+      'content-type': 'application/json',
+    };
+  } else {
+    log.info('CAWS_COOKIE was not provided by cli or environment. Fetching CodeCatalyst bearer token using the AWS CLI.');
+    try {
+      const codecatalystIdentity = await codecatalystVerifyIdentity(log);
+      log.info(`Publishing as ${codecatalystIdentity.name} at ${codecatalystIdentity.email}`);
+
+      header = {
+        authorization: codecatalystIdentity.authorization,
+      };
+    } catch (error) {
+      log.error('Failed to verify CodeCatalyst Identity.', error);
+      if (error instanceof SSOServiceException) {
+        log.error(
+          'Please follow the link to use the CLI with Amazon CodeCatalyst:\n https://docs.aws.amazon.com/codecatalyst/latest/userguide/set-up-cli.html',
+        );
+      }
+    }
+  }
   log.info('Against endpoint: %s', endpoint);
 
   const gqlResponse = await axios.default.post(
@@ -97,14 +124,7 @@ export async function publish(log: pino.BaseLogger, blueprint: string, publisher
           }`,
     },
     {
-      headers: {
-        'authority': endpoint,
-        'accept': 'application/json',
-        'origin': `https://${endpoint}`,
-        'cookie': cookie,
-        'anti-csrftoken-a2z': indentity.csrfToken,
-        'content-type': 'application/json',
-      },
+      headers: header,
     },
   );
   if (gqlResponse.status != 200) {

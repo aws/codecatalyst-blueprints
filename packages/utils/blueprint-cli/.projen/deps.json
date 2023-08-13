@@ -105,11 +105,23 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-sdk/client-codecatalyst",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-s3",
       "type": "runtime"
     },
     {
+      "name": "@aws-sdk/client-sso",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-sts",
+      "type": "runtime"
+    },
+    {
+      "name": "@smithy/protocol-http",
       "type": "runtime"
     },
     {
