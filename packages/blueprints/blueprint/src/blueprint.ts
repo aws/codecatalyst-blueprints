@@ -5,6 +5,7 @@ import * as path from 'path';
 import { JsonFile, Project } from 'projen';
 import { Context } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
+import { createLifecyclePullRequest, generateLifecyclePRInfo } from './pull-requests/create-lifecycle-pull-request';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
@@ -29,10 +30,13 @@ export class Blueprint extends Project {
       name: 'CodeCatalystBlueprint',
       ...options,
     });
+
+    const OPTIONS_FILE = 'options.json';
     this.context = {
       rootDir: path.resolve(this.outdir),
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
+      branchName: process.env.BRANCH_NAME,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
         registry: process.env.NPM_CONFIG_REGISTRY ?? '',
@@ -44,6 +48,7 @@ export class Blueprint extends Project {
       project: {
         name: process.env.CONTEXT_PROJECTNAME,
         bundlepath: process.env.EXISTING_BUNDLE_ABS,
+        options: getOptions(path.join(process.env.EXISTING_BUNDLE_ABS || '', OPTIONS_FILE)),
         src: {
           findAll: (_options?: TraversalOptions) => traverse(this.context.project.bundlepath, _options),
         },
@@ -55,7 +60,7 @@ export class Blueprint extends Project {
     }
 
     // write the options to the bundle
-    new JsonFile(this, 'options.json', {
+    new JsonFile(this, OPTIONS_FILE, {
       obj: options,
       readonly: false,
       marker: false,
@@ -101,22 +106,32 @@ export class Blueprint extends Project {
       //3. for each file, match it with a merge strategy
       const strategy = match(sourcePath, validStrategies);
       const { resourcePrefix, subdirectory, filepath } = destructurePath(sourcePath, '');
+      const repositoryTitle = subdirectory;
 
       const resolvedFile = strategy.strategy(
-        createContextFile(ancestorBundle, resourcePrefix!, subdirectory!, filepath!),
-        createContextFile(existingBundle, resourcePrefix!, subdirectory!, filepath!),
-        createContextFile(proposedBundle, resourcePrefix!, subdirectory!, filepath!),
+        createContextFile(ancestorBundle, resourcePrefix!, repositoryTitle!, filepath!),
+        createContextFile(existingBundle, resourcePrefix!, repositoryTitle!, filepath!),
+        createContextFile(proposedBundle, resourcePrefix!, repositoryTitle!, filepath!),
       );
 
-      console.debug(structureMatchReport(maxIdlength, strategy, subdirectory!, filepath!));
+      console.debug(structureMatchReport(maxIdlength, strategy, repositoryTitle!, filepath!));
       if (resolvedFile) {
-        //4. write the result of the merge strategy to the outdir/src/path
-        const outputPath = path.join(this.outdir, 'src', subdirectory!, resolvedFile.path);
+        //4. write the result of the merge strategy to the outdir/src/repo/path
+        const outputPath = path.join(this.outdir, 'src', repositoryTitle!, resolvedFile.path);
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, resolvedFile.buffer);
       } else {
         console.debug('\t -> removed');
       }
+    });
+
+    // generate pull requests
+    createLifecyclePullRequest(this.outdir, existingBundle, {
+      originBranch: this.context.branchName || 'resynthesis-update',
+      pullRequest: {
+        id: this.context.branchName || 'resynthesis-update',
+        ...generateLifecyclePRInfo(),
+      },
     });
   }
 
@@ -171,4 +186,13 @@ function structureStrategyReport(
     overrideText = '[Overridden] ';
   }
   return `<<STRATEGY>> ${overrideText}[${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`;
+}
+
+
+function getOptions(location: string): any {
+  try {
+    return JSON.parse(fs.readFileSync(location).toString());
+  } catch {
+    return {};
+  }
 }

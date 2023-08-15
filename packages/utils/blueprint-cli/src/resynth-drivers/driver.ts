@@ -33,6 +33,8 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
   process.env.PACKAGE_VERSION = process.env.PACKAGE_VERSION || packageJson.version || '<<FAKE_BLUEPRINT_PACKAGEVERSION>>';
 
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
+
+  process.env.BRANCH_NAME = process.env.BRANCH_NAME || '';
   
   console.log("===== Starting resynthesis ===== ");
   console.log("options: ", options);

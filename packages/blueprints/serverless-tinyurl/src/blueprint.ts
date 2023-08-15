@@ -1,7 +1,7 @@
 import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
 import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, SourceFile, SubstitionAsset, BlueprintOwnershipFile } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository, SourceFile, SubstitionAsset, BlueprintOwnershipFile, PullRequest, Difference } from '@caws-blueprint-component/caws-source-repositories';
 import { Workflow } from '@caws-blueprint-component/caws-workflows';
 import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
@@ -117,6 +117,15 @@ export class Blueprint extends ParentBlueprint {
     const accountId = options.environment.awsAccountConnection?.id ?? '<<PUT_YOUR_AWS_ACCOUNT_ID>>';
     this.sourceRepository = new SourceRepository(this, {
       title: this.options.code.repositoryName,
+    });
+
+    const diff = new Difference(this.sourceRepository, 'some-branch');
+    diff.addPatch('first-set-of-changes.diff', '+++ add some code here');
+
+    new PullRequest(this, 'my-amazing-pr', {
+      title: 'feat: amazing PR number 1',
+      description: 'this is some markdown',
+      changes: [diff],
     });
 
     this.sourceRepository.setResynthStrategies([
