@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { BUNDLE_PATH_PULL_REQUEST, writePullRequest } from '@caws-blueprint/blueprints.blueprint/lib/pull-requests/pull-requests';
+import { Component } from 'projen';
 import { Difference } from '../difference/difference';
 
 
@@ -21,15 +22,19 @@ export interface PullRequestDefinition {
   changes?: Difference[];
 }
 
-export class PullRequest {
+export class PullRequest extends Component {
 
   public static BUNDLE_PATH = BUNDLE_PATH_PULL_REQUEST;
 
-  constructor(protected readonly blueprint_: Blueprint, identifier: string, options: PullRequestDefinition) {
-    writePullRequest(this.blueprint_.outdir, identifier, {
-      title: options.title,
-      description: options.description,
-      changes: (options.changes || []).map(diff => {
+  constructor(readonly blueprint: Blueprint, readonly identifier: string, readonly options: PullRequestDefinition) {
+    super(blueprint);
+  }
+
+  synthesize(): void {
+    writePullRequest(this.blueprint.outdir, this.identifier, {
+      title: this.options.title,
+      description: this.options.description,
+      changes: (this.options.changes || []).map(diff => {
         return {
           diffs: path.join(Difference.BUNDLE_PATH, diff.identifier),
           repository: diff.repository.title,
