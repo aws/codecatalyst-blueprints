@@ -26,7 +26,7 @@ export class PullRequest {
   public static BUNDLE_PATH = BUNDLE_PATH_PULL_REQUEST;
 
   constructor(protected readonly blueprint_: Blueprint, identifier: string, options: PullRequestDefinition) {
-    writePullRequest(path.join(this.blueprint_.outdir, PullRequest.BUNDLE_PATH), identifier, {
+    writePullRequest(this.blueprint_.outdir, identifier, {
       title: options.title,
       description: options.description,
       changes: (options.changes || []).map(diff => {

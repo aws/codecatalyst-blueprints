@@ -120,7 +120,21 @@ export class Blueprint extends ParentBlueprint {
     });
 
     const diff = new Difference(this.sourceRepository, 'some-branch');
-    diff.addPatch('first-set-of-changes.diff', '+++ add some code here');
+    diff.addPatch('first-set-of-changes.diff',
+      `diff --git a/frontend/cdk/jest.config.js b/frontend/cdk/jest.config.js
+deleted file mode 100644
+index 08263b89..00000000
+--- a/frontend/cdk/jest.config.js
++++ /dev/null
+@@ -1,8 +0,0 @@
+-module.exports = {
+-  testEnvironment: 'node',
+-  roots: ['<rootDir>/test'],
+-  testMatch: ['**/*.test.ts'],
+-  transform: {
+-    '^.+\\.tsx?$': 'ts-jest'
+-  }
+-};`);
 
     new PullRequest(this, 'my-amazing-pr', {
       title: 'feat: amazing PR number 1',
