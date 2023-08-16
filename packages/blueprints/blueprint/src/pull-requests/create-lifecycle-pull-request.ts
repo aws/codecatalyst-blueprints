@@ -6,6 +6,7 @@ import { filepathSet } from '../resynthesis/file-set';
 
 interface lifecyclePullRequestOptions {
   originBranch: string;
+  targetBranch?: string;
   pullRequest: {
     id: string;
     title: string;
@@ -43,18 +44,9 @@ export const createLifecyclePullRequest = (
           repository: differences[differenceId],
           diffs: path.join(BUNDLE_PATH_SRC_DIFF, differenceId),
           originBranch: options.originBranch,
+          targetBranch: options.targetBranch,
         };
       }),
     });
   }
-};
-
-export const generateLifecyclePRInfo = (): {
-  title: string;
-  description: string;
-} => {
-  return {
-    title: 'chore: resynthesis update',
-    description: 'This is a pull request created from a resynthesis update.',
-  };
 };
