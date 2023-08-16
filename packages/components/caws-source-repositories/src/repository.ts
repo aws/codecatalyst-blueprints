@@ -13,6 +13,8 @@ export interface SourceRepositoryDefinition {
 }
 
 export class SourceRepository extends Component {
+  public static BUNDLE_PATH = sourceRepositoryRootDirectory;
+
   public readonly relativePath: string;
   public readonly path: string;
   public readonly title: string;

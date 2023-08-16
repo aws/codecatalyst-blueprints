@@ -59,7 +59,8 @@
   "dependencies": {
     "diff-match-patch": "1.x",
     "globule": "*",
-    "projen": "0.71.112"
+    "projen": "0.71.112",
+    "yaml": "*"
   },
   "resolutions": {
     "projen": "0.71.112"
