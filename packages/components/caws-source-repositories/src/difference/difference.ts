@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
 import { BUNDLE_PATH_SRC_DIFF } from '@caws-blueprint/blueprints.blueprint/lib/differences/differences';
+import { Component } from 'projen';
 import { SourceRepository } from '../repository';
 
 export interface DifferenceOptions {
@@ -12,14 +12,15 @@ export interface DifferenceOptions {
   targetBranch?: string;
 }
 
-export class Difference {
+export class Difference extends Component {
   public static BUNDLE_PATH = BUNDLE_PATH_SRC_DIFF;
 
   public readonly identifier: string;
-  public readonly blueprint: Blueprint;
-  public readonly repository: SourceRepository;
-  public readonly originBranch: string;
   public readonly targetBranch?: string;
+  public patches: {
+    filepath: string;
+    filecontent: string;
+  }[];
 
   /**
      *
@@ -27,12 +28,16 @@ export class Difference {
      * @param originBranch This is the origin branch of the pull request. Branch will be created if it does not exist.
      * @param options
      */
-  constructor(repository: SourceRepository, originBranch: string, options?: DifferenceOptions) {
+  constructor(
+    readonly repository: SourceRepository,
+    readonly originBranch: string,
+    readonly options?: DifferenceOptions,
+  ) {
+    super(repository.blueprint);
+
     this.identifier = `${repository.title}-${originBranch}`;
-    this.blueprint = repository.blueprint;
-    this.repository = repository;
-    this.originBranch = originBranch;
     this.targetBranch = options?.targetBranch;
+    this.patches = [];
   }
 
   /**
@@ -41,8 +46,17 @@ export class Difference {
     * @param difference difference in patch format
     */
   addPatch(id: string, patch: string) {
-    const filepath = path.join(this.blueprint.context.rootDir, Difference.BUNDLE_PATH, this.identifier, id);
-    fs.mkdirSync(path.dirname(filepath), { recursive: true });
-    fs.writeFileSync(filepath, patch);
+    const filepath = path.join(this.repository.blueprint.context.rootDir, Difference.BUNDLE_PATH, this.identifier, id);
+    this.patches.push({
+      filepath,
+      filecontent: patch,
+    });
+  };
+
+  synthesize(): void {
+    this.patches.forEach(patch => {
+      fs.mkdirSync(path.dirname(patch.filepath), { recursive: true });
+      fs.writeFileSync(patch.filepath, patch.filecontent);
+    });
   }
 }
