@@ -11,14 +11,14 @@ export interface PublishOptions extends yargs.Arguments {
   publisher: string;
   cookie?: string;
   endpoint: string;
-  region: string;
+  region?: string;
 }
 
 export async function publish(log: pino.BaseLogger, endpoint: string, options: {
   blueprintPath: string;
   publishingSpace: string;
   cookie?: string;
-  region?: string;
+  region: string;
 }): Promise<void> {
 
   if (!fs.existsSync(options.blueprintPath)) {

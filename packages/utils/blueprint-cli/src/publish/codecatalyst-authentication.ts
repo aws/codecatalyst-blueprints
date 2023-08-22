@@ -35,7 +35,7 @@ export const codecatalystAuthentication = async (log: pino.BaseLogger, options: 
   log.warn('Attempting to fetch credentials from AWS CLI profile.');
   try {
     const codecatalyst = new CodeCatalystClient({
-      region: options.region || 'us-west-2',
+      region: options.region,
       endpoint: path.join('https://', options.endpoint),
     });
 
