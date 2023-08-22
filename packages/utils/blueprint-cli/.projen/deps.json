@@ -105,6 +105,10 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-sdk/client-codecatalyst",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-s3",
       "type": "runtime"
     },

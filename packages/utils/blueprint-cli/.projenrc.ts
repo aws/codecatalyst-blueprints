@@ -8,6 +8,7 @@ const project = new ProjenBlueprintComponent({
     '@aws-sdk/client-s3',
     '@aws-sdk/client-cloudfront',
     '@aws-sdk/client-sts',
+    '@aws-sdk/client-codecatalyst',
     'ajv',
     'pino',
     'yargs',
