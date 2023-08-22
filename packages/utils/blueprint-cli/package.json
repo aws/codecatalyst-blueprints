@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cloudfront": "*",
+    "@aws-sdk/client-codecatalyst": "*",
     "@aws-sdk/client-s3": "*",
     "@aws-sdk/client-sts": "*",
     "ajv": "*",

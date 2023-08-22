@@ -1,12 +1,13 @@
 import * as axios from 'axios';
+import { CodeCatalystAuthentication, generateHeaders } from './codecatalyst-authentication';
 
 interface IdentityResponse {
   name: string;
   email: string;
-  csrfToken: string;
+  csrfToken?: string;
 }
-export const verifyIdentity = async (options: { endpoint: string; cookie: string }): Promise<IdentityResponse> => {
-  const { endpoint, cookie } = options;
+export const verifyIdentity = async (endpoint: string, options: { authentication: CodeCatalystAuthentication }): Promise<IdentityResponse> => {
+  const { authentication } = options;
   const gqlResponse = await axios.default.post(
     `https://${endpoint}/graphql?`,
     {
@@ -24,10 +25,10 @@ export const verifyIdentity = async (options: { endpoint: string; cookie: string
     {
       headers: {
         'authority': endpoint,
-        'accespt': 'application/json',
         'origin': `https://${endpoint}`,
-        'cookie': cookie,
+        'accept': 'application/json',
         'content-type': 'application/json',
+        ...generateHeaders(authentication),
       },
     },
   );
