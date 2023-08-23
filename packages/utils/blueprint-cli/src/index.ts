@@ -9,8 +9,7 @@ import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessmen
 import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
-import { PublishOptions, publish } from './publish';
-// import { resynthesize, ResynthesizeCliOptions } from './resynth/resynth';
+import { PublishOptions, publish } from './publish/publish';
 import { EXISTING_BUNDLE_SUBPATH, ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
 import { ResynthDriverCliOptions, driveResynthesis } from './resynth-drivers/resynth-driver';
 import { createCache } from './synth-drivers/cache';
@@ -302,7 +301,7 @@ yargs
           demandOption: true,
         })
         .option('publisher', {
-          description: 'the name of the publishing organization',
+          description: 'the name of the publishing space',
           demandOption: true,
           type: 'string',
         })
@@ -316,11 +315,21 @@ yargs
           demandOption: false,
           type: 'string',
           default: 'public.console.codecatalyst.aws',
+        })
+        .option('region', {
+          description: 'the code catalyst space region. Used for authentication. Defaults to $AWS_REGION and us-west-2',
+          demandOption: false,
+          type: 'string',
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      await publish(log, argv.blueprint, argv.publisher, argv.endpoint, argv.cookie);
+      await publish(log, argv.endpoint, {
+        blueprintPath: argv.blueprint,
+        publishingSpace: argv.publisher,
+        cookie: argv.cookie,
+        region: argv.region || process.env.AWS_REGION || 'us-west-2',
+      });
       process.exit(0);
     },
   })
