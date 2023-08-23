@@ -140,7 +140,7 @@ index 08263b89..00000000
 -  roots: ['<rootDir>/test'],
 -  testMatch: ['**/*.test.ts'],
 -  transform: {
--    '^.+\\.tsx?$': 'ts-jest'
+-    '^.+\\\\.tsx?$': 'ts-jest'
 -  }
 -};\n`,
     );
