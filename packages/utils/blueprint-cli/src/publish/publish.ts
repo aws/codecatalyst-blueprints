@@ -4,7 +4,7 @@ import * as pino from 'pino';
 import * as yargs from 'yargs';
 import { codecatalystAuthentication } from './codecatalyst-authentication';
 import { uploadBlueprint } from './upload-blueprint';
-import { verifyIdentity } from './verify-identity';
+import { IdentityResponse, verifyIdentity } from './verify-identity';
 
 export interface PublishOptions extends yargs.Arguments {
   blueprint: string;
@@ -38,7 +38,7 @@ export async function publish(log: pino.BaseLogger, endpoint: string, options: {
     region: options.region,
   });
 
-  let identity;
+  let identity: IdentityResponse;
   if (authentication) {
     log.info('Verifying identity...');
     identity = await verifyIdentity(endpoint, { authentication });
@@ -81,5 +81,6 @@ export async function publish(log: pino.BaseLogger, endpoint: string, options: {
     packageName,
     version,
     authentication,
+    identity,
   });
 }
