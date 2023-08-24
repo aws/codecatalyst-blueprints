@@ -1,7 +1,7 @@
 import * as axios from 'axios';
 import { CodeCatalystAuthentication, generateHeaders } from './codecatalyst-authentication';
 
-interface IdentityResponse {
+export interface IdentityResponse {
   name: string;
   email: string;
   csrfToken?: string;

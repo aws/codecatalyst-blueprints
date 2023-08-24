@@ -5,6 +5,7 @@ import * as util from 'util';
 import * as axios from 'axios';
 import * as pino from 'pino';
 import { CodeCatalystAuthentication, generateHeaders } from './codecatalyst-authentication';
+import { IdentityResponse } from './verify-identity';
 
 const mb = 1_024_000;
 
@@ -19,6 +20,7 @@ export async function uploadBlueprint(log: pino.BaseLogger, packagePath: string,
   packageName: string;
   version: string;
   authentication: CodeCatalystAuthentication;
+  identity: IdentityResponse;
 }) {
 
   // get the signature of the package
@@ -52,7 +54,7 @@ export async function uploadBlueprint(log: pino.BaseLogger, packagePath: string,
         'origin': `https://${endpoint}`,
         'accept': 'application/json',
         'content-type': 'application/json',
-        ...generateHeaders(blueprint.authentication),
+        ...generateHeaders(blueprint.authentication, blueprint.identity),
       },
     },
   );

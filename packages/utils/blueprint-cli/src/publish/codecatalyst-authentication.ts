@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { CodeCatalystClient, VerifySessionCommand } from '@aws-sdk/client-codecatalyst';
 import * as pino from 'pino';
+import { IdentityResponse } from './verify-identity';
 
 export type AuthTokenType = 'cookie' | 'bearertoken';
 export interface CodeCatalystAuthentication {
@@ -8,11 +9,15 @@ export interface CodeCatalystAuthentication {
   token: string;
 }
 
-export function generateHeaders(authentication: CodeCatalystAuthentication): any {
+export function generateHeaders(authentication: CodeCatalystAuthentication, identity?: IdentityResponse): any {
   if (authentication.type == 'cookie') {
-    return {
+    const headers = {
       cookie: authentication.token,
     };
+    if (identity?.csrfToken) {
+      headers['anti-csrftoken-a2z'] = identity?.csrfToken;
+    }
+    return headers;
   } else {
     return {
       authorization: authentication.token,
@@ -63,7 +68,8 @@ export const codecatalystAuthentication = async (log: pino.BaseLogger, options: 
     log.error('Unable to retrive credentials for Codecatalyst.');
     log.warn('Have you set up the AWS codecatalyst cli and logged into codecatalyst?');
     log.info('> ');
-    log.info('> https://docs.aws.amazon.com/codecatalyst/latest/userguide/set-up-cli.html');
+    log.info('> # https://docs.aws.amazon.com/codecatalyst/latest/userguide/set-up-cli.html');
+    log.info('> ');
     log.info('> aws sso login --profile codecatalyst');
     log.info('> export AWS_PROFILE=codecatalyst');
     log.info('> ');
