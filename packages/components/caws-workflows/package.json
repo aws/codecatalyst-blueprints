@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-component/caws-workflows",
+  "name": "@amazon-codecatalyst/blueprint-component.workflows",
   "description": "This is a representation of a caws workflow.",
   "scripts": {
     "build": "npx projen build",

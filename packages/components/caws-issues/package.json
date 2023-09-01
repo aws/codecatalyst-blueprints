@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-component/caws-issues",
+  "name": "@amazon-codecatalyst/blueprint-component.issues",
   "description": "This is a representation of a caws issues.",
   "scripts": {
     "build": "npx projen build",

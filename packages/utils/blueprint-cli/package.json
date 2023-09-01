@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-util/blueprint-cli",
+  "name": "@amazon-codecatalyst/blueprint-util.cli",
   "description": "This is a cli utility used for blueprint development.",
   "bin": {
     "blueprint": "lib/index.js"

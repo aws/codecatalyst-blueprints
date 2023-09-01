@@ -20,7 +20,7 @@ const project = new typescript.TypeScriptProject({
   copyrightOwner: 'Amazon.com',
   peerDeps: ['projen'],
   description: 'This is a projen blueprint component. This defines the project configuration a for a blueprint component project.',
-  packageName: '@caws-blueprint-util/projen-blueprint-component',
+  packageName: '@amazon-codecatalyst/blueprint-util.projen-blueprint-component',
   devDeps: ['projen', 'ts-node'],
 });
 

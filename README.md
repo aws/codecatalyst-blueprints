@@ -1,6 +1,6 @@
-![Build](https://github.com/aws/caws-blueprints/actions/workflows/build-action.yml/badge.svg)
+![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg)
 
-[Documentation and wiki](https://github.com/aws/caws-blueprints/wiki)
+[Documentation and wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
 [Other blueprint repos](https://github.com/orgs/aws/teams/amazon-blueprints-contributors/repositories)
 
@@ -58,8 +58,8 @@ blueprints-setup() {
 Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 
 ```
-git clone https://github.com/aws/caws-blueprints
-cd caws-blueprints
+git clone https://github.com/aws/codecatalyst-blueprints
+cd codecatalyst-blueprints
 nvm use
 source ~/.bash_profile
 blueprints-setup

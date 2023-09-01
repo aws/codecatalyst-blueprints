@@ -12,7 +12,7 @@ const project = new ProjenBlueprintComponent({
     '@caws-blueprint/blueprints.blueprint',
   ],
   description: 'This is a representation of a caws workflow.',
-  packageName: '@caws-blueprint-component/caws-workflows',
+  packageName: '@amazon-codecatalyst/blueprint-component.workflows',
   devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node'],
 });
 

@@ -224,7 +224,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 `;
 
 exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.ownership-file 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
@@ -1902,7 +1902,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 `;
 
 exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
@@ -2861,7 +2861,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 `;
 
 exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "

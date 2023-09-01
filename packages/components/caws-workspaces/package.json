@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-component/caws-workspaces",
+  "name": "@amazon-codecatalyst/blueprint-component.workspaces",
   "description": "This is a representation of a caws development environment workspace.",
   "scripts": {
     "build": "npx projen build",

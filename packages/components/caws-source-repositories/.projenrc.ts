@@ -7,7 +7,7 @@ const project = new ProjenBlueprintComponent({
   deps: ['decamelize', 'camelcase', 'glob', 'mustache', 'minimatch'],
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint'],
   description: 'This is a representation of a source repository.',
-  packageName: '@caws-blueprint-component/caws-source-repositories',
+  packageName: '@amazon-codecatalyst/blueprint-component.source-repositories',
   devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node', '@types/jest'],
   jest: true,
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.blueprint-builder",
+  "name": "@amazon-codecatalyst/blueprints.blueprint-builder",
   "description": "Use this to build additional blueprints from existing blueprints.",
   "scripts": {
     "build": "npx projen build",

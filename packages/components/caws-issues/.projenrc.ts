@@ -7,7 +7,7 @@ const project = new ProjenBlueprintComponent({
   deps: [],
   peerDeps: ['projen', '@caws-blueprint/blueprints.blueprint'],
   description: 'This is a representation of a caws issues.',
-  packageName: '@caws-blueprint-component/caws-issues',
+  packageName: '@amazon-codecatalyst/blueprint-component.issues',
   devDeps: ['@caws-blueprint-util/projen-blueprint-component', 'ts-node'],
 });
 

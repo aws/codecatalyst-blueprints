@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-util/projen-blueprint",
+  "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint",
   "description": "This is a projen blueprint. This defines the project configuration a blueprint project.",
   "scripts": {
     "build": "npx projen build",

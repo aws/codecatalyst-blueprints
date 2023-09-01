@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-component/caws-source-repositories",
+  "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
   "description": "This is a representation of a source repository.",
   "scripts": {
     "build": "npx projen build",

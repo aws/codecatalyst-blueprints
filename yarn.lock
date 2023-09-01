@@ -12,6 +12,412 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/caws-environments":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/caws-environments"
+  dependencies:
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/caws-issues":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/caws-issues"
+  dependencies:
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/caws-source-repositories":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/caws-source-repositories"
+  dependencies:
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/jest": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    camelcase: 5.3.x
+    decamelize: 5.0.x
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    glob: ^10
+    jest: "*"
+    jest-junit: ^15
+    minimatch: ^9
+    mustache: ^4
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-jest: "*"
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/caws-workflows":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/caws-workflows"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+    yaml: "*"
+  peerDependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-component.workspaces@workspace:packages/components/caws-workspaces":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.workspaces@workspace:packages/components/caws-workspaces"
+  dependencies:
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+    yaml: "*"
+  peerDependencies:
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-util.cli@workspace:packages/utils/blueprint-cli":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-util.cli@workspace:packages/utils/blueprint-cli"
+  dependencies:
+    "@aws-sdk/client-cloudfront": "*"
+    "@aws-sdk/client-codecatalyst": "*"
+    "@aws-sdk/client-s3": "*"
+    "@aws-sdk/client-sts": "*"
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@types/jest": 26.0.24
+    "@types/jmespath": "*"
+    "@types/node": ^18
+    "@types/pino": ^6.3.12
+    "@types/yargs": 17.0.8
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    ajv: "*"
+    axios: ^0.25.0
+    deepmerge: ^4.3.1
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    jest: 27.0.x
+    jest-junit: ^15
+    jmespath: ^0.15.0
+    npm-check-updates: ^16
+    pino: ^6.13.4
+    pino-pretty: ^4.8.0
+    projen: 0.71.112
+    standard-version: ^9
+    ts-jest: "*"
+    ts-json-schema-generator: "*"
+    ts-loader: ^9.4.1
+    ts-node: ^10
+    typescript: ^4.x
+    yargs: ^17.3.1
+  bin:
+    blueprint: lib/index.js
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-util.projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-util.projen-blueprint-component@workspace:packages/utils/projen-blueprint-component"
+  dependencies:
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-util.projen-blueprint@workspace:packages/utils/projen-blueprint":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-util.projen-blueprint@workspace:packages/utils/projen-blueprint"
+  dependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
+  dependencies:
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    camelcase: 1.x
+    decamelize: 5.0.x
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint"
+  dependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@types/diff-match-patch": 1.x
+    "@types/jest": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    diff-match-patch: 1.x
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    globule: "*"
+    jest: "*"
+    jest-junit: ^15
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-jest: "*"
+    ts-node: ^10
+    typescript: ^4.x
+    yaml: "*"
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/jest": "*"
+    "@types/node": ^18
+    "@types/pino": ^6.3.12
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    globule: "*"
+    jest: "*"
+    jest-junit: ^15
+    npm-check-updates: ^16
+    pino: ^6.13.4
+    pino-pretty: ^4.8.0
+    projen: 0.71.112
+    standard-version: ^9
+    ts-deepmerge: "*"
+    ts-jest: "*"
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/jest": "*"
+    "@types/node": ^18
+    "@types/pino": ^6.3.12
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    globule: "*"
+    jest: "*"
+    jest-junit: ^15
+    npm-check-updates: ^16
+    pino: ^6.13.4
+    pino-pretty: ^4.8.0
+    projen: 0.71.112
+    standard-version: ^9
+    ts-jest: "*"
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-util/blueprint-cli": 0.2.x
+    "@caws-blueprint-util/projen-blueprint": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: ^2.25.4
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprints@workspace:packages/top-level/codecatalyst-blueprints":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints@workspace:packages/top-level/codecatalyst-blueprints"
+  dependencies:
+    "@caws-blueprint-component/caws-environments": 0.2.x
+    "@caws-blueprint-component/caws-issues": "*"
+    "@caws-blueprint-component/caws-source-repositories": 0.2.x
+    "@caws-blueprint-component/caws-workflows": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
+    "@caws-blueprint/blueprints.blueprint": 0.2.x
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.2.1
   resolution: "@ampproject/remapping@npm:2.2.1"
@@ -1388,34 +1794,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws/codecatalyst-blueprints@workspace:packages/top-level/codecatalyst-blueprints":
-  version: 0.0.0-use.local
-  resolution: "@aws/codecatalyst-blueprints@workspace:packages/top-level/codecatalyst-blueprints"
-  dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.x
-    "@caws-blueprint-component/caws-issues": "*"
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: 0.71.112
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
-  peerDependencies:
-    projen: "*"
-  languageName: unknown
-  linkType: soft
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/code-frame@npm:7.22.5"
@@ -1820,383 +2198,132 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@caws-blueprint-component/caws-environments@0.2.x, @caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-component/caws-environments@workspace:packages/components/caws-environments"
+"@caws-blueprint-component/caws-environments@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-component/caws-environments@npm:0.2.12"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+    projen: 0.71.112
   peerDependencies:
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: d97e2e121c4df63474feee36bac1726a5795b02797a27696aaad70c0c5019805a618025da119aa20b5ae6e30245dc77cb8a81cd27f1c272326a57b83ee44793b
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-component/caws-issues@*, @caws-blueprint-component/caws-issues@workspace:packages/components/caws-issues":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-component/caws-issues@workspace:packages/components/caws-issues"
+"@caws-blueprint-component/caws-issues@npm:*":
+  version: 0.2.12
+  resolution: "@caws-blueprint-component/caws-issues@npm:0.2.12"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+    projen: 0.71.112
   peerDependencies:
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: c822245f7d3d59630f38f2bcfd79f3d71afcb6a00964245fe38af2842528f07f4d0fa430d935568dee15e865c6cc8cdf9441dbfa75be895d9eb299c9cc4dc799
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-component/caws-source-repositories@0.2.x, @caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-component/caws-source-repositories@workspace:packages/components/caws-source-repositories"
+"@caws-blueprint-component/caws-source-repositories@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-component/caws-source-repositories@npm:0.2.12"
   dependencies:
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/jest": "*"
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
     camelcase: 5.3.x
     decamelize: 5.0.x
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
     glob: ^10
-    jest: "*"
-    jest-junit: ^15
     minimatch: ^9
     mustache: ^4
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-jest: "*"
-    ts-node: ^10
-    typescript: ^4.x
+    projen: 0.71.112
   peerDependencies:
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: 11a05459e888c4cfc1caa8f333da17712ec2b13e2995fefdf44eb46c827068b65986f782343d81c854311227a7625b2c1d6ed17ce7ca7a1b98ce3439fc2dcda5
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-component/caws-workflows@0.2.x, @caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-component/caws-workflows@workspace:packages/components/caws-workflows"
+"@caws-blueprint-component/caws-workflows@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-component/caws-workflows@npm:0.2.12"
   dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.x
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+    projen: 0.71.112
     yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-environments": 0.2.x
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: d03630a21ccddc50ec799c7d7a3023bcffe2fcb217f39f05db76f1d3d7f54b2f3e384afaa0b1a028c53a8e9b5854ff3bc11d8968ef3efabf93f37c8d9f88c4d0
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-component/caws-workspaces@0.2.x, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
+"@caws-blueprint-component/caws-workspaces@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-component/caws-workspaces@npm:0.2.12"
   dependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+    projen: 0.71.112
     yaml: "*"
   peerDependencies:
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: 13ab6552cf34ccd70b82f11eeb9e465cd768833e98de2b82a100ee792a34d3bd6d2ff33dabc630b66cf1ef119ac72f93c6ca68ebc61a43d358e29b0db689af55
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-util/blueprint-cli@0.2.x, @caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-util/blueprint-cli@workspace:packages/utils/blueprint-cli"
+"@caws-blueprint-util/blueprint-cli@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-util/blueprint-cli@npm:0.2.12"
   dependencies:
     "@aws-sdk/client-cloudfront": "*"
     "@aws-sdk/client-codecatalyst": "*"
     "@aws-sdk/client-s3": "*"
     "@aws-sdk/client-sts": "*"
-    "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@types/jest": 26.0.24
-    "@types/jmespath": "*"
-    "@types/node": ^18
-    "@types/pino": ^6.3.12
-    "@types/yargs": 17.0.8
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
     ajv: "*"
     axios: ^0.25.0
     deepmerge: ^4.3.1
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    jest: 27.0.x
-    jest-junit: ^15
     jmespath: ^0.15.0
-    npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
     projen: 0.71.112
-    standard-version: ^9
-    ts-jest: "*"
-    ts-json-schema-generator: "*"
-    ts-loader: ^9.4.1
-    ts-node: ^10
-    typescript: ^4.x
+    ts-node: ^10.5.0
+    typescript: "*"
     yargs: ^17.3.1
   bin:
     blueprint: lib/index.js
-  languageName: unknown
-  linkType: soft
+  checksum: 1c0857618ed2cba9095e79cc116bf1e5c1cdf20b117c4042e32916e1b344b6fdbe3dda2b6a03e7016d9a9af40e9207a0e5f685b0832e1c2bfae1dfd0f044fe4a
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-util/projen-blueprint-component@0.2.x, @caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-util/projen-blueprint-component@workspace:packages/utils/projen-blueprint-component"
-  dependencies:
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: 0.71.112
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+"@caws-blueprint-util/projen-blueprint-component@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-util/projen-blueprint-component@npm:0.2.12"
   peerDependencies:
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: d199a5444b9eb7cf2ff4a084654243d9d6696c54b78486fc90257ad5aa0e4628ac22c51ec6da834783967cb63d179895f61bc51be771df030f06c3ecf9c7f49c
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint-util/projen-blueprint@0.2.x, @caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint-util/projen-blueprint@workspace:packages/utils/projen-blueprint"
-  dependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: 0.71.112
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
+"@caws-blueprint-util/projen-blueprint@npm:0.2.x":
+  version: 0.2.12
+  resolution: "@caws-blueprint-util/projen-blueprint@npm:0.2.12"
   peerDependencies:
     "@caws-blueprint-util/blueprint-cli": 0.2.x
     projen: "*"
-  languageName: unknown
-  linkType: soft
+  checksum: 1f5f9cb1f8d5bc05645f5e7927d98322c138bfbc593811056452be19f084a843e219b16d07433b01ea8f127c3bc87b272c7632c0ced66b0c399eb6e3fe11fda9
+  languageName: node
+  linkType: hard
 
-"@caws-blueprint/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
+"@caws-blueprint/blueprints.blueprint@npm:0.2.x":
+  version: 0.2.31
+  resolution: "@caws-blueprint/blueprints.blueprint@npm:0.2.31"
   dependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@caws-blueprint-util/projen-blueprint": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    camelcase: 1.x
-    decamelize: 5.0.x
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: 0.71.112
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
-  languageName: unknown
-  linkType: soft
-
-"@caws-blueprint/blueprints.blueprint@0.2.x, @caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.blueprint@workspace:packages/blueprints/blueprint"
-  dependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@caws-blueprint-util/projen-blueprint": 0.2.x
-    "@types/diff-match-patch": 1.x
-    "@types/jest": "*"
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
     diff-match-patch: 1.x
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
     globule: "*"
-    jest: "*"
-    jest-junit: ^15
-    npm-check-updates: ^16
     projen: 0.71.112
-    standard-version: ^9
-    ts-jest: "*"
-    ts-node: ^10
-    typescript: ^4.x
     yaml: "*"
   peerDependencies:
     projen: "*"
-  languageName: unknown
-  linkType: soft
-
-"@caws-blueprint/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app"
-  dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.x
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@caws-blueprint-util/projen-blueprint": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/jest": "*"
-    "@types/node": ^18
-    "@types/pino": ^6.3.12
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    globule: "*"
-    jest: "*"
-    jest-junit: ^15
-    npm-check-updates: ^16
-    pino: ^6.13.4
-    pino-pretty: ^4.8.0
-    projen: 0.71.112
-    standard-version: ^9
-    ts-deepmerge: "*"
-    ts-jest: "*"
-    ts-node: ^10
-    typescript: ^4.x
-  peerDependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-  languageName: unknown
-  linkType: soft
-
-"@caws-blueprint/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl"
-  dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.x
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@caws-blueprint-util/projen-blueprint": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/jest": "*"
-    "@types/node": ^18
-    "@types/pino": ^6.3.12
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    globule: "*"
-    jest: "*"
-    jest-junit: ^15
-    npm-check-updates: ^16
-    pino: ^6.13.4
-    pino-pretty: ^4.8.0
-    projen: 0.71.112
-    standard-version: ^9
-    ts-jest: "*"
-    ts-node: ^10
-    typescript: ^4.x
-  peerDependencies:
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-  languageName: unknown
-  linkType: soft
-
-"@caws-blueprint/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint":
-  version: 0.0.0-use.local
-  resolution: "@caws-blueprint/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint"
-  dependencies:
-    "@caws-blueprint-component/caws-environments": 0.2.x
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-util/blueprint-cli": 0.2.x
-    "@caws-blueprint-util/projen-blueprint": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: ^2.25.4
-    npm-check-updates: ^16
-    projen: 0.71.112
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
-  languageName: unknown
-  linkType: soft
+  checksum: 7f7135ec083bbe269541da6b6b493a07326cf2776faeab7db0141e4937138aec225297fdfa276c9daff0498561235a8ac72604cb559c37aa46e7ac1f22a54219
+  languageName: node
+  linkType: hard
 
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
@@ -12786,7 +12913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10":
+"ts-node@npm:^10, ts-node@npm:^10.5.0":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
@@ -12973,6 +13100,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:*":
+  version: 5.2.2
+  resolution: "typescript@npm:5.2.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 7912821dac4d962d315c36800fe387cdc0a6298dba7ec171b350b4a6e988b51d7b8f051317786db1094bd7431d526b648aba7da8236607febb26cf5b871d2d3c
+  languageName: node
+  linkType: hard
+
 "typescript@npm:4.x, typescript@npm:^4.x, typescript@npm:~4.9.3":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
@@ -12980,6 +13117,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@*#~builtin<compat/typescript>":
+  version: 5.2.2
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 07106822b4305de3f22835cbba949a2b35451cad50888759b6818421290ff95d522b38ef7919e70fb381c5fe9c1c643d7dea22c8b31652a717ddbd57b7f4d554
   languageName: node
   linkType: hard
 

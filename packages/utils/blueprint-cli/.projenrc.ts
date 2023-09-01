@@ -21,7 +21,7 @@ const project = new ProjenBlueprintComponent({
   ],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',
-  packageName: '@caws-blueprint-util/blueprint-cli',
+  packageName: '@amazon-codecatalyst/blueprint-util.cli',
   devDeps: [
     '@caws-blueprint-util/projen-blueprint-component',
     '@types/jest',

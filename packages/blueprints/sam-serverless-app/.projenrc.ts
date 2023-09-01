@@ -30,7 +30,7 @@ const project = new ProjenBlueprint({
   ],
   description:
     'This blueprint creates a project that leverages a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Python as the programming language',
-  packageName: '@caws-blueprint/blueprints.sam-serverless-application',
+  packageName: '@amazon-codecatalyst/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
   devDeps: [
     '@caws-blueprint-util/projen-blueprint',

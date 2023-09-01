@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.serverless-tinyurl",
+  "name": "@amazon-codecatalyst/blueprints.serverless-tinyurl",
   "description": "This blueprint creates a serverless Tiny URL Java Web Application using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.",
   "scripts": {
     "build": "npx projen build",

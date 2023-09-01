@@ -3,7 +3,7 @@ import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
 const project = new ProjenBlueprint({
   authorName: 'blueprints',
   publishingOrganization: 'blueprints',
-  packageName: '@caws-blueprint/blueprints.test-blueprint',
+  packageName: '@amazon-codecatalyst/blueprints.test-blueprint',
   name: 'test-blueprint',
   displayName: 'Test Blueprint [Internal]',
   defaultReleaseBranch: 'main',

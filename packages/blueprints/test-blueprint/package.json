@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.test-blueprint",
+  "name": "@amazon-codecatalyst/blueprints.test-blueprint",
   "description": "This is a test blueprint used for testing various blueprint systems",
   "scripts": {
     "build": "npx projen build",

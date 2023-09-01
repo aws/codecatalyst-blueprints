@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.blueprint",
+  "name": "@amazon-codecatalyst/blueprints.blueprint",
   "description": "This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.",
   "scripts": {
     "build": "npx projen build",

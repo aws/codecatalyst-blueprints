@@ -14,7 +14,7 @@ const blueprint = new ProjenBlueprint({
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
   /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
-  packageName: '@caws-blueprint/blueprints.blueprint',
+  packageName: '@amazon-codecatalyst/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/diff-match-patch@1.x'],
