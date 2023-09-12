@@ -35,6 +35,7 @@ export async function uploadBlueprint(
 
   log.info(`Starting publishing blueprint package to ${blueprint.targetSpace}.`);
   log.info(`Generating a readstream to ${packagePath}`);
+
   const blueprintTarballStream = fs.createReadStream(packagePath);
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
@@ -44,6 +45,7 @@ export async function uploadBlueprint(
       'authority': endpoint,
       'origin': `https://${endpoint}`,
       'Content-Type': 'application/octet-stream',
+      'Content-Length': fs.statSync(packagePath).size,
       ...generateHeaders(blueprint.authentication, blueprint.identity),
     },
   });
