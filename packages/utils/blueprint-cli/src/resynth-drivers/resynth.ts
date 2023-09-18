@@ -40,7 +40,7 @@ interface ResynthesizeOptions {
  * @param log
  * @param options
  */
-export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions): void {
+export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions) {
   // todo validate input
 
   const { ancestorLocation, proposedLocation, existingLocation, resolvedLocation } = setupResynthesisOutputDirectory(log, options.outdir, {
@@ -48,7 +48,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
   });
 
   // synthesize ancestor files
-  synthesize(log, {
+  void (await synthesize(log, {
     blueprintPath: options.priorBlueprint,
     blueprintOptions: options.priorOptions,
     jobname: `${options.jobname}-${ancestorLocation}`,
@@ -56,10 +56,10 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     synthDriver: options.synthDriver,
     existingBundle: existingLocation,
     cleanUp: options.cleanUp,
-  });
+  }));
 
   // synthesize proposed files
-  synthesize(log, {
+  void (await synthesize(log, {
     blueprintPath: options.blueprint,
     blueprintOptions: options.options,
     jobname: `${options.jobname}-${proposedLocation}`,
@@ -67,7 +67,7 @@ export function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions)
     synthDriver: options.synthDriver,
     existingBundle: existingLocation,
     cleanUp: options.cleanUp,
-  });
+  }));
 
   // if theres nothing at the existing files, copy-the ancestor files into there too.
   if (fs.readdirSync(existingLocation).length == 0) {
