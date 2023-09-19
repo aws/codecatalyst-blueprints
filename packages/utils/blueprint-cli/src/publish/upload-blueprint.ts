@@ -37,17 +37,22 @@ export async function uploadBlueprint(
   log.info(`Generating a readstream to ${packagePath}`);
 
   const blueprintTarballStream = fs.createReadStream(packagePath);
+  const publishHeaders = {
+    'authority': endpoint,
+    'origin': `https://${endpoint}`,
+    'Content-Type': 'application/octet-stream',
+    'Content-Length': fs.statSync(packagePath).size,
+    ...generateHeaders(blueprint.authentication, blueprint.identity),
+  };
+  log.debug('publish headers');
+  log.debug({ ...publishHeaders });
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
-    url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(blueprint.packageName)}/versions/${querystring.escape(blueprint.version)}/packages`,
+    url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
+      blueprint.packageName,
+    )}/versions/${querystring.escape(blueprint.version)}/packages`,
     data: blueprintTarballStream,
-    headers: {
-      'authority': endpoint,
-      'origin': `https://${endpoint}`,
-      'Content-Type': 'application/octet-stream',
-      'Content-Length': fs.statSync(packagePath).size,
-      ...generateHeaders(blueprint.authentication, blueprint.identity),
-    },
+    headers: publishHeaders,
   });
   console.log(publishBlueprintPackageResponse.data);
 
@@ -78,48 +83,62 @@ export async function uploadBlueprint(
       return;
     } else {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
-      log.debug(`[${attempt}/${attempts}] Waiting ${curWait/1000} seconds...`);
+      log.debug(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
       await sleep(curWait);
     }
   }
   log.info('Blueprint has not published successfully');
 }
 
-async function fetchstatus(log: pino.BaseLogger, options: {
-  input: {
-    spaceName: string;
-    id: string;
-    blueprintName: string;
-    version: string;
+async function fetchstatus(
+  log: pino.BaseLogger,
+  options: {
+    input: {
+      spaceName: string;
+      id: string;
+      blueprintName: string;
+      version: string;
+    };
+    http: {
+      endpoint;
+      headers: { [key: string]: string };
+    };
+  },
+): Promise<boolean> {
+  const input = {
+    spaceName: options.input.spaceName,
+    id: options.input.id,
+    blueprintName: options.input.blueprintName,
+    version: options.input.version,
   };
-  http: {
-    endpoint;
-    headers: {[key: string]: string};
-  };
-}): Promise<boolean> {
-  const publishngStatus = await axios.default.post(`https://${options.http.endpoint}/graphql?`, {
-    operationName: 'GetBlueprintVersionStatus',
-    query: 'query GetBlueprintVersionStatus($input: GetBlueprintVersionStatusInput!) {\n  getBlueprintVersionStatus(input: $input) {\n    spaceName\n    blueprintName\n    version\n    status\n    reason\n    lastUpdatedTime\n  }\n}\n',
-    variables: {
-      input: {
-        spaceName: options.input.spaceName,
-        id: options.input.id,
-        blueprintName: options.input.blueprintName,
-        version: options.input.version,
+  log.debug(input);
+  log.debug(options);
+  const response = await axios.default.post(
+    `https://${options.http.endpoint}/graphql?`,
+    {
+      query:
+        'query GetBlueprintVersionStatus($input: GetBlueprintVersionStatusInput!) {\n  getBlueprintVersionStatus(input: $input) {\n    spaceName\n    id\n    blueprintName\n    version\n    status\n  }\n}',
+      variables: {
+        input,
+      },
+      operationName: 'GetBlueprintVersionStatus',
+    },
+    {
+      headers: {
+        'authority': options.http.endpoint,
+        'origin': `https://${options.http.endpoint}`,
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        ...options.http.headers,
       },
     },
-    headers: {
-      'authority': options.http.endpoint,
-      'origin': `https://${options.http.endpoint}`,
-      'accept': 'application/json',
-      'content-type': 'application/json',
-      ...options.http.headers,
-    },
-  });
-  log.info(publishngStatus.data);
+  );
+  log.info(response.data);
+  if (response.data?.data?.getBlueprintVersionStatus?.status === 'SUCCEEDED') {
+    return true;
+  }
   return false;
 }
-
 
 function sleep(milliseconds: number) {
   return new Promise(resolve => {
