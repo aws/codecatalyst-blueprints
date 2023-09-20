@@ -80,7 +80,7 @@ export class Blueprint extends ParentBlueprint {
     ]);
 
     const spaceName = this.context.spaceName || '<<unknown-organization>>';
-    const packageName = `@caws-blueprint/${spaceName}.${dashName}`;
+    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`;
 
     const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
