@@ -33,7 +33,7 @@ export async function uploadBlueprint(
     process.exit(254);
   }
 
-  log.info(`Starting publishing blueprint package to ${blueprint.targetSpace}.`);
+  log.info(`Starting publishing blueprint package to space '${blueprint.targetSpace}'`);
   log.info(`Generating a readstream to ${packagePath}`);
 
   const blueprintTarballStream = fs.createReadStream(packagePath);
@@ -44,8 +44,7 @@ export async function uploadBlueprint(
     'Content-Length': fs.statSync(packagePath).size,
     ...generateHeaders(blueprint.authentication, blueprint.identity),
   };
-  log.debug('publish headers');
-  log.debug({ ...publishHeaders });
+
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
     url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
@@ -60,34 +59,46 @@ export async function uploadBlueprint(
     data: publishBlueprintPackageResponse.data,
   });
 
-  const baseWaitSec = 2;
+  const baseWaitSec = 5;
   const attempts = 5;
   const { spaceName, blueprintName, version, statusId } = publishBlueprintPackageResponse.data;
+  const fetchStatusInput = {
+    spaceName,
+    id: statusId,
+    version,
+    blueprintName,
+  };
+  log.debug(`Fetching publish status for publishing job '${statusId}' for blueprint '${blueprintName}' version '${version}'`);
 
   for (let attempt = 0; attempt < attempts; attempt++) {
     log.info(`Getting status. Attempt: ${attempt}`);
-    const success = await fetchstatus(log, {
-      input: {
-        spaceName,
-        id: statusId,
-        version,
-        blueprintName,
-      },
+    const fetchStatusResponse = await fetchstatus(log, {
+      input: fetchStatusInput,
       http: {
         endpoint,
         headers: generateHeaders(blueprint.authentication, blueprint.identity),
       },
     });
-    if (success) {
+    if (fetchStatusResponse.success) {
       log.info('Blueprint published successfully');
       return;
-    } else {
+    } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
       log.debug(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
       await sleep(curWait);
+    } else {
+      //break on failed or cancelled publishing jobs
+      log.info(`Blueprint publish job status is '${fetchStatusResponse.status}' due to '${fetchStatusResponse.reason}'`);
+      break;
     }
   }
   log.info('Blueprint has not published successfully');
+}
+
+interface FetchStatusResult {
+  success: boolean;
+  status: string;
+  reason?: string;
 }
 
 async function fetchstatus(
@@ -104,15 +115,13 @@ async function fetchstatus(
       headers: { [key: string]: string };
     };
   },
-): Promise<boolean> {
+): Promise<FetchStatusResult> {
   const input = {
     spaceName: options.input.spaceName,
     id: options.input.id,
     blueprintName: options.input.blueprintName,
     version: options.input.version,
   };
-  log.debug(input);
-  log.debug(options);
   const response = await axios.default.post(
     `https://${options.http.endpoint}/graphql?`,
     {
@@ -133,11 +142,29 @@ async function fetchstatus(
       },
     },
   );
-  log.info(response.data);
+  log.info(`Blueprint publish status ${response.data?.data?.getBlueprintVersionStatus?.status}`);
   if (response.data?.data?.getBlueprintVersionStatus?.status === 'SUCCEEDED') {
-    return true;
+    return {
+      success: true,
+      status: response.data?.data?.getBlueprintVersionStatus?.status,
+    };
+  } else if (response.data?.data?.getBlueprintVersionStatus?.status === 'FAILED') {
+    return {
+      success: false,
+      status: response.data?.data?.getBlueprintVersionStatus?.status,
+      reason: response.data?.data?.getBlueprintVersionStatus?.reason ?? 'an internal error has occurred',
+    };
+  } else if (response.data?.data?.getBlueprintVersionStatus?.status === 'CANCELLED') {
+    return {
+      success: false,
+      status: response.data?.data?.getBlueprintVersionStatus?.status,
+      reason: response.data?.data?.getBlueprintVersionStatus?.reason ?? 'The publishing job has been cancelled',
+    };
   }
-  return false;
+  return {
+    success: false,
+    status: response.data?.data?.getBlueprintVersionStatus?.status ?? 'UNKNOWN',
+  };
 }
 
 function sleep(milliseconds: number) {
