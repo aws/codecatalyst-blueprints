@@ -44,8 +44,6 @@ export async function uploadBlueprint(
     'Content-Length': fs.statSync(packagePath).size,
     ...generateHeaders(blueprint.authentication, blueprint.identity),
   };
-  log.debug('publish headers');
-  log.debug({ ...publishHeaders });
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
     url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
@@ -60,13 +58,12 @@ export async function uploadBlueprint(
     data: publishBlueprintPackageResponse.data,
   });
 
-  const baseWaitSec = 2;
-  const attempts = 5;
+  const baseWaitSec = 3;
+  const attempts = 10;
   const { spaceName, blueprintName, version, statusId } = publishBlueprintPackageResponse.data;
 
   for (let attempt = 0; attempt < attempts; attempt++) {
-    log.info(`Getting status. Attempt: ${attempt}`);
-    const success = await fetchstatus(log, {
+    const status = await fetchstatus(log, {
       input: {
         spaceName,
         id: statusId,
@@ -78,20 +75,21 @@ export async function uploadBlueprint(
         headers: generateHeaders(blueprint.authentication, blueprint.identity),
       },
     });
-    if (success) {
+    log.info(`[${attempt}/${attempts}] Status: ${status}`);
+    if (status === 'SUCCEEDED') {
       log.info('Blueprint published successfully');
       return;
     } else {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
-      log.debug(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
+      log.info(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
       await sleep(curWait);
     }
   }
-  log.info('Blueprint has not published successfully');
+  log.info(`Blueprint has not published successfully. Id: ${statusId}`);
 }
 
 async function fetchstatus(
-  log: pino.BaseLogger,
+  _log: pino.BaseLogger,
   options: {
     input: {
       spaceName: string;
@@ -104,15 +102,13 @@ async function fetchstatus(
       headers: { [key: string]: string };
     };
   },
-): Promise<boolean> {
+): Promise<string> {
   const input = {
     spaceName: options.input.spaceName,
     id: options.input.id,
     blueprintName: options.input.blueprintName,
     version: options.input.version,
   };
-  log.debug(input);
-  log.debug(options);
   const response = await axios.default.post(
     `https://${options.http.endpoint}/graphql?`,
     {
@@ -133,11 +129,8 @@ async function fetchstatus(
       },
     },
   );
-  log.info(response.data);
-  if (response.data?.data?.getBlueprintVersionStatus?.status === 'SUCCEEDED') {
-    return true;
-  }
-  return false;
+
+  return response.data?.data?.getBlueprintVersionStatus?.status;
 }
 
 function sleep(milliseconds: number) {
