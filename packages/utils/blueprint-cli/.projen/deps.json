@@ -1,7 +1,7 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/projen-blueprint-component",
+      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint-component",
       "type": "build"
     },
     {

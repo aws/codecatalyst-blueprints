@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 import { Role } from '.';
 import { AccountConnection, EnvironmentDefinition } from './environment-definition';

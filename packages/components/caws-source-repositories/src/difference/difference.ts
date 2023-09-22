@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { BUNDLE_PATH_SRC_DIFF } from '@caws-blueprint/blueprints.blueprint/lib/differences/differences';
+import { BUNDLE_PATH_SRC_DIFF } from '@amazon-codecatalyst/blueprints.blueprint/lib/differences/differences';
 import { Component } from 'projen';
 import { SourceRepository } from '../repository';
 

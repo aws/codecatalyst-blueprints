@@ -18,7 +18,7 @@ const project = new typescript.TypeScriptProject({
   },
   license: 'Apache-2.0',
   copyrightOwner: 'Amazon.com',
-  peerDeps: ['projen', '@caws-blueprint-util/blueprint-cli'],
+  peerDeps: ['projen', '@amazon-codecatalyst/blueprint-util.cli'],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
   packageName: '@amazon-codecatalyst/blueprint-util.projen-blueprint',
   devDeps: ['projen', 'ts-node@^10'],

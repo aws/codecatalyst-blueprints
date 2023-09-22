@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-drivers/synth-driver';
-import { PROPOSED_BUNDLE_SUBPATH } from '@caws-blueprint-util/blueprint-cli/lib/resynth-drivers/resynth';
+import * as cli from '@amazon-codecatalyst/blueprint-util.cli/lib/synth-drivers/synth-driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '@amazon-codecatalyst/blueprint-util.cli/lib/resynth-drivers/resynth';
 import * as globule from 'globule';
 import * as pino from 'pino';
 

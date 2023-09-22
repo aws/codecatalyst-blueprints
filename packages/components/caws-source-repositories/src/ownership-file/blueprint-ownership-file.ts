@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Ownership } from '@caws-blueprint/blueprints.blueprint';
+import { Ownership } from '@amazon-codecatalyst/blueprints.blueprint';
 import { SourceFile } from '../files/source-file';
 import { SourceRepository } from '../repository';
 

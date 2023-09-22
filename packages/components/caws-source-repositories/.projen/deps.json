@@ -1,11 +1,11 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/projen-blueprint-component",
+      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint-component",
       "type": "build"
     },
     {
-      "name": "@caws-blueprint/blueprints.blueprint",
+      "name": "@amazon-codecatalyst/blueprints.blueprint",
       "type": "build"
     },
     {
@@ -81,7 +81,7 @@
       "type": "build"
     },
     {
-      "name": "@caws-blueprint/blueprints.blueprint",
+      "name": "@amazon-codecatalyst/blueprints.blueprint",
       "type": "peer"
     },
     {

@@ -1,6 +1,6 @@
-import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
-import { SourceRepository, SourceFile, StaticAsset, File } from '@caws-blueprint-component/caws-source-repositories';
-import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
+import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
+import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import * as decamelize from 'decamelize';
 import defaults from './defaults.json';
 

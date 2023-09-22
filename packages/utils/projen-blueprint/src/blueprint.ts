@@ -210,7 +210,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         this.addDevDeps('@types/pino@^6.3.12');
         this.addDevDeps('pino-pretty@^4.8.0');
 
-        this.addPeerDeps('@caws-blueprint-util/blueprint-cli');
+        this.addPeerDeps('@amazon-codecatalyst/blueprint-util.cli');
 
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
       } else {

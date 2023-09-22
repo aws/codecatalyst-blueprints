@@ -1,5 +1,5 @@
-import { EnvironmentDefinition } from '@caws-blueprint-component/caws-environments';
-import { workflowLocation } from '@caws-blueprint-component/caws-workflows';
+import { EnvironmentDefinition } from '@amazon-codecatalyst/blueprint-component.environments';
+import { workflowLocation } from '@amazon-codecatalyst/blueprint-component.workflows';
 
 import { RuntimeMapping } from './models';
 import { BlueprintRuntimes } from './runtimeMappings';

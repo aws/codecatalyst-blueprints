@@ -1,5 +1,5 @@
 // Adding a sample deploy action
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { addGenericCdkDeployAction, CdkDeployActionConfiguration } from '../actions/action-cdk-deploy';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 

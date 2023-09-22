@@ -1,4 +1,4 @@
-import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 
 const project = new ProjenBlueprint({
   authorName: 'blueprints',
@@ -21,14 +21,14 @@ const project = new ProjenBlueprint({
   },
   copyrightOwner: 'blueprints',
   deps: [
-    '@caws-blueprint/blueprints.blueprint',
+    '@amazon-codecatalyst/blueprints.blueprint',
     'projen',
-    '@caws-blueprint-component/caws-workflows',
-    '@caws-blueprint-component/caws-source-repositories',
-    '@caws-blueprint-component/caws-environments',
+    '@amazon-codecatalyst/blueprint-component.workflows',
+    '@amazon-codecatalyst/blueprint-component.source-repositories',
+    '@amazon-codecatalyst/blueprint-component.environments',
   ],
   description: 'This is a test blueprint used for testing various blueprint systems',
-  devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
+  devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
   keywords: ['no-tag'],
   homepage: '',
   mediaUrls: [

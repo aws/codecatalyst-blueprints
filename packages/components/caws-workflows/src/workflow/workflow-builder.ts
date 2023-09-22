@@ -1,4 +1,4 @@
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
 import { WorkflowDefinition } from './workflow';
 import { ComputeDefintion, TriggerDefiniton } from '..';

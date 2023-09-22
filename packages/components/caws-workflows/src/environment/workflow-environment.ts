@@ -1,4 +1,4 @@
-import { AccountConnection, Environment } from '@caws-blueprint-component/caws-environments';
+import { AccountConnection, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
 
 /**
  * can use convertToWorkflowEnvironment to convert from an Environment to a WorkflowEnvironment

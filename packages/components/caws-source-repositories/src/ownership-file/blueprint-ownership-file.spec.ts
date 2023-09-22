@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
-import { MergeStrategies, Strategy, Blueprint, Ownership } from '@caws-blueprint/blueprints.blueprint';
+import { MergeStrategies, Strategy, Blueprint, Ownership } from '@amazon-codecatalyst/blueprints.blueprint';
 
 // correspond with ownership files in the examples directory
 const VALID_TEST_CASES: { name: string; strategies: Strategy[] }[] = [

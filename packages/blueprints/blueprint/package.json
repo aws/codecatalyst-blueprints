@@ -33,8 +33,8 @@
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
-    "@caws-blueprint-util/projen-blueprint": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.cli": "*",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*",
     "@types/diff-match-patch": "1.x",
     "@types/jest": "*",
     "@types/node": "^18",

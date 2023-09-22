@@ -1,5 +1,5 @@
 // Adding a sample bootstrap action
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { addGenericCdkBootstrapAction, CdkBootstrapActionConfiguration } from '../actions/action-cdk-bootstrap';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 

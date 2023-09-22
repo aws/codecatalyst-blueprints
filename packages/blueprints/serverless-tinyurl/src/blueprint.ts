@@ -1,6 +1,4 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@caws-blueprint/blueprints.blueprint';
-import { ContextFile } from '@caws-blueprint/blueprints.blueprint/lib/resynthesis/context-file';
-import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import {
   SourceRepository,
   SourceFile,
@@ -8,8 +6,10 @@ import {
   BlueprintOwnershipFile,
   PullRequest,
   Difference,
-} from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow } from '@caws-blueprint-component/caws-workflows';
+} from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { Workflow } from '@amazon-codecatalyst/blueprint-component.workflows';
+import { Blueprint as ParentBlueprint, Options as ParentOptions, MergeStrategies } from '@amazon-codecatalyst/blueprints.blueprint';
+import { ContextFile } from '@amazon-codecatalyst/blueprints.blueprint/lib/resynthesis/context-file';
 import { makeWorkflowDefintion } from './create-workflow';
 import defaults from './defaults.json';
 

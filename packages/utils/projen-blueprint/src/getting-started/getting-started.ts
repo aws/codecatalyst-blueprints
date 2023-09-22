@@ -1,17 +1,17 @@
 export function generateGettingStarted() {
   return `
-# Blueprint development 
-See blueprints github for full documentation and examples. https://github.com/aws/caws-blueprints/wiki
+# Blueprint development
+See blueprints github for full documentation and examples. https://github.com/aws/codecatalyst-blueprints/wiki
 
 ## Local Development
 This assumes you have already done the first time set up.
 \`\`\`
 cd ./<my-blueprint-repository>
 blueprints-setup
-yarn 
+yarn
 yarn projen
 yarn build
-yarn synth --cache 
+yarn synth --cache
 \`\`\`
 
 Running a (re)synthesis. This will generate your project from your blueprint locally. Running with \`--cache\` will first build a cache and then execute that, this takes slightly longer but emulates the wizard.

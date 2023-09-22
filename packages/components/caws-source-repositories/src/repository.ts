@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Blueprint, Strategy } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint, Strategy } from '@amazon-codecatalyst/blueprints.blueprint';
 
 import { Component } from 'projen';
 import { File } from './files/file';

@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { Component, YamlFile } from 'projen';
 
 export interface IssueDefinition {

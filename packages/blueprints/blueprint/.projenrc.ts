@@ -1,4 +1,4 @@
-import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 import { UpdateSnapshot } from 'projen/lib/javascript/jest';
 
 const blueprint = new ProjenBlueprint({
@@ -17,7 +17,7 @@ const blueprint = new ProjenBlueprint({
   packageName: '@amazon-codecatalyst/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: ['ts-node', '@caws-blueprint-util/blueprint-cli', '@caws-blueprint-util/projen-blueprint', '@types/diff-match-patch@1.x'],
+  devDeps: ['ts-node', '@amazon-codecatalyst/blueprint-util.cli', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@types/diff-match-patch@1.x'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],

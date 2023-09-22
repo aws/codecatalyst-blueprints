@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { BUNDLE_PATH_PULL_REQUEST, writePullRequest } from '@caws-blueprint/blueprints.blueprint/lib/pull-requests/pull-requests';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
+import { BUNDLE_PATH_PULL_REQUEST, writePullRequest } from '@amazon-codecatalyst/blueprints.blueprint/lib/pull-requests/pull-requests';
 import { Component } from 'projen';
 import { Difference } from '../difference/difference';
 

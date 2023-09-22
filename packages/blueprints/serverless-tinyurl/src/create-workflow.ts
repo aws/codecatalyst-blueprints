@@ -1,5 +1,4 @@
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { Environment } from '@caws-blueprint-component/caws-environments';
+import { Environment } from '@amazon-codecatalyst/blueprint-component.environments';
 import {
   convertToWorkflowEnvironment,
   WorkflowDefinition,
@@ -8,7 +7,8 @@ import {
   ComputeFleet,
   WorkflowBuilder,
   WorkflowEnvironment,
-} from '@caws-blueprint-component/caws-workflows';
+} from '@amazon-codecatalyst/blueprint-component.workflows';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 
 export function makeWorkflowDefintion(
   blueprint: Blueprint,

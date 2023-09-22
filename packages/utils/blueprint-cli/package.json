@@ -27,7 +27,7 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*",
     "@types/jest": "26.0.24",
     "@types/jmespath": "*",
     "@types/node": "^18",

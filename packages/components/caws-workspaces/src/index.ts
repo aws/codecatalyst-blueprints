@@ -1,5 +1,5 @@
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
-import { SourceFile, SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceFile, SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { Component } from 'projen';
 
 import * as YAML from 'yaml';

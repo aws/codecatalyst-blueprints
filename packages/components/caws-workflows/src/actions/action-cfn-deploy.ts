@@ -1,4 +1,4 @@
-import { Blueprint } from '@caws-blueprint/blueprints.blueprint';
+import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 import { WorkflowDefinition } from '../workflow/workflow';

@@ -1,4 +1,4 @@
-import { ProjenBlueprintComponent } from '@caws-blueprint-util/projen-blueprint-component';
+import { ProjenBlueprintComponent } from '@amazon-codecatalyst/blueprint-util.projen-blueprint-component';
 
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
@@ -23,7 +23,7 @@ const project = new ProjenBlueprintComponent({
   description: 'This is a cli utility used for blueprint development.',
   packageName: '@amazon-codecatalyst/blueprint-util.cli',
   devDeps: [
-    '@caws-blueprint-util/projen-blueprint-component',
+    '@amazon-codecatalyst/blueprint-util.projen-blueprint-component',
     '@types/jest',
     '@types/pino',
     '@types/yargs',

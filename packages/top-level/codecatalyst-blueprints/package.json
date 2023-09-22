@@ -22,7 +22,7 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -40,12 +40,12 @@
     "projen": "*"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-environments": "0.2.x",
-    "@caws-blueprint-component/caws-issues": "*",
-    "@caws-blueprint-component/caws-source-repositories": "0.2.x",
-    "@caws-blueprint-component/caws-workflows": "0.2.x",
-    "@caws-blueprint-component/caws-workspaces": "0.2.x",
-    "@caws-blueprint/blueprints.blueprint": "0.2.x",
+    "@amazon-codecatalyst/blueprint-component.environments": "*",
+    "@amazon-codecatalyst/blueprint-component.issues": "*",
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
+    "@amazon-codecatalyst/blueprint-component.workflows": "*",
+    "@amazon-codecatalyst/blueprint-component.workspaces": "*",
+    "@amazon-codecatalyst/blueprints.blueprint": "*",
     "projen": "0.71.112"
   },
   "main": "lib/index.js",
