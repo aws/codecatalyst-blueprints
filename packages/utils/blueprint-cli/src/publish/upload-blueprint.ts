@@ -44,6 +44,7 @@ export async function uploadBlueprint(
     'Content-Length': fs.statSync(packagePath).size,
     ...generateHeaders(blueprint.authentication, blueprint.identity),
   };
+
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
     url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
@@ -63,7 +64,7 @@ export async function uploadBlueprint(
   const { spaceName, blueprintName, version, statusId } = publishBlueprintPackageResponse.data;
 
   for (let attempt = 0; attempt < attempts; attempt++) {
-    const status = await fetchstatus(log, {
+    const fetchStatusResponse = await fetchstatus(log, {
       input: {
         spaceName,
         id: statusId,
@@ -75,8 +76,8 @@ export async function uploadBlueprint(
         headers: generateHeaders(blueprint.authentication, blueprint.identity),
       },
     });
-    log.info(`[${attempt}/${attempts}] Status: ${status}`);
-    if (status === 'SUCCEEDED') {
+    log.info(`[${attempt}/${attempts}] Status: ${fetchStatusResponse.status}`);
+    if (fetchStatusResponse.status === 'SUCCEEDED') {
       log.info('Blueprint published successfully');
       const previewOptions = {
         blueprintPackage: blueprint.packageName,
@@ -92,15 +93,24 @@ export async function uploadBlueprint(
       // https://integ.stage.quokka.codes/spaces/blueprints/blueprints
       log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
       return;
-    } else {
+    } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
-      log.info(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
+      log.debug(`[${attempt}/${attempts}] Waiting ${curWait / 1000} seconds...`);
       await sleep(curWait);
+    } else {
+      //break on failed or cancelled publishing jobs
+      log.info(`Blueprint publish job status is '${fetchStatusResponse.status}' due to '${fetchStatusResponse.reason}'`);
+      break;
     }
   }
   log.info(`Blueprint has not published successfully. Id: ${statusId}`);
 }
 
+interface FetchStatusResult {
+  success: boolean;
+  status: string;
+  reason?: string;
+}
 async function fetchstatus(
   _log: pino.BaseLogger,
   options: {
@@ -115,7 +125,7 @@ async function fetchstatus(
       headers: { [key: string]: string };
     };
   },
-): Promise<string> {
+): Promise<FetchStatusResult> {
   const input = {
     spaceName: options.input.spaceName,
     id: options.input.id,
@@ -143,7 +153,29 @@ async function fetchstatus(
     },
   );
 
-  return response.data?.data?.getBlueprintVersionStatus?.status;
+  const responseStatus = response.data?.data?.getBlueprintVersionStatus;
+  if (responseStatus.status === 'SUCCEEDED') {
+    return {
+      success: true,
+      status: responseStatus.status,
+    };
+  } else if (responseStatus.status === 'FAILED') {
+    return {
+      success: false,
+      status: responseStatus.status,
+      reason: responseStatus.reason ?? 'an internal error has occurred',
+    };
+  } else if (responseStatus.status === 'CANCELLED') {
+    return {
+      success: false,
+      status: responseStatus.status,
+      reason: responseStatus.reason ?? 'The publishing job has been cancelled',
+    };
+  }
+  return {
+    success: false,
+    status: responseStatus.status ?? 'UNKNOWN',
+  };
 }
 
 function sleep(milliseconds: number) {
