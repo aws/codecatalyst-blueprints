@@ -78,6 +78,19 @@ export async function uploadBlueprint(
     log.info(`[${attempt}/${attempts}] Status: ${status}`);
     if (status === 'SUCCEEDED') {
       log.info('Blueprint published successfully');
+      const previewOptions = {
+        blueprintPackage: blueprint.packageName,
+        version: blueprint.version,
+        publishingSpace: blueprint.publishingSpace,
+        targetSpace: blueprint.targetSpace,
+        http: {
+          endpoint: endpoint,
+          headers: generateHeaders(blueprint.authentication, blueprint.identity),
+        },
+      };
+      log.info(`See this blueprint at: ${await generatePreviewLink(log, previewOptions)}`);
+      // https://integ.stage.quokka.codes/spaces/blueprints/blueprints
+      log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
       return;
     } else {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
@@ -137,4 +150,58 @@ function sleep(milliseconds: number) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
+}
+
+// https://integ.stage.quokka.codes/spaces/game-build-demo/blueprints/serverless-todo-web-application-backend/publishers/737a82bc-7cf7-4660-aac1-6f594e31be8c/versions/0.1.69/projects/create
+async function generatePreviewLink(logger: pino.BaseLogger, options: {
+  blueprintPackage: string;
+  version: string;
+  publishingSpace: string;
+  targetSpace: string;
+  http: {
+    endpoint;
+    headers: { [key: string]: string };
+  };
+}): Promise<string> {
+
+  const publishingSpaceIdResponse = await axios.default.post(`https://${options.http.endpoint}/graphql?`, {
+    operationName: 'GetSpace',
+    variables: {
+      input: {
+        name: options.publishingSpace,
+      },
+    },
+    query: 'query GetSpace($input: GetSpaceInput!) {\n  getSpace(input: $input) {\n    id\n    name\n }\n}\n',
+  },
+  {
+    headers: {
+      'authority': options.http.endpoint,
+      'origin': `https://${options.http.endpoint}`,
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      ...options.http.headers,
+    },
+  },
+  );
+
+  return [
+    resolveStageUrl(options.http.endpoint),
+    'spaces',
+    querystring.escape(options.targetSpace),
+    'blueprints',
+    querystring.escape(options.blueprintPackage),
+    'publishers',
+    querystring.escape(publishingSpaceIdResponse.data?.data?.getSpace?.id),
+    'versions',
+    querystring.escape(options.version),
+    'projects/create',
+  ].join('/');
+}
+
+function resolveStageUrl(endpoint: string): string {
+  if (endpoint === 'public.api-gamma.quokka.codes') {
+    return 'https://integ.stage.quokka.codes';
+  } else {
+    return 'https://codecatalyst.aws';
+  }
 }
