@@ -1,10 +1,13 @@
 {
   "type": "module",
   "private": true,
+  "name": "@amazon-codecatalyst/blueprints",
+  "version": "1.0.0",
   "scripts": {
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
+    "release": "npm publish --access=public --workspaces --dryrun",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",

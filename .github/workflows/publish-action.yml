@@ -8,6 +8,11 @@ on:
       - main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
+  NPM_REPO: ' '
+  NPM_REPO_AUTH_TOKEN: ' '
+  PROJEN_DISABLE_POST: '1'
 jobs:
   publish:
     if: startsWith(github.event.head_commit.message, 'chore(release):')
@@ -18,7 +23,8 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+      - run: npm install -g npm@6.14.13
+      - run: yarn --immutable-cache
       - run: yarn build
-      - run: npm publish --access=public --workspaces --dryrun
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
+      - run: npm run release
