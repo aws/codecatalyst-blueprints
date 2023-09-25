@@ -14,6 +14,7 @@
     "components-utils:publish": "yarn components:publish && yarn utils:publish",
     "test": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test",
     "test:update": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test:update",
+    "blueprints:release": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release $*",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview $*",
     "blueprints:synth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:synth $*",
     "blueprints:resynth": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:resynth $*"
