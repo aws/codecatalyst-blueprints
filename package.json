@@ -7,7 +7,7 @@
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
-    "npmPublish": "npm publish --access=public --workspaces --dryrun",
+    "npmPublish": "npm publish --access=public --workspaces --dry-run",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
