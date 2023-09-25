@@ -2,7 +2,7 @@ import { ProjenBlueprintComponent } from '@amazon-codecatalyst/blueprint-util.pr
 
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
-  name: 'blueprint-cli',
+  name: 'cli',
   copyrightOwner: 'Amazon.com',
   deps: [
     '@aws-sdk/client-s3',

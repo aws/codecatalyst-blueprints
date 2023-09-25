@@ -27,7 +27,7 @@
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
   "author": {
-    "name": "caws-blueprints",
+    "name": "amazon-codecatalyst",
     "organization": false
   },
   "devDependencies": {

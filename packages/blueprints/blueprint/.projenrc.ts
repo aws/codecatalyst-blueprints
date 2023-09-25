@@ -6,14 +6,14 @@ const blueprint = new ProjenBlueprint({
   name: 'blueprint',
   projenrcTs: true,
   displayName: 'Empty project',
-  authorName: 'caws-blueprints',
+  authorName: 'amazon-codecatalyst',
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
   peerDeps: ['projen'],
   deps: ['diff-match-patch@1.x', 'globule', 'yaml'],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.',
-  /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
+  /* The "name" in package.json. In form @amazon-codecatalyst/:organization.:name */
   packageName: '@amazon-codecatalyst/blueprints.blueprint',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */

@@ -3,7 +3,7 @@ import { typescript } from 'projen';
 
 const project = new typescript.TypeScriptProject({
   defaultReleaseBranch: 'main',
-  name: 'projen-blueprint',
+  name: 'projen-blueprint-component',
   projenrcTs: true,
   sampleCode: false,
   eslint: true,

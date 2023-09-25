@@ -12,9 +12,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amazon-codecatalyst/blueprint-component.environments@*, @amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/caws-environments":
+"@amazon-codecatalyst/blueprint-component.dev-environments@*, @amazon-codecatalyst/blueprint-component.dev-environments@workspace:packages/components/dev-environments":
   version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/caws-environments"
+  resolution: "@amazon-codecatalyst/blueprint-component.dev-environments@workspace:packages/components/dev-environments"
+  dependencies:
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+    yaml: "*"
+  peerDependencies:
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
+"@amazon-codecatalyst/blueprint-component.environments@*, @amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/environments":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/environments"
   dependencies:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
@@ -36,9 +63,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.issues@*, @amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/caws-issues":
+"@amazon-codecatalyst/blueprint-component.issues@*, @amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues":
   version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/caws-issues"
+  resolution: "@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues"
   dependencies:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
@@ -60,9 +87,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.source-repositories@*, @amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/caws-source-repositories":
+"@amazon-codecatalyst/blueprint-component.source-repositories@*, @amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories":
   version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/caws-source-repositories"
+  resolution: "@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories"
   dependencies:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
@@ -93,9 +120,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.workflows@*, @amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/caws-workflows":
+"@amazon-codecatalyst/blueprint-component.workflows@*, @amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/workflows":
   version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/caws-workflows"
+  resolution: "@amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/workflows"
   dependencies:
     "@amazon-codecatalyst/blueprint-component.environments": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
@@ -116,33 +143,6 @@ __metadata:
     yaml: "*"
   peerDependencies:
     "@amazon-codecatalyst/blueprint-component.environments": "*"
-    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
-    "@amazon-codecatalyst/blueprints.blueprint": "*"
-    projen: "*"
-  languageName: unknown
-  linkType: soft
-
-"@amazon-codecatalyst/blueprint-component.workspaces@*, @amazon-codecatalyst/blueprint-component.workspaces@workspace:packages/components/caws-workspaces":
-  version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/blueprint-component.workspaces@workspace:packages/components/caws-workspaces"
-  dependencies:
-    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
-    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
-    "@amazon-codecatalyst/blueprints.blueprint": "*"
-    "@types/node": ^18
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    eslint: ^8
-    eslint-import-resolver-node: "*"
-    eslint-import-resolver-typescript: "*"
-    eslint-plugin-import: "*"
-    npm-check-updates: ^16
-    projen: "*"
-    standard-version: ^9
-    ts-node: ^10
-    typescript: ^4.x
-    yaml: "*"
-  peerDependencies:
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
     projen: "*"
@@ -296,10 +296,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.sam-serverless-application@workspace:packages/blueprints/sam-serverless-app"
   dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
-    "@amazon-codecatalyst/blueprint-component.workspaces": "*"
     "@amazon-codecatalyst/blueprint-util.cli": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
@@ -333,10 +333,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.serverless-tinyurl@workspace:packages/blueprints/serverless-tinyurl"
   dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
-    "@amazon-codecatalyst/blueprint-component.workspaces": "*"
     "@amazon-codecatalyst/blueprint-util.cli": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
@@ -394,11 +394,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints@workspace:packages/top-level/codecatalyst-blueprints"
   dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
     "@amazon-codecatalyst/blueprint-component.issues": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
-    "@amazon-codecatalyst/blueprint-component.workspaces": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
     "@types/node": ^18

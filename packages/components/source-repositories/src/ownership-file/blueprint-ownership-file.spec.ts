@@ -37,7 +37,7 @@ describe('BlueprintOwnershipFile', () => {
   const mockBlueprint = {
     context: {
       package: {
-        name: '@caws-blueprint/blueprint',
+        name: '@codecatalyst-blueprint/blueprint',
       },
     },
   } as Blueprint;

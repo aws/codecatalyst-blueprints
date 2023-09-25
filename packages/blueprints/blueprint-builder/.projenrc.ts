@@ -4,7 +4,7 @@ const blueprint = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'blueprint-builder',
   displayName: 'Blueprint Builder',
-  authorName: 'caws-blueprints',
+  authorName: 'amazon-codecatalyst',
   projenrcTs: true,
   copyrightOwner: 'Amazon.com',
   /* Runtime dependencies of this blueprint. */
@@ -20,7 +20,7 @@ const blueprint = new ProjenBlueprint({
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'Use this to build additional blueprints from existing blueprints.',
-  /* The "name" in package.json. In form @caws-blueprints/:organization.:name */
+  /* The "name" in package.json. In form @amazon-codecatalyst/:organization.:name */
   packageName: '@amazon-codecatalyst/blueprints.blueprint-builder',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */

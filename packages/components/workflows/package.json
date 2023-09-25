@@ -1,6 +1,6 @@
 {
-  "name": "@amazon-codecatalyst/blueprint-component.environments",
-  "description": "This is a representation of a caws issue.",
+  "name": "@amazon-codecatalyst/blueprint-component.workflows",
+  "description": "This is a representation of a codecatalyst workflow.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -22,6 +22,8 @@
     "npm:push": "yarn npm publish"
   },
   "devDependencies": {
+    "@amazon-codecatalyst/blueprint-component.environments": "*",
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*",
     "@amazon-codecatalyst/blueprints.blueprint": "*",
     "@types/node": "^18",
@@ -38,11 +40,14 @@
     "typescript": "^4.x"
   },
   "peerDependencies": {
+    "@amazon-codecatalyst/blueprint-component.environments": "*",
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprints.blueprint": "*",
     "projen": "*"
   },
   "dependencies": {
-    "projen": "0.71.112"
+    "projen": "0.71.112",
+    "yaml": "*"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",

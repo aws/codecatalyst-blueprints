@@ -23,14 +23,14 @@ const project = new ProjenBlueprint({
     snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
   },
   blueprintHealthConfiguration: {},
-  copyrightOwner: 'caws-blueprints',
+  copyrightOwner: 'amazon-codecatalyst',
   deps: [
     '@amazon-codecatalyst/blueprints.blueprint',
     'projen',
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.environments',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
-    '@amazon-codecatalyst/blueprint-component.workspaces',
+    '@amazon-codecatalyst/blueprint-component.dev-environments',
   ],
   description:
     'This blueprint creates a serverless Tiny URL Java Web Application using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.',

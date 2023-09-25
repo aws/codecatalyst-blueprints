@@ -1,6 +1,6 @@
 {
-  "name": "@amazon-codecatalyst/blueprint-component.issues",
-  "description": "This is a representation of a caws issues.",
+  "name": "@amazon-codecatalyst/blueprint-component.environments",
+  "description": "This is a representation of a codecatalyst environment.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",

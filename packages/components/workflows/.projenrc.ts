@@ -2,7 +2,7 @@ import { ProjenBlueprintComponent } from '@amazon-codecatalyst/blueprint-util.pr
 
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
-  name: 'caws-workflows',
+  name: 'codecatalyst-workflows',
   copyrightOwner: 'Amazon.com',
   deps: ['yaml'],
   peerDeps: [
@@ -11,7 +11,7 @@ const project = new ProjenBlueprintComponent({
     '@amazon-codecatalyst/blueprint-component.environments',
     '@amazon-codecatalyst/blueprints.blueprint',
   ],
-  description: 'This is a representation of a caws workflow.',
+  description: 'This is a representation of a codecatalyst workflow.',
   packageName: '@amazon-codecatalyst/blueprint-component.workflows',
   devDeps: ['@amazon-codecatalyst/blueprint-util.projen-blueprint-component', 'ts-node'],
 });

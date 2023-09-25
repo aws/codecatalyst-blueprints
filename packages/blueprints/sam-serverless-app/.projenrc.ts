@@ -23,7 +23,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprints.blueprint',
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
-    '@amazon-codecatalyst/blueprint-component.workspaces',
+    '@amazon-codecatalyst/blueprint-component.dev-environments',
     '@amazon-codecatalyst/blueprint-component.environments',
     'projen',
     'ts-deepmerge',

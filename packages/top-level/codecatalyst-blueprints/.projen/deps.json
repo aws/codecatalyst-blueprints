@@ -64,6 +64,10 @@
       "type": "peer"
     },
     {
+      "name": "@amazon-codecatalyst/blueprint-component.dev-environments",
+      "type": "runtime"
+    },
+    {
       "name": "@amazon-codecatalyst/blueprint-component.environments",
       "type": "runtime"
     },
@@ -77,10 +81,6 @@
     },
     {
       "name": "@amazon-codecatalyst/blueprint-component.workflows",
-      "type": "runtime"
-    },
-    {
-      "name": "@amazon-codecatalyst/blueprint-component.workspaces",
       "type": "runtime"
     },
     {
