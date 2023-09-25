@@ -153,7 +153,7 @@ function sleep(milliseconds: number) {
 }
 
 // https://integ.stage.quokka.codes/spaces/game-build-demo/blueprints/serverless-todo-web-application-backend/publishers/737a82bc-7cf7-4660-aac1-6f594e31be8c/versions/0.1.69/projects/create
-async function generatePreviewLink(logger: pino.BaseLogger, options: {
+async function generatePreviewLink(_logger: pino.BaseLogger, options: {
   blueprintPackage: string;
   version: string;
   publishingSpace: string;
