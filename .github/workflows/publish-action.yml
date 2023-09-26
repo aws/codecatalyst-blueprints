@@ -9,10 +9,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  NODE_AUTH_TOKEN: ${{ secrets.CODEARTIFACT_PUBLISHING_TOKEN }}
-  # NPM_REPO: ' '
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
   NPM_REPO_AUTH_TOKEN: ' '
-  # PROJEN_DISABLE_POST: '1'
 jobs:
   publish:
     if: startsWith(github.event.head_commit.message, 'chore(release):')
@@ -22,9 +20,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-          registry-url: 'https://template-721779663932.d.codeartifact.us-west-2.amazonaws.com/npm/global-templates/'
+          registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      # - run: npm install -g npm@6.14.13
       - run: yarn --immutable-cache
       - run: yarn build
       - run: npm run release
