@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Blueprint snapshots java-default.json configuration matches options.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
 "{
   "environment": {
     "name": "default_environment",
@@ -19,7 +19,7 @@ exports[`Blueprint snapshots java-default.json configuration matches options.jso
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches pull-request/my-amazing-pr.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 2`] = `
 "title: "feat: amazing PR number 1"
 description: this is some markdown
 changes:
@@ -29,7 +29,25 @@ changes:
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.codecatalyst/workflows/main_fullstack_workflow.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 3`] = `
+"diff --git a/frontend/cdk/jest.config.js b/frontend/cdk/jest.config.js
+deleted file mode 100644
+index 08263b89..00000000
+--- a/frontend/cdk/jest.config.js
++++ /dev/null
+@@ -1,8 +0,0 @@
+-module.exports = {
+-  testEnvironment: 'node',
+-  roots: ['<rootDir>/test'],
+-  testMatch: ['**/*.test.ts'],
+-  transform: {
+-    '^.+\\\\.tsx?$': 'ts-jest'
+-  }
+-};
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 4`] = `
 "Name: main_fullstack_workflow
 SchemaVersion: "1.0"
 Triggers:
@@ -132,7 +150,7 @@ Compute:
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/.ownership-file 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 5`] = `
 "[never_update] @caws-blueprint/blueprints.serverless-tinyurl
 # Internal merge strategy: neverUpdate
 backend/lambda/**
@@ -154,82 +172,20 @@ frontend/cdk/**
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/README.md 1`] = `
-"# Backend
-
-The backend is deployed as a RESTful API using AWS Serverless technologies:
-
-- [AWS API Gateway](https://aws.amazon.com/api-gateway) to provide the REST interface to the user
-- [Amazon DynamoDB](https://aws.amazon.com/dynamodb) for URL persistence
-- [AWS Lambda](https://aws.amazon.com/lambda) process the API gateway requests for create and retrieve the data from DynamoDB table
-
-### Infrastructure
-
-\`cdk\` maven module will set up the Application Stack.
-
-Project uses [maven](https://maven.apache.org/) for build and packaging the resources for production deployment. As part of the build, the workflow
-will run the unit tests in the \`lambda\` maven module, and produces testing reports. Failed tests will stop the artifacts from publishing.
-
-Workflow uses \`CDKBootstrap\` and \`CDKDeploy\` Actions to deploy the resources on AWS services.
-
-## Local Development
-
-Local development requires below pre-requisites.
-
-- [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
-- [Apache Maven v3.8.6](https://maven.apache.org/install.html)
-- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
-
-To run the unit tests in the project
-
-\`\`\`
-$ mvn test
-\`\`\`
-
-To package the resources for deployment.
-
-\`\`\`
-$ mvn package
-\`\`\`
-
-To test the project by deploying into your AWS Account
-
-\`\`\`
-$ cdk deploy
-\`\`\`
-
-### Resources
-
-The following resources have been generated as a initial revisions and it can be modified for your requirements
-
-- \`cdk\`: Java maven module for creating the backend stack.
-
-- \`lambda\`: Java maven module for the Lambda function used by the Application to create tiny URL and retrieve long URL.
-
-- \`pom.xml\`: Maven configuration for dependency management, plugin management, build and packaging
-
-- \`cdk.json\`: To execute the CDK code
-
-## Additional resources
-
-See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 6`] = `
 "{
   "app": "mvn exec:java -pl cdk -Dexec.mainClass=com.amazonaws.serverless.TinyUrlApp"
 }"
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/cdk.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 7`] = `
 "{
   "app": "mvn compile"
 }
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/pom.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 8`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -277,7 +233,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlApp.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 9`] = `
 "package com.amazonaws.serverless;
 
 import software.amazon.awscdk.App;
@@ -307,7 +263,7 @@ public class TinyUrlApp {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/main/java/com/amazonaws/serverless/TinyUrlAppStack.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 10`] = `
 "package com.amazonaws.serverless;
 
 import software.amazon.awscdk.CfnOutput;
@@ -449,7 +405,7 @@ public class TinyUrlAppStack extends Stack {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/cdk/src/test/java/com/amazonaws/serverless/TinyUrlStackTest.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 11`] = `
 "package com.amazonaws.serverless;
 
 
@@ -478,7 +434,23 @@ public class TinyUrlStackTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/checkstyle.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 12`] = `
+"<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+		"-//Puppy Crawl//DTD Suppressions 1.0//EN"
+		"http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+	<suppress checks="Javadoc" files="."/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="DesignForExtension" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
+	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.TinyUrlRequestHandler"/>
+</suppressions>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 13`] = `
 "<?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
 		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
@@ -660,23 +632,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/checkstyle-suppressions.xml 1`] = `
-"<?xml version="1.0"?>
-
-<!DOCTYPE suppressions PUBLIC
-		"-//Puppy Crawl//DTD Suppressions 1.0//EN"
-		"http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
-
-<suppressions>
-	<suppress checks="Javadoc" files="."/>
-	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
-	<suppress checks="DesignForExtension" files="com.amazonaws.serverless.lambda.model.TinyUrl"/>
-	<suppress checks="HiddenField" files="com.amazonaws.serverless.lambda.TinyUrlRequestHandler"/>
-</suppressions>
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/jacocoConsoleReporter.sh 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 14`] = `
 "for file in $(find . -type f -name "jacoco.csv"); do
     awk -F, \\
     '{ instructions += $4 + $5; covered += $5 } END \\
@@ -688,14 +644,14 @@ done
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/cdk.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 15`] = `
 "{
   "app": "mvn compile"
 }
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/pom.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 16`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -835,7 +791,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandler.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 17`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -928,7 +884,41 @@ public class CreateUrlRequestHandler extends TinyUrlRequestHandler {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/GetUrlRequestHandler.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 18`] = `
+"package com.amazonaws.serverless.lambda.dao;
+
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+
+public class UrlDataService {
+
+    public UrlDataService(final String awsRegion) {
+        dynamoDBMapper = new DynamoDBMapper(AmazonDynamoDBClientBuilder.standard()
+                .withRegion(awsRegion)
+                .build());
+    }
+
+    private DynamoDBMapper dynamoDBMapper;
+
+    public TinyUrl getLongUrl(final String shortId) {
+        TinyUrl input = new TinyUrl();
+        input.setId(shortId);
+        TinyUrl result = dynamoDBMapper.load(input);
+        return result;
+    }
+
+    /*
+    To save the long URL input for the generated short URL
+     */
+    public void saveLongUrl(final TinyUrl tinyUrl) {
+        dynamoDBMapper.save(tinyUrl);
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 19`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -985,7 +975,7 @@ public class GetUrlRequestHandler extends TinyUrlRequestHandler {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/HandlerConstants.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 20`] = `
 "package com.amazonaws.serverless.lambda;
 
 public final class HandlerConstants {
@@ -1002,68 +992,7 @@ public final class HandlerConstants {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/TinyUrlRequestHandler.java 1`] = `
-"package com.amazonaws.serverless.lambda;
-
-import com.amazonaws.serverless.lambda.dao.UrlDataService;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-
-public abstract class TinyUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
-
-    public UrlDataService getUrlDataService() {
-        return urlDataService;
-    }
-
-    private final UrlDataService urlDataService;
-
-    public TinyUrlRequestHandler() {
-        this(new UrlDataService(System.getenv("AWS_REGION")));
-    }
-
-    TinyUrlRequestHandler(final UrlDataService urlDataService) {
-        this.urlDataService = urlDataService;
-    }
-}
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/dao/UrlDataService.java 1`] = `
-"package com.amazonaws.serverless.lambda.dao;
-
-import com.amazonaws.serverless.lambda.model.TinyUrl;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-
-public class UrlDataService {
-
-    public UrlDataService(final String awsRegion) {
-        dynamoDBMapper = new DynamoDBMapper(AmazonDynamoDBClientBuilder.standard()
-                .withRegion(awsRegion)
-                .build());
-    }
-
-    private DynamoDBMapper dynamoDBMapper;
-
-    public TinyUrl getLongUrl(final String shortId) {
-        TinyUrl input = new TinyUrl();
-        input.setId(shortId);
-        TinyUrl result = dynamoDBMapper.load(input);
-        return result;
-    }
-
-    /*
-    To save the long URL input for the generated short URL
-     */
-    public void saveLongUrl(final TinyUrl tinyUrl) {
-        dynamoDBMapper.save(tinyUrl);
-    }
-}
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/main/java/com/amazonaws/serverless/lambda/model/TinyUrl.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 21`] = `
 "package com.amazonaws.serverless.lambda.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
@@ -1104,7 +1033,34 @@ public class TinyUrl {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/CreateUrlRequestHandlerTest.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 22`] = `
+"package com.amazonaws.serverless.lambda;
+
+import com.amazonaws.serverless.lambda.dao.UrlDataService;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+public abstract class TinyUrlRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    public UrlDataService getUrlDataService() {
+        return urlDataService;
+    }
+
+    private final UrlDataService urlDataService;
+
+    public TinyUrlRequestHandler() {
+        this(new UrlDataService(System.getenv("AWS_REGION")));
+    }
+
+    TinyUrlRequestHandler(final UrlDataService urlDataService) {
+        this.urlDataService = urlDataService;
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 23`] = `
 "package com.amazonaws.serverless.lambda;
 
 
@@ -1186,7 +1142,70 @@ public class CreateUrlRequestHandlerTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/GetUrlRequestHandlerTest.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 24`] = `
+"package com.amazonaws.serverless.lambda.dao;
+
+import com.amazonaws.serverless.lambda.model.TinyUrl;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
+import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class UrlDataServiceTest {
+    @Mock
+    private DynamoDBMapper dynamoDBMapper;
+    private UrlDataService urlDataService;
+
+    @BeforeEach
+    public void prepare() throws ReflectiveOperationException {
+        urlDataService = new UrlDataService("us-west-2");
+        Class urlDataServiceClass = urlDataService.getClass();
+        Field f = urlDataServiceClass.getDeclaredField("dynamoDBMapper");
+        f.setAccessible(true);
+        f.set(urlDataService, dynamoDBMapper);
+    }
+
+    @Test
+    public void verify_getLongUrl() {
+        when(dynamoDBMapper.load(any(TinyUrl.class))).thenReturn(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
+        TinyUrl tinyUrl = urlDataService.getLongUrl(TINY_URL_ID);
+        Assertions.assertEquals(TINY_URL_ID, tinyUrl.getId());
+        Assertions.assertEquals(LONG_URL_INPUT, tinyUrl.getUrl());
+    }
+
+    @Test
+    public void verify_saveLongUrl() {
+        doNothing().when(dynamoDBMapper)
+                .save(any(TinyUrl.class));
+        urlDataService.saveLongUrl(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
+        verify(dynamoDBMapper, times(1)).save(any(TinyUrl.class));
+    }
+}
+
+
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 25`] = `
 "package com.amazonaws.serverless.lambda;
 
 import com.amazonaws.serverless.lambda.dao.UrlDataService;
@@ -1262,7 +1281,7 @@ public class GetUrlRequestHandlerTest {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/TestConstants.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 26`] = `
 "package com.amazonaws.serverless.lambda;
 
 public class TestConstants {
@@ -1277,70 +1296,7 @@ public class TestConstants {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/lambda/src/test/java/com/amazonaws/serverless/lambda/dao/UrlDataServiceTest.java 1`] = `
-"package com.amazonaws.serverless.lambda.dao;
-
-import com.amazonaws.serverless.lambda.model.TinyUrl;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.amazonaws.serverless.lambda.TestConstants.LONG_URL_INPUT;
-import static com.amazonaws.serverless.lambda.TestConstants.TINY_URL_ID;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-@ExtendWith(MockitoExtension.class)
-public class UrlDataServiceTest {
-    @Mock
-    private DynamoDBMapper dynamoDBMapper;
-    private UrlDataService urlDataService;
-
-    @BeforeEach
-    public void prepare() throws ReflectiveOperationException {
-        urlDataService = new UrlDataService("us-west-2");
-        Class urlDataServiceClass = urlDataService.getClass();
-        Field f = urlDataServiceClass.getDeclaredField("dynamoDBMapper");
-        f.setAccessible(true);
-        f.set(urlDataService, dynamoDBMapper);
-    }
-
-    @Test
-    public void verify_getLongUrl() {
-        when(dynamoDBMapper.load(any(TinyUrl.class))).thenReturn(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
-        TinyUrl tinyUrl = urlDataService.getLongUrl(TINY_URL_ID);
-        Assertions.assertEquals(TINY_URL_ID, tinyUrl.getId());
-        Assertions.assertEquals(LONG_URL_INPUT, tinyUrl.getUrl());
-    }
-
-    @Test
-    public void verify_saveLongUrl() {
-        doNothing().when(dynamoDBMapper)
-                .save(any(TinyUrl.class));
-        urlDataService.saveLongUrl(new TinyUrl(TINY_URL_ID, LONG_URL_INPUT));
-        verify(dynamoDBMapper, times(1)).save(any(TinyUrl.class));
-    }
-}
-
-
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/backend/pom.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 27`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1558,52 +1514,61 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/README.md 1`] = `
-"# Frontend
+exports[`Blueprint snapshots Blueprint snapshots - Test 28`] = `
+"# Backend
 
-This web app uses [ReactJS](https://reactjs.org/) in conjunction with the [Cloudscape](https://cloudscape.design/) component library. Please consult
-the respective documentation as you extend the app.
+The backend is deployed as a RESTful API using AWS Serverless technologies:
 
-\`canary\` directory contains the script to test the cloudfront website, please refer
-[Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) for making any changes to the script.
+- [AWS API Gateway](https://aws.amazon.com/api-gateway) to provide the REST interface to the user
+- [Amazon DynamoDB](https://aws.amazon.com/dynamodb) for URL persistence
+- [AWS Lambda](https://aws.amazon.com/lambda) process the API gateway requests for create and retrieve the data from DynamoDB table
+
+### Infrastructure
+
+\`cdk\` maven module will set up the Application Stack.
+
+Project uses [maven](https://maven.apache.org/) for build and packaging the resources for production deployment. As part of the build, the workflow
+will run the unit tests in the \`lambda\` maven module, and produces testing reports. Failed tests will stop the artifacts from publishing.
+
+Workflow uses \`CDKBootstrap\` and \`CDKDeploy\` Actions to deploy the resources on AWS services.
 
 ## Local Development
 
 Local development requires below pre-requisites.
 
-- [NodeJS v14.x](https://nodejs.org/en/)
-- [npm](https://docs.npmjs.com/)
-- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+- [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
+- [Apache Maven v3.8.6](https://maven.apache.org/install.html)
+- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 
-In the project directory, you can run:
+To run the unit tests in the project
 
-- \`npm install\` To pull the dependencies defined in the \`package.json\` of this project
+\`\`\`
+$ mvn test
+\`\`\`
 
-- \`npm start\` To run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will
-  reload if you make edits. You will also see any lint errors in the console.
+To package the resources for deployment.
 
-- \`npm test\` To run the test runner as defined in \`jest.config.js\`. See Jest documentation for options to configure the testing
+\`\`\`
+$ mvn package
+\`\`\`
 
-- \`npm run build\` To build the app for production to the \`build\` folder. It correctly bundles React in production mode and optimizes the build for the
-  best performance.
+To test the project by deploying into your AWS Account
 
-## Project resources
+\`\`\`
+$ cdk deploy
+\`\`\`
 
-The project contains below modules / files
+### Resources
 
-- \`canary\`: Canary test scripts
+The following resources have been generated as a initial revisions and it can be modified for your requirements
 
-- \`public\`: HTML resources
+- \`cdk\`: Java maven module for creating the backend stack.
 
-- \`src\`: To define the React components and UI logic
+- \`lambda\`: Java maven module for the Lambda function used by the Application to create tiny URL and retrieve long URL.
 
-- \`jest.config.js\`: For unit test discoverability and execution
+- \`pom.xml\`: Maven configuration for dependency management, plugin management, build and packaging
 
-- \`package.json\`: To maintain the dependencies
-
-- \`babel.config.js\`: To convert .ts to .js files
-
-- \`tsconfig.json\`: Typescript compilation
+- \`cdk.json\`: To execute the CDK code
 
 ## Additional resources
 
@@ -1611,7 +1576,7 @@ See the Amazon CodeCatalyst user guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/babel.config.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 29`] = `
 "module.exports = {
   presets: [
     ['@babel/preset-env', {targets: {node: 'current'}}],
@@ -1622,7 +1587,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/canary/nodejs/node_modules/index.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 30`] = `
 "const synthetics = require('Synthetics');
 const log = require('SyntheticsLogger');
 
@@ -1651,58 +1616,7 @@ exports.handler = async () => {
 };"
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/README.md 1`] = `
-"# Frontend Infrastructure
-
-This project uses CDK development with TypeScript for developing the frontend infrastructure as code. The \`cdk.json\` file tells the CDK Toolkit how to
-execute your app.
-
-Canary setup uses [Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) to test and
-continuously monitor the application's health.
-
-## Local Development
-
-Local development requires below pre-requisites.
-
-- [NodeJS v14.x](https://nodejs.org/en/)
-- [npm](https://docs.npmjs.com/)
-- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
-
-## Useful commands
-
-- \`npm run build\` To compile typescript to js
-- \`npm run watch\` To watch for changes and compile
-- \`npm run test\` To perform the jest unit tests
-- \`cdk synth\` To emit the synthesized CloudFormation template
-- \`cdk diff\` To compare deployed stack with current state
-- \`cdk bootstrap\` To bootstrap the AWS Account
-- \`cdk deploy\` To deploy this stack to your default AWS account/region
-
-## Project resources
-
-The project contains below modules / files
-
-- \`bin\`: CDK App to synthesize the infrastructure
-
-- \`lib\`: To define the Stack definitions for the frontend infrastructure
-
-- \`test\`: To test the infrastructure code
-
-- \`jest.config.js\`: For unit test discoverability and execution
-
-- \`package.json\`: To maintain the dependencies
-
-- \`cdk.json\`: To execute the CDK code
-
-- \`tsconfig.json\`: Typescript compilation
-
-## Additional resources
-
-See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/bin/frontend.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 31`] = `
 "#!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
@@ -1730,7 +1644,7 @@ new FrontendStack(app, stackName, {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/cdk.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 32`] = `
 "{
   "app": "npx ts-node --prefer-ts-exts bin/frontend.ts",
   "watch": {
@@ -1776,7 +1690,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/jest.config.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 33`] = `
 "module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/test'],
@@ -1788,7 +1702,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/lib/frontend-stack.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 34`] = `
 "import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -1983,7 +1897,7 @@ export class FrontendStack extends cdk.Stack {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/package.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 35`] = `
 "{
   "name": "frontend",
   "version": "0.1.0",
@@ -2015,7 +1929,58 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/test/frontend.test.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 36`] = `
+"# Frontend Infrastructure
+
+This project uses CDK development with TypeScript for developing the frontend infrastructure as code. The \`cdk.json\` file tells the CDK Toolkit how to
+execute your app.
+
+Canary setup uses [Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) to test and
+continuously monitor the application's health.
+
+## Local Development
+
+Local development requires below pre-requisites.
+
+- [NodeJS v14.x](https://nodejs.org/en/)
+- [npm](https://docs.npmjs.com/)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+
+## Useful commands
+
+- \`npm run build\` To compile typescript to js
+- \`npm run watch\` To watch for changes and compile
+- \`npm run test\` To perform the jest unit tests
+- \`cdk synth\` To emit the synthesized CloudFormation template
+- \`cdk diff\` To compare deployed stack with current state
+- \`cdk bootstrap\` To bootstrap the AWS Account
+- \`cdk deploy\` To deploy this stack to your default AWS account/region
+
+## Project resources
+
+The project contains below modules / files
+
+- \`bin\`: CDK App to synthesize the infrastructure
+
+- \`lib\`: To define the Stack definitions for the frontend infrastructure
+
+- \`test\`: To test the infrastructure code
+
+- \`jest.config.js\`: For unit test discoverability and execution
+
+- \`package.json\`: To maintain the dependencies
+
+- \`cdk.json\`: To execute the CDK code
+
+- \`tsconfig.json\`: Typescript compilation
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 37`] = `
 "// import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
 // import * as Frontend from '../lib/frontend-stack';
@@ -2035,7 +2000,7 @@ test('SQS Queue Created', () => {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/cdk/tsconfig.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 38`] = `
 "{
   "compilerOptions": {
     "target": "es2019",
@@ -2069,7 +2034,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/jest.config.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 39`] = `
 "/** @type {import('ts-jest').JestConfigWithTsJest} */
 const merge = require('merge');
 const tsPreset = require('ts-jest/jest-preset');
@@ -2085,7 +2050,7 @@ module.exports = merge.recursive(tsPreset, cloudscapePreset, {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/package.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 40`] = `
 "{
   "name": "bp-tiny-url",
   "version": "0.1.0",
@@ -2144,7 +2109,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/index.html 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 41`] = `
 "<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -2186,7 +2151,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/manifest.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 42`] = `
 "{
   "short_name": "Sample App",
   "name": "Sample App",
@@ -2199,14 +2164,67 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/public/robots.txt 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 43`] = `
 "# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.css 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 44`] = `
+"# Frontend
+
+This web app uses [ReactJS](https://reactjs.org/) in conjunction with the [Cloudscape](https://cloudscape.design/) component library. Please consult
+the respective documentation as you extend the app.
+
+\`canary\` directory contains the script to test the cloudfront website, please refer
+[Amazon CloudWatch Synthetics](https://docs.aws.amazon.com/AmazonSynthetics/latest/APIReference/Welcome.html) for making any changes to the script.
+
+## Local Development
+
+Local development requires below pre-requisites.
+
+- [NodeJS v14.x](https://nodejs.org/en/)
+- [npm](https://docs.npmjs.com/)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+
+In the project directory, you can run:
+
+- \`npm install\` To pull the dependencies defined in the \`package.json\` of this project
+
+- \`npm start\` To run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will
+  reload if you make edits. You will also see any lint errors in the console.
+
+- \`npm test\` To run the test runner as defined in \`jest.config.js\`. See Jest documentation for options to configure the testing
+
+- \`npm run build\` To build the app for production to the \`build\` folder. It correctly bundles React in production mode and optimizes the build for the
+  best performance.
+
+## Project resources
+
+The project contains below modules / files
+
+- \`canary\`: Canary test scripts
+
+- \`public\`: HTML resources
+
+- \`src\`: To define the React components and UI logic
+
+- \`jest.config.js\`: For unit test discoverability and execution
+
+- \`package.json\`: To maintain the dependencies
+
+- \`babel.config.js\`: To convert .ts to .js files
+
+- \`tsconfig.json\`: Typescript compilation
+
+## Additional resources
+
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 45`] = `
 ".App {
   text-align: center;
 }
@@ -2248,7 +2266,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.test.tsx 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 46`] = `
 "import { render, screen } from '@testing-library/react';
 import App from './App';
 
@@ -2260,7 +2278,7 @@ test('renders learn react link', () => {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/App.tsx 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 47`] = `
 "import * as React from 'react';
 import * as cs from '@cloudscape-design/components';
 import { URLService } from './url.api';
@@ -2338,7 +2356,7 @@ export default App;
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/index.css 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 48`] = `
 "body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -2353,7 +2371,7 @@ code {
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/index.tsx 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 49`] = `
 "import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -2373,12 +2391,12 @@ reportWebVitals();
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/react-app-env.d.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 50`] = `
 "/// <reference types="react-scripts" />
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/reportWebVitals.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 51`] = `
 "import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {
@@ -2397,7 +2415,7 @@ export default reportWebVitals;
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/setupTests.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 52`] = `
 "// jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
@@ -2406,7 +2424,7 @@ import '@testing-library/jest-dom';
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/src/url.api.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 53`] = `
 "export class URLService {
   readonly service_url: string;
 
@@ -2432,7 +2450,7 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
 "
 `;
 
-exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrlApp/frontend/tsconfig.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 54`] = `
 "{
   "compilerOptions": {
     "target": "es5",
@@ -2459,23 +2477,5 @@ exports[`Blueprint snapshots java-default.json configuration matches src/TinyUrl
     "src"
   ]
 }
-"
-`;
-
-exports[`Blueprint snapshots java-default.json configuration matches src-diffs/TinyUrlApp-some-branch/first-set-of-changes.diff 1`] = `
-"diff --git a/frontend/cdk/jest.config.js b/frontend/cdk/jest.config.js
-deleted file mode 100644
-index 08263b89..00000000
---- a/frontend/cdk/jest.config.js
-+++ /dev/null
-@@ -1,8 +0,0 @@
--module.exports = {
--  testEnvironment: 'node',
--  roots: ['<rootDir>/test'],
--  testMatch: ['**/*.test.ts'],
--  transform: {
--    '^.+\\\\.tsx?$': 'ts-jest'
--  }
--};
 "
 `;

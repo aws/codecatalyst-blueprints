@@ -117,6 +117,10 @@
       "type": "runtime"
     },
     {
+      "name": "@esbuild/linux-x64",
+      "type": "runtime"
+    },
+    {
       "name": "ajv",
       "type": "runtime"
     },
@@ -126,6 +130,10 @@
     },
     {
       "name": "deepmerge",
+      "type": "runtime"
+    },
+    {
+      "name": "esbuild",
       "type": "runtime"
     },
     {

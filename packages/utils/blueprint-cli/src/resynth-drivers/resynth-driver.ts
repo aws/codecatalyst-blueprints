@@ -32,7 +32,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
   // todo validate input
 
   // we want one driver file that we execute multiple times with different options
-  const { synthDriver, resynthDriver } = makeDriverFile(log, {
+  const { synthDriver, resynthDriver } = await makeDriverFile(log, {
     blueprint: options.blueprint,
     cache: options.cache,
   });
@@ -44,7 +44,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
       additionalOptionsLocation: options.additionalOptions,
     });
 
-    wizardConfigurations.forEach(wizardOption => {
+    wizardConfigurations.forEach(async wizardOption => {
       const jobname = `${'00.resynth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`);
       let priorOptions = getPriorOptions(log, [
@@ -69,7 +69,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
         ].join(' '),
       );
       log.info('==========================================');
-      resynthesize(log, {
+      void (await resynthesize(log, {
         synthDriver,
         resynthDriver,
         jobname,
@@ -80,7 +80,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
         priorOptions: priorOptions?.option || wizardOption.option,
         existingBundleLocation: existingBundle,
         cleanUp: options.cleanUp,
-      });
+      }));
     });
   } catch (error) {
     log.error(error as any);
