@@ -15,7 +15,6 @@ const project = new ProjenBlueprintComponent({
     'ts-node',
     'axios',
     'esbuild',
-    '@esbuild/linux-x64',
     'pino-pretty',
     'typescript',
     'jmespath',
