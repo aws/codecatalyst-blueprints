@@ -51,7 +51,7 @@ export interface SynthOptions {
  * @param log
  * @param options
  */
-export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
+export async function synthesize(log: pino.BaseLogger, options: SynthOptions) {
   validateSynthOptions(log, options);
 
   const synthDriver: DriverFile = makeSynthDriverFile(log, options);
