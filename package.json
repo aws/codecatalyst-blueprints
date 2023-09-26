@@ -4,7 +4,7 @@
   "scripts": {
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
-    "release": "npm publish --access=public --workspaces --dry-run",
+    "release": "npm publish --workspaces",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
