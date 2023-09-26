@@ -1721,6 +1721,7 @@ __metadata:
 "@esbuild/linux-x64@npm:0.19.3":
   version: 0.19.3
   resolution: "@esbuild/linux-x64@npm:0.19.3"
+  checksum: 6e436c23479155dfbf3069bb25cad1a8686055db759b60c50dbc22f910dc7cc474e749cd48bf17f397d1ab7f6b61d8cb7e14a7eff16b2000f70d2a0afd324115
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
@@ -11732,6 +11733,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@esbuild/linux-x64": 0.19.3
     "@types/node": ^18.16.1
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
