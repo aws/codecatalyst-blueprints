@@ -70,7 +70,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
