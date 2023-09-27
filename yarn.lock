@@ -1371,7 +1371,6 @@ __metadata:
     "@aws-sdk/client-s3": ^3.360.0
     "@aws-sdk/client-sts": ^3.360.0
     "@caws-blueprint-util/projen-blueprint-component": 0.2.x
-    "@esbuild/linux-x64": "*"
     "@types/jest": 26.0.24
     "@types/jmespath": ^0.15.0
     "@types/node": ^18
@@ -1382,7 +1381,7 @@ __metadata:
     ajv: ^8.12.0
     axios: ^0.25.0
     deepmerge: ^4.3.1
-    esbuild: "*"
+    esbuild: 0.19.3
     eslint: ^8
     eslint-import-resolver-node: ^0.3.7
     eslint-import-resolver-typescript: ^3.5.5
@@ -1733,7 +1732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild/linux-x64@npm:*, @esbuild/linux-x64@npm:0.19.3":
+"@esbuild/linux-x64@npm:0.19.3":
   version: 0.19.3
   resolution: "@esbuild/linux-x64@npm:0.19.3"
   checksum: 6e436c23479155dfbf3069bb25cad1a8686055db759b60c50dbc22f910dc7cc474e749cd48bf17f397d1ab7f6b61d8cb7e14a7eff16b2000f70d2a0afd324115
@@ -6034,7 +6033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:*":
+"esbuild@npm:0.19.3":
   version: 0.19.3
   resolution: "esbuild@npm:0.19.3"
   dependencies:
@@ -11748,6 +11747,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@esbuild/linux-x64": 0.19.3
     "@types/node": ^18.16.1
     "@typescript-eslint/eslint-plugin": "*"
     "@typescript-eslint/parser": "*"
