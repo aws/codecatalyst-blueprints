@@ -117,10 +117,6 @@
       "type": "runtime"
     },
     {
-      "name": "@esbuild/linux-x64",
-      "type": "runtime"
-    },
-    {
       "name": "ajv",
       "type": "runtime"
     },
