@@ -24,4 +24,5 @@ jobs:
           cache: 'yarn'
       - run: yarn --immutable-cache
       - run: yarn build
+      - run: yarn run prerelease
       - run: yarn run release
