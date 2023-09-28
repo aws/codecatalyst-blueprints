@@ -23,5 +23,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
       - run: yarn --immutable-cache
+      - run: yarn build
       - run: yarn run prerelease
       - run: npm run release
