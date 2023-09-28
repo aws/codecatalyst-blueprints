@@ -18,6 +18,7 @@
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
+    "prerelease": "yarn build && yarn package",
     "npm:publish": "yarn bump && yarn build && yarn package && yarn npm:push",
     "npm:push": "yarn npm publish"
   },
