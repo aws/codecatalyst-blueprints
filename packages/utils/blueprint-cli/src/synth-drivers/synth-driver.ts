@@ -53,7 +53,7 @@ export async function driveSynthesis(log: pino.BaseLogger, options: SynthDriverC
       additionalOptionsLocation: options.additionalOptions,
     });
 
-    wizardConfigurations.forEach(async wizardOption => {
+    for (const wizardOption of wizardConfigurations) {
       const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`, PROPOSED_BUNDLE_SUBPATH);
       log.info('==========================================');
@@ -75,9 +75,9 @@ export async function driveSynthesis(log: pino.BaseLogger, options: SynthDriverC
         jobname,
         outputDirectory: outputDir,
         existingBundle: options.existingBundle || '',
-        cleanUp: options.cleanUp,
+        cleanUp: false,
       }));
-    });
+    };
   } catch (error) {
     log.error(error as any);
   } finally {

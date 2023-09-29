@@ -44,7 +44,7 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
       additionalOptionsLocation: options.additionalOptions,
     });
 
-    wizardConfigurations.forEach(async wizardOption => {
+    for (const wizardOption of wizardConfigurations) {
       const jobname = `${'00.resynth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`);
       let priorOptions = getPriorOptions(log, [
@@ -79,9 +79,9 @@ export async function driveResynthesis(log: pino.BaseLogger, options: ResynthDri
         priorBlueprint: options.blueprint,
         priorOptions: priorOptions?.option || wizardOption.option,
         existingBundleLocation: existingBundle,
-        cleanUp: options.cleanUp,
+        cleanUp: false,
       }));
-    });
+    }
   } catch (error) {
     log.error(error as any);
   } finally {
