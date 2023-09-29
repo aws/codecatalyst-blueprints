@@ -102,6 +102,10 @@ export class Blueprint extends Project {
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
+    ancestorBundle = path.resolve(ancestorBundle);
+    existingBundle = path.resolve(existingBundle);
+    proposedBundle = path.resolve(proposedBundle);
+
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
     const overriddenStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
     const validStrategies = merge(this.strategies || {}, filterStrategies(overriddenStrategies, this.context.package));

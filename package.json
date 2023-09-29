@@ -26,6 +26,7 @@
     ]
   },
   "devDependencies": {
+    "@esbuild/linux-x64": "0.19.3",
     "@types/node": "^18.16.1",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
