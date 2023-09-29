@@ -19,15 +19,22 @@ export function generateDifferencePatch(intendedOldFile: string, intendedNewFile
     'git',
     'diff',
     '--binary',
+    '--no-index',
     oldFile,
     newFile,
     '| cat',
   ].join(' '), { maxBuffer: 999_990_999_999 }).toString();
 
   if (rawDiff.length) {
+    console.log('OLDFILE: ' + oldFile);
+    console.log('NEWFILE: ' + newFile);
+    console.log(rawDiff);
     rawDiff = rawDiff.replace(/^(.*)$/m, `diff --git a/${destination} b/${destination}`);
+    rawDiff = rawDiff.replace(`--- a${oldFile}`, `--- a/${destination}`);
     rawDiff = rawDiff.replace(`--- a/${oldFile}`, `--- a/${destination}`);
+    rawDiff = rawDiff.replace(`+++ b${newFile}`, `+++ b/${destination}`);
     rawDiff = rawDiff.replace(`+++ b/${newFile}`, `+++ b/${destination}`);
+    console.log(rawDiff);
   }
   return rawDiff;
 }
