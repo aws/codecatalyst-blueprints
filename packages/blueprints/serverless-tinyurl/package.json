@@ -127,7 +127,10 @@
       "ts-jest": {
         "tsconfig": "tsconfig.dev.json"
       }
-    }
+    },
+    "modulePathIgnorePatterns": [
+      "/synth/"
+    ]
   },
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",

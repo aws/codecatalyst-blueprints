@@ -213,6 +213,11 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         this.addPeerDeps('@amazon-codecatalyst/blueprint-util.cli');
 
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+
+        this.jest!.config.modulePathIgnorePatterns = [
+          ...(this.jest?.config?.modulePathIgnorePatterns || []),
+          '/synth/',
+        ];
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
       }

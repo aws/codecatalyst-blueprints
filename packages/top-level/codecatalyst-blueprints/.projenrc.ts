@@ -14,7 +14,6 @@ const project = new ProjenBlueprintComponent({
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.dev-environments',
     '@amazon-codecatalyst/blueprint-component.environments',
-    '@amazon-codecatalyst/blueprint-component.issues',
   ],
   peerDeps: ['projen'],
 });
