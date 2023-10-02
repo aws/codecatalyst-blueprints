@@ -15,8 +15,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
     "functionName": "gradle-test-fn-name"
   },
   "outdir": "synth/01.snapshot.java11gradle.json/proposed-bundle"
-}
-"
+}"
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 2`] = `
@@ -1690,8 +1689,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 26`] = `
     "functionName": "SamFirstEndpoint"
   },
   "outdir": "synth/01.snapshot.node14.json/proposed-bundle"
-}
-"
+}"
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 27`] = `
@@ -2615,8 +2613,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 53`] = `
     "functionName": "SamFirstEndpoint"
   },
   "outdir": "synth/01.snapshot.python39.json/proposed-bundle"
-}
-"
+}"
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 54`] = `
