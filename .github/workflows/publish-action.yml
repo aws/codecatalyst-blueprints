@@ -27,4 +27,4 @@ jobs:
       - run: yarn build
       - run: yarn npm:components:package
       - run: yarn npm:blueprints:package
-      - run: yarn run release
+      - run: yarn npm:publish
