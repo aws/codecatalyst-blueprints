@@ -10,8 +10,6 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  NPM_REPO: ' '
-  NPM_REPO_AUTH_TOKEN: ' '
   PROJEN_DISABLE_POST: '1'
 jobs:
   build:
