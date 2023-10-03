@@ -14,6 +14,8 @@
     "components:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-component/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
     "components-utils:publish": "yarn components:publish && yarn utils:publish",
+    "components:bump": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v --include '@caws-blueprint-component/*' --include '@caws-blueprint-util/*' --include '@aws/codecatalyst-blueprints' run bump",
+    "blueprints:bump": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v --include '@caws-blueprint/*' run bump",
     "test": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test",
     "test:update": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test:update",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:preview $*",
