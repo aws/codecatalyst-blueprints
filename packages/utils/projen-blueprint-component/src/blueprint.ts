@@ -66,8 +66,23 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
 
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
-    this.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
-    this.setScript('npm:push', 'yarn npm publish');
+
+    this.setScript(
+      'component:package',
+      [
+        'yarn build',
+        'yarn package',
+      ].join(' && '),
+    );
+
+    this.setScript(
+      'npm:push',
+      [
+        'yarn bump',
+        'component:package',
+        'yarn npm publish',
+      ].join(' && '),
+    );
   }
 
   synth(): void {

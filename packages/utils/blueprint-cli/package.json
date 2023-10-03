@@ -23,8 +23,8 @@
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
-    "npm:publish": "yarn bump && yarn build && yarn package && yarn npm:push",
-    "npm:push": "yarn npm publish"
+    "component:package": "yarn build && yarn package",
+    "npm:push": "yarn bump && component:package && yarn npm publish"
   },
   "devDependencies": {
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*",

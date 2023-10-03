@@ -163,12 +163,19 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
     this.setScript(
-      'blueprint:preview',
+      'blueprint:package',
       [
         'yarn build:lib',
-        'yarn bump:preview',
         'yarn blueprint:synth --cache --clean-up false',
         'yarn package',
+      ].join(' && '),
+    );
+
+    this.setScript(
+      'blueprint:preview',
+      [
+        'yarn bump:preview',
+        'blueprint:package',
         `blueprint publish ./ --publisher ${space} $*`,
       ].join(' && '),
     );
