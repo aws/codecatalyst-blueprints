@@ -157,32 +157,15 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.gitignore.addPatterns('synth');
     this.npmignore?.addPatterns('synth');
 
-    //set prerelease
-    this.setScript('prerelease', 'yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package');
-
     // set upload to aws script
     const space = options.publishingSpace || options.publishingOrganization || '<<replace-organization>>';
     this.package.addField('publishingSpace', space);
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
-    this.setScript(
-      'blueprint:package',
-      [
-        'yarn build:lib',
-        'yarn blueprint:synth --cache --clean-up false',
-        'yarn package',
-      ].join(' && '),
-    );
+    this.setScript('blueprint:package', ['yarn build:lib', 'yarn blueprint:synth --cache --clean-up false', 'yarn package'].join(' && '));
     this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
 
-    this.setScript(
-      'blueprint:preview',
-      [
-        'yarn bump:preview',
-        'yarn blueprint:package',
-        `blueprint publish ./ --publisher ${space} $*`,
-      ].join(' && '),
-    );
+    this.setScript('blueprint:preview', ['yarn bump:preview', 'yarn blueprint:package', `blueprint publish ./ --publisher ${space} $*`].join(' && '));
 
     if (finalOpts.blueprintHealthConfiguration) {
       this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');
@@ -225,10 +208,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
 
-        this.jest!.config.modulePathIgnorePatterns = [
-          ...(this.jest?.config?.modulePathIgnorePatterns || []),
-          '/synth/',
-        ];
+        this.jest!.config.modulePathIgnorePatterns = [...(this.jest?.config?.modulePathIgnorePatterns || []), '/synth/'];
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
       }

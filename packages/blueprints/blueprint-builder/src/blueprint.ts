@@ -104,20 +104,9 @@ export class Blueprint extends ParentBlueprint {
         },
       },
       copyrightOwner: spaceName || 'unknown',
-      deps: [
-        'projen',
-        '@amazon-codecatalyst/blueprints.blueprint',
-        '@amazon-codecatalyst/blueprint-component.workflows',
-        '@amazon-codecatalyst/blueprint-component.source-repositories',
-        '@amazon-codecatalyst/blueprint-component.environments',
-      ],
+      deps: ['projen', '@amazon-codecatalyst/blueprints.blueprint', '@amazon-codecatalyst/blueprints'],
       description: `${options.description}`,
-      devDeps: [
-        'ts-node@^10',
-        'typescript',
-        '@amazon-codecatalyst/blueprint-util.projen-blueprint',
-        '@amazon-codecatalyst/blueprint-util.cli',
-      ],
+      devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
       keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
       mediaUrls: [

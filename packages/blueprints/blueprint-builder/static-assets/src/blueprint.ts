@@ -1,7 +1,17 @@
+import {
+  Environment,
+  EnvironmentDefinition,
+  AccountConnection,
+  Role,
+  SourceRepository,
+  SourceFile,
+  StaticAsset,
+  Workflow,
+  WorkflowBuilder,
+  convertToWorkflowEnvironment,
+} from '@amazon-codecatalyst/blueprints';
+// this is an import from the base blueprint. This can be changed to extend any blueprint.
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
-import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst-component/environments';
-import { SourceRepository, SourceFile, StaticAsset } from '@amazon-codecatalyst-component/source-repositories';
-import { Workflow, WorkflowBuilder, convertToWorkflowEnvironment } from '@amazon-codecatalyst-component/workflows';
 import defaults from './defaults.json';
 
 /**
