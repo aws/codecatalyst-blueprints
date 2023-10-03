@@ -79,10 +79,12 @@ export class ProjenBlueprintComponent extends typescript.TypeScriptProject {
       'npm:push',
       [
         'yarn bump',
-        'component:package',
-        'yarn npm publish',
+        'yarn component:package',
+        'yarn npm:publish',
       ].join(' && '),
     );
+
+    this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
   }
 
   synth(): void {

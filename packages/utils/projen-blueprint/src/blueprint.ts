@@ -157,6 +157,9 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.gitignore.addPatterns('synth');
     this.npmignore?.addPatterns('synth');
 
+    //set prerelease
+    this.setScript('prerelease', 'yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package');
+
     // set upload to aws script
     const space = options.publishingSpace || options.publishingOrganization || '<<replace-organization>>';
     this.package.addField('publishingSpace', space);
@@ -170,12 +173,13 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         'yarn package',
       ].join(' && '),
     );
+    this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
 
     this.setScript(
       'blueprint:preview',
       [
         'yarn bump:preview',
-        'blueprint:package',
+        'yarn blueprint:package',
         `blueprint publish ./ --publisher ${space} $*`,
       ].join(' && '),
     );

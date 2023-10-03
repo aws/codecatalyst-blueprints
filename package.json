@@ -4,13 +4,14 @@
   "scripts": {
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
+    "release": "npm publish --workspaces --access=public --dry-run",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "prettier": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
     "upgrade": "PROJEN_DISABLE_POST=1 yarn workspaces foreach run upgrade",
-    "npm:components:package": "yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprint-util.*' --include '@amazon-codecatalyst/blueprint-component.*' --include '@amazon-codecatalyst/blueprints' run component:package",
-    "npm:blueprints:package": "yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprint-util.*' run blueprint:package",
+    "npm:components:package": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprint-util.*' --include '@amazon-codecatalyst/blueprint-component.*' --include '@amazon-codecatalyst/blueprints' run component:package",
+    "npm:blueprints:package": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprint-util.*' run blueprint:package",
     "test": "yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprints.*' run test",
     "test:update": "yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprints.*' run test:update",
     "blueprints:preview": "yarn workspaces foreach -v  --topological --include '@amazon-codecatalyst/blueprints.*' run blueprint:preview $*",
@@ -24,6 +25,7 @@
     ]
   },
   "devDependencies": {
+    "@esbuild/linux-x64": "0.19.3",
     "@types/node": "^18.16.1",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",

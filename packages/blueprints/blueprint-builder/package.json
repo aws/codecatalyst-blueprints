@@ -22,8 +22,10 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
+    "prerelease": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
     "blueprint:package": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
-    "blueprint:preview": "yarn bump:preview && blueprint:package && blueprint publish ./ --publisher blueprints $*",
+    "npm:publish": "npm publish dist/js/*.tgz",
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },

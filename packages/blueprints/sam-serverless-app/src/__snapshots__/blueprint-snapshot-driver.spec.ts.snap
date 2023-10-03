@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Blueprint snapshots java11gradle.json configuration matches options.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
 "{
   "environment": {
     "name": "default_environment",
@@ -15,11 +15,10 @@ exports[`Blueprint snapshots java11gradle.json configuration matches options.jso
     "functionName": "gradle-test-fn-name"
   },
   "outdir": "synth/01.snapshot.java11gradle.json/proposed-bundle"
-}
-"
+}"
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.cloud9/runners/SAM Project Builder.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 2`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -35,7 +34,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.cloud9/runners/SAM Project Test Runner.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 3`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -57,7 +56,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 }"
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 4`] = `
 "#!/usr/bin/env bash
 
 echo "Running unit tests..."
@@ -66,7 +65,7 @@ GRADLE_DIR=gradle-test-fn-name/HelloWorldFunction
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 5`] = `
 "Name: build-and-release
 SchemaVersion: "1.0"
 Triggers:
@@ -121,7 +120,7 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.idea/externalDependencies.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 6`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
     <component name="ExternalDependencies">
@@ -133,7 +132,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.idea/runConfigurations/run_tests.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 7`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="run tests" type="GradleRunConfiguration" factoryName="Gradle">
         <ExternalSystemSettings>
@@ -160,7 +159,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.idea/runConfigurations/sam_build.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 8`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam build" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam build" />
@@ -181,7 +180,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.idea/runConfigurations/sam_local_invoke.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 9`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam local invoke" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local invoke gradle-test-fn-nameFunction --event gradle-test-fn-name/events/event.json" />
@@ -202,7 +201,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.idea/runConfigurations/sam_start_local_api.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 10`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam start local api" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local start-api" />
@@ -223,14 +222,14 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.ownership-file 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 11`] = `
 "[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.vscode/extensions.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 12`] = `
 "{
     "recommendations": [
         "redhat.java",
@@ -248,7 +247,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.vscode/launch.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 13`] = `
 "{
     "version": "0.2.0",
     "configurations": [
@@ -265,7 +264,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/.vscode/tasks.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 14`] = `
 "{
     "version": "2.0.0",
     "tasks": [
@@ -315,223 +314,7 @@ exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/README.md 1`] = `
-"
-## This Project
-
-This project is an AWS Serverless Application Model (SAM) project. A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
-serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
-applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
-
-The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
-After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
-project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) application URL is available under the output for your workflow.
-
-### Architecture overview
-
-![Architecture diagram](https://d2oq83bpv90sqw.cloudfront.net/SAM-arch.png)
-
-## Connections and permissions
-
-Configure your AWS account connection from the **AWS accounts** tab in your Amazon CodeCatalyst space. Add AWS IAM roles to
-the account extension to authorize project workflows to access AWS account resources.
-
-The SAM application requires the following IAM roles to build and deploy the application:
-
-### IAM role trust policy
-
-\`\`\`
-{
-"Version": "2012-10-17",
-"Statement": [
-    {
-        "Sid": "CodeCatalyst",
-        "Effect": "Allow",
-        "Principal": {
-            "Service": [
-                "codecatalyst-runner.amazonaws.com",
-                "codecatalyst.amazonaws.com"
-            ]
-        },
-        "Action": "sts:AssumeRole"
-    }
-]
-}
-\`\`\`
-
-### Deploy role policy
-
-Create a role based on the trust policy above, and add the following inline policy:
-
-\`\`\`
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "iam:PassRole",
-                "iam:DeleteRole",
-                "iam:GetRole",
-                "iam:TagRole",
-                "iam:CreateRole",
-                "iam:AttachRolePolicy",
-                "iam:DetachRolePolicy",
-                "cloudformation:*",
-                "lambda:*",
-                "apigateway:*"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-\`\`\`
-
-_Note: You must update the policy if you add more resources.
-
-### Build role policy
-
-Create a role based on the trust policy above, and add the following inline policy:
-
-\`\`\`
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:*",
-                "cloudformation:*"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-\`\`\`
-
-## Project resources
-
-After being successfully created, this project deploys the following AWS resources:
-
-- AWS Lambda function(s) - A resource that invokes your code on a high-availability compute infrastructure without provisioning or managing servers. For
-  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
-
-- Amazon API Gateway - A resource that creates, publishes, maintains, monitors, and secures REST, HTTP, and WebSocket APIs at any scale. For
-  more information on API Gateway, see the
-  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
-
-- IAM role(s) -  A resource that secures controlled access to AWS resources such as the AWS Lambda function(s). For more information on IAM, see the
-  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
-
-The deployment status can be viewed in the project's workflow.
-
-This blueprint creates the following Amazon CodeCatalyst resources:
-
-- Source repository named \`gradle-src-repo-name\` - A Git repository to store, version, and manage the following project assets:
-  - \`gradle-test-fn-name\` - Source code and supporting files for the Lambda function of the application, \`gradle-test-fn-name\` contains the following:
-    - \`HelloWorldFunction/src/main\` - Code for the AWS Lambda function of the application
-    - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
-    - \`HelloWorldFunction/src/test\` - Tests for the AWS Lambda function's code
-  - \`template.yaml\` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles.
-  - \`devfile.yaml\` - A devfile that defines Dev Environments or development environments that have been built for the cloud.
-
-  For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**.
-
-- Workflows defined in \`.codecatalyst/workflows/build-and-release.yaml\`
-
-  A workflow is an automated procedure that defines how to build, test, and deploy the serverless application. For more information, see the _Build,
-  test, and deploy with workflows_ section of the **Amazon CodeCatalyst User Guide**.
-
-- Environment(s) - An abstraction of infrastructure resources that deploy applications. You can use environments can be used to organize deployment actions into a production or non-production environment.
-
-  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**.
-
-- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
-  Environment operation in Amazon CodeCatalyst.
-
-  For more information on creating Dev Environments, see the _Working with Dev Environments_ section in the **Amazon CodeCatalyst User Guide**.
-
-
-## Using the SAM CLI to build and test locally
-
-You can use the SAM Command Line Interface (CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your AWS Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches AWS Lambda. It can also emulate your application's build environment and API.
-To work on the sample code generated, clone your project's repository to your local computer. For more information, see the _Cloning a source repository_ section in the Amazon CodeCatalyst User Guide.
-
-To use the SAM CLI, install following tools into your workspace.
-
-  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
-  * Install [Python 3](https://www.python.org/downloads/)
- * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)
-
-To build your application locally, run the following command in your shell:
-
-\`\`\`
-    sam build
-\`\`\`
-
-  The SAM CLI installs dependencies defined in the HelloWorldFunction/build.gradle file of the AWS Lambda function, creates a deployment package, and saves it in the \`.aws-sam/build\` folder.
-  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
-  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
-
-\`\`\`
-  sam local invoke <functionName> --event <functionName>/events/event.json
-\`\`\`
-
-For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
-The SAM CLI can also emulate your application's API. Run the \`sam local start-api\` command to run the API locally. The default port is 3000.
-
-\`\`\`
-  sam local start-api
-  curl http://localhost:3000/
-\`\`\`
-
-For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
-
-\`\`\`yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
-\`\`\`
-
-
-## Running tests
-Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
-\`\`\`
-$ cd HelloWorldFunction
-$ gradle test
-\`\`\`
-    
-
-## Adding a resource to your serverless application
-The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
-
-## Deploying your serverless application
-The application is deployed through Amazon CodeCatalyst using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` branch of the source repository.
-Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Working with triggers_ section in the  Amazon CodeCatalyst User Guide.
-The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`default_environment\` using the \`sam-stack-\` AWS Cloudformation stack.
-For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
-
-If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
-\`\`\`
-  cd .aws-sam/build/
-  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
-  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
-\`\`\`
-
-## Additional Resources
-See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
-"
-`;
-
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/devfile.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 15`] = `
 "schemaVersion: 2.0.0
 metadata:
   name: aws-universal
@@ -566,7 +349,73 @@ commands:
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/build.gradle 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 16`] = `
+"{
+    "body": "{\\"message\\": \\"hello world\\"}",
+    "resource": "/{proxy+}",
+    "path": "/path/to/resource",
+    "httpMethod": "POST",
+    "isBase64Encoded": false,
+    "queryStringParameters": {
+      "foo": "bar"
+    },
+    "pathParameters": {
+      "proxy": "/path/to/resource"
+    },
+    "stageVariables": {
+      "baz": "qux"
+    },
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, sdch",
+      "Accept-Language": "en-US,en;q=0.8",
+      "Cache-Control": "max-age=0",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "US",
+      "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Custom User Agent String",
+      "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+      "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+    },
+    "requestContext": {
+      "accountId": "123456789012",
+      "resourceId": "123456",
+      "stage": "prod",
+      "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+      "requestTime": "09/Apr/2015:12:34:56 +0000",
+      "requestTimeEpoch": 1428582896000,
+      "identity": {
+        "cognitoIdentityPoolId": null,
+        "accountId": null,
+        "cognitoIdentityId": null,
+        "caller": null,
+        "accessKey": null,
+        "sourceIp": "127.0.0.1",
+        "cognitoAuthenticationType": null,
+        "cognitoAuthenticationProvider": null,
+        "userArn": null,
+        "userAgent": "Custom User Agent String",
+        "user": null
+      },
+      "path": "/prod/path/to/resource",
+      "resourcePath": "/{proxy+}",
+      "httpMethod": "POST",
+      "apiId": "1234567890",
+      "protocol": "HTTP/1.1"
+    }
+  }
+  "
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 17`] = `
 "plugins {
     id 'java'
     id 'jacoco'
@@ -604,7 +453,7 @@ targetCompatibility = 11
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.jar 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 18`] = `
 "PK
      A            	   META-INF/ PK
      A m�>=@   ?      META-INF/MANIFEST.MF�M��LK-.�
@@ -1151,7 +1000,7 @@ f  org/gradle/wrapper/SystemPropertiesHandler.classPK
 �8=|  �  9           ��]�  org/gradle/cli/SystemPropertiesCommandLineConverter.classPK    4 4 J  0�    "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradle/wrapper/gradle-wrapper.properties 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 19`] = `
 "distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 distributionUrl=https\\://services.gradle.org/distributions/gradle-7.3.3-bin.zip
@@ -1160,7 +1009,7 @@ zipStorePath=wrapper/dists
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 20`] = `
 "#!/bin/sh
 
 #
@@ -1398,7 +1247,7 @@ exec "$JAVACMD" "$@"
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/gradlew.bat 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 21`] = `
 "@rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -1491,7 +1340,7 @@ if "%OS%"=="Windows_NT" endlocal
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/main/java/helloworld/App.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 22`] = `
 "package helloworld;
 
 import java.io.BufferedReader;
@@ -1543,7 +1392,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/HelloWorldFunction/src/test/java/helloworld/AppTest.java 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 23`] = `
 "package helloworld;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -1569,73 +1418,223 @@ public class AppTest {
 "
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/gradle-test-fn-name/events/event.json 1`] = `
-"{
-    "body": "{\\"message\\": \\"hello world\\"}",
-    "resource": "/{proxy+}",
-    "path": "/path/to/resource",
-    "httpMethod": "POST",
-    "isBase64Encoded": false,
-    "queryStringParameters": {
-      "foo": "bar"
-    },
-    "pathParameters": {
-      "proxy": "/path/to/resource"
-    },
-    "stageVariables": {
-      "baz": "qux"
-    },
-    "headers": {
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-      "Accept-Encoding": "gzip, deflate, sdch",
-      "Accept-Language": "en-US,en;q=0.8",
-      "Cache-Control": "max-age=0",
-      "CloudFront-Forwarded-Proto": "https",
-      "CloudFront-Is-Desktop-Viewer": "true",
-      "CloudFront-Is-Mobile-Viewer": "false",
-      "CloudFront-Is-SmartTV-Viewer": "false",
-      "CloudFront-Is-Tablet-Viewer": "false",
-      "CloudFront-Viewer-Country": "US",
-      "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
-      "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "Custom User Agent String",
-      "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
-      "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
-      "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
-      "X-Forwarded-Port": "443",
-      "X-Forwarded-Proto": "https"
-    },
-    "requestContext": {
-      "accountId": "123456789012",
-      "resourceId": "123456",
-      "stage": "prod",
-      "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
-      "requestTime": "09/Apr/2015:12:34:56 +0000",
-      "requestTimeEpoch": 1428582896000,
-      "identity": {
-        "cognitoIdentityPoolId": null,
-        "accountId": null,
-        "cognitoIdentityId": null,
-        "caller": null,
-        "accessKey": null,
-        "sourceIp": "127.0.0.1",
-        "cognitoAuthenticationType": null,
-        "cognitoAuthenticationProvider": null,
-        "userArn": null,
-        "userAgent": "Custom User Agent String",
-        "user": null
-      },
-      "path": "/prod/path/to/resource",
-      "resourcePath": "/{proxy+}",
-      "httpMethod": "POST",
-      "apiId": "1234567890",
-      "protocol": "HTTP/1.1"
+exports[`Blueprint snapshots Blueprint snapshots - Test 24`] = `
+"
+## This Project
+
+This project is an AWS Serverless Application Model (SAM) project. A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
+serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
+applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
+After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
+project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) application URL is available under the output for your workflow.
+
+### Architecture overview
+
+![Architecture diagram](https://d2oq83bpv90sqw.cloudfront.net/SAM-arch.png)
+
+## Connections and permissions
+
+Configure your AWS account connection from the **AWS accounts** tab in your Amazon CodeCatalyst space. Add AWS IAM roles to
+the account extension to authorize project workflows to access AWS account resources.
+
+The SAM application requires the following IAM roles to build and deploy the application:
+
+### IAM role trust policy
+
+\`\`\`
+{
+"Version": "2012-10-17",
+"Statement": [
+    {
+        "Sid": "CodeCatalyst",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "codecatalyst-runner.amazonaws.com",
+                "codecatalyst.amazonaws.com"
+            ]
+        },
+        "Action": "sts:AssumeRole"
     }
-  }
-  "
+]
+}
+\`\`\`
+
+### Deploy role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:TagRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "cloudformation:*",
+                "lambda:*",
+                "apigateway:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+_Note: You must update the policy if you add more resources.
+
+### Build role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+## Project resources
+
+After being successfully created, this project deploys the following AWS resources:
+
+- AWS Lambda function(s) - A resource that invokes your code on a high-availability compute infrastructure without provisioning or managing servers. For
+  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+- Amazon API Gateway - A resource that creates, publishes, maintains, monitors, and secures REST, HTTP, and WebSocket APIs at any scale. For
+  more information on API Gateway, see the
+  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+- IAM role(s) -  A resource that secures controlled access to AWS resources such as the AWS Lambda function(s). For more information on IAM, see the
+  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+The deployment status can be viewed in the project's workflow.
+
+This blueprint creates the following Amazon CodeCatalyst resources:
+
+- Source repository named \`gradle-src-repo-name\` - A Git repository to store, version, and manage the following project assets:
+  - \`gradle-test-fn-name\` - Source code and supporting files for the Lambda function of the application, \`gradle-test-fn-name\` contains the following:
+    - \`HelloWorldFunction/src/main\` - Code for the AWS Lambda function of the application
+    - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
+    - \`HelloWorldFunction/src/test\` - Tests for the AWS Lambda function's code
+  - \`template.yaml\` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles.
+  - \`devfile.yaml\` - A devfile that defines Dev Environments or development environments that have been built for the cloud.
+
+  For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Workflows defined in \`.codecatalyst/workflows/build-and-release.yaml\`
+
+  A workflow is an automated procedure that defines how to build, test, and deploy the serverless application. For more information, see the _Build,
+  test, and deploy with workflows_ section of the **Amazon CodeCatalyst User Guide**.
+
+- Environment(s) - An abstraction of infrastructure resources that deploy applications. You can use environments can be used to organize deployment actions into a production or non-production environment.
+
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
+  Environment operation in Amazon CodeCatalyst.
+
+  For more information on creating Dev Environments, see the _Working with Dev Environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+
+## Using the SAM CLI to build and test locally
+
+You can use the SAM Command Line Interface (CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your AWS Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches AWS Lambda. It can also emulate your application's build environment and API.
+To work on the sample code generated, clone your project's repository to your local computer. For more information, see the _Cloning a source repository_ section in the Amazon CodeCatalyst User Guide.
+
+To use the SAM CLI, install following tools into your workspace.
+
+  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+  * Install [Python 3](https://www.python.org/downloads/)
+ * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)
+
+To build your application locally, run the following command in your shell:
+
+\`\`\`
+    sam build
+\`\`\`
+
+  The SAM CLI installs dependencies defined in the HelloWorldFunction/build.gradle file of the AWS Lambda function, creates a deployment package, and saves it in the \`.aws-sam/build\` folder.
+  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
+  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
+
+\`\`\`
+  sam local invoke <functionName> --event <functionName>/events/event.json
+\`\`\`
+
+For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
+The SAM CLI can also emulate your application's API. Run the \`sam local start-api\` command to run the API locally. The default port is 3000.
+
+\`\`\`
+  sam local start-api
+  curl http://localhost:3000/
+\`\`\`
+
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
+The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
+
+\`\`\`yaml
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+\`\`\`
+
+
+## Running tests
+Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
+\`\`\`
+$ cd HelloWorldFunction
+$ gradle test
+\`\`\`
+    
+
+## Adding a resource to your serverless application
+The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
+
+## Deploying your serverless application
+The application is deployed through Amazon CodeCatalyst using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` branch of the source repository.
+Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Working with triggers_ section in the  Amazon CodeCatalyst User Guide.
+The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`default_environment\` using the \`sam-stack-\` AWS Cloudformation stack.
+For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
+
+If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
+\`\`\`
+  cd .aws-sam/build/
+  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
+  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+\`\`\`
+
+## Additional Resources
+See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
+"
 `;
 
-exports[`Blueprint snapshots java11gradle.json configuration matches src/gradle-src-repo-name/template.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 25`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -1675,7 +1674,7 @@ Outputs:
     Value: !GetAtt gradle-test-fn-nameFunctionRole.Arn"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches options.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 26`] = `
 "{
   "environment": {
     "name": "default_environment",
@@ -1690,11 +1689,10 @@ exports[`Blueprint snapshots node14.json configuration matches options.json 1`] 
     "functionName": "SamFirstEndpoint"
   },
   "outdir": "synth/01.snapshot.node14.json/proposed-bundle"
-}
-"
+}"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Builder.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 27`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -1710,7 +1708,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Test Runner.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 28`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -1733,7 +1731,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 }"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 29`] = `
 "#!/usr/bin/env bash
 
 WORKING_DIR=SamFirstEndpoint/hello-world/
@@ -1742,7 +1740,7 @@ npm --prefix $WORKING_DIR run coverage
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 30`] = `
 "Name: build-and-release
 SchemaVersion: "1.0"
 Triggers:
@@ -1797,7 +1795,7 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.idea/externalDependencies.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 31`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
     <component name="ExternalDependencies">
@@ -1812,7 +1810,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/all_tests_coverage.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 32`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="all tests coverage" type="js.build_tools.npm">
         <package-json value="$PROJECT_DIR$/SamFirstEndpoint/hello-world/package.json" />
@@ -1838,7 +1836,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_build.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 33`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam build" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam build" />
@@ -1859,7 +1857,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_local_invoke.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 34`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam local invoke" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json" />
@@ -1880,7 +1878,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_start_local_api.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 35`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam start local api" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local start-api" />
@@ -1901,14 +1899,14 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 36`] = `
 "[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.vscode/extensions.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 37`] = `
 "{
     "recommendations": [
         "redhat.vscode-yaml",
@@ -1918,7 +1916,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.vscode/launch.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 38`] = `
 "{
     "version": "1.0.0",
     "configurations": [
@@ -1956,7 +1954,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/.vscode/tasks.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 39`] = `
 "{
     "version": "2.0.0",
     "tasks": [
@@ -2016,7 +2014,42 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/README.md 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 40`] = `
+"schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:1.0
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
+        template.yaml
+      workingDir: $PROJECT_SOURCE
+      component: aws-runtime
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 41`] = `
 "
 ## This Project
 
@@ -2233,7 +2266,7 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 42`] = `
 "{
   "body": "{\\"message\\": \\"hello world\\"}",
   "resource": "/{proxy+}",
@@ -2299,12 +2332,12 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/.eslintignore 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 43`] = `
 "node_modules
 .aws-sam"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/.eslintrc.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 44`] = `
 "module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -2322,9 +2355,9 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
   };"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/.npmignore 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 45`] = `""`;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/.prettierrc.js 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 46`] = `
 "module.exports = {
     semi: true,
     trailingComma: "all",
@@ -2334,7 +2367,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
   };"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/app.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 47`] = `
 "import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 /**
@@ -2371,7 +2404,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/jest.config.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 48`] = `
 "/*
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
@@ -2390,7 +2423,7 @@ export default {
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/package.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 49`] = `
 "{
   "name": "hello_world",
   "version": "1.0.0",
@@ -2435,7 +2468,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tests/unit/test-handler.test.ts 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 50`] = `
 "import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { lambdaHandler } from '../../app';
 
@@ -2503,7 +2536,7 @@ describe('Unit test for app handler', function () {
 "
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello-world/tsconfig.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 51`] = `
 "{
     "compilerOptions": {
       "target": "es2020",
@@ -2521,42 +2554,7 @@ exports[`Blueprint snapshots node14.json configuration matches src/ServerlessApp
   }"
 `;
 
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
-"schemaVersion: 2.0.0
-metadata:
-  name: aws-universal
-  version: 1.0.1
-  displayName: AWS Universal
-  description: Stack with AWS Universal Tooling
-  tags:
-    - aws
-    - a12
-  projectType: aws
-components:
-  - name: aws-runtime
-    container:
-      image: public.ecr.aws/aws-mde/universal-image:1.0
-      mountSources: true
-      volumeMounts:
-        - name: docker-store
-          path: /var/lib/docker
-  - name: docker-store
-    volume:
-      size: 16Gi
-events:
-  postStart:
-    - bootstrap-and-build
-commands:
-  - id: bootstrap-and-build
-    exec:
-      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
-        template.yaml
-      workingDir: $PROJECT_SOURCE
-      component: aws-runtime
-"
-`;
-
-exports[`Blueprint snapshots node14.json configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 52`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:
@@ -2600,7 +2598,7 @@ Outputs:
     Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches options.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 53`] = `
 "{
   "environment": {
     "name": "default_environment",
@@ -2615,11 +2613,10 @@ exports[`Blueprint snapshots python39.json configuration matches options.json 1`
     "functionName": "SamFirstEndpoint"
   },
   "outdir": "synth/01.snapshot.python39.json/proposed-bundle"
-}
-"
+}"
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Builder.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 54`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -2635,7 +2632,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.cloud9/runners/SAM Project Test Runner.run 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 55`] = `
 "{
   "script": [
     "for directory in /projects/* ; do",
@@ -2658,7 +2655,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/bootstrap.sh 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 56`] = `
 "#!/bin/bash
 
 VENV="venv"
@@ -2670,7 +2667,7 @@ $VENV/bin/pip install -r SamFirstEndpoint/hello_world/requirements.txt
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/scripts/run-tests.sh 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 57`] = `
 "#!/bin/bash
 
 echo "Running unit tests..."
@@ -2678,7 +2675,7 @@ PYTHONPATH=SamFirstEndpoint pytest --junitxml=test_results.xml --cov-report xml:
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.codecatalyst/workflows/build-and-release.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 58`] = `
 "Name: build-and-release
 SchemaVersion: "1.0"
 Triggers:
@@ -2734,13 +2731,13 @@ Actions:
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.coveragerc 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 59`] = `
 "[run]
 omit = SamFirstEndpoint/tests/integration/*
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/externalDependencies.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 60`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
     <component name="ExternalDependencies">
@@ -2753,7 +2750,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/application_integration_tests.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 61`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="application integration tests" type="tests" factoryName="Unittests">
         <module name="ServerlessAppRepo" />
@@ -2775,7 +2772,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/application_unit_tests.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 62`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="application unit tests" type="tests" factoryName="Unittests">
         <module name="ServerlessAppRepo" />
@@ -2797,7 +2794,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_build.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 63`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam build" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam build" />
@@ -2818,7 +2815,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_local_invoke.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 64`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam local invoke" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json" />
@@ -2839,7 +2836,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.idea/runConfigurations/sam_start_local_api.xml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 65`] = `
 "<component name="ProjectRunConfigurationManager">
     <configuration default="false" name="sam start local api" type="ShConfigurationType">
         <option name="SCRIPT_TEXT" value="sam local start-api" />
@@ -2860,14 +2857,14 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.ownership-file 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 66`] = `
 "[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.vscode/extensions.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 67`] = `
 "{
     "recommendations": [
         "ms-python.python",
@@ -2878,7 +2875,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.vscode/launch.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 68`] = `
 "{
     "version": "0.2.0",
     "configurations": [
@@ -2910,7 +2907,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.vscode/settings.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 69`] = `
 "{
     "python.testing.pytestArgs": [
         "python"
@@ -2922,7 +2919,7 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/.vscode/tasks.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 70`] = `
 "{
     "version": "2.0.0",
     "tasks": [
@@ -2997,7 +2994,44 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/README.md 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 71`] = `
+"schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:1.0
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && .
+        ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
+        template.yaml --use-container --build-image
+        public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
+      workingDir: $PROJECT_SOURCE
+      component: aws-runtime
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 72`] = `
 "
 ## This Project
 
@@ -3218,9 +3252,9 @@ See the Amazon CodeCatalyst User Guide for additional information on using the f
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 73`] = `""`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/events/event.json 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 74`] = `
 "{
   "body": "{\\"message\\": \\"hello world\\"}",
   "resource": "/hello",
@@ -3286,9 +3320,9 @@ exports[`Blueprint snapshots python39.json configuration matches src/ServerlessA
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 75`] = `""`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/app.py 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 76`] = `
 "import json
 
 # import requests
@@ -3334,13 +3368,13 @@ def lambda_handler(event, context):
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/hello_world/requirements.txt 1`] = `"requests"`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 77`] = `"requests"`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 78`] = `""`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 79`] = `""`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/integration/test_api_gateway.py 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 80`] = `
 "import os
 
 import boto3
@@ -3389,7 +3423,7 @@ class TestApiGateway:
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/requirements.txt 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 81`] = `
 "pytest
 pytest-cov
 pytest-mock
@@ -3398,9 +3432,9 @@ requests
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/__init__.py 1`] = `""`;
+exports[`Blueprint snapshots Blueprint snapshots - Test 82`] = `""`;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/SamFirstEndpoint/tests/unit/test_handler.py 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 83`] = `
 "import json
 
 import pytest
@@ -3476,44 +3510,7 @@ def test_lambda_handler(apigw_event):
 "
 `;
 
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/devfile.yaml 1`] = `
-"schemaVersion: 2.0.0
-metadata:
-  name: aws-universal
-  version: 1.0.1
-  displayName: AWS Universal
-  description: Stack with AWS Universal Tooling
-  tags:
-    - aws
-    - a12
-  projectType: aws
-components:
-  - name: aws-runtime
-    container:
-      image: public.ecr.aws/aws-mde/universal-image:1.0
-      mountSources: true
-      volumeMounts:
-        - name: docker-store
-          path: /var/lib/docker
-  - name: docker-store
-    volume:
-      size: 16Gi
-events:
-  postStart:
-    - bootstrap-and-build
-commands:
-  - id: bootstrap-and-build
-    exec:
-      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && .
-        ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
-        template.yaml --use-container --build-image
-        public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
-      workingDir: $PROJECT_SOURCE
-      component: aws-runtime
-"
-`;
-
-exports[`Blueprint snapshots python39.json configuration matches src/ServerlessAppRepo/template.yaml 1`] = `
+exports[`Blueprint snapshots Blueprint snapshots - Test 84`] = `
 "Transform: AWS::Serverless-2016-10-31
 Description: lambdas
 Globals:

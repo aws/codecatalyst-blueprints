@@ -129,6 +129,10 @@
       "type": "runtime"
     },
     {
+      "name": "esbuild",
+      "type": "runtime"
+    },
+    {
       "name": "jmespath",
       "type": "runtime"
     },

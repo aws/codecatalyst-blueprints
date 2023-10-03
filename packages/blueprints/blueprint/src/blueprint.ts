@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { JsonFile, Project } from 'projen';
+import { Project } from 'projen';
 import { Context } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
@@ -69,11 +69,9 @@ export class Blueprint extends Project {
     }
 
     // write the options to the bundle
-    new JsonFile(this, OPTIONS_FILE, {
-      obj: options,
-      readonly: false,
-      marker: false,
-    });
+    const optionsRecordPath = path.join(this.outdir, OPTIONS_FILE);
+    fs.mkdirSync(path.dirname(optionsRecordPath), { recursive: true });
+    fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
 
     this.resynthPullRequest = {
       originBranch: this.context.branchName || 'resynthesis-update',
@@ -102,6 +100,10 @@ export class Blueprint extends Project {
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
+    ancestorBundle = path.resolve(ancestorBundle);
+    existingBundle = path.resolve(existingBundle);
+    proposedBundle = path.resolve(proposedBundle);
+
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
     const overriddenStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
     const validStrategies = merge(this.strategies || {}, filterStrategies(overriddenStrategies, this.context.package));

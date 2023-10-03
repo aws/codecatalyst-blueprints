@@ -14,6 +14,7 @@ const project = new ProjenBlueprintComponent({
     'yargs',
     'ts-node',
     'axios',
+    'esbuild',
     'pino-pretty',
     'typescript',
     'jmespath',

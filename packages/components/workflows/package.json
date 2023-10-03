@@ -19,7 +19,8 @@
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
     "component:package": "yarn build && yarn package",
-    "npm:push": "yarn bump && component:package && yarn npm publish"
+    "npm:push": "yarn bump && yarn component:package && yarn npm:publish",
+    "npm:publish": "npm publish dist/js/*.tgz"
   },
   "devDependencies": {
     "@amazon-codecatalyst/blueprint-component.environments": "*",

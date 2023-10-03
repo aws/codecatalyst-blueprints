@@ -18,8 +18,9 @@
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
-    "npm:publish": "yarn bump && yarn build && yarn package && yarn npm:push",
-    "npm:push": "yarn npm publish"
+    "component:package": "yarn build && yarn package",
+    "npm:push": "yarn bump && yarn component:package && yarn npm:publish",
+    "npm:publish": "npm publish dist/js/*.tgz"
   },
   "devDependencies": {
     "@types/node": "^18",
