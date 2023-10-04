@@ -44,15 +44,19 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
   // todo validate input
 
   // build the resythesis driver
-  const resynthDriver: DriverFile = options.resynthDriver || makeResynthDriverFile(log, {
-    blueprintLocation: options.blueprint,
-    resynthDriver: options.resynthDriver,
-  });
+  const resynthDriver: DriverFile =
+    options.resynthDriver ||
+    makeResynthDriverFile(log, {
+      blueprintLocation: options.blueprint,
+      resynthDriver: options.resynthDriver,
+    });
 
-  const synthDriver: DriverFile = options.synthDriver || makeSynthDriverFile(log, {
-    blueprintLocation: options.blueprint,
-    synthDriver: options.synthDriver,
-  });
+  const synthDriver: DriverFile =
+    options.synthDriver ||
+    makeSynthDriverFile(log, {
+      blueprintLocation: options.blueprint,
+      synthDriver: options.synthDriver,
+    });
 
   const { ancestorLocation, proposedLocation, existingLocation, resolvedLocation } = setupResynthesisOutputDirectory(log, options.outdir, {
     existingBundle: options.existingBundleLocation,
@@ -71,8 +75,11 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
       synthDriver: synthDriver,
       existingBundle: existingLocation,
       cleanUp: false,
+      envVariables: {
+        RESYNTH_PHASE: 'ANCESTOR',
+      },
     }));
-  };
+  }
 
   // synthesize proposed files
   void (await synthesize(log, {
@@ -83,6 +90,9 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     synthDriver: synthDriver,
     existingBundle: existingLocation,
     cleanUp: false,
+    envVariables: {
+      RESYNTH_PHASE: 'PROPOSED',
+    },
   }));
 
   // if theres nothing at the existing files, copy-the ancestor files into there too.
@@ -92,7 +102,6 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     log.warn('===============================');
     copyFolderSync(log, ancestorLocation, existingLocation);
   }
-
 
   log.debug(`Using resynth driver: ${resynthDriver.path}`);
   try {
@@ -113,6 +122,9 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
       existingBundleDirectory: existingLocation,
       proposedBundleDirectory: proposedLocation,
       outputDirectory: resolvedLocation,
+      envVariables: {
+        RESYNTH_PHASE: 'RESYNTH',
+      },
     });
     const timeEnd = Date.now();
 
@@ -205,6 +217,7 @@ const executeResynthesisCommand = (
     existingBundleDirectory: string;
     proposedBundleDirectory: string;
     outputDirectory: string;
+    envVariables?: { [key: string]: string };
   },
 ) => {
   cp.execSync(`mkdir -p ${options.outputDirectory}`, {

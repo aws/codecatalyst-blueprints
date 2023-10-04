@@ -37,6 +37,8 @@ export interface SynthOptions {
 
   synthDriver?: DriverFile;
   cleanUp: boolean;
+
+  envVariables?: { [key: string]: string };
 }
 
 /**
@@ -54,10 +56,12 @@ export interface SynthOptions {
 export async function synthesize(log: pino.BaseLogger, options: SynthOptions) {
   validateSynthOptions(log, options);
 
-  const synthDriver: DriverFile = options.synthDriver || makeSynthDriverFile(log, {
-    synthDriver: options.synthDriver,
-    blueprintLocation: options.blueprintPath,
-  });
+  const synthDriver: DriverFile =
+    options.synthDriver ||
+    makeSynthDriverFile(log, {
+      synthDriver: options.synthDriver,
+      blueprintLocation: options.blueprintPath,
+    });
 
   log.debug(`Using driver:${synthDriver.runtime} ${synthDriver.path}`);
   try {
@@ -76,6 +80,7 @@ export async function synthesize(log: pino.BaseLogger, options: SynthOptions) {
       options: options.blueprintOptions,
       entropy: String(Math.floor(Date.now() / 100)),
       existingBundleDirectory: options.existingBundle,
+      envVariables: options.envVariables || {},
     });
     const timeEnd = Date.now();
 
@@ -119,11 +124,15 @@ function executeSynthesisCommand(
     entropy: string;
     options: any;
     existingBundleDirectory?: string;
+    envVariables: { [key: string]: string };
   },
 ) {
   cp.execSync(`mkdir -p ${options.outputDirectory}`, {
     stdio: 'inherit',
     cwd,
+    env: {
+      ...options.envVariables,
+    },
   });
   const synthCommand = [
     `npx ${options.driver.runtime}`,
@@ -147,10 +156,13 @@ function executeSynthesisCommand(
   }
 }
 
-export const makeSynthDriverFile = (_log: pino.BaseLogger, options: {
-  blueprintLocation: string;
-  synthDriver?: DriverFile;
-}): DriverFile => {
+export const makeSynthDriverFile = (
+  _log: pino.BaseLogger,
+  options: {
+    blueprintLocation: string;
+    synthDriver?: DriverFile;
+  },
+): DriverFile => {
   if (options.synthDriver) {
     return options.synthDriver;
   }
