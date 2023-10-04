@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Project } from 'projen';
-import { Context } from './context/context';
+import { Context, ResynthesisPhase } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
@@ -46,6 +46,7 @@ export class Blueprint extends Project {
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       branchName: process.env.BRANCH_NAME,
+      resynthesisPhase: (process.env.RESYNTH_PHASE || 'ANCESTOR') as ResynthesisPhase,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
         registry: process.env.NPM_CONFIG_REGISTRY ?? '',
@@ -214,7 +215,6 @@ function structureStrategyReport(
   }
   return `<<STRATEGY>> ${overrideText}[${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`;
 }
-
 
 function getOptions(location: string): any {
   try {

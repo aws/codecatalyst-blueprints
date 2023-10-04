@@ -31,10 +31,24 @@ export interface Project {
   };
 }
 
+export type ResynthesisPhase = 'ANCESTOR' | 'PROPOSED' | 'RESYNTH';
 export interface Context {
   readonly spaceName?: string;
   readonly environmentId?: string;
 
+  /**
+   * This represents which phase of (re)synthesis the blueprint is currently running under
+   * Phase is one of three options:
+   * 1. 'PROPOSED' - indicates that the blueprint is running with the intent of generating a new project.
+   * This typically happens when a blueprint is being run with the intention of adding into a new project
+   * or synthesizing a 'proposed' bundle.
+   * 2. 'ANCESTOR' - indicates that a blueprint is running with the intent of generating an ancestor bundle
+   * to help set up a diff set for resynthesis
+   * 3. 'RESYNTH' - indicates that a blueprint is running with the intent of invoking the 'resynth()' function.
+   * In this phase the synth() function is not executed.
+   * @default 'PROPOSED'
+   */
+  readonly resynthesisPhase: ResynthesisPhase;
   /**
    * Requested BranchName. Typically used for overriding the branch names for resynthesis updates.
    */
