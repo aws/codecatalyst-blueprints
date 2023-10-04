@@ -15,8 +15,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
     "region": "us-west-2"
   },
   "outdir": "synth/01.snapshot.java-default.json/proposed-bundle"
-}
-"
+}"
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 2`] = `

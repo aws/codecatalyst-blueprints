@@ -23,6 +23,7 @@
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
+    "prerelease": "yarn build && yarn package",
     "npm:publish": "yarn bump && yarn build && yarn package && yarn npm:push",
     "npm:push": "yarn npm publish"
   },
@@ -56,11 +57,10 @@
     "@aws-sdk/client-codecatalyst": "^3.395.0",
     "@aws-sdk/client-s3": "^3.360.0",
     "@aws-sdk/client-sts": "^3.360.0",
-    "@esbuild/linux-x64": "*",
     "ajv": "^8.12.0",
     "axios": "^0.25.0",
     "deepmerge": "^4.3.1",
-    "esbuild": "*",
+    "esbuild": "0.19.3",
     "jmespath": "^0.15.0",
     "pino": "^6.13.4",
     "pino-pretty": "^4.8.0",
@@ -71,7 +71,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.2.12",
+  "version": "0.2.16",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

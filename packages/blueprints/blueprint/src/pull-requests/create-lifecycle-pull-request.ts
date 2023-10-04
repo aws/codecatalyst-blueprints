@@ -25,7 +25,10 @@ export const createLifecyclePullRequest = (
     const destructuredPath = destructurePath(sourcepath, '');
     const { subdirectory, filepath } = destructuredPath;
     const repository = subdirectory;
-    const diff = generateDifferencePatch(path.join(exisitingBundle, sourcepath), path.join(resolvedBundle, sourcepath), filepath!);
+
+    const oldFile = path.join(exisitingBundle, sourcepath);
+    const newFile = path.join(resolvedBundle, sourcepath);
+    const diff = generateDifferencePatch(oldFile, newFile, filepath!);
 
     if (diff) {
       const differenceIdentifier = `${repository}-${options.originBranch}`;
