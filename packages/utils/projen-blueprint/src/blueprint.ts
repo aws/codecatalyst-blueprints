@@ -157,6 +157,9 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.gitignore.addPatterns('synth');
     this.npmignore?.addPatterns('synth');
 
+    //set prerelease
+    this.setScript('prerelease', 'yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package');
+
     // set upload to aws script
     const space = options.publishingSpace || options.publishingOrganization || '<<replace-organization>>';
     this.package.addField('publishingSpace', space);

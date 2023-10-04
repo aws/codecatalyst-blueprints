@@ -4,6 +4,8 @@
   "scripts": {
     "clean-all": "bash ./scripts/clean.sh",
     "clean-synth": "bash ./scripts/clean-synth.sh",
+    "prerelease": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological -v run prerelease",
+    "release": "npm publish --workspaces --access=public --dry-run",
     "build": "PROJEN_DISABLE_POST=1 yarn workspaces foreach --topological-dev -v run build",
     "projen": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v -t run projen",
     "eslint": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v run eslint",
@@ -12,6 +14,8 @@
     "components:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-component/*' run npm:publish",
     "utils:publish": "yarn workspaces foreach -v  --topological --include '@caws-blueprint-util/*' run npm:publish",
     "components-utils:publish": "yarn components:publish && yarn utils:publish",
+    "components:bump": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v --include '@caws-blueprint-component/*' --include '@caws-blueprint-util/*' --include '@aws/codecatalyst-blueprints' run bump",
+    "blueprints:bump": "PROJEN_DISABLE_POST=1 yarn workspaces foreach -v --include '@caws-blueprint/*' run bump",
     "test": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test",
     "test:update": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run test:update",
     "blueprints:release": "yarn workspaces foreach -v  --topological --include '@caws-blueprint/*' run blueprint:release $*",

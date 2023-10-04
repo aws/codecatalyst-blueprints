@@ -31,7 +31,6 @@ export function generateDifferencePatch(intendedOldFile: string, intendedNewFile
     rawDiff = rawDiff.replace(`--- a/${oldFile}`, `--- a/${destination}`);
     rawDiff = rawDiff.replace(`+++ b${newFile}`, `+++ b/${destination}`);
     rawDiff = rawDiff.replace(`+++ b/${newFile}`, `+++ b/${destination}`);
-    console.log(rawDiff);
   }
   return rawDiff;
 }
