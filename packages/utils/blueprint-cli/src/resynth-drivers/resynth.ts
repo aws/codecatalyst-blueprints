@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as pino from 'pino';
 import yargs from 'yargs';
 import { RESYNTH_TS_NAME, writeResynthDriver } from './driver';
-import { DriverFile, synthesize } from '../synth-drivers/synth';
+import { DriverFile, makeSynthDriverFile, synthesize } from '../synth-drivers/synth';
 import { cleanUpDriver } from '../synth-drivers/synth-driver';
 
 export interface ResynthesizeCliOptions extends yargs.Arguments {
@@ -43,20 +43,36 @@ interface ResynthesizeOptions {
 export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOptions) {
   // todo validate input
 
+  // build the resythesis driver
+  const resynthDriver: DriverFile = options.resynthDriver || makeResynthDriverFile(log, {
+    blueprintLocation: options.blueprint,
+    resynthDriver: options.resynthDriver,
+  });
+
+  const synthDriver: DriverFile = options.synthDriver || makeSynthDriverFile(log, {
+    blueprintLocation: options.blueprint,
+    synthDriver: options.synthDriver,
+  });
+
   const { ancestorLocation, proposedLocation, existingLocation, resolvedLocation } = setupResynthesisOutputDirectory(log, options.outdir, {
     existingBundle: options.existingBundleLocation,
   });
 
-  // synthesize ancestor files
-  void (await synthesize(log, {
-    blueprintPath: options.priorBlueprint,
-    blueprintOptions: options.priorOptions,
-    jobname: `${options.jobname}-${ancestorLocation}`,
-    outputDirectory: ancestorLocation,
-    synthDriver: options.synthDriver,
-    existingBundle: existingLocation,
-    cleanUp: options.cleanUp,
-  }));
+  // synthesize ancestor files if nothing exists at the location
+  if (fs.existsSync(ancestorLocation)) {
+    log.warn({ ancestorLocation }, 'Mocked ancestor already exists. Preserving mock, delete folder to regenerate');
+  } else {
+    createFolders(log, [ancestorLocation]);
+    void (await synthesize(log, {
+      blueprintPath: options.priorBlueprint,
+      blueprintOptions: options.priorOptions,
+      jobname: `${options.jobname}-${ancestorLocation}`,
+      outputDirectory: ancestorLocation,
+      synthDriver: synthDriver,
+      existingBundle: existingLocation,
+      cleanUp: false,
+    }));
+  };
 
   // synthesize proposed files
   void (await synthesize(log, {
@@ -64,9 +80,9 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     blueprintOptions: options.options,
     jobname: `${options.jobname}-${proposedLocation}`,
     outputDirectory: proposedLocation,
-    synthDriver: options.synthDriver,
+    synthDriver: synthDriver,
     existingBundle: existingLocation,
-    cleanUp: options.cleanUp,
+    cleanUp: false,
   }));
 
   // if theres nothing at the existing files, copy-the ancestor files into there too.
@@ -77,11 +93,6 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     copyFolderSync(log, ancestorLocation, existingLocation);
   }
 
-  // build the resythesis driver
-  const resynthDriver: DriverFile = makeResynthDriverFile(log, {
-    blueprintLocation: options.blueprint,
-    resynthDriver: options.resynthDriver,
-  });
 
   log.debug(`Using resynth driver: ${resynthDriver.path}`);
   try {
@@ -112,6 +123,10 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
     // if I wrote the resynth driver, then also clean it up.
     if (!options.resynthDriver && options.cleanUp === true) {
       cleanUpDriver(log, resynthDriver);
+    }
+
+    if (!options.synthDriver && options.cleanUp === true) {
+      cleanUpDriver(log, synthDriver);
     }
   }
 }
@@ -164,10 +179,11 @@ const setupResynthesisOutputDirectory = (
     copyFolderSync(log, options.existingBundle, existingFilesLocation);
   }
 
-  // clean the rest of the output locations
+  // clean the rest of the output locations, except for the ancestor files.
+  // this allows users to mock ancestor blueprint generations much easier.
   const resolvedFilesLocation = path.join(outputDirectory, RESOLVED_BUNDLE_SUBPATH);
-  removeFolders(log, [ancestorFilesLocation, proposedFilesLocation, resolvedFilesLocation]);
-  createFolders(log, [ancestorFilesLocation, proposedFilesLocation, resolvedFilesLocation, existingFilesLocation]);
+  removeFolders(log, [proposedFilesLocation, resolvedFilesLocation]);
+  createFolders(log, [proposedFilesLocation, resolvedFilesLocation, existingFilesLocation]);
 
   return {
     ancestorLocation: ancestorFilesLocation,

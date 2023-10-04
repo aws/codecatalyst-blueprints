@@ -22,6 +22,7 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
+    "prerelease": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
     "blueprint:preview": "yarn build:lib && yarn bump:preview && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
@@ -64,7 +65,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.2.34",
+  "version": "0.2.38",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
