@@ -64,7 +64,7 @@
     "@caws-blueprint-component/caws-environments": "0.2.x",
     "@caws-blueprint-component/caws-source-repositories": "0.2.x",
     "@caws-blueprint-component/caws-workflows": "0.2.x",
-    "@caws-blueprint-component/caws-workspaces": "0.2.x",
+    "@caws-blueprint-component/caws-workspaces": "0.3.x",
     "@caws-blueprint/blueprints.blueprint": "0.2.x",
     "globule": "*",
     "pino": "^6.13.4",

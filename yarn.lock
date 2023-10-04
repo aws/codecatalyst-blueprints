@@ -787,7 +787,7 @@ __metadata:
     "@caws-blueprint-component/caws-issues": "*"
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.3.x
     "@caws-blueprint-util/projen-blueprint-component": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
     "@types/node": ^18
@@ -1321,21 +1321,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@caws-blueprint-component/caws-workspaces@npm:0.2.x":
-  version: 0.2.14
-  resolution: "@caws-blueprint-component/caws-workspaces@npm:0.2.14"
-  dependencies:
-    projen: 0.71.112
-    yaml: "*"
-  peerDependencies:
-    "@caws-blueprint-component/caws-source-repositories": 0.2.x
-    "@caws-blueprint/blueprints.blueprint": 0.2.x
-    projen: "*"
-  checksum: ed6c6c6a3c6da58d1f6153c15bd87093989b257ebb04f5f8fe91f88ccfce4e7dacedd13417d21f42d40f198d4a2234eee04d102407595f3fbdfb1b19a4e3f159
-  languageName: node
-  linkType: hard
-
-"@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
+"@caws-blueprint-component/caws-workspaces@0.3.x, @caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces":
   version: 0.0.0-use.local
   resolution: "@caws-blueprint-component/caws-workspaces@workspace:packages/components/caws-workspaces"
   dependencies:
@@ -1513,7 +1499,7 @@ __metadata:
     "@caws-blueprint-component/caws-environments": 0.2.x
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.3.x
     "@caws-blueprint-util/blueprint-cli": 0.2.x
     "@caws-blueprint-util/projen-blueprint": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
@@ -1550,7 +1536,7 @@ __metadata:
     "@caws-blueprint-component/caws-environments": 0.2.x
     "@caws-blueprint-component/caws-source-repositories": 0.2.x
     "@caws-blueprint-component/caws-workflows": 0.2.x
-    "@caws-blueprint-component/caws-workspaces": 0.2.x
+    "@caws-blueprint-component/caws-workspaces": 0.3.x
     "@caws-blueprint-util/blueprint-cli": 0.2.x
     "@caws-blueprint-util/projen-blueprint": 0.2.x
     "@caws-blueprint/blueprints.blueprint": 0.2.x
