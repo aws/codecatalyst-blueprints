@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { SourceCode, typescript, javascript } from 'projen';
-
-import { generateGettingStarted } from './getting-started/getting-started';
+import { typescript, javascript } from 'projen';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
@@ -60,6 +58,7 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
   /**
    * Generate a getting started page for new builders
    * @default false
+   * @deprecated
    */
   gettingStarted?: boolean;
 }
@@ -133,15 +132,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.addTask('bump:preview', {
       exec: 'npm version prerelease --preid preview -no-git-tag-version --no-workspaces-update',
     });
-
-    if (options.gettingStarted) {
-      const gettingStarted = new SourceCode(this, 'GETTING_STARTED.md');
-      generateGettingStarted()
-        .split('\n')
-        .forEach(line => {
-          gettingStarted.line(line);
-        });
-    }
 
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
