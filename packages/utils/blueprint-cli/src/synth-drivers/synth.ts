@@ -130,9 +130,6 @@ function executeSynthesisCommand(
   cp.execSync(`mkdir -p ${options.outputDirectory}`, {
     stdio: 'inherit',
     cwd,
-    env: {
-      ...options.envVariables,
-    },
   });
   const synthCommand = [
     `npx ${options.driver.runtime}`,
@@ -148,6 +145,7 @@ function executeSynthesisCommand(
     cwd,
     env: {
       EXISTING_BUNDLE_ABS: options.existingBundleDirectory && path.resolve(options.existingBundleDirectory || ''),
+      ...options.envVariables,
       ...process.env,
     },
   });

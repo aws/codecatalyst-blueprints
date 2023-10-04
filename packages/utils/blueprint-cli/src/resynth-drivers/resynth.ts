@@ -242,6 +242,7 @@ const executeResynthesisCommand = (
     cwd,
     env: {
       EXISTING_BUNDLE_ABS: path.resolve(options.existingBundleDirectory),
+      ...options.envVariables,
       ...process.env,
     },
   });

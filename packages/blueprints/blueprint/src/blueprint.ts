@@ -46,7 +46,7 @@ export class Blueprint extends Project {
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       branchName: process.env.BRANCH_NAME,
-      resynthesisPhase: (process.env.RESYNTH_PHASE || 'ANCESTOR') as ResynthesisPhase,
+      resynthesisPhase: (process.env.RESYNTH_PHASE || 'PROPOSED') as ResynthesisPhase,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
         registry: process.env.NPM_CONFIG_REGISTRY ?? '',
