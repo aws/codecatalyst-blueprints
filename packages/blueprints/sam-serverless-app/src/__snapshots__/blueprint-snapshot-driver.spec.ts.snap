@@ -328,7 +328,7 @@ metadata:
 components:
   - name: aws-runtime
     container:
-      image: public.ecr.aws/aws-mde/universal-image:1.0
+      image: public.ecr.aws/aws-mde/universal-image:3.0
       mountSources: true
       volumeMounts:
         - name: docker-store
@@ -2028,7 +2028,7 @@ metadata:
 components:
   - name: aws-runtime
     container:
-      image: public.ecr.aws/aws-mde/universal-image:1.0
+      image: public.ecr.aws/aws-mde/universal-image:3.0
       mountSources: true
       volumeMounts:
         - name: docker-store
@@ -3008,7 +3008,7 @@ metadata:
 components:
   - name: aws-runtime
     container:
-      image: public.ecr.aws/aws-mde/universal-image:1.0
+      image: public.ecr.aws/aws-mde/universal-image:3.0
       mountSources: true
       volumeMounts:
         - name: docker-store
