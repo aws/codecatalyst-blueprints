@@ -76,10 +76,6 @@ const fsLinkerPlugin = {
           cp.execSync(
             `mkdir -p ./lib/externals/${pkgName} && rsync -a ${rootPkg} ./lib/externals/${pkgName} --include="*/" --exclude="node_modules/**" --prune-empty-dirs`,
           );
-
-          if (pkgName === 'glob') {
-            console.log(contents, originalContents);
-          }
         }
         return {
           contents,
@@ -137,11 +133,13 @@ export const createCache = async (
   });
 
   packageDependencies(log, { buildDirectory: params.buildDirectory });
+  log.debug('Creating synthesis cache');
   void (await createBundle(log, {
     buildDirectory: params.buildDirectory,
     exitFile: synthCacheFile,
     entryFile: synthDriver,
   }));
+  log.debug('Creating resynthesis cache');
   void (await createBundle(log, {
     buildDirectory: params.buildDirectory,
     exitFile: resynthCacheFile,
@@ -196,6 +194,7 @@ const createBundle = async (
     outfile: `${params.buildDirectory}/${params.exitFile}`,
     platform: 'node',
     plugins: [fsLinkerPlugin],
+    logLevel: 'error',
   });
 
   log.debug(`Bundle created with ${bundle.errors.length} errors & ${bundle.warnings.length} warnings.`);
