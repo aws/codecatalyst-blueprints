@@ -1,6 +1,11 @@
 import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
-import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
+import {
+  BlueprintSynthesisErrorTypes,
+  MergeStrategies,
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+} from '@amazon-codecatalyst/blueprints.blueprint';
 import * as decamelize from 'decamelize';
 import defaults from './defaults.json';
 
@@ -145,11 +150,17 @@ export class Blueprint extends ParentBlueprint {
 
   synth(): void {
     super.synth();
-
-    new ProjenBlueprint({
-      outdir: this.repository.path,
-      ...this.newBlueprintOptions,
-      overridePackageVersion: '0.0.0',
-    }).synth();
+    try {
+      new ProjenBlueprint({
+        outdir: this.repository.path,
+        ...this.newBlueprintOptions,
+        overridePackageVersion: '0.0.0',
+      }).synth();
+    } catch (error) {
+      this.throwSynthesisError({
+        name: BlueprintSynthesisErrorTypes.BlueprintSynthesisError,
+        message: 'Invalid, could not synthesize code',
+      });
+    }
   }
 }
