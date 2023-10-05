@@ -1,4 +1,4 @@
-import { AutoDiscoverReportDefinition, ComputeDefintion } from '@caws-blueprint-component/caws-workflows';
+import { AutoDiscoverReportDefinition, ComputeDefintion } from '@amazon-codecatalyst/blueprint-component.workflows';
 
 import { WriteFileOptions } from 'projen/lib/util';
 

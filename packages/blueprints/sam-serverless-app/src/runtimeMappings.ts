@@ -1,6 +1,6 @@
 import path from 'path';
-import { StaticAsset, SubstitionAsset } from '@caws-blueprint-component/caws-source-repositories';
-import { ComputeFleet, ComputeType } from '@caws-blueprint-component/caws-workflows';
+import { StaticAsset, SubstitionAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { ComputeFleet, ComputeType } from '@amazon-codecatalyst/blueprint-component.workflows';
 import { Options } from './blueprint';
 import { FileTemplateContext, RuntimeMapping } from './models';
 import { java11, nodejs14, python39 } from './templateContents';

@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint-util/blueprint-cli",
+  "name": "@amazon-codecatalyst/blueprint-util.cli",
   "description": "This is a cli utility used for blueprint development.",
   "bin": {
     "blueprint": "lib/index.js"
@@ -23,12 +23,12 @@
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen --no-post",
-    "prerelease": "yarn build && yarn package",
-    "npm:publish": "yarn bump && yarn build && yarn package && yarn npm:push",
-    "npm:push": "yarn npm publish"
+    "component:package": "yarn build && yarn package",
+    "npm:push": "yarn bump && yarn component:package && yarn npm:publish",
+    "npm:publish": "npm publish dist/js/*.tgz"
   },
   "devDependencies": {
-    "@caws-blueprint-util/projen-blueprint-component": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*",
     "@types/jest": "26.0.24",
     "@types/jmespath": "^0.15.0",
     "@types/node": "^18",
@@ -71,7 +71,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.2.19",
+  "version": "0.3.0",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

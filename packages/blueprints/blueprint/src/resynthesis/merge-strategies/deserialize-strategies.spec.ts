@@ -12,10 +12,10 @@ describe('filterStrategies', () => {
 
     const matchingStrategies = [
       '*',
-      '@caws-blueprints/*',
-      '@caws-blueprints/test-blueprint',
-      '@caws-blueprints/test-blueprint@1.2.3',
-      '@caws-blueprints/test-blueprint@1.*.*',
+      '@amazon-codecatalyst/*',
+      '@amazon-codecatalyst/test-blueprint',
+      '@amazon-codecatalyst/test-blueprint@1.2.3',
+      '@amazon-codecatalyst/test-blueprint@1.*.*',
       '*/test-blueprint',
       '*/*@1.*',
     ].map(owner => {
@@ -28,7 +28,7 @@ describe('filterStrategies', () => {
     const nonmatchingStrategies = [
       '@another-namespace/test-blueprint',
       '@another-namespace/*',
-      '@caws-blueprints/test-blueprint@2.0.0',
+      '@amazon-codecatalyst/test-blueprint@2.0.0',
       '*/wrong-name',
     ].map(owner => {
       return {
@@ -42,7 +42,7 @@ describe('filterStrategies', () => {
         'src/repo/.blueprint-ownership': [...matchingStrategies, ...nonmatchingStrategies],
       },
       {
-        name: '@caws-blueprints/test-blueprint',
+        name: '@amazon-codecatalyst/test-blueprint',
         version: '1.2.3',
       },
     );

@@ -16,7 +16,7 @@ yarn projen
 
 ### Public Blueprints
 
-The blueprints team maintains a [to-be open-sourced repository](https://github.com/aws/caws-blueprints/blob/main/README.md) with common components and
+The blueprints team maintains a [to-be open-sourced repository](https://github.com/aws/amazon-codecatalyst/blob/main/README.md) with common components and
 public blueprints. You'll need to be part of the AWS organization on github to see this codebase.
 
 We recommend adding this to your `~/.bash_profile`. Account `721779663932` owns the code-artifact repository. Contact the blueprints team for access.

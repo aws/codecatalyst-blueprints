@@ -1,7 +1,7 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/blueprint-cli",
+      "name": "@amazon-codecatalyst/blueprint-util.cli",
       "type": "build"
     },
     {
@@ -59,7 +59,7 @@
       "type": "build"
     },
     {
-      "name": "@caws-blueprint-util/blueprint-cli",
+      "name": "@amazon-codecatalyst/blueprint-util.cli",
       "type": "peer"
     },
     {

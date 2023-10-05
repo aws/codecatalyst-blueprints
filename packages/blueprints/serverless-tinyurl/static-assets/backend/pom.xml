@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aws-serverless-tinyurl</artifactId>
-    <groupId>com.amazonaws.caws.blueprints</groupId>
+    <groupId>com.amazonaws.codecatalyst.blueprints</groupId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>

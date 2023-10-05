@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.blueprint-builder",
+  "name": "@amazon-codecatalyst/blueprints.blueprint-builder",
   "description": "Use this to build additional blueprints from existing blueprints.",
   "scripts": {
     "build": "npx projen build",
@@ -22,17 +22,18 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
-    "prerelease": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
-    "blueprint:preview": "yarn build:lib && yarn bump:preview && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
+    "blueprint:package": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
+    "npm:publish": "npm publish dist/js/*.tgz",
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
   "author": {
-    "name": "caws-blueprints",
+    "name": "amazon-codecatalyst",
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.cli": "*",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -47,10 +48,10 @@
     "typescript": "^4.x"
   },
   "dependencies": {
-    "@caws-blueprint-component/caws-source-repositories": "0.2.x",
-    "@caws-blueprint-component/caws-workflows": "0.2.x",
-    "@caws-blueprint-util/projen-blueprint": "0.2.x",
-    "@caws-blueprint/blueprints.blueprint": "0.2.x",
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
+    "@amazon-codecatalyst/blueprint-component.workflows": "*",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*",
+    "@amazon-codecatalyst/blueprints.blueprint": "*",
     "camelcase": "1.x",
     "decamelize": "5.0.x",
     "projen": "0.71.112",
@@ -65,7 +66,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.2.41",
+  "version": "0.3.0",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [

@@ -22,7 +22,9 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: npm install -g npm@6.14.13
       - run: yarn --immutable-cache
       - run: yarn build
-      - run: yarn run prerelease
-      - run: yarn run release
+      - run: yarn npm:components:package
+      - run: yarn npm:blueprints:package
+      - run: yarn npm:publish

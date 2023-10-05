@@ -1,4 +1,4 @@
-import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 const project = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'sam-serverless-application',
@@ -20,21 +20,24 @@ const project = new ProjenBlueprint({
     },
   },
   deps: [
-    '@caws-blueprint/blueprints.blueprint',
-    '@caws-blueprint-component/caws-workflows',
-    '@caws-blueprint-component/caws-source-repositories',
-    '@caws-blueprint-component/caws-workspaces',
-    '@caws-blueprint-component/caws-environments',
+    '@amazon-codecatalyst/blueprints.blueprint',
+    '@amazon-codecatalyst/blueprint-component.workflows',
+    '@amazon-codecatalyst/blueprint-component.source-repositories',
+    '@amazon-codecatalyst/blueprint-component.dev-environments',
+    '@amazon-codecatalyst/blueprint-component.environments',
     'projen',
     'ts-deepmerge',
   ],
   description:
     'This blueprint creates a project that leverages a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Python as the programming language',
-  packageName: '@caws-blueprint/blueprints.sam-serverless-application',
+  packageName: '@amazon-codecatalyst/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
+  peerDeps: [
+    '@amazon-codecatalyst/blueprint-util.cli',
+  ],
   devDeps: [
-    '@caws-blueprint-util/projen-blueprint',
-    '@caws-blueprint-util/blueprint-cli',
+    '@amazon-codecatalyst/blueprint-util.projen-blueprint',
+    '@amazon-codecatalyst/blueprint-util.cli',
     '@types/jest',
     'ts-jest',
     'ts-node',

@@ -223,7 +223,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 10`] = `
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 11`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
@@ -1900,7 +1900,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 35`] = `
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 36`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "
@@ -2858,7 +2858,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 65`] = `
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 66`] = `
-"[never_update] @caws-blueprint/blueprints.sam-serverless-application
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
 # Internal merge strategy: neverUpdate
 *
 "

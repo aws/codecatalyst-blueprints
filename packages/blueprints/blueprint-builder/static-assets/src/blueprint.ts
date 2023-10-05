@@ -1,7 +1,8 @@
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
-import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, SourceFile, StaticAsset } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, WorkflowBuilder, convertToWorkflowEnvironment } from '@caws-blueprint-component/caws-workflows';
+import { SampleWorkspaces, Workspace, WorkspaceDefinition } from '@amazon-codecatalyst/blueprint-component.dev-environments';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
+import { SourceRepository, SourceFile, StaticAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { Workflow, WorkflowBuilder, convertToWorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 /**
@@ -119,5 +120,9 @@ export class Blueprint extends ParentBlueprint {
 
     // write a workflow to my repository
     new Workflow(this, repository, workflowBuilder.getDefinition());
+
+    // Create a dev environment workspace in my project
+    const devEnvironementDefiniton: WorkspaceDefinition = SampleWorkspaces.default;
+    new Workspace(this, repository, devEnvironementDefiniton);
   }
 }

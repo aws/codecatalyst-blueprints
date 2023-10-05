@@ -150,7 +150,7 @@ Compute:
 `;
 
 exports[`Blueprint snapshots Blueprint snapshots - Test 5`] = `
-"[never_update] @caws-blueprint/blueprints.serverless-tinyurl
+"[never_update] @amazon-codecatalyst/blueprints.serverless-tinyurl
 # Internal merge strategy: neverUpdate
 backend/lambda/**
 backend/public/**
@@ -158,13 +158,13 @@ backend/src/**
 backend/canary/**
 **/README.md
 
-[always_update] @caws-blueprint/blueprints.serverless-tinyurl
+[always_update] @amazon-codecatalyst/blueprints.serverless-tinyurl
 # Internal merge strategy: alwaysUpdate
 **/jest.config.js
 **/*/tsconfig.json
 .codecatalyst/*
 
-[custom_shared_ownership] @caws-blueprint/blueprints.serverless-tinyurl
+[custom_shared_ownership] @amazon-codecatalyst/blueprints.serverless-tinyurl
 # Internal merge strategy: strategy
 backend/cdk/**
 frontend/cdk/**
@@ -191,7 +191,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 8`] = `
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>aws-serverless-tinyurl</artifactId>
-        <groupId>com.amazonaws.caws.blueprints</groupId>
+        <groupId>com.amazonaws.codecatalyst.blueprints</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -657,7 +657,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 16`] = `
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>aws-serverless-tinyurl</artifactId>
-        <groupId>com.amazonaws.caws.blueprints</groupId>
+        <groupId>com.amazonaws.codecatalyst.blueprints</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -1302,7 +1302,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 27`] = `
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aws-serverless-tinyurl</artifactId>
-    <groupId>com.amazonaws.caws.blueprints</groupId>
+    <groupId>com.amazonaws.codecatalyst.blueprints</groupId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>

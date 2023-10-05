@@ -1,6 +1,6 @@
 {
   "spaceName": "blueprints",
-  "blueprintName": "@caws-blueprint/blueprints.serverless-tinyurl",
+  "blueprintName": "@amazon-codecatalyst/blueprints.serverless-tinyurl",
   "blueprintVersion": "0.2.1-preview.1",
   "name": "defaults.json",
   "schedule": {
