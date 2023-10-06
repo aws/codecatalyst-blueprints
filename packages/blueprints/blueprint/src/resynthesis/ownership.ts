@@ -72,7 +72,7 @@ const asOwnershipDefintion = (fileContent: string, inMemoryMapping: StrategyIdMa
   };
 };
 
-const STRATEGY_LINE_REGEX = /^\[(?<identifier>.+)\]\s+(?<owner>.+)$/; // e.g. [my_identifier] @caws-blueprint/my-blueprint
+const STRATEGY_LINE_REGEX = /^\[(?<identifier>.+)\]\s+(?<owner>.+)$/; // e.g. [my_identifier] @codecatalyst-blueprint/my-blueprint
 enum LineType {
   COMMENT = 'COMMENT',
   STRATEGY = 'STRATEGY',

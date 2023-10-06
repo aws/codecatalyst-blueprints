@@ -37,6 +37,8 @@ export interface SynthOptions {
 
   synthDriver?: DriverFile;
   cleanUp: boolean;
+
+  envVariables?: { [key: string]: string };
 }
 
 /**
@@ -51,10 +53,15 @@ export interface SynthOptions {
  * @param log
  * @param options
  */
-export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
+export async function synthesize(log: pino.BaseLogger, options: SynthOptions) {
   validateSynthOptions(log, options);
 
-  const synthDriver: DriverFile = makeSynthDriverFile(log, options);
+  const synthDriver: DriverFile =
+    options.synthDriver ||
+    makeSynthDriverFile(log, {
+      synthDriver: options.synthDriver,
+      blueprintLocation: options.blueprintPath,
+    });
 
   log.debug(`Using driver:${synthDriver.runtime} ${synthDriver.path}`);
   try {
@@ -73,6 +80,7 @@ export function synthesize(log: pino.BaseLogger, options: SynthOptions): void {
       options: options.blueprintOptions,
       entropy: String(Math.floor(Date.now() / 100)),
       existingBundleDirectory: options.existingBundle,
+      envVariables: options.envVariables || {},
     });
     const timeEnd = Date.now();
 
@@ -116,6 +124,7 @@ function executeSynthesisCommand(
     entropy: string;
     options: any;
     existingBundleDirectory?: string;
+    envVariables: { [key: string]: string };
   },
 ) {
   cp.execSync(`mkdir -p ${options.outputDirectory}`, {
@@ -136,6 +145,7 @@ function executeSynthesisCommand(
     cwd,
     env: {
       EXISTING_BUNDLE_ABS: options.existingBundleDirectory && path.resolve(options.existingBundleDirectory || ''),
+      ...options.envVariables,
       ...process.env,
     },
   });
@@ -144,13 +154,19 @@ function executeSynthesisCommand(
   }
 }
 
-const makeSynthDriverFile = (_log: pino.BaseLogger, options: SynthOptions): DriverFile => {
+export const makeSynthDriverFile = (
+  _log: pino.BaseLogger,
+  options: {
+    blueprintLocation: string;
+    synthDriver?: DriverFile;
+  },
+): DriverFile => {
   if (options.synthDriver) {
     return options.synthDriver;
   }
 
   return {
-    path: writeSynthDriver(path.join(options.blueprintPath, SYNTH_TS_NAME), path.join(options.blueprintPath, 'src', 'index.ts')),
+    path: writeSynthDriver(path.join(options.blueprintLocation, SYNTH_TS_NAME), path.join(options.blueprintLocation, 'src', 'index.ts')),
     runtime: 'ts-node',
   };
 };

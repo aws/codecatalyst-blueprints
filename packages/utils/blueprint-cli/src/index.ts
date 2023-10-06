@@ -67,7 +67,7 @@ yargs
       let driverFile: DriverFile | undefined;
 
       if (argv.cache) {
-        const { synthDriver } = createCache(log, {
+        const { synthDriver } = await createCache(log, {
           buildDirectory: path.join(argv.blueprint, 'lib'),
           builtEntryPoint: './index.js',
         });
@@ -78,7 +78,7 @@ yargs
         log.debug(`creating cache with a driver file at ${driverFile.path}`);
       }
 
-      await synthesize(log, {
+      void (await synthesize(log, {
         blueprintPath: argv.blueprint,
         blueprintOptions: JSON.parse(fs.readFileSync(argv.options, 'utf-8')),
         jobname: path.parse(argv.options).base,
@@ -86,7 +86,7 @@ yargs
         synthDriver: driverFile,
         existingBundle: argv.existingBundle || '',
         cleanUp: argv.cleanUp,
-      });
+      }));
       process.exit(0);
     },
   })
@@ -139,7 +139,7 @@ yargs
         log.info('Running in quick mode. Run this command with --cache to emulate the wizard');
       }
 
-      await driveSynthesis(log, argv);
+      void (await driveSynthesis(log, argv));
       process.exit(0);
     },
   })
@@ -194,7 +194,7 @@ yargs
       let synthDriverFile: DriverFile | undefined;
 
       if (argv.cache) {
-        const { resynthDriver, synthDriver } = createCache(log, {
+        const { resynthDriver, synthDriver } = await createCache(log, {
           buildDirectory: path.join(argv.blueprint, 'lib'),
           builtEntryPoint: './index.js',
         });
@@ -215,7 +215,7 @@ yargs
         priorOptionsObject = JSON.parse(fs.readFileSync(argv.priorOptions, 'utf-8'));
       }
 
-      await resynthesize(log, {
+      void (await resynthesize(log, {
         blueprint: argv.blueprint,
         priorBlueprint: argv.priorBlueprint || argv.blueprint,
         outdir: argv.outdir,
@@ -226,7 +226,7 @@ yargs
         resynthDriver: resynthDriverFile,
         synthDriver: synthDriverFile,
         cleanUp: argv.cleanUp,
-      });
+      }));
 
       process.exit(0);
     },
@@ -285,7 +285,7 @@ yargs
         log.info('Running in quick mode. Run this command with --cache to emulate the wizard');
       }
 
-      await driveResynthesis(log, argv);
+      void (await driveResynthesis(log, argv));
       process.exit(0);
     },
   })
@@ -324,12 +324,12 @@ yargs
     },
     handler: async (argv: PublishOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      await publish(log, argv.endpoint, {
+      void (await publish(log, argv.endpoint, {
         blueprintPath: argv.blueprint,
         publishingSpace: argv.publisher,
         cookie: argv.cookie,
         region: argv.region || process.env.AWS_REGION || 'us-west-2',
-      });
+      }));
       process.exit(0);
     },
   })
@@ -352,7 +352,7 @@ yargs
     },
     handler: async (argv: AstOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      await buildAst(log, argv.blueprint, argv.outdir);
+      void (await buildAst(log, argv.blueprint, argv.outdir));
       process.exit(0);
     },
   })

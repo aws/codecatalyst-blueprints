@@ -36,12 +36,12 @@ export interface SynthDriverCliOptions extends yargs.Arguments {
  * @param log
  * @param options
  */
-export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOptions): void {
+export async function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOptions) {
   //validate options
   //TODO
 
   // we want one driver file that we execute multiple times with different options
-  const { synthDriver, resynthDriver } = makeDriverFile(log, {
+  const { synthDriver, resynthDriver } = await makeDriverFile(log, {
     blueprint: options.blueprint,
     cache: options.cache,
   });
@@ -53,7 +53,7 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
       additionalOptionsLocation: options.additionalOptions,
     });
 
-    wizardConfigurations.forEach(wizardOption => {
+    for (const wizardOption of wizardConfigurations) {
       const jobname = `${options.jobPrefix || '00.synth.'}${path.parse(wizardOption.path).base}`;
       const outputDir = path.join(options.outdir, `${jobname}`, PROPOSED_BUNDLE_SUBPATH);
       log.info('==========================================');
@@ -68,16 +68,16 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
         ].join(' '),
       );
       log.info('==========================================');
-      synthesize(log, {
+      void (await synthesize(log, {
         blueprintPath: options.blueprint,
         synthDriver,
         blueprintOptions: wizardOption.option,
         jobname,
         outputDirectory: outputDir,
         existingBundle: options.existingBundle || '',
-        cleanUp: options.cleanUp,
-      });
-    });
+        cleanUp: false,
+      }));
+    };
   } catch (error) {
     log.error(error as any);
   } finally {
@@ -88,19 +88,19 @@ export function driveSynthesis(log: pino.BaseLogger, options: SynthDriverCliOpti
   }
 }
 
-export const makeDriverFile = (
+export const makeDriverFile = async (
   log: pino.BaseLogger,
   options: {
     blueprint: string;
     cache?: boolean;
   },
-): {
+): Promise<{
   synthDriver: DriverFile;
   resynthDriver: DriverFile;
-} => {
+}> => {
   if (options.cache) {
     const runtime = 'node';
-    let { synthDriver, resynthDriver } = createCache(log, {
+    let { synthDriver, resynthDriver } = await createCache(log, {
       buildDirectory: path.join(options.blueprint, 'lib'),
       builtEntryPoint: './index.js',
     });

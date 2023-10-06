@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { SourceCode, typescript, javascript } from 'projen';
-
-import { generateGettingStarted } from './getting-started/getting-started';
+import { typescript, javascript } from 'projen';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
 
 export interface BlueprintSnapshotConfiguration {
@@ -60,6 +58,7 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
   /**
    * Generate a getting started page for new builders
    * @default false
+   * @deprecated
    */
   gettingStarted?: boolean;
 }
@@ -134,15 +133,6 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       exec: 'npm version prerelease --preid preview -no-git-tag-version --no-workspaces-update',
     });
 
-    if (options.gettingStarted) {
-      const gettingStarted = new SourceCode(this, 'GETTING_STARTED.md');
-      generateGettingStarted()
-        .split('\n')
-        .forEach(line => {
-          gettingStarted.line(line);
-        });
-    }
-
     // set custom scripts
     this.setScript('projen', 'npx projen --no-post');
 
@@ -162,16 +152,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addField('publishingSpace', space);
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
-    this.setScript(
-      'blueprint:preview',
-      [
-        'yarn build:lib',
-        'yarn bump:preview',
-        'yarn blueprint:synth --cache --clean-up false',
-        'yarn package',
-        `blueprint publish ./ --publisher ${space} $*`,
-      ].join(' && '),
-    );
+    this.setScript('blueprint:package', ['yarn build:lib', 'yarn blueprint:synth --cache --clean-up false', 'yarn package'].join(' && '));
+    this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
+
+    this.setScript('blueprint:preview', ['yarn bump:preview', 'yarn blueprint:package', `blueprint publish ./ --publisher ${space} $*`].join(' && '));
 
     if (finalOpts.blueprintHealthConfiguration) {
       this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');
@@ -210,9 +194,11 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
         this.addDevDeps('@types/pino@^6.3.12');
         this.addDevDeps('pino-pretty@^4.8.0');
 
-        this.addPeerDeps('@caws-blueprint-util/blueprint-cli');
+        this.addPeerDeps('@amazon-codecatalyst/blueprint-util.cli');
 
         generateTestSnapshotInfraFiles(this, finalOpts.blueprintSnapshotConfiguration);
+
+        this.jest!.config.modulePathIgnorePatterns = [...(this.jest?.config?.modulePathIgnorePatterns || []), '/synth/'];
       } else {
         console.error('Snapshot configuration is enabled but requires option "jest" to also be enabled.');
       }

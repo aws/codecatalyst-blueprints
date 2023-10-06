@@ -1,5 +1,5 @@
 {
-  "name": "@caws-blueprint/blueprints.blueprint",
+  "name": "@amazon-codecatalyst/blueprints.blueprint",
   "description": "This is a empty blueprint that creates an empty project. All blueprints extend from this blueprint at some level.",
   "scripts": {
     "build": "npx projen build",
@@ -24,17 +24,19 @@
     "blueprint:build-ast": "blueprint build-ast ./lib/blueprint.d.ts --outdir ./lib/",
     "blueprint:validate-options": "blueprint validate-options ./lib/ast.json ./lib/defaults.json",
     "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
-    "blueprint:preview": "yarn build:lib && yarn bump:preview && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
+    "blueprint:package": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
+    "npm:publish": "npm publish dist/js/*.tgz",
+    "blueprint:preview": "yarn bump:preview && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
   "author": {
-    "name": "caws-blueprints",
+    "name": "amazon-codecatalyst",
     "organization": false
   },
   "devDependencies": {
-    "@caws-blueprint-util/blueprint-cli": "0.2.x",
-    "@caws-blueprint-util/projen-blueprint": "0.2.x",
+    "@amazon-codecatalyst/blueprint-util.cli": "*",
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*",
     "@types/diff-match-patch": "1.x",
     "@types/jest": "*",
     "@types/node": "^18",
@@ -71,7 +73,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.2.34",
+  "version": "0.3.2",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",

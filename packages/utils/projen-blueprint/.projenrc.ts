@@ -18,9 +18,9 @@ const project = new typescript.TypeScriptProject({
   },
   license: 'Apache-2.0',
   copyrightOwner: 'Amazon.com',
-  peerDeps: ['projen', '@caws-blueprint-util/blueprint-cli'],
+  peerDeps: ['projen', '@amazon-codecatalyst/blueprint-util.cli'],
   description: 'This is a projen blueprint. This defines the project configuration a blueprint project.',
-  packageName: '@caws-blueprint-util/projen-blueprint',
+  packageName: '@amazon-codecatalyst/blueprint-util.projen-blueprint',
   devDeps: ['projen', 'ts-node@^10'],
 });
 
@@ -41,7 +41,23 @@ project.package.addField('preferGlobal', true);
 
 // set custom scripts
 project.setScript('projen', 'npx projen --no-post');
-project.setScript('npm:publish', 'yarn bump && yarn build && yarn package && yarn npm:push');
-project.setScript('npm:push', 'yarn npm publish');
+
+project.setScript(
+  'component:package',
+  [
+    'yarn build',
+    'yarn package',
+  ].join(' && '),
+);
+
+project.setScript(
+  'npm:push',
+  [
+    'yarn bump',
+    'yarn component:package',
+    'yarn npm:publish',
+  ].join(' && '),
+);
+project.setScript('npm:publish', 'npm publish dist/js/*.tgz');
 
 project.synth();

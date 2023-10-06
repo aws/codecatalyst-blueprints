@@ -1,8 +1,8 @@
 import * as fs from 'fs';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
-import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@caws-blueprint-component/caws-environments';
-import { SourceRepository, SourceFile } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow, NodeWorkflowDefinitionSamples } from '@caws-blueprint-component/caws-workflows';
+import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
+import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
+import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 /**

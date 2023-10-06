@@ -2,8 +2,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { JsonFile, Project } from 'projen';
-import { Context } from './context/context';
+import { Project } from 'projen';
+import { Context, ResynthesisPhase } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { createContextFile, destructurePath } from './resynthesis/context-file';
@@ -46,6 +46,7 @@ export class Blueprint extends Project {
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       branchName: process.env.BRANCH_NAME,
+      resynthesisPhase: (process.env.RESYNTH_PHASE || 'PROPOSED') as ResynthesisPhase,
       npmConfiguration: {
         token: process.env.NPM_CONFIG_TOKEN,
         registry: process.env.NPM_CONFIG_REGISTRY ?? '',
@@ -69,11 +70,9 @@ export class Blueprint extends Project {
     }
 
     // write the options to the bundle
-    new JsonFile(this, OPTIONS_FILE, {
-      obj: options,
-      readonly: false,
-      marker: false,
-    });
+    const optionsRecordPath = path.join(this.outdir, OPTIONS_FILE);
+    fs.mkdirSync(path.dirname(optionsRecordPath), { recursive: true });
+    fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
 
     this.resynthPullRequest = {
       originBranch: this.context.branchName || 'resynthesis-update',
@@ -102,6 +101,10 @@ export class Blueprint extends Project {
   }
 
   resynth(ancestorBundle: string, existingBundle: string, proposedBundle: string) {
+    ancestorBundle = path.resolve(ancestorBundle);
+    existingBundle = path.resolve(existingBundle);
+    proposedBundle = path.resolve(proposedBundle);
+
     //1. find the merge strategies from the exisiting codebase, deserialize and match against strategies in memory
     const overriddenStrategies: StrategyLocations = deserializeStrategies(existingBundle, this.strategies || {});
     const validStrategies = merge(this.strategies || {}, filterStrategies(overriddenStrategies, this.context.package));
@@ -212,7 +215,6 @@ function structureStrategyReport(
   }
   return `<<STRATEGY>> ${overrideText}[${ownershipFile}] [${strategy.identifier}] matches [${strategy.globs}]`;
 }
-
 
 function getOptions(location: string): any {
   try {

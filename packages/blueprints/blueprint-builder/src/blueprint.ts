@@ -1,6 +1,11 @@
-import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions } from '@caws-blueprint/blueprints.blueprint';
-import { SourceRepository, SourceFile, StaticAsset, File } from '@caws-blueprint-component/caws-source-repositories';
-import { ProjenBlueprint, ProjenBlueprintOptions } from '@caws-blueprint-util/projen-blueprint';
+import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
+import {
+  BlueprintSynthesisErrorTypes,
+  MergeStrategies,
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+} from '@amazon-codecatalyst/blueprints.blueprint';
 import * as decamelize from 'decamelize';
 import defaults from './defaults.json';
 
@@ -80,7 +85,7 @@ export class Blueprint extends ParentBlueprint {
     ]);
 
     const spaceName = this.context.spaceName || '<<unknown-organization>>';
-    const packageName = `@caws-blueprint/${spaceName}.${dashName}`;
+    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`;
 
     const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
@@ -95,7 +100,6 @@ export class Blueprint extends ParentBlueprint {
       github: false,
       eslint: true,
       jest: false,
-      gettingStarted: true,
       npmignoreEnabled: true,
       tsconfig: {
         compilerOptions: {
@@ -106,13 +110,14 @@ export class Blueprint extends ParentBlueprint {
       copyrightOwner: spaceName || 'unknown',
       deps: [
         'projen',
-        '@caws-blueprint/blueprints.blueprint',
-        '@caws-blueprint-component/caws-workflows',
-        '@caws-blueprint-component/caws-source-repositories',
-        '@caws-blueprint-component/caws-environments',
+        '@amazon-codecatalyst/blueprints.blueprint',
+        '@amazon-codecatalyst/blueprint-component.workflows',
+        '@amazon-codecatalyst/blueprint-component.source-repositories',
+        '@amazon-codecatalyst/blueprint-component.dev-environments',
+        '@amazon-codecatalyst/blueprint-component.environments',
       ],
       description: `${options.description}`,
-      devDeps: ['ts-node@^10', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
+      devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
       keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
       mediaUrls: [
@@ -134,7 +139,7 @@ export class Blueprint extends ParentBlueprint {
       repository,
       '.projenrc.ts',
       [
-        "import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';",
+        "import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';",
         '',
         `const project = new ProjenBlueprint(${JSON.stringify(newBlueprintOptions, null, 2)});`,
         '',
@@ -145,11 +150,17 @@ export class Blueprint extends ParentBlueprint {
 
   synth(): void {
     super.synth();
-
-    new ProjenBlueprint({
-      outdir: this.repository.path,
-      ...this.newBlueprintOptions,
-      overridePackageVersion: '0.0.0',
-    }).synth();
+    try {
+      new ProjenBlueprint({
+        outdir: this.repository.path,
+        ...this.newBlueprintOptions,
+        overridePackageVersion: '0.0.0',
+      }).synth();
+    } catch (error) {
+      this.throwSynthesisError({
+        name: BlueprintSynthesisErrorTypes.BlueprintSynthesisError,
+        message: 'Invalid, could not synthesize code',
+      });
+    }
   }
 }

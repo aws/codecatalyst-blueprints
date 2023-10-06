@@ -1,9 +1,9 @@
-import { ProjenBlueprint } from '@caws-blueprint-util/projen-blueprint';
+import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 
 const project = new ProjenBlueprint({
   authorName: 'Amazon Web Services',
   publishingOrganization: 'blueprints',
-  packageName: '@caws-blueprint/blueprints.serverless-tinyurl',
+  packageName: '@amazon-codecatalyst/blueprints.serverless-tinyurl',
   name: 'serverless-tinyurl',
   displayName: 'AWS Serverless Tiny URL Application in Java',
   defaultReleaseBranch: 'main',
@@ -23,18 +23,18 @@ const project = new ProjenBlueprint({
     snapshotGlobs: ['**', '!environments/**', '!aws-account-to-environment/**'],
   },
   blueprintHealthConfiguration: {},
-  copyrightOwner: 'caws-blueprints',
+  copyrightOwner: 'amazon-codecatalyst',
   deps: [
-    '@caws-blueprint/blueprints.blueprint',
+    '@amazon-codecatalyst/blueprints.blueprint',
     'projen',
-    '@caws-blueprint-component/caws-workflows',
-    '@caws-blueprint-component/caws-environments',
-    '@caws-blueprint-component/caws-source-repositories',
-    '@caws-blueprint-component/caws-workspaces',
+    '@amazon-codecatalyst/blueprint-component.workflows',
+    '@amazon-codecatalyst/blueprint-component.environments',
+    '@amazon-codecatalyst/blueprint-component.source-repositories',
+    '@amazon-codecatalyst/blueprint-component.dev-environments',
   ],
   description:
     'This blueprint creates a serverless Tiny URL Java Web Application using AWS Lambda, Amazon S3, Amazon API Gateway and Amazon DynamoDB. This project also includes canary tests using Cloudwatch Synthetics.',
-  devDeps: ['ts-node', 'typescript', '@caws-blueprint-util/projen-blueprint', '@caws-blueprint-util/blueprint-cli'],
+  devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
   keywords: [
     'tiny-url application',
     'serverless',

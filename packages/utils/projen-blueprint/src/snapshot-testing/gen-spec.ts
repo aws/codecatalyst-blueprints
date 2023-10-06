@@ -9,8 +9,8 @@ export function generateSpecTs(options: {
 }): string {
   return `import * as fs from 'fs';
 import * as path from 'path';
-import * as cli from '@caws-blueprint-util/blueprint-cli/lib/synth-drivers/synth-driver';
-import { PROPOSED_BUNDLE_SUBPATH } from '@caws-blueprint-util/blueprint-cli/lib/resynth-drivers/resynth';
+import * as cli from '@amazon-codecatalyst/blueprint-util.cli/lib/synth-drivers/synth-driver';
+import { PROPOSED_BUNDLE_SUBPATH } from '@amazon-codecatalyst/blueprint-util.cli/lib/resynth-drivers/resynth';
 import * as globule from 'globule';
 import * as pino from 'pino';
 
@@ -29,10 +29,10 @@ const GLOBS_UNDER_SNAPSHOT: string[] = [
   ${(options.configuration.snapshotGlobs ?? DEFAULT_GLOBS).map(val => `'${val}'`).join(',\n\t')}
 ];
 
-function runSnapshotSynthesis() {
+async function runSnapshotSynthesis() {
   // run synthesis into several directories.
 
-  cli.driveSynthesis(log, {
+  await cli.driveSynthesis(log, {
     blueprint: blueprintLocation,
     outdir: path.join(outputDirectory, 'synth'),
     defaultOptions: defaultsLocation,
@@ -56,12 +56,11 @@ function runSnapshotSynthesis() {
 }
 
 describe('Blueprint snapshots', () => {
-  runSnapshotSynthesis().forEach(run => {
-    describe(\`\${path.parse(run.optionOverridePath).base} configuration\`, () => {
+  it('Blueprint snapshots - Test', async () => {
+    (await runSnapshotSynthesis()).forEach(run => {
       for (const snappedFile of filesUnderSnapshot(run.outputPath, GLOBS_UNDER_SNAPSHOT)) {
-        it(\`matches \${snappedFile.relPath}\`, () => {
-          expect(fs.readFileSync(snappedFile.absPath, { encoding: 'utf-8' })).toMatchSnapshot();
-        });
+        console.log(\`\${path.parse(run.optionOverridePath).base} configuration - matches \${snappedFile.relPath}\`);
+        expect(fs.readFileSync(snappedFile.absPath, { encoding: 'utf-8' })).toMatchSnapshot();
       }
     });
   });

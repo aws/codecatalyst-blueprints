@@ -1,11 +1,11 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/blueprint-cli",
+      "name": "@amazon-codecatalyst/blueprint-util.cli",
       "type": "build"
     },
     {
-      "name": "@caws-blueprint-util/projen-blueprint",
+      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint",
       "type": "build"
     },
     {
@@ -101,27 +101,27 @@
       "type": "override"
     },
     {
-      "name": "@caws-blueprint-util/blueprint-cli",
+      "name": "@amazon-codecatalyst/blueprint-util.cli",
       "type": "peer"
     },
     {
-      "name": "@caws-blueprint-component/caws-environments",
+      "name": "@amazon-codecatalyst/blueprint-component.dev-environments",
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint-component/caws-source-repositories",
+      "name": "@amazon-codecatalyst/blueprint-component.environments",
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint-component/caws-workflows",
+      "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint-component/caws-workspaces",
+      "name": "@amazon-codecatalyst/blueprint-component.workflows",
       "type": "runtime"
     },
     {
-      "name": "@caws-blueprint/blueprints.blueprint",
+      "name": "@amazon-codecatalyst/blueprints.blueprint",
       "type": "runtime"
     },
     {

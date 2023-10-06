@@ -1,7 +1,7 @@
 {
   "dependencies": [
     {
-      "name": "@caws-blueprint-util/projen-blueprint-component",
+      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint-component",
       "type": "build"
     },
     {
@@ -126,6 +126,10 @@
     },
     {
       "name": "deepmerge",
+      "type": "runtime"
+    },
+    {
+      "name": "esbuild",
       "type": "runtime"
     },
     {
