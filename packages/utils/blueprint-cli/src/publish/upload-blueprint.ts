@@ -33,7 +33,7 @@ export async function uploadBlueprint(
     process.exit(254);
   }
 
-  log.info(`Starting publishing blueprint package to space '${blueprint.targetSpace}'`);
+  log.info(`Starting publishing blueprint package to ${blueprint.targetSpace}.`);
   log.info(`Generating a readstream to ${packagePath}`);
 
   const blueprintTarballStream = fs.createReadStream(packagePath);
@@ -59,28 +59,39 @@ export async function uploadBlueprint(
     data: publishBlueprintPackageResponse.data,
   });
 
-  const baseWaitSec = 5;
-  const attempts = 5;
+  const baseWaitSec = 3;
+  const attempts = 10;
   const { spaceName, blueprintName, version, statusId } = publishBlueprintPackageResponse.data;
-  const fetchStatusInput = {
-    spaceName,
-    id: statusId,
-    version,
-    blueprintName,
-  };
-  log.debug(`Fetching publish status for publishing job '${statusId}' for blueprint '${blueprintName}' version '${version}'`);
 
   for (let attempt = 0; attempt < attempts; attempt++) {
-    log.info(`Getting status. Attempt: ${attempt}`);
     const fetchStatusResponse = await fetchstatus(log, {
-      input: fetchStatusInput,
+      input: {
+        spaceName,
+        id: statusId,
+        version,
+        blueprintName,
+      },
       http: {
         endpoint,
         headers: generateHeaders(blueprint.authentication, blueprint.identity),
       },
     });
-    if (fetchStatusResponse.success) {
+    log.info(`[${attempt}/${attempts}] Status: ${fetchStatusResponse.status}`);
+    if (fetchStatusResponse.status === 'SUCCEEDED') {
       log.info('Blueprint published successfully');
+      const previewOptions = {
+        blueprintPackage: blueprint.packageName,
+        version: blueprint.version,
+        publishingSpace: blueprint.publishingSpace,
+        targetSpace: blueprint.targetSpace,
+        http: {
+          endpoint: endpoint,
+          headers: generateHeaders(blueprint.authentication, blueprint.identity),
+        },
+      };
+      log.info(`See this blueprint at: ${await generatePreviewLink(log, previewOptions)}`);
+      // https://integ.stage.quokka.codes/spaces/blueprints/blueprints
+      log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
       return;
     } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
@@ -92,7 +103,7 @@ export async function uploadBlueprint(
       break;
     }
   }
-  log.info('Blueprint has not published successfully');
+  log.info(`Blueprint has not published successfully. Id: ${statusId}`);
 }
 
 interface FetchStatusResult {
@@ -100,9 +111,8 @@ interface FetchStatusResult {
   status: string;
   reason?: string;
 }
-
 async function fetchstatus(
-  log: pino.BaseLogger,
+  _log: pino.BaseLogger,
   options: {
     input: {
       spaceName: string;
@@ -142,28 +152,29 @@ async function fetchstatus(
       },
     },
   );
-  log.info(`Blueprint publish status ${response.data?.data?.getBlueprintVersionStatus?.status}`);
-  if (response.data?.data?.getBlueprintVersionStatus?.status === 'SUCCEEDED') {
+
+  const responseStatus = response.data?.data?.getBlueprintVersionStatus;
+  if (responseStatus.status === 'SUCCEEDED') {
     return {
       success: true,
-      status: response.data?.data?.getBlueprintVersionStatus?.status,
+      status: responseStatus.status,
     };
-  } else if (response.data?.data?.getBlueprintVersionStatus?.status === 'FAILED') {
+  } else if (responseStatus.status === 'FAILED') {
     return {
       success: false,
-      status: response.data?.data?.getBlueprintVersionStatus?.status,
-      reason: response.data?.data?.getBlueprintVersionStatus?.reason ?? 'an internal error has occurred',
+      status: responseStatus.status,
+      reason: responseStatus.reason ?? 'an internal error has occurred',
     };
-  } else if (response.data?.data?.getBlueprintVersionStatus?.status === 'CANCELLED') {
+  } else if (responseStatus.status === 'CANCELLED') {
     return {
       success: false,
-      status: response.data?.data?.getBlueprintVersionStatus?.status,
-      reason: response.data?.data?.getBlueprintVersionStatus?.reason ?? 'The publishing job has been cancelled',
+      status: responseStatus.status,
+      reason: responseStatus.reason ?? 'The publishing job has been cancelled',
     };
   }
   return {
     success: false,
-    status: response.data?.data?.getBlueprintVersionStatus?.status ?? 'UNKNOWN',
+    status: responseStatus.status ?? 'UNKNOWN',
   };
 }
 
@@ -171,4 +182,58 @@ function sleep(milliseconds: number) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
+}
+
+// https://integ.stage.quokka.codes/spaces/game-build-demo/blueprints/serverless-todo-web-application-backend/publishers/737a82bc-7cf7-4660-aac1-6f594e31be8c/versions/0.1.69/projects/create
+async function generatePreviewLink(_logger: pino.BaseLogger, options: {
+  blueprintPackage: string;
+  version: string;
+  publishingSpace: string;
+  targetSpace: string;
+  http: {
+    endpoint;
+    headers: { [key: string]: string };
+  };
+}): Promise<string> {
+
+  const publishingSpaceIdResponse = await axios.default.post(`https://${options.http.endpoint}/graphql?`, {
+    operationName: 'GetSpace',
+    variables: {
+      input: {
+        name: options.publishingSpace,
+      },
+    },
+    query: 'query GetSpace($input: GetSpaceInput!) {\n  getSpace(input: $input) {\n    id\n    name\n }\n}\n',
+  },
+  {
+    headers: {
+      'authority': options.http.endpoint,
+      'origin': `https://${options.http.endpoint}`,
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      ...options.http.headers,
+    },
+  },
+  );
+
+  return [
+    resolveStageUrl(options.http.endpoint),
+    'spaces',
+    querystring.escape(options.targetSpace),
+    'blueprints',
+    querystring.escape(options.blueprintPackage),
+    'publishers',
+    querystring.escape(publishingSpaceIdResponse.data?.data?.getSpace?.id),
+    'versions',
+    querystring.escape(options.version),
+    'projects/create',
+  ].join('/');
+}
+
+function resolveStageUrl(endpoint: string): string {
+  if (endpoint === 'public.api-gamma.quokka.codes') {
+    return 'https://integ.stage.quokka.codes';
+  } else {
+    return 'https://codecatalyst.aws';
+  }
 }
