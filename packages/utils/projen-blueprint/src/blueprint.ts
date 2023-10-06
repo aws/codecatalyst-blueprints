@@ -156,6 +156,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
 
     this.setScript('blueprint:preview', ['yarn bump:preview', 'yarn blueprint:package', `blueprint publish ./ --publisher ${space} $*`].join(' && '));
+    this.setScript('blueprint:publish', ['yarn bump', 'yarn blueprint:package', `blueprint publish ./ --publisher ${space} $*`].join(' && '));
 
     if (finalOpts.blueprintHealthConfiguration) {
       this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');

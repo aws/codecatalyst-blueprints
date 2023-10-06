@@ -27,6 +27,7 @@
     "blueprint:package": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
     "npm:publish": "npm publish dist/js/*.tgz",
     "blueprint:preview": "yarn bump:preview && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
+    "blueprint:publish": "yarn bump && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*",
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
