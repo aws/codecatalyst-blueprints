@@ -1,3 +1,0 @@
-{
-  "app": "mvn exec:java -pl cdk -Dexec.mainClass=com.amazonaws.serverless.TinyUrlApp"
-}
