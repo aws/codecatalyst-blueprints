@@ -15,16 +15,19 @@ export function generateDifferencePatch(intendedOldFile: string, intendedNewFile
   }
 
   // todo clean up in the future to use a stream
-  let rawDiff = cp.execSync([
-    'git',
-    'diff',
-    '--binary',
-    '--no-index',
-    oldFile,
-    newFile,
-    '| cat',
-  ].join(' '), { maxBuffer: 999_990_999_999 }).toString();
+  const args = ['diff', '--binary', '--no-index', oldFile, newFile];
+  const diffCommand = cp.spawnSync('git', args, { maxBuffer: 999_990_999_999 });
+  if (diffCommand.error) {
+    throw new Error(`git diff failed: ${diffCommand.error}`);
+  }
 
+  // git diff returns 0 if there is no diff and 1 if there is a diff. Otherwise, the status indicates an
+  // error:
+  if (diffCommand.status !== 0 && diffCommand.status !== 1) {
+    throw new Error(`git diff failed: ${diffCommand.stderr.toString()}`);
+  }
+
+  let rawDiff = diffCommand.stdout.toString();
   if (rawDiff.length) {
     rawDiff = rawDiff.replace(/^(.*)$/m, `diff --git a/${destination} b/${destination}`);
     rawDiff = rawDiff.replace(`--- a${oldFile}`, `--- a/${destination}`);
