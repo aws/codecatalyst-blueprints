@@ -13,6 +13,7 @@ export * from './environment/workflow-environment';
 
 export * from './actions/action';
 export * from './actions/action-build';
+export * from './actions/action-cfn-cleanup';
 export * from './actions/action-cfn-deploy';
 export * from './actions/action-test-reports';
 export * from './actions/action-cdk-deploy';
