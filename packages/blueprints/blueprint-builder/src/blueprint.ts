@@ -37,7 +37,7 @@ export interface Options extends ParentOptions {
     /**
      * Blueprint Tags. These get added to the package.json
      * @validationRegex /^[a-z-]+$/
-     * @validationMessage Tags should be lower dashcased
+     * @validationMessage Tags can only contain lowercase alphabetic characters or '-'
      */
     tags?: string[];
 
