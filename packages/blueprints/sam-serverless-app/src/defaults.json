@@ -10,5 +10,6 @@
   },
   "lambda": {
     "functionName": "SamFirstEndpoint"
-  }
+  },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-"
 }

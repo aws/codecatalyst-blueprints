@@ -16,11 +16,13 @@ const generateUniqueS3BucketName = () => {
   return bucketName;
 };
 
-export const cfnCleanupSteps = (stackName: string, region: string) => {
+export const cfnCleanupSteps = (stackName: string, region: string, options?: { bucketName?: string }) => {
+  const bucketName = options?.bucketName ?? generateUniqueS3BucketName();
+
   return [
     `stack_name=${stackName}`,
     `region=${region}`,
-    `cfn_template_upload_bucket=${generateUniqueS3BucketName()} # we need an S3 bucket to temporarily host the updated cloudformation template because template-body has a max length of 51,200 bytes which may not be enough in some cases`,
+    `cfn_template_upload_bucket=${bucketName} # we need an S3 bucket to temporarily host the updated cloudformation template because template-body has a max length of 51,200 bytes which may not be enough in some cases`,
     'echo \'Update existing cloudformation template to change resources deletion policy to "Delete", and set deletion policy for S3 buckets and Elastic Container Registry to "Retain" which will be manually cleaned up later.\'',
     'pip install cfn-flip',
     'aws cloudformation get-template --stack-name $stack_name --region $region > existing-template-$stack_name.json',
@@ -64,6 +66,11 @@ export const cfnCleanupSteps = (stackName: string, region: string) => {
 export interface CfnCleanupActionParameters extends Pick<BuildActionParameters, 'actionName' | 'environment' | 'dependsOn'> {
   stackName: string;
   region: string;
+  /**
+   * The S3 bucket name to use when creating a temporary bucket for the updated CloudFormation template.
+   * @default - a randomly generated bucket name
+   */
+  templateBucketName?: string;
 }
 
 export const addGenericCloudFormationCleanupAction = (
@@ -78,7 +85,9 @@ export const addGenericCloudFormationCleanupAction = (
   const buildAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
     Configuration: {
-      Steps: cfnCleanupSteps(stackName, region).map(step => {
+      Steps: cfnCleanupSteps(stackName, region, {
+        bucketName: params.templateBucketName,
+      }).map(step => {
         return {
           Run: step,
         };

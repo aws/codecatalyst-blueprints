@@ -14,6 +14,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
   "lambda": {
     "functionName": "gradle-test-fn-name"
   },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
   "outdir": "synth/01.snapshot.java11gradle.json/proposed-bundle"
 }"
 `;
@@ -1688,6 +1689,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 26`] = `
   "lambda": {
     "functionName": "SamFirstEndpoint"
   },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
   "outdir": "synth/01.snapshot.node14.json/proposed-bundle"
 }"
 `;
@@ -2612,6 +2614,7 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 53`] = `
   "lambda": {
     "functionName": "SamFirstEndpoint"
   },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
   "outdir": "synth/01.snapshot.python39.json/proposed-bundle"
 }"
 `;
