@@ -60,6 +60,8 @@ exports[`Blueprint snapshots Blueprint snapshots - Test 3`] = `
 exports[`Blueprint snapshots Blueprint snapshots - Test 4`] = `
 "#!/usr/bin/env bash
 
+set -euf -o pipefail
+
 echo "Running unit tests..."
 GRADLE_DIR=gradle-test-fn-name/HelloWorldFunction
 ./$GRADLE_DIR/gradlew test -p $GRADLE_DIR
