@@ -52,20 +52,29 @@ export class MergeStrategies {
    * A strategy that performs a three way merge between the existing, proposed, and common
    * ancestor files. The resolved file may contain conflict markers if the files can not be
    * cleanly merged.
+   *
+   * The provided files' contents must be UTF-8 encoded. The strategy attempts to detect
+   * if the input files are binary and will return the proposedFile if any of the files
+   * are binary.
    */
   public static threeWayMerge: StrategyFunction = function threeWayMerge(
     commonAncestorFile: ContextFile | undefined,
     existingFile: ContextFile | undefined,
     proposedFile: ContextFile | undefined,
   ) {
+    // The three way merge algorithm below is text based and won't produce a meaningful result
+    // when merging binary files. Default to the proposed file when we detect one of the files is
+    // binary:
+    if (isBinaryFile(proposedFile) || isBinaryFile(existingFile) || isBinaryFile(commonAncestorFile)) {
+      return proposedFile;
+    }
+
     if (!existingFile && proposedFile && commonAncestorFile && proposedFile.buffer.equals(commonAncestorFile.buffer)) {
       return undefined;
     }
-
     if (!proposedFile && existingFile && commonAncestorFile && existingFile.buffer.equals(commonAncestorFile.buffer)) {
       return undefined;
     }
-
     if (!existingFile && !proposedFile) {
       return undefined;
     }
@@ -96,4 +105,25 @@ export class MergeStrategies {
       buffer: Buffer.from(diff3.getMerged()),
     };
   };
+}
+
+const BINARY_FILE_HEURISTIC_MAX_LENGTH = 8000;
+
+/**
+ * Returns whether the given ContextFile is binary or not using a heuristic based
+ * approach of checking for null bytes in the beginning of the file contents.
+ */
+function isBinaryFile(file?: ContextFile): boolean {
+  if (!file) {
+    return false;
+  }
+
+  const searchLength = Math.min(file.buffer.length, BINARY_FILE_HEURISTIC_MAX_LENGTH);
+  for (let i = 0; i < searchLength; i++) {
+    if (file.buffer[i] === 0) {
+      return true;
+    }
+  }
+
+  return false;
 }
