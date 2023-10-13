@@ -53,9 +53,10 @@ export class MergeStrategies {
    * ancestor files. The resolved file may contain conflict markers if the files can not be
    * cleanly merged.
    *
-   * The provided files' contents must be UTF-8 encoded. The strategy attempts to detect
-   * if the input files are binary and will return the proposedFile if any of the files
-   * are binary.
+   * The provided files' contents must be UTF-8 encoded in order for the strategy to produce
+   * meaningful output. The strategy attempts to detect if the input files are binary. If
+   * the strategy detects a merge conflict in a binary file, it always returns the
+   * proposedFile.
    */
   public static threeWayMerge: StrategyFunction = function threeWayMerge(
     commonAncestorFile: ContextFile | undefined,
@@ -63,9 +64,14 @@ export class MergeStrategies {
     proposedFile: ContextFile | undefined,
   ) {
     // The three way merge algorithm below is text based and won't produce a meaningful result
-    // when merging binary files. Default to the proposed file when we detect one of the files is
-    // binary:
+    // when merging binary files. If there's a conflict in a binary file, default to returning
+    // the proposedFile:
     if (isBinaryFile(proposedFile) || isBinaryFile(existingFile) || isBinaryFile(commonAncestorFile)) {
+      if (buffersEqual(proposedFile?.buffer, commonAncestorFile?.buffer)) {
+        // Handles the cases where all files are equal and where only the existing file differs:
+        return existingFile;
+      }
+
       return proposedFile;
     }
 
@@ -126,4 +132,16 @@ function isBinaryFile(file?: ContextFile): boolean {
   }
 
   return false;
+}
+
+function buffersEqual(a: Buffer | undefined, b: Buffer | undefined) {
+  if (!a && !b) {
+    return true;
+  }
+
+  if (!a || !b) {
+    return false;
+  }
+
+  return a.equals(b);
 }
