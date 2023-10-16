@@ -1,41 +1,61 @@
-import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as querystring from 'querystring';
-import * as stream from 'stream';
-import * as util from 'util';
 import * as axios from 'axios';
 import * as pino from 'pino';
+import { blueprintVersionExists } from './blueprint-version-exists';
 import { CodeCatalystAuthentication, generateHeaders } from './codecatalyst-authentication';
+import { deleteBlueprintVersion } from './delete-blueprint-version';
 import { IdentityResponse } from './verify-identity';
 
 export async function uploadBlueprint(
   log: pino.BaseLogger,
   packagePath: string,
   endpoint: string,
-  blueprint: {
-    publishingSpace: string;
-    targetSpace: string;
-    packageName: string;
-    version: string;
-    authentication: CodeCatalystAuthentication;
-    identity: IdentityResponse;
+  options: {
+    force?: boolean;
+    blueprint: {
+      publishingSpace: string;
+      targetSpace: string;
+      packageName: string;
+      version: string;
+      authentication: CodeCatalystAuthentication;
+      identity: IdentityResponse;
+    };
   },
 ) {
-  // get the signature of the package
-  const pipeline = util.promisify(stream.pipeline);
-  const hash = crypto.createHash('sha384').setEncoding('hex');
-  await pipeline(fs.createReadStream(packagePath), hash);
-  const packageSignature = hash.read();
-
-  log.info(`Signature: [${packageSignature}]`);
-  if (!packageSignature) {
-    log.error('Unable to compute package signature');
-    process.exit(254);
+  const { blueprint } = options;
+  const auth = {
+    authentication: blueprint.authentication,
+    identity: blueprint.identity,
+  };
+  const target = {
+    package: blueprint.packageName,
+    space: blueprint.targetSpace,
+    version: blueprint.version,
+  };
+  log.info(`Starting publishing blueprint package to ['${blueprint.packageName}'] ['${blueprint.version}'] to ['${blueprint.targetSpace}'].`);
+  if (
+    await blueprintVersionExists(log, endpoint, {
+      blueprint: target,
+      auth,
+    })
+  ) {
+    log.warn(
+      `Blueprint version ['${blueprint.packageName}'] ['${blueprint.version}'] EXISTS in ['${blueprint.targetSpace}']. Run with --force to override`,
+    );
+    if (options.force) {
+      log.warn(`[FORCE] running in force mode. Deleting ['${blueprint.packageName}'] ['${blueprint.version}'] in ['${blueprint.targetSpace}'].`);
+      await deleteBlueprintVersion(log, endpoint, {
+        blueprint: target,
+        auth,
+      });
+      log.warn(`[FORCE] Deletion ['${blueprint.packageName}'] ['${blueprint.version}'] in ['${blueprint.targetSpace}'] successful.`);
+    } else {
+      throw `Blueprint ['${blueprint.packageName}'] ['${blueprint.version}'] already exists in ['${blueprint.targetSpace}']. Change the package version or run with --force to override.`;
+    }
   }
 
-  log.info(`Starting publishing blueprint package to ${blueprint.targetSpace}.`);
   log.info(`Generating a readstream to ${packagePath}`);
-
   const blueprintTarballStream = fs.createReadStream(packagePath);
   const publishHeaders = {
     'authority': endpoint,
@@ -185,35 +205,39 @@ function sleep(milliseconds: number) {
 }
 
 // https://integ.stage.quokka.codes/spaces/game-build-demo/blueprints/serverless-todo-web-application-backend/publishers/737a82bc-7cf7-4660-aac1-6f594e31be8c/versions/0.1.69/projects/create
-async function generatePreviewLink(_logger: pino.BaseLogger, options: {
-  blueprintPackage: string;
-  version: string;
-  publishingSpace: string;
-  targetSpace: string;
-  http: {
-    endpoint;
-    headers: { [key: string]: string };
-  };
-}): Promise<string> {
-
-  const publishingSpaceIdResponse = await axios.default.post(`https://${options.http.endpoint}/graphql?`, {
-    operationName: 'GetSpace',
-    variables: {
-      input: {
-        name: options.publishingSpace,
+async function generatePreviewLink(
+  _logger: pino.BaseLogger,
+  options: {
+    blueprintPackage: string;
+    version: string;
+    publishingSpace: string;
+    targetSpace: string;
+    http: {
+      endpoint;
+      headers: { [key: string]: string };
+    };
+  },
+): Promise<string> {
+  const publishingSpaceIdResponse = await axios.default.post(
+    `https://${options.http.endpoint}/graphql?`,
+    {
+      operationName: 'GetSpace',
+      variables: {
+        input: {
+          name: options.publishingSpace,
+        },
+      },
+      query: 'query GetSpace($input: GetSpaceInput!) {\n  getSpace(input: $input) {\n    id\n    name\n }\n}\n',
+    },
+    {
+      headers: {
+        'authority': options.http.endpoint,
+        'origin': `https://${options.http.endpoint}`,
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        ...options.http.headers,
       },
     },
-    query: 'query GetSpace($input: GetSpaceInput!) {\n  getSpace(input: $input) {\n    id\n    name\n }\n}\n',
-  },
-  {
-    headers: {
-      'authority': options.http.endpoint,
-      'origin': `https://${options.http.endpoint}`,
-      'accept': 'application/json',
-      'content-type': 'application/json',
-      ...options.http.headers,
-    },
-  },
   );
 
   return [

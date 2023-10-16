@@ -14,13 +14,17 @@ export interface PublishOptions extends yargs.Arguments {
   region?: string;
 }
 
-export async function publish(log: pino.BaseLogger, endpoint: string, options: {
-  blueprintPath: string;
-  publishingSpace: string;
-  cookie?: string;
-  region: string;
-}): Promise<void> {
-
+export async function publish(
+  log: pino.BaseLogger,
+  endpoint: string,
+  options: {
+    blueprintPath: string;
+    publishingSpace: string;
+    cookie?: string;
+    region: string;
+    force?: boolean;
+  },
+): Promise<void> {
   if (!fs.existsSync(options.blueprintPath)) {
     log.error('blueprint directory does not exist: %s', options.blueprintPath);
     process.exit(255);
@@ -44,7 +48,6 @@ export async function publish(log: pino.BaseLogger, endpoint: string, options: {
     identity = await verifyIdentity(endpoint, { authentication });
     log.info(`Publishing as ${identity.name} at ${identity.email}`);
     log.info('Against endpoint: %s', endpoint);
-
   } else {
     log.error('Could not authenticate');
     process.exit(255);
@@ -76,11 +79,14 @@ export async function publish(log: pino.BaseLogger, endpoint: string, options: {
   }
 
   await uploadBlueprint(log, fullPackagePath, endpoint, {
-    publishingSpace: options.publishingSpace,
-    targetSpace: options.publishingSpace,
-    packageName,
-    version,
-    authentication,
-    identity,
+    force: options.force,
+    blueprint: {
+      publishingSpace: options.publishingSpace,
+      targetSpace: options.publishingSpace,
+      packageName,
+      version,
+      authentication,
+      identity,
+    },
   });
 }
