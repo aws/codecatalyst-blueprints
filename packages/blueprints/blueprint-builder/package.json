@@ -49,6 +49,7 @@
     "typescript": "^4.x"
   },
   "dependencies": {
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*",
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-component.workflows": "*",
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*",
