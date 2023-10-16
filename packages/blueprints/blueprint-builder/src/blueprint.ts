@@ -120,9 +120,6 @@ export class Blueprint extends ParentBlueprint {
       devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
       keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
-      mediaUrls: [
-        'https://w7.pngwing.com/pngs/147/242/png-transparent-amazon-com-logo-amazon-web-services-amazon-elastic-compute-cloud-amazon-virtual-private-cloud-cloud-computing-text-orange-logo.png',
-      ],
     };
     console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
     this.newBlueprintOptions = newBlueprintOptions;

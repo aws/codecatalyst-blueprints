@@ -23,7 +23,12 @@ export interface Project {
   options?: any;
   src: {
     /**
-     * traverses through the files under the bundlepath/src (if it exists).
+     * This can be used to list the repositories in the exisiting codebase.
+     * @returns list of repository names
+     */
+    listRepositoryNames: () => string[];
+    /**
+     * traverses through the files under the bundlepath/src (if it exists). This allows you to find all the files in the exisiting codebase (and filter them too)
      * @param options options that allow you to narrow the files which you step through - defaults to ALL_FILES
      * @returns ContextFile
      */
