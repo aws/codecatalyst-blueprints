@@ -66,6 +66,10 @@
       "type": "override"
     },
     {
+      "name": "@amazon-codecatalyst/blueprint-component.dev-environments",
+      "type": "runtime"
+    },
+    {
       "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
       "type": "runtime"
     },

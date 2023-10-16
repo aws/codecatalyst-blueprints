@@ -1,3 +1,4 @@
+import { Workspace, SampleWorkspaces } from '@amazon-codecatalyst/blueprint-component.dev-environments';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 import {
@@ -143,6 +144,42 @@ export class Blueprint extends ParentBlueprint {
         'project.synth();',
       ].join('\n'),
     );
+
+    /**
+     * write a dev file that allows publishing within codecatalyst
+     */
+    new Workspace(this, repository, {
+      ...SampleWorkspaces.latest,
+      ...{
+        components: [
+          {
+            name: 'aws-runtime',
+            container: {
+              image: 'public.ecr.aws/aws-mde/universal-image:3.0',
+              env: [
+                {
+                  name: 'AWS_PROFILE',
+                  value: 'codecatalyst',
+                },
+              ],
+              mountSources: true,
+              volumeMounts: [
+                {
+                  name: 'docker-store',
+                  path: '/var/lib/docker',
+                },
+              ],
+            } as any,
+          },
+          {
+            name: 'docker-store',
+            volume: {
+              size: '16Gi',
+            },
+          },
+        ],
+      },
+    });
   }
 
   synth(): void {
