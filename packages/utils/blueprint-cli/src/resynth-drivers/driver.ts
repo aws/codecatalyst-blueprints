@@ -35,6 +35,7 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
 
   process.env.BRANCH_NAME = process.env.BRANCH_NAME || '';
+  process.env.PROJEN_DISABLE_POST = '1';
   
   console.log("===== Starting resynthesis ===== ");
   console.log("options: ", options);
