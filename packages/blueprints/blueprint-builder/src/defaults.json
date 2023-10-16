@@ -1,5 +1,5 @@
 {
-  "blueprintName": "create-empty-application",
+  "blueprintName": "my-amazing-blueprint",
   "description": "This blueprint creates an empty application.",
   "authorName": "Amazing author",
   "advancedSettings": {

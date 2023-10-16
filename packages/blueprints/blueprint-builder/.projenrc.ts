@@ -16,6 +16,7 @@ const blueprint = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprints.blueprint',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.workflows',
+    '@amazon-codecatalyst/blueprint-component.dev-environments',
     '@amazon-codecatalyst/blueprint-util.projen-blueprint',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */

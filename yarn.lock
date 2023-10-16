@@ -216,6 +216,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
   dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
     "@amazon-codecatalyst/blueprint-util.cli": "*"

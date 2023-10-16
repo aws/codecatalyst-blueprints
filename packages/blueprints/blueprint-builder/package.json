@@ -49,6 +49,7 @@
     "typescript": "^4.x"
   },
   "dependencies": {
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*",
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-component.workflows": "*",
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*",
@@ -67,7 +68,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.3.12",
+  "version": "0.3.13-preview.1",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
