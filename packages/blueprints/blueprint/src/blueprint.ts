@@ -6,7 +6,7 @@ import { Project } from 'projen';
 import { Context, ResynthesisPhase } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
-import { createContextFile, destructurePath } from './resynthesis/context-file';
+import { ContextFile, createContextFile, destructurePath } from './resynthesis/context-file';
 import { filepathSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
@@ -60,6 +60,16 @@ export class Blueprint extends Project {
         bundlepath: process.env.EXISTING_BUNDLE_ABS,
         options: getOptions(path.join(process.env.EXISTING_BUNDLE_ABS || '', OPTIONS_FILE)),
         src: {
+          listRepositoryNames: (): string[] => {
+            const repoBundlePath = path.join(this.context.project.bundlepath || '', 'src');
+            if (this.context.project.bundlepath && fs.existsSync(repoBundlePath)) {
+              return fs.readdirSync(repoBundlePath).filter(file => {
+                const fileLocation = path.join(repoBundlePath, file);
+                return fs.existsSync(fileLocation) && fs.statSync(fileLocation).isDirectory();
+              });
+            }
+            return [];
+          },
           findAll: (_options?: TraversalOptions) => traverse(this.context.project.bundlepath, _options),
         },
       },
@@ -143,9 +153,7 @@ export class Blueprint extends Project {
       console.debug(structureMatchReport(maxIdlength, strategy, repositoryTitle!, filepath!));
       if (resolvedFile) {
         //4. write the result of the merge strategy to the outdir/src/repo/path
-        const outputPath = path.join(this.outdir, 'src', repositoryTitle!, resolvedFile.path);
-        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-        fs.writeFileSync(outputPath, resolvedFile.buffer);
+        this.write(resolvedFile);
       } else {
         console.debug('\t -> removed');
       }
@@ -161,6 +169,12 @@ export class Blueprint extends Project {
         description: this.resynthPullRequest.description,
       },
     });
+  }
+
+  write(file: ContextFile) {
+    const outputPath = path.join(this.outdir, 'src', file.repositoryName!, file.path);
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    fs.writeFileSync(outputPath, file.buffer);
   }
 
   throwSynthesisError(error: BlueprintSynthesisError) {

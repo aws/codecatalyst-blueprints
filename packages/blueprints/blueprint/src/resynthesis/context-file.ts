@@ -2,8 +2,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export interface ContextFile {
+  /**
+   * string name of the repository
+   */
   repositoryName: string;
+  /**
+   * path to this file (relative to the repository)
+   * @example src/file/inside/repository.txt
+   */
   path: string;
+  /**
+   * file contents
+   */
   buffer: Buffer;
 }
 
