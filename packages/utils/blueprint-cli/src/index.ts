@@ -323,13 +323,12 @@ yargs
         })
         .option('force', {
           description:
-            'Force publish. This will overwrite the existing blueprint version (if it exists). This may cause exisiting blueprint consumers unexpected difference sets.',
+            'Force publish. This will overwrite the exisiting blueprint version (if it exists). This may cause exisiting blueprint consumers unexpected difference sets.',
           demandOption: false,
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      console.log(argv);
       void (await publish(log, argv.endpoint, {
         blueprintPath: argv.blueprint,
         publishingSpace: argv.publisher,
