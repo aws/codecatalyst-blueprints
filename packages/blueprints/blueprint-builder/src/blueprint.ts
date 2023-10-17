@@ -85,8 +85,8 @@ export class Blueprint extends ParentBlueprint {
       },
     ]);
 
-    const spaceName = this.context.spaceName || '<<unknown-organization>>';
-    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`;
+    const spaceName = this.context.spaceName || '<<unknown-space>>';
+    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
 
     const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
