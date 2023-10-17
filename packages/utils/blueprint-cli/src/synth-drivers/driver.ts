@@ -29,8 +29,9 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
   process.env.PACKAGE_VERSION = process.env.PACKAGE_VERSION || packageJson.version || '<<FAKE_BLUEPRINT_PACKAGEVERSION>>';
 
   process.env.EXISTING_BUNDLE_ABS = process.env.EXISTING_BUNDLE_ABS || '';
-
   process.env.BRANCH_NAME = process.env.BRANCH_NAME || '';
+
+  process.env.PROJEN_DISABLE_POST = '1';
   
   console.log("===== Starting synthesis ===== ");
   console.log("options: ", options);
