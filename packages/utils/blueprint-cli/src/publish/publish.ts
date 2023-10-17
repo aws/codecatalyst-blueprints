@@ -55,6 +55,13 @@ export async function publish(
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   const packageName: string = packageJson.name;
+  if (!packageName.match(/^(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/)?[a-z0-9-~][a-z0-9-._~]*$/) || packageName.length > 214) {
+    log.error(
+      `Package ['${packageName}'] not match NPM regex \`^(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/)?[a-z0-9-~][a-z0-9-._~]*$\` or is not less than 214 characters.`,
+    );
+    process.exit(255);
+  }
+
   const version = packageJson.version;
 
   const distributionFolder = path.join(options.blueprintPath, 'dist', 'js');
