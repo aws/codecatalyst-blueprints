@@ -66,7 +66,7 @@ export class MergeStrategies {
     // The three way merge algorithm below is text based and won't produce a meaningful result
     // when merging binary files. If there's a conflict in a binary file, default to returning
     // the proposedFile:
-    if (isBinaryFile(proposedFile) || isBinaryFile(existingFile) || isBinaryFile(commonAncestorFile)) {
+    if (isBinary(proposedFile?.buffer) || isBinary(existingFile?.buffer) || isBinary(commonAncestorFile?.buffer)) {
       if (buffersEqual(proposedFile?.buffer, commonAncestorFile?.buffer)) {
         // Handles the cases where all files are equal and where only the existing file differs:
         return existingFile;
@@ -116,17 +116,17 @@ export class MergeStrategies {
 const BINARY_FILE_HEURISTIC_MAX_LENGTH = 8000;
 
 /**
- * Returns whether the given ContextFile is binary or not using a heuristic based
+ * Returns whether the given Buffer is binary or not using a heuristic based
  * approach of checking for null bytes in the beginning of the file contents.
  */
-function isBinaryFile(file?: ContextFile): boolean {
-  if (!file) {
+export function isBinary(fileBuffer?: Buffer): boolean {
+  if (!fileBuffer) {
     return false;
   }
 
-  const searchLength = Math.min(file.buffer.length, BINARY_FILE_HEURISTIC_MAX_LENGTH);
+  const searchLength = Math.min(fileBuffer.length, BINARY_FILE_HEURISTIC_MAX_LENGTH);
   for (let i = 0; i < searchLength; i++) {
-    if (file.buffer[i] === 0) {
+    if (fileBuffer[i] === 0) {
       return true;
     }
   }
