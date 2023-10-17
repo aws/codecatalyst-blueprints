@@ -1,10 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Blueprint, Strategy } from '@amazon-codecatalyst/blueprints.blueprint';
+import { Blueprint, Strategy, isBinary } from '@amazon-codecatalyst/blueprints.blueprint';
 
 import { Component } from 'projen';
 import { File } from './files/file';
+import { StaticAsset, SubstitionAsset } from './static-assets';
 import { makeValidFolder } from './utilities';
+import { SourceFile } from './files/source-file';
 
 export const sourceRepositoryRootDirectory = 'src';
 
@@ -32,6 +34,44 @@ export class SourceRepository extends Component {
     this.relativePath = path.join(sourceRepositoryRootDirectory, sourceRepository.title);
     this.path = path.join(this.blueprint.context.rootDir, this.relativePath);
     this.synthesisSteps = [];
+  }
+
+  copyStaticFiles(options?: {
+    /**
+     * From a location inside static assets. This is a glob path prefixed by the location of the static-assets folder.
+     * @example 'java/*' - copies all files inside the 'java' directory inside static assets
+     * @default undefined - defaults to copying everything from inside static-assets/
+     */
+    from?: string;
+    /**
+     * To a location inside the repository. This is a directory path.
+     * @example 'src/' - copies all files to the 'src' directory inside the repository
+     * @default undefined - defaults to copying everything to the root of the repository
+     */
+    to?: string;
+
+    /**
+     * Use Mustache subsitution across non-binary assets.
+     * @example {
+          'my_variable': 'subbed value1',
+          'another_variable': 'subbed value2'
+        }
+     * @param subsitution
+     * @returns
+     */
+    substitute?: { [key: string]: string };
+  }) {
+    const from = options?.from;
+    const to = options?.to || '';
+
+    for (const asset of SubstitionAsset.findAll(options?.from)) {
+      const relativeLocation = path.relative(from || '', asset.path());
+      if (isBinary(asset.content())) {
+        new File(this, path.join(to, relativeLocation), asset.content());
+      } else {
+        new SourceFile(this, path.join(to, relativeLocation), asset.substitute(options?.substitute || {}));
+      }
+    }
   }
 
   getResynthStrategies(_options?: {}): Strategy[] {
