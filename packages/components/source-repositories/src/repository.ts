@@ -4,9 +4,9 @@ import { Blueprint, Strategy, isBinary } from '@amazon-codecatalyst/blueprints.b
 
 import { Component } from 'projen';
 import { File } from './files/file';
-import { StaticAsset, SubstitionAsset } from './static-assets';
-import { makeValidFolder } from './utilities';
 import { SourceFile } from './files/source-file';
+import { SubstitionAsset } from './static-assets';
+import { makeValidFolder } from './utilities';
 
 export const sourceRepositoryRootDirectory = 'src';
 
@@ -38,14 +38,14 @@ export class SourceRepository extends Component {
 
   copyStaticFiles(options?: {
     /**
-     * From a location inside static assets. This is a glob path prefixed by the location of the static-assets folder.
-     * @example 'java/*' - copies all files inside the 'java' directory inside static assets
+     * From a location inside static assets. This is a directory path prefixed by the location of the static-assets folder.
+     * @example 'java/src' - copies all files inside the 'java/src' directory inside static assets
      * @default undefined - defaults to copying everything from inside static-assets/
      */
     from?: string;
     /**
      * To a location inside the repository. This is a directory path.
-     * @example 'src/' - copies all files to the 'src' directory inside the repository
+     * @example 'src' - copies all files to the 'src' directory inside the repository
      * @default undefined - defaults to copying everything to the root of the repository
      */
     to?: string;
@@ -61,11 +61,15 @@ export class SourceRepository extends Component {
      */
     substitute?: { [key: string]: string };
   }) {
-    const from = options?.from;
+    const from = path.join('', options?.from || '');
     const to = options?.to || '';
 
-    for (const asset of SubstitionAsset.findAll(options?.from)) {
-      const relativeLocation = path.relative(from || '', asset.path());
+    let fromGlob: string | undefined = undefined;
+    if (options?.from) {
+      fromGlob = `${path.join(options.from, '**')}`;
+    }
+    for (const asset of SubstitionAsset.findAll(fromGlob)) {
+      const relativeLocation = asset.path().replace(from, '');
       if (isBinary(asset.content())) {
         new File(this, path.join(to, relativeLocation), asset.content());
       } else {

@@ -1,5 +1,5 @@
 import { Workspace, SampleWorkspaces } from '@amazon-codecatalyst/blueprint-component.dev-environments';
-import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
 import {
   BlueprintSynthesisErrorTypes,
@@ -126,7 +126,9 @@ export class Blueprint extends ParentBlueprint {
     this.newBlueprintOptions = newBlueprintOptions;
 
     // copy-paste additional code over it
-    repository.copyStaticFiles();
+    StaticAsset.findAll().forEach(asset => {
+      new File(repository, asset.path(), asset.content());
+    });
 
     /**
      * Write the projenrc.ts
