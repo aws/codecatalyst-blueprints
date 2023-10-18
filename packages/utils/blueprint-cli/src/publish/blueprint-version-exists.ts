@@ -30,7 +30,7 @@ export async function blueprintVersionExists(
   };
 
   try {
-    await axios.post(
+    const result = await axios.post(
       `https://${endpoint}/graphql?`,
       {
         operationName: 'GetBlueprintVersion',
@@ -48,10 +48,14 @@ export async function blueprintVersionExists(
         headers: versionCheckHeaders,
       },
     );
-    return true;
+    if (result.data.data.getBlueprintVersion) {
+      // the version exists
+      return true;
+    } else {
+      console.log(result.data.data);
+      return false;
+    }
   } catch (error: any) {
-    console.log(error);
-    // log.debug({ message: error.message }, 'Could not find blueprint');
-    return false;
+    throw new Error(`Could not look up ['${options.blueprint.package}'] ['${options.blueprint.version}'] in ['${options.blueprint.version}']`);
   }
 }
