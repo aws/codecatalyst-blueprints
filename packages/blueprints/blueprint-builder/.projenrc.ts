@@ -18,6 +18,8 @@ const blueprint = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.dev-environments',
     '@amazon-codecatalyst/blueprint-util.projen-blueprint',
+    '@amazon-codecatalyst/blueprint-component.environments',
+    '@amazon-codecatalyst/blueprint-util.cli',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
   description: 'Use this to build additional blueprints from existing blueprints.',
@@ -25,7 +27,7 @@ const blueprint = new ProjenBlueprint({
   packageName: '@amazon-codecatalyst/blueprints.blueprint-builder',
   publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
-  devDeps: ['ts-node', '@amazon-codecatalyst/blueprint-util.cli'],
+  devDeps: ['ts-node'],
   /* Add release management to this project. */
   // release: undefined,
   keywords: ['blueprint'],

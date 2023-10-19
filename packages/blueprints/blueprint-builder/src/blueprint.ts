@@ -1,20 +1,29 @@
 import { Workspace, SampleWorkspaces } from '@amazon-codecatalyst/blueprint-component.dev-environments';
+import devEnvPackage from '@amazon-codecatalyst/blueprint-component.dev-environments/package.json';
+import envPackage from '@amazon-codecatalyst/blueprint-component.environments/package.json';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import sourceReposPackage from '@amazon-codecatalyst/blueprint-component.source-repositories/package.json';
+import workflowsPackage from '@amazon-codecatalyst/blueprint-component.workflows/package.json';
+import cliPackage from '@amazon-codecatalyst/blueprint-util.cli/package.json';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
+import projenBlueprintPackage from '@amazon-codecatalyst/blueprint-util.projen-blueprint/package.json';
 import {
   BlueprintSynthesisErrorTypes,
   MergeStrategies,
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
 } from '@amazon-codecatalyst/blueprints.blueprint';
+import baseBlueprintPackage from '@amazon-codecatalyst/blueprints.blueprint/package.json';
 import * as decamelize from 'decamelize';
 import defaults from './defaults.json';
 
+devEnvPackage.version;
 export interface Options extends ParentOptions {
   /**
    * What do you want to call your new blueprint?
-   * @validationRegex /^[a-z-]+$/
-   * @validationMessage Can only contain lowercase alphabetic characters or '-'
+   * @displayName Blueprint Display Name
+   * @validationRegex /^[a-zA-Z0-9_-\s]+$/
+   * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes
    */
   blueprintName: string;
 
@@ -34,7 +43,7 @@ export interface Options extends ParentOptions {
   /**
    * @collapsed true
    */
-  advancedSettings?: {
+  advancedSettings: {
     /**
      * Blueprint Tags. These get added to the package.json
      * @validationRegex /^[a-z-]+$/
@@ -46,6 +55,22 @@ export interface Options extends ParentOptions {
      * License for your Blueprint
      */
     license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
+
+    /**
+     * Blueprints are NPM packages. Changing this will publish your blueprint as a different package.
+     * If this is not set, it is initially generated from the blueprint display name and publishing space.
+     * @validationRegex /^(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/)?[a-z0-9-~][a-z0-9-._~]*$/
+     * @validationMessage This contains characters that are not allowed in NPM package names.
+     */
+    blueprintPackageName?: string;
+
+    /**
+     * The repository in which your blueprint code is stored
+     * @hidden
+     * @validationRegex /^[a-zA-Z0-9_-\s]+$/
+     * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes
+     */
+    repositoryName?: string;
   };
 }
 
@@ -54,6 +79,11 @@ export class Blueprint extends ParentBlueprint {
   newBlueprintOptions: any;
 
   constructor(options_: Options) {
+    const spaceName = process.env.CONTEXT_SPACENAME || '<<unknown-space>>';
+    const dashName = decamelize.default(options_.blueprintName.toString()).replace(/[_ ]/g, '-');
+    const defaultPackageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
+    options_.advancedSettings.repositoryName = options_.advancedSettings.repositoryName || dashName;
+    options_.advancedSettings.blueprintPackageName = options_.advancedSettings.blueprintPackageName || defaultPackageName;
     super(options_);
     /**
      * This is a typecheck to ensure that the defaults passed in are of the correct type.
@@ -71,10 +101,9 @@ export class Blueprint extends ParentBlueprint {
     const options = Object.assign(typeCheck, options_);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dashName = decamelize.default(options.blueprintName.toString()).replace(/_/g, '-');
 
     const repository = new SourceRepository(this, {
-      title: dashName,
+      title: options_.advancedSettings.repositoryName,
     });
     this.repository = repository;
     this.repository.setResynthStrategies([
@@ -85,13 +114,10 @@ export class Blueprint extends ParentBlueprint {
       },
     ]);
 
-    const spaceName = this.context.spaceName || '<<unknown-space>>';
-    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
-
     const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
       publishingOrganization: spaceName,
-      packageName,
+      packageName: options_.advancedSettings.blueprintPackageName,
       name: dashName,
       displayName: options.blueprintName,
       defaultReleaseBranch: 'main',
@@ -111,14 +137,19 @@ export class Blueprint extends ParentBlueprint {
       copyrightOwner: spaceName || 'unknown',
       deps: [
         'projen',
-        '@amazon-codecatalyst/blueprints.blueprint',
-        '@amazon-codecatalyst/blueprint-component.workflows',
-        '@amazon-codecatalyst/blueprint-component.source-repositories',
-        '@amazon-codecatalyst/blueprint-component.dev-environments',
-        '@amazon-codecatalyst/blueprint-component.environments',
+        `@amazon-codecatalyst/blueprints.blueprint@${baseBlueprintPackage.version}`,
+        `@amazon-codecatalyst/blueprint-component.workflows@${workflowsPackage.version}`,
+        `@amazon-codecatalyst/blueprint-component.source-repositories@${sourceReposPackage.version}`,
+        `@amazon-codecatalyst/blueprint-component.dev-environments@${devEnvPackage.version}`,
+        `@amazon-codecatalyst/blueprint-component.environments@${envPackage.version}`,
       ],
       description: `${options.description}`,
-      devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
+      devDeps: [
+        'ts-node@^10',
+        'typescript',
+        `@amazon-codecatalyst/blueprint-util.projen-blueprint@${projenBlueprintPackage.version}`,
+        `@amazon-codecatalyst/blueprint-util.cli@${cliPackage.version}`,
+      ],
       keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
     };
@@ -139,7 +170,22 @@ export class Blueprint extends ParentBlueprint {
       [
         "import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';",
         '',
-        `const project = new ProjenBlueprint(${JSON.stringify(newBlueprintOptions, null, 2)});`,
+        `const project = new ProjenBlueprint(${JSON.stringify(
+          {
+            ...newBlueprintOptions,
+            deps: [
+              'projen',
+              '@amazon-codecatalyst/blueprints.blueprint',
+              '@amazon-codecatalyst/blueprint-component.workflows',
+              '@amazon-codecatalyst/blueprint-component.source-repositories',
+              '@amazon-codecatalyst/blueprint-component.dev-environments',
+              '@amazon-codecatalyst/blueprint-component.environments',
+            ],
+            devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
+          },
+          null,
+          2,
+        )});`,
         '',
         'project.synth();',
       ].join('\n'),
