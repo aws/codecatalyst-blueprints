@@ -32,6 +32,12 @@ export interface Options extends ParentOptions {
   authorName: string;
 
   /**
+   * Would you like to include a CDK project (TypeScript) in this blueprint?
+   * @displayName Include CDK project?
+   */
+  includeCdkProject?: boolean;
+
+  /**
    * @collapsed true
    */
   advancedSettings?: {
@@ -46,6 +52,12 @@ export interface Options extends ParentOptions {
      * License for your Blueprint
      */
     license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
+
+    /**
+     * Template for your CDK project, if included.
+     * @displayName CDK template
+     */
+    cdkTemplate: 'app' | 'lib';
   };
 }
 
@@ -66,6 +78,7 @@ export class Blueprint extends ParentBlueprint {
       advancedSettings: {
         ...defaults.advancedSettings,
         license: defaults.advancedSettings.license as any,
+        cdkTemplate: defaults.advancedSettings.cdkTemplate as any,
       },
     };
     const options = Object.assign(typeCheck, options_);
@@ -126,9 +139,47 @@ export class Blueprint extends ParentBlueprint {
     this.newBlueprintOptions = newBlueprintOptions;
 
     // copy-paste additional code over it
-    StaticAsset.findAll().forEach(asset => {
-      new File(repository, asset.path(), asset.content());
+    StaticAsset.findAll('root/**').forEach(asset => {
+      new File(repository, asset.path().replace('root/', ''), asset.content());
     });
+
+    if (options.includeCdkProject) {
+
+      const templateType = options.advancedSettings?.cdkTemplate;
+
+      StaticAsset.findAll(`cdk-typescript/${templateType}/**`).forEach(asset => {
+        new File(repository, asset.path().replace(`cdk-typescript/${templateType}`, 'static-assets'), asset.content());
+      });
+
+      /**
+       * Write the .npmignore
+       */
+      new SourceFile(
+        repository,
+        'static-assets/.npmignore',
+        [
+          '*.ts',
+          '!*.d.ts',
+          '',
+          '# CDK asset staging directory',
+          '.cdk.staging',
+          'cdk.out',
+        ].join('\n'),
+      );
+
+      const blueprintDefaults = new StaticAsset(`cdk-typescript/${templateType}-defaults.json`);
+      new File(repository, blueprintDefaults.path().replace('cdk-typescript', 'src').replace(`${templateType}-defaults`, 'defaults'), blueprintDefaults.content());
+
+      const blueprint = new StaticAsset(`cdk-typescript/${templateType}-blueprint.ts`);
+      new File(repository, blueprint.path().replace('cdk-typescript', 'src').replace(`${templateType}-blueprint`, 'blueprint'), blueprint.content());
+
+    } else {
+
+      StaticAsset.findAll('default/**').forEach(asset => {
+        new File(repository, asset.path().replace('default', 'static-assets'), asset.content());
+      });
+
+    }
 
     /**
      * Write the projenrc.ts

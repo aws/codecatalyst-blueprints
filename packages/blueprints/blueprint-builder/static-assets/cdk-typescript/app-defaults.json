@@ -1,0 +1,14 @@
+{
+  "environment": {
+    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "environmentType": "PRODUCTION"
+  },
+  "nested": {
+    "stringInput": "default_string_value"
+  },
+  "dropdown": "third-option",
+  "cdkSettings": {
+    "region": "us-west-2",
+    "stackName": "CdkFromBlueprint"
+  }
+}

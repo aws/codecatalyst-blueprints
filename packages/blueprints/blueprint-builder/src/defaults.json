@@ -2,8 +2,13 @@
   "blueprintName": "my-amazing-blueprint",
   "description": "This blueprint creates an empty application.",
   "authorName": "Amazing author",
+  "includeCdkProject": false,
   "advancedSettings": {
     "license": "Apache-2.0",
-    "tags": ["first-label", "second-label"]
+    "tags": [
+      "first-label",
+      "second-label"
+    ],
+    "cdkTemplate": "app"
   }
 }
