@@ -87,7 +87,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.3.19",
+  "version": "0.3.20",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
