@@ -89,6 +89,36 @@ export class Blueprint extends ParentBlueprint {
       new SourceFile(repository, asset.path(), asset.content().toString());
     });
 
+    // create .npmignore file for CDK project
+    new SourceFile(
+      repository,
+      '.npmignore',
+      [
+        '*.ts',
+        '!*.d.ts',
+        '',
+        '# CDK asset staging directory',
+        '.cdk.staging',
+        'cdk.out',
+      ].join('\n'),
+    );
+
+    // create .gitignore file for CDK project
+    new SourceFile(
+      repository,
+      '.gitignore',
+      [
+        '*.js',
+        '!jest.config.js',
+        '!*.d.ts',
+        'node_modules',
+        '',
+        '# CDK asset staging directory',
+        '.cdk.staging',
+        'cdk.out',
+      ].join('\n'),
+    );
+
     // create an environment, if I have one
     let environment: Environment | undefined = undefined;
     if (options.environment) {
@@ -103,7 +133,7 @@ export class Blueprint extends ParentBlueprint {
      * We can use a build action to execute some arbitrary steps
      */
     workflowBuilder.addBuildAction({
-      actionName: 'build-construct',
+      actionName: 'build_construct',
       input: {
         Sources: ['WorkflowSource'],
       },

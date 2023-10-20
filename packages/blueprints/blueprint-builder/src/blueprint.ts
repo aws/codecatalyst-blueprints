@@ -98,8 +98,8 @@ export class Blueprint extends ParentBlueprint {
       },
     ]);
 
-    const spaceName = this.context.spaceName || '<<unknown-space>>';
-    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
+    const spaceName = this.context.spaceName || '<<unknown-organization>>';
+    const packageName = `@amazon-codecatalyst/${spaceName}.${dashName}`;
 
     const newBlueprintOptions: ProjenBlueprintOptions = {
       authorName: options.authorName,
@@ -143,38 +143,28 @@ export class Blueprint extends ParentBlueprint {
       new File(repository, asset.path().replace('root/', ''), asset.content());
     });
 
+    // copy-paste different code if CDK project is selected
     if (options.includeCdkProject) {
 
+      // dictates whether CDK project uses an app or lib (construct) template
       const templateType = options.advancedSettings?.cdkTemplate;
 
+      // copy-paste CDK init code for template
       StaticAsset.findAll(`cdk-typescript/${templateType}/**`).forEach(asset => {
         new File(repository, asset.path().replace(`cdk-typescript/${templateType}`, 'static-assets'), asset.content());
       });
 
-      /**
-       * Write the .npmignore
-       */
-      new SourceFile(
-        repository,
-        'static-assets/.npmignore',
-        [
-          '*.ts',
-          '!*.d.ts',
-          '',
-          '# CDK asset staging directory',
-          '.cdk.staging',
-          'cdk.out',
-        ].join('\n'),
-      );
-
+      // copy-paste defaults.json for template
       const blueprintDefaults = new StaticAsset(`cdk-typescript/${templateType}-defaults.json`);
       new File(repository, blueprintDefaults.path().replace('cdk-typescript', 'src').replace(`${templateType}-defaults`, 'defaults'), blueprintDefaults.content());
 
+      // copy-paste blueprint.ts for template
       const blueprint = new StaticAsset(`cdk-typescript/${templateType}-blueprint.ts`);
       new File(repository, blueprint.path().replace('cdk-typescript', 'src').replace(`${templateType}-blueprint`, 'blueprint'), blueprint.content());
 
     } else {
 
+      // if CDK project is not selected, just copy-paste original default files
       StaticAsset.findAll('default/**').forEach(asset => {
         new File(repository, asset.path().replace('default', 'static-assets'), asset.content());
       });

@@ -113,6 +113,36 @@ export class Blueprint extends ParentBlueprint {
       stackName: options.cdkSettings.stackName,
     }));
 
+    // create .npmignore file for CDK project
+    new SourceFile(
+      repository,
+      '.npmignore',
+      [
+        '*.ts',
+        '!*.d.ts',
+        '',
+        '# CDK asset staging directory',
+        '.cdk.staging',
+        'cdk.out',
+      ].join('\n'),
+    );
+
+    // create .gitignore file for CDK project
+    new SourceFile(
+      repository,
+      '.gitignore',
+      [
+        '*.js',
+        '!jest.config.js',
+        '!*.d.ts',
+        'node_modules',
+        '',
+        '# CDK asset staging directory',
+        '.cdk.staging',
+        'cdk.out',
+      ].join('\n'),
+    );
+
     // create an environment, if I have one
     let environment: Environment | undefined = undefined;
     if (options.environment) {
@@ -127,7 +157,7 @@ export class Blueprint extends ParentBlueprint {
      * We can use a build action to execute some arbitrary steps
      */
     workflowBuilder.addCdkBootstrapAction({
-      actionName: 'cdk-bootstrap',
+      actionName: 'cdk_bootstrap',
       inputs: {
         Sources: ['WorkflowSource'],
       },
@@ -138,10 +168,11 @@ export class Blueprint extends ParentBlueprint {
     });
 
     workflowBuilder.addCdkDeployAction({
-      actionName: 'cdk-deploy',
+      actionName: 'cdk_deploy',
       inputs: {
         Sources: ['WorkflowSource'],
       },
+      dependsOn: ['cdk_bootstrap'],
       environment: environment && convertToWorkflowEnvironment(environment),
       configuration: {
         StackName: options.cdkSettings.stackName,
