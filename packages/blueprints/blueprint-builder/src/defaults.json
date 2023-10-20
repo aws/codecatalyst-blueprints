@@ -1,9 +1,11 @@
 {
-  "blueprintName": "my-amazing-blueprint",
+  "blueprintName": "My Amazing Blueprint",
   "description": "This blueprint creates an empty application.",
   "authorName": "Amazing author",
   "includeCdkProject": false,
   "advancedSettings": {
+    "blueprintPackageName": "",
+    "repositoryName": "",
     "license": "Apache-2.0",
     "tags": [
       "first-label",

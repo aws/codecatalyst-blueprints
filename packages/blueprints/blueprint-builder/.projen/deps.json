@@ -1,10 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@amazon-codecatalyst/blueprint-util.cli",
-      "type": "build"
-    },
-    {
       "name": "@types/node",
       "version": "^18",
       "type": "build"
@@ -70,11 +66,19 @@
       "type": "runtime"
     },
     {
+      "name": "@amazon-codecatalyst/blueprint-component.environments",
+      "type": "runtime"
+    },
+    {
       "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
       "type": "runtime"
     },
     {
       "name": "@amazon-codecatalyst/blueprint-component.workflows",
+      "type": "runtime"
+    },
+    {
+      "name": "@amazon-codecatalyst/blueprint-util.cli",
       "type": "runtime"
     },
     {
