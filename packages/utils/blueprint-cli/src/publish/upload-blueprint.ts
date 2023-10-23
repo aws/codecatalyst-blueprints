@@ -65,22 +65,31 @@ export async function uploadBlueprint(
     ...generateHeaders(blueprint.authentication, blueprint.identity),
   };
 
+  const url = `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
+    blueprint.packageName,
+  )}/versions/${querystring.escape(blueprint.version)}/packages`;
+
   const publishBlueprintPackageResponse = await axios.default({
     method: 'PUT',
-    url: `https://${endpoint}/v1/spaces/${querystring.escape(blueprint.targetSpace)}/blueprints/${querystring.escape(
-      blueprint.packageName,
-    )}/versions/${querystring.escape(blueprint.version)}/packages`,
+    url,
     data: blueprintTarballStream,
     headers: publishHeaders,
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
   });
-  console.log(publishBlueprintPackageResponse.data);
+  console.log({
+    requestId: publishBlueprintPackageResponse.headers['x-amzn-requestid'],
+    ...publishBlueprintPackageResponse.data,
+    url,
+    servedFrom: publishBlueprintPackageResponse.headers['x-amzn-served-from'],
+  });
 
   log.info('Attempting to publish', {
     data: publishBlueprintPackageResponse.data,
   });
 
-  const baseWaitSec = 3;
-  const attempts = 10;
+  const baseWaitSec = 5;
+  const attempts = 100;
   const { spaceName, blueprintName, version, statusId } = publishBlueprintPackageResponse.data;
 
   for (let attempt = 0; attempt < attempts; attempt++) {
@@ -255,7 +264,7 @@ async function generatePreviewLink(
 }
 
 function resolveStageUrl(endpoint: string): string {
-  if (endpoint === 'public.api-gamma.quokka.codes') {
+  if (endpoint.endsWith('api-gamma.quokka.codes')) {
     return 'https://integ.stage.quokka.codes';
   } else {
     return 'https://codecatalyst.aws';
