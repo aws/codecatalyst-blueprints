@@ -18,6 +18,8 @@ export interface Options extends ParentOptions {
    * This is some information about what type of environment and what in the world an environment is.
    * @displayName This is the Environment Title Area
    * @collapsed
+   * @showName true
+   * @showEnvironmentType true
    */
   thisIsMyEnvironment: EnvironmentDefinition<{
     /**
@@ -69,6 +71,14 @@ export interface Options extends ParentOptions {
   stringInput: string;
 
   /**
+   * This is a converts a string input field to a text area for larger bodies of text.
+   * number sets how many rows, default is 5.
+   * @textArea 15
+   * @validationRegex .*
+   */
+  textAreaInput: string;
+
+  /**
    * This is a regular enum input field with an override display name.
    * @displayName 'Runtime Languages'
    */
@@ -103,6 +113,13 @@ export interface Options extends ParentOptions {
      * @validationRegex .*
      */
     emptyInput: string;
+
+    /**
+     * Hidden input.
+     * @hidden true
+     * @validationRegex .*
+     */
+    nestedHiddenInput: string;
   };
 
   /**
@@ -115,6 +132,39 @@ export interface Options extends ParentOptions {
    * This should be checked by default
    */
   trueCheckbox: boolean;
+
+  /**
+   * This converts a boolean into a button
+   * @button
+   */
+  button: boolean;
+
+  /**
+   * Hidden input.
+   * @hidden true
+   * @validationRegex .*
+   */
+  hiddenInput: string;
+
+  /**
+   * Hidden input.
+   * @hidden
+   * @validationRegex .*
+   */
+  hiddenInputNoBoolean: string;
+
+  /**
+   * Hidden input.
+   * @hidden true
+   * @validationRegex /cantfind/
+   */
+  hiddenInputInvalid: string;
+
+  /**
+   * Pascal Case Regex.
+   * @validationRegex /^[A-Z][A-Za-z]{4,24}$/
+   */
+  pascalCaseRegex: string;
 }
 
 /**

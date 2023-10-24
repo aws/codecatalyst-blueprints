@@ -4,6 +4,7 @@
     "environmentType": "PRODUCTION"
   },
   "stringInput": "default string input",
+  "textAreaInput": "A lot of text goes here",
   "numberInput": 12,
   "runtimes": "nodejs",
   "stringListInput": [
@@ -12,7 +13,13 @@
   ],
   "nestedArea": {
     "stringInput": "default nested string input",
-    "emptyInput": ""
+    "emptyInput": "",
+    "nestedHiddenInput": "something"
   },
-  "trueCheckbox": true
+  "trueCheckbox": true,
+  "button": false,
+  "hiddenInput": "hidden1",
+  "hiddenInputNoBoolean": "hiddenNoBool",
+  "hiddenInputInvalid": "cantfind",
+  "pascalCaseRegex": "PascalCase"
 }
