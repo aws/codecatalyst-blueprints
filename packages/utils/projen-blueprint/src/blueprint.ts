@@ -102,7 +102,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     };
     super(finalOpts);
 
-    const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8')).version;
+    const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve(this.outdir, 'package.json'), 'utf-8')).version;
     this.package.addVersion(version || '0.0.0');
     this.addDevDeps('ts-node@^10');
 
