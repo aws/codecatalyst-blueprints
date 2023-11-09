@@ -3,6 +3,7 @@ import devEnvPackage from '@amazon-codecatalyst/blueprint-component.dev-environm
 import envPackage from '@amazon-codecatalyst/blueprint-component.environments/package.json';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import sourceReposPackage from '@amazon-codecatalyst/blueprint-component.source-repositories/package.json';
+import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 import workflowsPackage from '@amazon-codecatalyst/blueprint-component.workflows/package.json';
 import cliPackage from '@amazon-codecatalyst/blueprint-util.cli/package.json';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
@@ -15,6 +16,7 @@ import {
 } from '@amazon-codecatalyst/blueprints.blueprint';
 import baseBlueprintPackage from '@amazon-codecatalyst/blueprints.blueprint/package.json';
 import * as decamelize from 'decamelize';
+import { buildReleaseWorkflow } from './build-release-workflow';
 import defaults from './defaults.json';
 
 devEnvPackage.version;
@@ -63,6 +65,12 @@ export interface Options extends ParentOptions {
      * @validationMessage This contains characters that are not allowed in NPM package names.
      */
     blueprintPackageName?: string;
+
+    /**
+     * Generate a release workflow?
+     * If this is set, the blueprint will generate a release workflow. On push to main, a workflow will release this blueprint into your codecatalyst space.
+     */
+    releaseWorkflow?: boolean;
   };
 }
 
@@ -217,6 +225,14 @@ export class Blueprint extends ParentBlueprint {
         ],
       },
     });
+
+    /**
+     * todo: remove this once the release workflow is available in production
+     */
+    if (this.context.environmentId == 'default' || options.advancedSettings.releaseWorkflow) {
+      const releaseWorkflow = new WorkflowBuilder(this);
+      new Workflow(this, repository, buildReleaseWorkflow(releaseWorkflow).getDefinition());
+    }
   }
 
   synth(): void {
