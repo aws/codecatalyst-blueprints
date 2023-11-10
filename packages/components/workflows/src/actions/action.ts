@@ -7,6 +7,7 @@ import { BuildActionConfiguration } from './action-build';
 import { CdkBootstrapActionConfiguration } from './action-cdk-bootstrap';
 import { CdkDeployActionYamlOutput } from './action-cdk-deploy';
 import { CfnDeployActionConfiguration } from './action-cfn-deploy';
+import { PublishBlueprintActionConfiguration } from './action-publish-blueprint';
 import { TestActionConfiguration } from './action-test-reports';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
 
@@ -16,6 +17,7 @@ export enum ActionIdentifierAlias {
   test = 'test',
   cdkDeploy = 'cdkDeploy',
   cdkBootstrap = 'cdkBootstrap',
+  publishBlueprint = 'publishBlueprint',
 }
 
 const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
@@ -39,6 +41,10 @@ const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } =
     default: 'aws/cdk-bootstrap-gamma@v1',
     prod: 'aws/cdk-bootstrap@v1',
   },
+  publishBlueprint: {
+    default: 'aws/publish-blueprint-action@v1',
+    prod: 'aws/publish-blueprint-action@v1',
+  },
 };
 
 export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environmentIdentifier: string = 'default'): string | undefined {
@@ -51,7 +57,9 @@ type TypeSupportedActions =
   | CfnDeployActionConfiguration
   | TestActionConfiguration
   | CdkDeployActionYamlOutput
-  | CdkBootstrapActionConfiguration;
+  | CdkBootstrapActionConfiguration
+  | PublishBlueprintActionConfiguration;
+
 export interface ActionDefiniton {
   Identifier?: string;
   Compute?: TypeSupportedCompute | string;
