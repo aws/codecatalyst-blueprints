@@ -4,7 +4,6 @@
   "authorName": "Amazing author",
   "advancedSettings": {
     "blueprintPackageName": "",
-    "repositoryName": "",
     "license": "Apache-2.0",
     "tags": ["first-label", "second-label"]
   }
