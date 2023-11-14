@@ -11,9 +11,7 @@ also exist for vim. Many gitignored files will be invisible in vim and may cause
 
 #### Prereq:
 
-(1) Make sure you have `toolbox` and `ada` installed.
-
-(2) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
+(1) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
 brew install nvm            # blueprints work only with Node 18.x
@@ -34,14 +32,19 @@ Run these commands to get started building blueprints. The first time set-up may
 git clone https://github.com/aws/codecatalyst-blueprints
 cd codecatalyst-blueprints
 nvm use
-source ~/.bash_profile
-blueprints-setup
 yarn && yarn build
 ```
 
 You're done!
 
-Unless you have access to the blueprints organization in quokka, you will not be able to publsih preview versions of these blueprints.
+### Publish a blueprint
+You must be an admin of the target space. Your target space must be flagged for the enterprise tier.
+```
+cd packages/blueprints/<blueprint>
+yarn blueprint:preview --publisher my-awesome-space
+yarn blueprint:release --publisher my-awesome-space
+```
+This will publish a private verision of your blueprint into `my-awesome-space`. It will only be available for that space.
 
 ## Testing Changes
 
