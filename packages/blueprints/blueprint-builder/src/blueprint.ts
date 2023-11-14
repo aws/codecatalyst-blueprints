@@ -63,14 +63,6 @@ export interface Options extends ParentOptions {
      * @validationMessage This contains characters that are not allowed in NPM package names.
      */
     blueprintPackageName?: string;
-
-    /**
-     * The repository in which your blueprint code is stored
-     * @hidden
-     * @validationRegex /^[a-zA-Z0-9_-\s]+$/
-     * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes
-     */
-    repositoryName?: string;
   };
 }
 
@@ -82,7 +74,6 @@ export class Blueprint extends ParentBlueprint {
     const spaceName = process.env.CONTEXT_SPACENAME || '<<unknown-space>>';
     const dashName = decamelize.default(options_.blueprintName.toString()).replace(/[_ ]/g, '-');
     const defaultPackageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
-    options_.advancedSettings.repositoryName = options_.advancedSettings.repositoryName || dashName;
     options_.advancedSettings.blueprintPackageName = options_.advancedSettings.blueprintPackageName || defaultPackageName;
     super(options_);
     /**
@@ -103,7 +94,7 @@ export class Blueprint extends ParentBlueprint {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
     const repository = new SourceRepository(this, {
-      title: options_.advancedSettings.repositoryName,
+      title: dashName,
     });
     this.repository = repository;
     this.repository.setResynthStrategies([
