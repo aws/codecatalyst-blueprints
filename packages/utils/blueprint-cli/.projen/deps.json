@@ -106,6 +106,7 @@
     },
     {
       "name": "@aws-sdk/client-codecatalyst",
+      "version": "3.414.0",
       "type": "runtime"
     },
     {

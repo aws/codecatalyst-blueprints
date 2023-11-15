@@ -122,6 +122,12 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addDeps(`projen@${projenVersion}`);
     this.package.addPackageResolutions(`projen@${projenVersion}`);
 
+    /**
+     * Force blueprints into using @aws-sdk/client-codecatalyst v3.414.0.
+     * We depend the sdk to provide bearer token auth, we cannot have it change.
+     */
+    this.package.addPackageResolutions('@aws-sdk/client-codecatalyst@3.414.0');
+
     // modify bumping tasks
     this.removeTask('release');
     this.removeTask('bump');

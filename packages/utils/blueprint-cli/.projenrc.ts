@@ -19,6 +19,10 @@ const project = new ProjenBlueprintComponent({
     'typescript',
     'jmespath',
     'deepmerge',
+    /**
+     * We depend the sdk to provide bearer token auth for publishing, we cannot have it change.
+     */
+    '@aws-sdk/client-codecatalyst@3.414.0',
   ],
   peerDeps: [],
   description: 'This is a cli utility used for blueprint development.',
