@@ -73,6 +73,7 @@
     "ts-deepmerge": "*"
   },
   "resolutions": {
+    "@aws-sdk/client-codecatalyst": "3.414.0",
     "projen": "0.71.112"
   },
   "keywords": [

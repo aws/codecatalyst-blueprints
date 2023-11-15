@@ -131,7 +131,7 @@ __metadata:
   dependencies:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@aws-sdk/client-cloudfront": ^3.360.0
-    "@aws-sdk/client-codecatalyst": ^3.395.0
+    "@aws-sdk/client-codecatalyst": 3.414.0
     "@aws-sdk/client-s3": ^3.360.0
     "@aws-sdk/client-sts": ^3.360.0
     "@types/jest": 26.0.24
@@ -512,7 +512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-codecatalyst@npm:^3.395.0":
+"@aws-sdk/client-codecatalyst@npm:3.414.0":
   version: 3.414.0
   resolution: "@aws-sdk/client-codecatalyst@npm:3.414.0"
   dependencies:
