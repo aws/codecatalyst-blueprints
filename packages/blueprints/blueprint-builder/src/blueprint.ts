@@ -71,6 +71,13 @@ export interface Options extends ParentOptions {
      * If this is set, the blueprint will generate a release workflow. On push to main, a workflow will release this blueprint into your codecatalyst space.
      */
     releaseWorkflow?: boolean;
+
+    /**
+     * Include a publishing step in the release workflow?
+     * If this is set, the generated release workflow will contain a publishing action.
+     * @hidden
+     */
+    includePublishingAction?: boolean;
   };
 }
 
@@ -230,12 +237,15 @@ export class Blueprint extends ParentBlueprint {
       },
     });
 
-    /**
-     * todo: remove this once the release workflow is available in production
-     */
-    if (this.context.environmentId == 'default' || options.advancedSettings.releaseWorkflow) {
+    if (options.advancedSettings.releaseWorkflow) {
       const releaseWorkflow = new WorkflowBuilder(this);
-      new Workflow(this, repository, buildReleaseWorkflow(releaseWorkflow, repository).getDefinition());
+      new Workflow(
+        this,
+        repository,
+        buildReleaseWorkflow(releaseWorkflow, repository, {
+          includePublishStep: options.advancedSettings.includePublishingAction,
+        }).getDefinition(),
+      );
     }
   }
 

@@ -1,7 +1,13 @@
 import { SourceFile, SourceRepository, SubstitionAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { TriggerType, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 
-export function buildReleaseWorkflow(workflow: WorkflowBuilder, repository: SourceRepository): WorkflowBuilder {
+export function buildReleaseWorkflow(
+  workflow: WorkflowBuilder,
+  repository: SourceRepository,
+  options?: { includePublishStep?: boolean },
+): WorkflowBuilder {
+  const publishingEnabled = options?.includePublishStep ?? true;
+
   workflow.setName('blueprint-release');
   const RELEASE_COMMIT_PREFIX = 'chore(release):';
   const BUILD_ARTIFACT_NAME = 'codebase';
@@ -48,25 +54,28 @@ export function buildReleaseWorkflow(workflow: WorkflowBuilder, repository: Sour
     },
     steps: ["if $IS_RELEASE_COMMIT; then  echo 'This is a release commit, skipping'; else chmod +x release.sh && ./release.sh; fi"],
   });
-  workflow.addPublishBlueprintAction({
-    actionName: 'publish_blueprint',
-    dependsOn: ['build_and_commit'],
-    inputs: {
-      Artifacts: [BUILD_ARTIFACT_NAME],
-      Variables: [
-        {
-          Name: 'IS_RELEASE_COMMIT',
-          Value: '${check_commit.IS_RELEASE_COMMIT}',
-        },
-      ],
-    },
-    configuration: {
-      ArtifactPackagePath: 'dist/js/*.tgz',
-      PackageJSONPath: 'package.json',
-      InputArtifactName: BUILD_ARTIFACT_NAME,
-      TimeoutInSeconds: '120',
-    },
-  });
+
+  if (publishingEnabled) {
+    workflow.addPublishBlueprintAction({
+      actionName: 'publish_blueprint',
+      dependsOn: ['build_and_commit'],
+      inputs: {
+        Artifacts: [BUILD_ARTIFACT_NAME],
+        Variables: [
+          {
+            Name: 'IS_RELEASE_COMMIT',
+            Value: '${check_commit.IS_RELEASE_COMMIT}',
+          },
+        ],
+      },
+      configuration: {
+        ArtifactPackagePath: 'dist/js/*.tgz',
+        PackageJSONPath: 'package.json',
+        InputArtifactName: BUILD_ARTIFACT_NAME,
+        TimeoutInSeconds: '120',
+      },
+    });
+  }
 
   return workflow;
 }

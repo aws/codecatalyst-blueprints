@@ -6,6 +6,7 @@
     "blueprintPackageName": "",
     "license": "Apache-2.0",
     "tags": ["first-label", "second-label"],
-    "releaseWorkflow": true
+    "releaseWorkflow": true,
+    "includePublishingAction": true
   }
 }
