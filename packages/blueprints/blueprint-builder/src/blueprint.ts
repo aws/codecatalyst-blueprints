@@ -157,6 +157,10 @@ export class Blueprint extends ParentBlueprint {
 
     // copy-paste additional code over it
     StaticAsset.findAll().forEach(asset => {
+      if (asset.path() === 'release.sh') {
+        return;
+      }
+
       new File(repository, asset.path(), asset.content());
     });
 
@@ -231,7 +235,7 @@ export class Blueprint extends ParentBlueprint {
      */
     if (this.context.environmentId == 'default' || options.advancedSettings.releaseWorkflow) {
       const releaseWorkflow = new WorkflowBuilder(this);
-      new Workflow(this, repository, buildReleaseWorkflow(releaseWorkflow).getDefinition());
+      new Workflow(this, repository, buildReleaseWorkflow(releaseWorkflow, repository).getDefinition());
     }
   }
 

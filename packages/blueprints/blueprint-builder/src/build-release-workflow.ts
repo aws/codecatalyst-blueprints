@@ -1,9 +1,13 @@
+import { SourceFile, SourceRepository, SubstitionAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { TriggerType, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 
-export function buildReleaseWorkflow(workflow: WorkflowBuilder): WorkflowBuilder {
+export function buildReleaseWorkflow(workflow: WorkflowBuilder, repository: SourceRepository): WorkflowBuilder {
   workflow.setName('blueprint-release');
   const RELEASE_COMMIT_PREFIX = 'chore(release):';
   const BUILD_ARTIFACT_NAME = 'codebase';
+
+  const releaseScript = new SubstitionAsset('release.sh');
+  new SourceFile(repository, 'release.sh', releaseScript.substitute({ commitPrefix: RELEASE_COMMIT_PREFIX }));
 
   workflow.addBranchTrigger(['main']);
   workflow.addTrigger({
@@ -26,7 +30,7 @@ export function buildReleaseWorkflow(workflow: WorkflowBuilder): WorkflowBuilder
     ],
   });
   workflow.addBuildAction({
-    actionName: 'build_blueprint',
+    actionName: 'build_and_commit',
     dependsOn: ['check_commit'],
     input: {
       Sources: ['WorkflowSource'],
@@ -42,48 +46,19 @@ export function buildReleaseWorkflow(workflow: WorkflowBuilder): WorkflowBuilder
         },
       ],
     },
-    steps: [
-      "if $IS_RELEASE_COMMIT; then  echo 'This is a release commit, skipping' && exit 1; fi",
-      'yum install -y rsync',
-      'npm install -g yarn',
-      'yarn',
-      'yarn build',
-      'yarn bump',
-      'yarn blueprint:package',
-    ],
+    steps: ["if $IS_RELEASE_COMMIT; then  echo 'This is a release commit, skipping'; else chmod +x release.sh && ./release.sh; fi"],
   });
-  // TODO: Build actions can't push back to source yet:
-  // workflow.addBuildAction({
-  //   actionName: 'commit_changes',
-  //   dependsOn: ['build_blueprint'],
-  //   input: {
-  //     Sources: ['WorkflowSource'],
-  //     Variables: {
-  //       IS_RELEASE_COMMIT: '${check_commit.IS_RELEASE_COMMIT}',
-  //     },
-  //   },
-  //   output: {},
-  //   steps: [
-  //     "if $IS_RELEASE_COMMIT; then  echo 'This is a release commit, skipping' && exit 1; fi",
-  //     `RELEASE_COMMIT_MESSAGE="${RELEASE_COMMIT_PREFIX} release on $(date +"%Y %m %d %H:%M:%S")"`,
-  //     'git add .',
-  //     'git commit -m $RELEASE_COMMIT_MESSAGE',
-  //     'git push --force',
-  //   ],
-  // });
   workflow.addPublishBlueprintAction({
     actionName: 'publish_blueprint',
-    dependsOn: ['build_blueprint'],
+    dependsOn: ['build_and_commit'],
     inputs: {
-      Sources: ['WorkflowSource'],
       Artifacts: [BUILD_ARTIFACT_NAME],
-      // TODO: The action doesn't handle this env var correctly:
-      // Variables: [
-      //   {
-      //     Name: 'IS_RELEASE_COMMIT',
-      //     Value: '${check_commit.IS_RELEASE_COMMIT}',
-      //   },
-      // ],
+      Variables: [
+        {
+          Name: 'IS_RELEASE_COMMIT',
+          Value: '${check_commit.IS_RELEASE_COMMIT}',
+        },
+      ],
     },
     configuration: {
       ArtifactPackagePath: 'dist/js/*.tgz',
