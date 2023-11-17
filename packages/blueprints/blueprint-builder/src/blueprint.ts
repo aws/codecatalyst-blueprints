@@ -164,7 +164,7 @@ export class Blueprint extends ParentBlueprint {
 
     // copy-paste additional code over it
     StaticAsset.findAll().forEach(asset => {
-      if (asset.path() === 'release.sh') {
+      if (asset.path() === 'release.sh' && !options.advancedSettings.releaseWorkflow) {
         return;
       }
 
@@ -242,7 +242,7 @@ export class Blueprint extends ParentBlueprint {
       new Workflow(
         this,
         repository,
-        buildReleaseWorkflow(releaseWorkflow, repository, {
+        buildReleaseWorkflow(releaseWorkflow, {
           includePublishStep: options.advancedSettings.includePublishingAction,
         }).getDefinition(),
       );

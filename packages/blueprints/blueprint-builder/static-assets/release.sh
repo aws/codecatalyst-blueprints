@@ -25,10 +25,10 @@ echo "Configuring git..."
 git remote set-url origin $SOURCE_REPO_URL
 git config --global user.email "noreply@amazon.com"
 git config --global user.name "Release Workflow"
-git add .
 
 echo "Committing changes..."
-RELEASE_COMMIT_MESSAGE="{{commitPrefix}} release $NEW_VERSION"
+git add .
+RELEASE_COMMIT_MESSAGE="chore(release): release $NEW_VERSION"
 git commit -m "$RELEASE_COMMIT_MESSAGE"
 
 echo "Pushing to origin..."
