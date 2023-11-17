@@ -1,5 +1,5 @@
 import { ComputeType, ComputeFleet } from '../workflow/compute';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export function makeEmptyWorkflow(): WorkflowDefinition {
   return {

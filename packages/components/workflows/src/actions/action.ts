@@ -19,30 +19,53 @@ export enum ActionIdentifierAlias {
 }
 
 const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } = {
-  build: {
+  'build': {
     default: 'aws/build-beta@v1',
     prod: 'aws/build@v1',
   },
-  test: {
+  'test': {
     default: 'aws/managed-test-gamma@v1',
     prod: 'aws/managed-test@v1',
   },
-  deploy: {
+  'deploy': {
     default: 'aws/cfn-deploy-gamma@v1',
     prod: 'aws/cfn-deploy@v1',
   },
-  cdkDeploy: {
+  'cdkDeploy': {
     default: 'aws/cdk-deploy-gamma@v1',
     prod: 'aws/cdk-deploy@v1',
   },
-  cdkBootstrap: {
+  'cdkBootstrap': {
+    default: 'aws/cdk-bootstrap-gamma@v1',
+    prod: 'aws/cdk-bootstrap@v1',
+  },
+  'aws/build@v1': {
+    default: 'aws/build-beta@v1',
+    prod: 'aws/build@v1',
+  },
+  'aws/managed-test@v1': {
+    default: 'aws/managed-test-gamma@v1',
+    prod: 'aws/managed-test@v1',
+  },
+  'aws/cfn-deploy@v1': {
+    default: 'aws/cfn-deploy-gamma@v1',
+    prod: 'aws/cfn-deploy@v1',
+  },
+  'aws/cdk-deploy@v1': {
+    default: 'aws/cdk-deploy-gamma@v1',
+    prod: 'aws/cdk-deploy@v1',
+  },
+  'aws/cdk-bootstrap@v1': {
     default: 'aws/cdk-bootstrap-gamma@v1',
     prod: 'aws/cdk-bootstrap@v1',
   },
 };
 
-export function getDefaultActionIdentifier(alias: ActionIdentifierAlias, environmentIdentifier: string = 'default'): string | undefined {
-  return ACTION_IDENTIFIERS[alias]?.[environmentIdentifier] ?? ACTION_IDENTIFIERS[alias]?.default;
+export function getDefaultActionIdentifier(identifer: string, environmentIdentifier: string = 'default'): string | undefined {
+  if (ACTION_IDENTIFIERS[identifer]) {
+    return ACTION_IDENTIFIERS[identifer]?.[environmentIdentifier] ?? ACTION_IDENTIFIERS[identifer]?.default;
+  }
+  return identifer;
 }
 
 type TypeSupportedCompute = ComputeConfiguration;

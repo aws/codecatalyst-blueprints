@@ -1,6 +1,6 @@
 import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { addGenericBranchTrigger, addGenericPullRequestTrigger, PullRequestEvent } from './triggers';
-import { WorkflowDefinition } from './workflow';
+import { WorkflowDefinition } from './workflow-definition';
 import { ComputeDefintion, TriggerDefiniton } from '..';
 import { addGenericBuildAction, BuildActionParameters } from '../actions/action-build';
 import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../actions/action-cdk-bootstrap';
