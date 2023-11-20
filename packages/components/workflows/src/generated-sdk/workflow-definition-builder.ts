@@ -12,14 +12,14 @@ export class WorkflowDefinitionBuilder {
 
   constructor(
     blueprint: Blueprint,
-    options: {
+    options?: {
       starterDefinition?: Partial<sdk.Workflow>;
     },
   ) {
-    const name = options.starterDefinition?.Name || 'build-workflow';
+    const name = options?.starterDefinition?.Name || 'build-workflow';
 
     this.genericBuilder = new sdk.WorkflowDefinition(name, {
-      workflow: options.starterDefinition,
+      workflow: options?.starterDefinition,
     });
     this.blueprint = blueprint;
   }
