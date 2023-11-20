@@ -24,16 +24,17 @@
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
-      "name": "eslint-import-resolver-node",
+      "name": "constructs",
+      "version": "^10.0.0",
       "type": "build"
     },
     {
@@ -93,7 +94,7 @@
     },
     {
       "name": "projen",
-      "version": "0.71.112",
+      "version": "0.77.1",
       "type": "override"
     },
     {
@@ -111,7 +112,7 @@
     },
     {
       "name": "projen",
-      "version": "0.71.112",
+      "version": "0.77.1",
       "type": "runtime"
     },
     {

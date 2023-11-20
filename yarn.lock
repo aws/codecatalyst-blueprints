@@ -155,7 +155,7 @@ __metadata:
     npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-jest: ^29.1.0
     ts-json-schema-generator: ^1.2.0
@@ -180,7 +180,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
@@ -202,7 +202,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
@@ -233,7 +233,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
@@ -260,7 +260,7 @@ __metadata:
     jest: "*"
     jest-junit: ^15
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-jest: "*"
     ts-node: ^10
@@ -297,7 +297,7 @@ __metadata:
     npm-check-updates: ^16
     pino: ^6.13.4
     pino-pretty: ^4.8.0
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-deepmerge: "*"
     ts-jest: "*"
@@ -326,7 +326,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: ^2.25.4
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
@@ -351,7 +351,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: 0.71.112
+    projen: 0.77.1
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
@@ -5182,6 +5182,13 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 8755d76787f94e6cf79ce4666f0c5519906d7f5b02d4b884cf41e11dcd759ed69c57da0670afd9236d229a46e0f9cf519db0cd829c6dca820bb5a5c3def584ed
+  languageName: node
+  linkType: hard
+
+"constructs@npm:^10.0.0":
+  version: 10.3.0
+  resolution: "constructs@npm:10.3.0"
+  checksum: d8d4ea4e4614914e119b1fd5fc6da0deac909a22b0dbe09423cefb3da54a2866cb9986b371649dadd90b09c56fe69ec22fe3eaab475f8914ac702ed8205e13ca
   languageName: node
   linkType: hard
 
@@ -11149,26 +11156,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"projen@npm:0.71.112":
-  version: 0.71.112
-  resolution: "projen@npm:0.71.112"
+"projen@npm:0.77.1":
+  version: 0.77.1
+  resolution: "projen@npm:0.77.1"
   dependencies:
     "@iarna/toml": ^2.2.5
     case: ^1.6.3
     chalk: ^4.1.2
     comment-json: 4.2.2
+    constructs: ^10.0.0
     conventional-changelog-config-spec: ^2.1.0
     fast-json-patch: ^3.1.1
     glob: ^8
     ini: ^2.0.0
-    semver: ^7.5.3
+    semver: ^7.5.4
     shx: ^0.3.4
     xmlbuilder2: ^3.1.1
     yaml: ^2.2.2
     yargs: ^17.7.2
+  peerDependencies:
+    constructs: ^10.0.0
   bin:
     projen: bin/projen
-  checksum: 5f3a88939f77d8e57086839a0a40bb2415d8d00b180c7e28982afcd6bd7d4eca72685ec9f063b3f8b497304fc0c8713c569418027e404c09fd2de52c8e64246b
+  checksum: 61d5c7f4da9bf0699f381f4d81c896f0f99e2cb71a81ee5c81a79cc020b7ceddbbe7a95ef23344ed78066ad6cd73c111467b2c7f0edc02537a78ea24e44a3265
   languageName: node
   linkType: hard
 
@@ -11948,6 +11958,17 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: ae47d06de28836adb9d3e25f22a92943477371292d9b665fb023fae278d345d508ca1958232af086d85e0155aee22e313e100971898bbb8d5d89b8b1d4054ca2
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.5.4":
+  version: 7.5.4
+  resolution: "semver@npm:7.5.4"
+  dependencies:
+    lru-cache: ^6.0.0
+  bin:
+    semver: bin/semver.js
+  checksum: 12d8ad952fa353b0995bf180cdac205a4068b759a140e5d3c608317098b3575ac2f1e09182206bf2eb26120e1c0ed8fb92c48c592f6099680de56bb071423ca3
   languageName: node
   linkType: hard
 
