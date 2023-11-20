@@ -61,7 +61,7 @@ const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } =
     default: 'aws/cdk-bootstrap-gamma@v1',
     prod: 'aws/cdk-bootstrap@v1',
   },
-  publishBlueprint: {
+  'publishBlueprint': {
     default: 'aws/publish-blueprint-action@v1',
     prod: 'aws/publish-blueprint-action@v1',
   },
