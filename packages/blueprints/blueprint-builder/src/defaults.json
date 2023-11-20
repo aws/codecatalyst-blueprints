@@ -5,6 +5,8 @@
   "advancedSettings": {
     "blueprintPackageName": "",
     "license": "Apache-2.0",
-    "tags": ["first-label", "second-label"]
+    "tags": ["first-label", "second-label"],
+    "releaseWorkflow": true,
+    "includePublishingAction": true
   }
 }

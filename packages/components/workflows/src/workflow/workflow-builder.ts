@@ -7,6 +7,7 @@ import { addGenericCdkBootstrapAction, CdkBootstrapActionParameters } from '../a
 import { addGenericCdkDeployAction, CdkDeployActionParameters } from '../actions/action-cdk-deploy';
 import { addGenericCloudFormationCleanupAction, CfnCleanupActionParameters } from '../actions/action-cfn-cleanup';
 import { addGenericCloudFormationDeployAction, CfnDeployActionParameters } from '../actions/action-cfn-deploy';
+import { addGenericPublishBlueprintAction, PublishBlueprintActionParameters } from '../actions/action-publish-blueprint';
 import { addGenericTestReports, TestReportActionParameters } from '../actions/action-test-reports';
 
 export class WorkflowBuilder {
@@ -94,6 +95,14 @@ export class WorkflowBuilder {
 
   addTestAction(configuration: TestReportActionParameters) {
     addGenericTestReports({
+      ...configuration,
+      blueprint: this.blueprint,
+      workflow: this.definition,
+    });
+  }
+
+  addPublishBlueprintAction(configuration: PublishBlueprintActionParameters) {
+    addGenericPublishBlueprintAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
