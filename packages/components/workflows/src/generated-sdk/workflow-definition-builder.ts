@@ -4,7 +4,7 @@ import { getDefaultActionIdentifier } from '../actions/action';
 
 /**
  * This wraps the generated codecatalyst workflows sdk [@aws/codecatalyst-workflows-sdk].
- * @experimental
+ * @experimental - there may be backwards breaking model changes via @aws/codecatalyst-workflows-sdk
  */
 export class WorkflowDefinitionBuilder {
   blueprint: Blueprint;

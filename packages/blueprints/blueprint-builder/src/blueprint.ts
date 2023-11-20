@@ -3,6 +3,7 @@ import devEnvPackage from '@amazon-codecatalyst/blueprint-component.dev-environm
 import envPackage from '@amazon-codecatalyst/blueprint-component.environments/package.json';
 import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import sourceReposPackage from '@amazon-codecatalyst/blueprint-component.source-repositories/package.json';
+import { WorkflowDefinitionBuilder, sdk } from '@amazon-codecatalyst/blueprint-component.workflows';
 import workflowsPackage from '@amazon-codecatalyst/blueprint-component.workflows/package.json';
 import cliPackage from '@amazon-codecatalyst/blueprint-util.cli/package.json';
 import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
