@@ -1,4 +1,4 @@
-import { WorkflowDefinition } from './workflow';
+import { WorkflowDefinition } from './workflow-definition';
 
 export interface TriggerDefiniton {
   Type: TriggerType;
