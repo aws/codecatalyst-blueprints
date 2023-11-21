@@ -22,7 +22,7 @@ const blueprint = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-util.cli',
   ],
   /* The description is a short string that helps people understand the purpose of the blueprint. */
-  description: 'Build and publish custom blueprints to your space.',
+  description: 'This blueprint creates a project which you can use to build and publish a custom blueprint to your space.',
   /* The "name" in package.json. In form @amazon-codecatalyst/:organization.:name */
   packageName: '@amazon-codecatalyst/blueprints.blueprint-builder',
   publishingOrganization: 'blueprints',
