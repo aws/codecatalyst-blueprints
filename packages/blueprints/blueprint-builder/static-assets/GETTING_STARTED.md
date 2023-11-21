@@ -2,7 +2,12 @@
 
 See blueprints github for full documentation and examples. https://github.com/aws/codecatalyst-blueprints/wiki
 
-## Local Development
+## Authoring a blueprint
+
+The blueprint.ts file contains the blueprint code and options interface that will be used to generate the wizard. The blueprint can create source repositories, environments, and workflows based on options the user provides in the wizard.
+
+
+## Local development
 
 This assumes you have already installed standard node tooling. If not see the section below on standard node tooling.
 
