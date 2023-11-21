@@ -88,6 +88,10 @@
       "type": "peer"
     },
     {
+      "name": "@aws/codecatalyst-workflows-sdk",
+      "type": "runtime"
+    },
+    {
       "name": "projen",
       "version": "0.71.112",
       "type": "runtime"

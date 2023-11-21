@@ -8,7 +8,7 @@ import {
   InputsDefinition,
 } from './action';
 import { WorkflowEnvironment } from '../environment/workflow-environment';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export interface CdkBootstrapActionConfiguration {
   Region: string;

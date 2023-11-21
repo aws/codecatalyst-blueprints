@@ -1,29 +1,11 @@
 import { SourceFile, SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
+import * as sdk from '@aws/codecatalyst-workflows-sdk';
 import { Component } from 'projen';
 import * as YAML from 'yaml';
-import { ComputeDefintion } from './compute';
-import { SourceDefiniton } from './sources';
-import { TriggerDefiniton } from './triggers';
+import { WorkflowDefinition } from './workflow/workflow-definition';
 
-export enum RunModeDefiniton {
-  PARALLEL = 'PARALLEL',
-  QUEUED = 'QUEUED',
-  SUPERSEDED = 'SUPERSEDED',
-}
-
-export interface WorkflowDefinition {
-  Name: string;
-  SchemaVersion?: string;
-  RunMode?: RunModeDefiniton;
-  Sources?: SourceDefiniton;
-  Triggers?: TriggerDefiniton[];
-  Compute?: ComputeDefintion;
-  Actions?: {
-    [id: string]: any;
-  };
-}
-
+export const workflowLocation = '.codecatalyst/workflows';
 export interface WorkflowOptions {
   /**
    * Additional comments to be added to the top of the generated .yaml file of the workflow.
@@ -42,10 +24,13 @@ export interface WorkflowOptions {
   YAMLOptions?: YAML.DocumentOptions & YAML.SchemaOptions & YAML.ParseOptions & YAML.CreateNodeOptions & YAML.ToStringOptions;
 }
 
-export const workflowLocation = '.codecatalyst/workflows';
-
 export class Workflow extends Component {
-  constructor(blueprint: Blueprint, sourceRepository: SourceRepository, workflow: WorkflowDefinition | any, options?: WorkflowOptions) {
+  constructor(
+    blueprint: Blueprint,
+    sourceRepository: SourceRepository,
+    workflow: WorkflowDefinition | sdk.Workflow | any,
+    options?: WorkflowOptions,
+  ) {
     super(blueprint);
 
     /**

@@ -4,7 +4,7 @@ const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
   name: 'codecatalyst-workflows',
   copyrightOwner: 'Amazon.com',
-  deps: ['yaml'],
+  deps: ['yaml', '@aws/codecatalyst-workflows-sdk'],
   peerDeps: [
     'projen',
     '@amazon-codecatalyst/blueprint-component.source-repositories',

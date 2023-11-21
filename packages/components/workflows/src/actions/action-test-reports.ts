@@ -1,6 +1,6 @@
 import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { getDefaultActionIdentifier, ActionIdentifierAlias, ActionDefiniton } from './action';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export interface TestReportActionParameters {
   steps: Step[];
