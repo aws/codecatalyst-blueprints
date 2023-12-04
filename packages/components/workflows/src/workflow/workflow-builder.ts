@@ -108,4 +108,11 @@ export class WorkflowBuilder {
       workflow: this.definition,
     });
   }
+
+  addGenericAction<T extends {
+    ActionName: string;
+  }>(configuration: T & any) {
+    this.definition.Actions = this.definition.Actions || {};
+    this.definition.Actions[configuration.actionName] = configuration;
+  }
 }
