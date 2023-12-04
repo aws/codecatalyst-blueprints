@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/blueprints.blueprint-builder",
-  "description": "Use this to build additional blueprints from existing blueprints.",
+  "description": "This blueprint creates a project which you can use to build and publish a custom blueprint to your space.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -70,7 +70,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.3.27",
+  "version": "0.3.29",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [

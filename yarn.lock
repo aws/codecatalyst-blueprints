@@ -104,6 +104,7 @@ __metadata:
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@aws/codecatalyst-workflows-sdk": 0.1.5-preview.6
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -1124,6 +1125,19 @@ __metadata:
   dependencies:
     tslib: ^2.5.0
   checksum: fc17fd8f68470702d947948ada46097bdddecafdc68fa57bf584320e92748e8ef0372a51999d3ab7902ba4f62c2dbfbdec2dba1180fca19bb5127bad1ef0e48b
+  languageName: node
+  linkType: hard
+
+"@aws/codecatalyst-workflows-sdk@npm:0.1.5-preview.6":
+  version: 0.1.5-preview.6
+  resolution: "@aws/codecatalyst-workflows-sdk@npm:0.1.5-preview.6"
+  dependencies:
+    globule: ^1.3.4
+    js-yaml: ^4.1.0
+    jsonschema: ^1.4.1
+  peerDependencies:
+    projen: ^0.71.112
+  checksum: acf74c11caee1bbb239aafb6d8ebb94349f0278ec2d84395e38b662ce4ff41caefa1d6ef54d7a900361472a276f0bf498e4af48765e5d604e51432ba4a0c0435
   languageName: node
   linkType: hard
 
@@ -7502,7 +7516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globule@npm:*":
+"globule@npm:*, globule@npm:^1.3.4":
   version: 1.3.4
   resolution: "globule@npm:1.3.4"
   dependencies:
@@ -9587,6 +9601,13 @@ __metadata:
   version: 1.3.1
   resolution: "jsonparse@npm:1.3.1"
   checksum: 6514a7be4674ebf407afca0eda3ba284b69b07f9958a8d3113ef1005f7ec610860c312be067e450c569aab8b89635e332cee3696789c750692bb60daba627f4d
+  languageName: node
+  linkType: hard
+
+"jsonschema@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "jsonschema@npm:1.4.1"
+  checksum: 1ef02a6cd9bc32241ec86bbf1300bdbc3b5f2d8df6eb795517cf7d1cd9909e7beba1e54fdf73990fd66be98a182bda9add9607296b0cb00b1348212988e424b2
   languageName: node
   linkType: hard
 

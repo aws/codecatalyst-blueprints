@@ -1,7 +1,7 @@
 import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { ActionDefiniton, ActionIdentifierAlias, getDefaultActionIdentifier } from './action';
 import { BuildActionParameters } from './action-build';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export const DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME = 'DANGER-hard-delete-deployed-resources';
 

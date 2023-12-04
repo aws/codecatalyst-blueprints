@@ -1,6 +1,6 @@
 import { Blueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { ActionDefiniton, ActionIdentifierAlias, ComputeConfiguration, InputsDefinition, getDefaultActionIdentifier } from './action';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export interface PublishBlueprintActionConfiguration {
   ArtifactPackagePath: string;

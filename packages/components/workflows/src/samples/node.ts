@@ -1,5 +1,5 @@
 import { TriggerType } from '../workflow/triggers';
-import { WorkflowDefinition } from '../workflow/workflow';
+import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export class NodeWorkflowDefinitionSamples {
   public static readonly build: WorkflowDefinition = {

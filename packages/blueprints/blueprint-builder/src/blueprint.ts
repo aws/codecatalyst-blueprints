@@ -47,14 +47,14 @@ export interface Options extends ParentOptions {
    */
   advancedSettings: {
     /**
-     * Blueprint Tags. These get added to the package.json
+     * Blueprint tags get added to the package.json
      * @validationRegex /^[a-z-]+$/
      * @validationMessage Tags can only contain lowercase alphabetic characters or '-'
      */
     tags?: string[];
 
     /**
-     * License for your Blueprint
+     * License for your blueprint
      */
     license: 'MIT' | 'Apache-2.0' | 'BSD-2-Clause' | 'BSD-3-Clause' | 'ISC' | 'MPL-2.0' | 'Unlicense' | 'Public-Domain';
 
