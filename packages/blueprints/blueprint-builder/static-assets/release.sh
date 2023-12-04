@@ -1,17 +1,18 @@
 # This script is used by the blueprint-release workflow to build
 # the blueprint, bump its package version, and commit the version
 # bump back into the repository.
+set -euo pipefail
 echo "Installing dependencies..."
 yum install -y rsync
 npm install -g yarn
 yarn
 
-echo "Building blueprint..."
-yarn build
-
 echo "Bumping package version..."
 yarn bump
 NEW_VERSION=`jq -r .version package.json`
+
+echo "Building blueprint..."
+yarn build
 yarn blueprint:package
 
 echo "Getting credentials..."
