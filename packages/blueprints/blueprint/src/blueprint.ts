@@ -135,6 +135,19 @@ export class Blueprint extends Project {
     }
     maxIdlength = Math.max(maxIdlength, FALLBACK_STRATEGY_ID.length);
 
+    /**
+     * copy all non-src file from proposedBundle into the resolved bundle
+     * only src is merge constructed.
+     */
+    const supersetNonSourcePaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**']);
+    for (const filepath of supersetNonSourcePaths) {
+      const outputPath = path.join(this.outdir, filepath);
+      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+      const filecontent = fs.readFileSync(path.join(proposedBundle, filepath));
+      fs.writeFileSync(outputPath, filecontent);
+    }
+
+
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     // only consider files under the source code 'src'
     const supersetSourcePaths: string[] = filepathSet([ancestorBundle, existingBundle, proposedBundle], ['src/**']);
