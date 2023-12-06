@@ -1,6 +1,7 @@
 # Blueprint CLI
 
-This is the blueprints CLI. It is exported as a standard CLI and contains helpful tools for developing blueprints. This is not generally expected to be consumed directly. The blueprint projen construct will generate scripts that rely on various CLI tooling contained here.
+This is the blueprints CLI. It is exported as a standard CLI and contains helpful tools for developing blueprints. This is not generally expected to
+be consumed directly. The blueprint projen construct will generate scripts that rely on various CLI tooling contained here.
 
 ```
 usage: blueprint [command] [options]
@@ -34,8 +35,3 @@ Options:
   --help     Show help                                                 [boolean]
   --version  Show version number                                       [boolean]
 ```
-  Here is a suggested README for this CLI:
-
-# Blueprint CLI
-
-This CLI provides functionality for working with CodeCatalyst Blueprints.
