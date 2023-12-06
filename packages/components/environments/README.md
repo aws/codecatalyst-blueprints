@@ -1,11 +1,11 @@
 ```
-import {...} from '@caws-blueprint-component/caws-environments'
+import {...} from '@amazon-codecatalyst/blueprint-component.environments'
 ```
 
-The environment component can be found [here](https://github.com/aws/caws-blueprints/tree/main/packages/components/caws-environments).
+The environment component can be found [here](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/components/dev-environments).
 
-The blueprint wizard is dynamically generated from the `Options` interface exposed through the [[wizard|https://github.com/aws/caws-blueprints/wiki/Wizard]]. Blueprints supports generating UI components
-from exposed types.
+The blueprint wizard is dynamically generated from the `Options` interface exposed through the
+[[wizard|https://github.com/aws/codecatalyst-blueprints/wiki/Wizard]]. Blueprints supports generating UI components from exposed types.
 
 ### Example 1: Creating development environments
 
@@ -22,10 +22,13 @@ export interface Options extends ParentOptions {
 
 This allows authors to deploy their applications to the cloud.
 
-The above interface will generate a UI component that asks for a new Environment `myNewEnvironment` with a single account connection `thisIsMyFirstAccountConnection` and a role on that account connection `thisIsARole` with `['lambda', 's3', 'dynamo']` as the minimum required role capabilities. Since not all users will have account connections, it is important to check for the case where a user does not connect an account, and does not connect an account with a role either. This is reflected accurately in the type definition.
+The above interface will generate a UI component that asks for a new Environment `myNewEnvironment` with a single account connection
+`thisIsMyFirstAccountConnection` and a role on that account connection `thisIsARole` with `['lambda', 's3', 'dynamo']` as the minimum required role
+capabilities. Since not all users will have account connections, it is important to check for the case where a user does not connect an account, and
+does not connect an account with a role either. This is reflected accurately in the type definition.
 
-Roles can also be annotated with `@inlinePolicies` per [the documentation here](https://github.com/aws/caws-blueprints/wiki/Wizard#inlinepolicy-pathtopolicyfilejson).
-
+Roles can also be annotated with `@inlinePolicies` per
+[the documentation here](https://github.com/aws/codecatalyst-blueprints/wiki/Wizard#inlinepolicy-pathtopolicyfilejson).
 
 The environment component requires a `name` and an `environmentType`. The minimal required default shape looks like this:
 
@@ -39,7 +42,8 @@ The environment component requires a `name` and an `environmentType`. The minima
 }
 ```
 
-The UI component will then prompt the user for various fields and as they fill in those fields the blueprint will get a fully expanded shape. It is sometimes helpful to include the full 'mock' (see the below examples) in the `defaults.json` for testing and development purposes.
+The UI component will then prompt the user for various fields and as they fill in those fields the blueprint will get a fully expanded shape. It is
+sometimes helpful to include the full 'mock' (see the below examples) in the `defaults.json` for testing and development purposes.
 
 ### Example 2: A simple mock interface
 
@@ -53,8 +57,8 @@ The UI component will then prompt the user for various fields and as they fill i
             "id": "12345678910",
             "name": "my-account-connection-name",
             "secondAdminRole": {
-                "arn": "arn:aws:iam::12345678910:role/ConnectedQuokkaRole",
-                "name": "ConnectedQuokkaRole",
+                "arn": "arn:aws:iam::12345678910:role/ConnectedCodecatalystRole",
+                "name": "ConnectedCodecatalystRole",
                 "capabilities": [
                     "lambda",
                     "s3",
@@ -125,8 +129,8 @@ export interface Options extends ParentOptions {
       "id": "12345678910",
       "name": "my-connected-account",
       "secondAdminRole": {
-        "name": "LambdaQuokkaRole",
-        "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
+        "name": "LambdaCodecatalystRole",
+        "arn": "arn:aws:iam::12345678910:role/LambdaCodecatalystRole",
         "capabilities": [
           "admin",
           "lambda",
@@ -135,8 +139,8 @@ export interface Options extends ParentOptions {
         ]
       },
       "secondLambdaRole": {
-        "name": "LambdaQuokkaRole",
-        "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
+        "name": "LambdaCodecatalystRole",
+        "arn": "arn:aws:iam::12345678910:role/LambdaCodecatalystRole",
         "capabilities": [
           "lambda",
           "s3"
@@ -147,8 +151,8 @@ export interface Options extends ParentOptions {
       "id": "12345678910",
       "name": "my-connected-account",
       "adminRole": {
-        "name": "LambdaQuokkaRole",
-        "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
+        "name": "LambdaCodecatalystRole",
+        "arn": "arn:aws:iam::12345678910:role/LambdaCodecatalystRole",
         "capabilities": [
           "admin",
           "lambda",
@@ -157,8 +161,8 @@ export interface Options extends ParentOptions {
         ]
       },
       "lambdaRole": {
-        "name": "LambdaQuokkaRole",
-        "arn": "arn:aws:iam::12345678910:role/LambdaQuokkaRole",
+        "name": "LambdaCodecatalystRole",
+        "arn": "arn:aws:iam::12345678910:role/LambdaCodecatalystRole",
         "capabilities": [
           "lambda",
           "s3"

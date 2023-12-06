@@ -1,11 +1,12 @@
-
-
 ```
-import {...} from '@caws-blueprint-component/caws-source-repositories'
+import {...} from '@amazon-codecatalyst/blueprint-component.source-repositories'
 ```
+
 # Repository & Source Code Component
 
-A repository is used by codecatalyst to store some code. It takes a name as input. Most components are stored in a repository, such as source code files, workflows, as well as other components such as MDE workspaces. The source-repository component also exports components used for managing files and static assets.
+A repository is used by codecatalyst to store some code. It takes a name as input. Most components are stored in a repository, such as source code
+files, workflows, as well as other components such as MDE workspaces. The source-repository component also exports components used for managing files
+and static assets.
 
 ```
 const repository = new SourceRepository(this, {
@@ -90,25 +91,27 @@ SubstitionAsset.findAll('my-folder/**/*.md').forEach(item => {
 });
 ```
 
-
 ## Example 1: Creating a new repository
+
 Repository component is used to create a new repository in a generated project:
 
 ```
-import { SourceRepository } from '@caws-blueprint-component/caws-source-repositories';
+import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 ...
 const repository = new SourceRepository(this, { title: 'myRepo' });
 ```
 
 You can then add files or workflows to the created repository:
+
 ## Example 2: Adding file(s) and/or workflow(s) to an existing repository
 
 ```
-import { SourceFile } from '@caws-blueprint-component/caws-source-repositories';
-import { Workflow } from '@caws-blueprint-component/caws-workflows';
+import { SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { Workflow } from '@amazon-codecatalyst/blueprint-component.workflows';
 ...
 new SourceFile(repository, 'README.md', 'This is the content of my readme');
 new Workflow(this, repository, {/**...workflowDefinition...**/});
 ```
 
-Combining the above two pieces of code would generate a single repository named `myRepo` with a source file `README.md` as well as a code.aws workflow at the root.
+Combining the above two pieces of code would generate a single repository named `myRepo` with a source file `README.md` as well as a codecatalyst
+workflow at the root.

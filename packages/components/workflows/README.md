@@ -1,16 +1,17 @@
 ```
-import {...} from '@caws-blueprint-component/caws-workflows'
+import {...} from '@amazon-codecatalyst/blueprint-component.workflows'
 ```
-The workflow component can be found [here](https://github.com/aws/caws-blueprints/tree/main/packages/components/caws-workflows).
+
+The workflow component can be found [here](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/components/workflows).
 
 ## What is a workflow component?
 
-A workflow is used by code.aws projects to execute some actions based off triggers. The blueprints team exposes some helpful
-workflows components that are meant to help in building and putting together workflow yaml files. Full
-[workflow schema documentation](https://w.amazon.com/bin/view/CAWS/Workflows/WorkflowSchemaReference_1_0) is provided by the workflow team. See [public documentation](https://alpha.www.docs.aws.a2z.com/quokka/latest/userguide/workflow-reference.html) for general use.
+A workflow is used by CodeCatalyst projects to execute some actions based off triggers. The blueprints team exposes some helpful workflows components
+that are meant to help in building and putting together workflow yaml files. See
+[public workflows documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow-reference.html) for general use.
 
 ```
-import { WorkflowBuilder, Workflow } from '@caws-blueprint-component/caws-workflows'
+import { WorkflowBuilder, Workflow } from '@amazon-codecatalyst/blueprint-component.workflows'
 ```
 
 ### Example 1: WorkflowBuilder component
@@ -18,7 +19,7 @@ import { WorkflowBuilder, Workflow } from '@caws-blueprint-component/caws-workfl
 This is a class that helps build a workflow definition. This can then be given over to a workflow component for rendering in a repository.
 
 ```
-import { WorkflowBuilder } from '@caws-blueprint-component/caws-workflows'
+import { WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows'
 
 const workflowBuilder = new WorkflowBuilder({} as Blueprint, {
   Name: 'my_workflow',
@@ -62,7 +63,7 @@ workflowBuilder.addBuildAction({
 This is a projen component that writes a workflow yaml to a repository.
 
 ```
-import { Workflow } from '@caws-blueprint-component/caws-workflows'
+import { Workflow } from '@amazon-codecatalyst/blueprint-component.workflows'
 
 ...
 
@@ -80,10 +81,11 @@ new Workflow(blueprint, repo, {... some object ...});
 
 ## Connecting to an environment
 
-Many workflows need to run in an AWS account connection. Workflows deal with this by allowing actions to connect to environments, with account and role name specifications.
+Many workflows need to run in an AWS account connection. Workflows deal with this by allowing actions to connect to environments, with account and
+role name specifications.
 
 ```
-import { convertToWorkflowEnvironment } from '@caws-blueprint-component/caws-workflows'
+import { convertToWorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows'
 
 
 const myEnv = new Environment(...);
