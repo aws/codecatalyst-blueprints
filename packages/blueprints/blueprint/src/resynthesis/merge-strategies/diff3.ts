@@ -6,9 +6,12 @@ export const CONFLICT_MARKER_LENGTH = 7;
 function diffLines(a: string, b: string, dmp: diff_match_patch = DMP): Diff[] {
   const lines = dmp.diff_linesToChars_(a, b);
   const diff = dmp.diff_main(lines.chars1, lines.chars2, false);
-  dmp.diff_charsToLines_(diff, lines.lineArray);
 
+  // cleanupSemantic is run before charsToLines, otherwise cleanupSemantic
+  // may rewrite parts of the diff without respecting line boundaries, resulting
+  // in a character based diff.
   dmp.diff_cleanupSemantic(diff);
+  dmp.diff_charsToLines_(diff, lines.lineArray);
   return diff;
 }
 
@@ -141,7 +144,7 @@ export class Diff3 {
   } {
     let o = this.currentLine.o + 1;
 
-    while (o <= this.lines.o.length && this.matches.a.get(o) === undefined && this.matches.b.get(o) === undefined) {
+    while (o <= this.lines.o.length && !(this.matches.a.get(o) && this.matches.b.get(o))) {
       o++;
     }
 
