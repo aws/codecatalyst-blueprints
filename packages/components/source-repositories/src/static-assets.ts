@@ -23,7 +23,7 @@ export class StaticAsset {
   }
 
   /**
-   * Copies all files from a subdirectory. This should be a path to a directory inside the static assets folder. This creates a new file in the repository for each file under the directory.
+   * Copies all files from a subdirectory. This should be a path to a directory inside the static assets folder. This creates a new file in the repository for each file under the directory. This is an easier but slightly more inflexible method of copying files from static assets.
    * @example frontend
    * @param directoryPath - directory under static-assets
    * @param to - repository into which we're putting the files
