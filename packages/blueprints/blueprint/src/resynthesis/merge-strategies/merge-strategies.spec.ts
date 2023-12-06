@@ -33,6 +33,21 @@ const EXAMPLE_DIRS = readdirSync(path.join(__dirname, EXAMPLE_ROOT_DIR));
       expect(resolvedFile?.buffer?.toString()).toMatchSnapshot();
     });
   });
+
+  if (mergeStrategy === MergeStrategies.threeWayMerge) {
+    it('returns the proposed file for binary files', () => {
+      const ancestorBuffer = Buffer.from('Ancestor\x00Content');
+      const existingBuffer = Buffer.from('Existing\x00Content');
+      const proposedBuffer = Buffer.from('Proposed\x00Content');
+
+      const [ancestorFile, existingFile, proposedFile] = [ancestorBuffer, existingBuffer, proposedBuffer].map(buffer => {
+        return { buffer, path: 'file', repositoryName: 'repo' };
+      });
+
+      const resolvedFile = mergeStrategy(ancestorFile, existingFile, proposedFile);
+      expect(resolvedFile?.buffer).toEqual(proposedBuffer);
+    });
+  }
 });
 
 function getTestFiles(dir: string): { a: Buffer; o: Buffer; b: Buffer } {
