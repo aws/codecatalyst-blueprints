@@ -119,7 +119,6 @@ export async function uploadBlueprint(
         },
       };
       log.info(`See this blueprint at: ${await generatePreviewLink(log, previewOptions)}`);
-      // https://integ.stage.quokka.codes/spaces/blueprints/blueprints
       log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
       return;
     } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
@@ -213,7 +212,6 @@ function sleep(milliseconds: number) {
   });
 }
 
-// https://integ.stage.quokka.codes/spaces/game-build-demo/blueprints/serverless-todo-web-application-backend/publishers/737a82bc-7cf7-4660-aac1-6f594e31be8c/versions/0.1.69/projects/create
 async function generatePreviewLink(
   _logger: pino.BaseLogger,
   options: {
