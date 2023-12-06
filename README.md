@@ -2,53 +2,81 @@
 
 [Documentation and wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
-[Other blueprint repos](https://github.com/orgs/aws/teams/amazon-blueprints-contributors/repositories)
+This guide deals with how to develop in this codebase.
 
-## Set Up:
+## Blueprints
 
-We highly recommend you use [vscode](https://code.visualstudio.com/). This repo is set up to link things properly when using VScode. Although plugins
-also exist for vim. Many gitignored files will be invisible in vim and may cause annoying problems.
+The codecatalyst blueprints team maintains a [open-sourced repository](https://github.com/aws/amazon-codecatalyst/blob/main/README.md). This repository contains common blueprint components, the base blueprint contruct and several public blueprints. Codecatalyst blueprints are available for anyone to develop today! Blueprints are built by a number of teams internally, this repository only contains the base constructs and a small number of blueprints.
 
-#### Prereq:
+### Building your own blueprint
+Custom blueprints and lifecycle managementa are generally available to everyone. To build your own blueprint please go to [codecatalyst.aws](https://codecatalyst.aws/) and make sure your space is upgraded to the enterprise tier. You are able to build your own blueprint by using the "create blueprint" button under your space settings > blueprints tab.
 
-(1) Install these globally. These are requirements for various tooling to work properly and are available from public npm.
+### We love Contributions!
+Please take a look at our [contribution guidelines](./CONTRIBUTING.md) and our community [Code of Conduct](./CODE_OF_CONDUCT.md) before opening a pull request. CodeCatalyst blueprints want your feedback and bug reports too! Please add them to our github issues for triage by the service team.
+
+### Learning resources
+Please take a look at our [wiki](https://github.com/aws/codecatalyst-blueprints/wiki) to learn more about blueprints. You may also find [public documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/blueprints.html) helpful.
+
+# Development
+
+This section details how to develop in this repository. We recommend you use [vscode](https://code.visualstudio.com/). Although plugins also exist for vim. Many gitignored files might be invisible in vim and may cause annoying problems. For an overview of blueprints and what they are, please check out our wiki.
+
+## Install prerequisite node tooling
+
+Blueprints are typescript node modules by default (although they dont have to be!). Install this node tooling globally. These are requirements for various tooling to work properly and are available from public npm.
 
 ```
-brew install nvm            # blueprints work only with Node 18.x
-nvm use
-npm install npm@6.14.13 -g  # we depend on npm 6.14.13, v9.7.2 has perf issues
-npm install yarn ts-node webpack webpack-cli -g
+brew install nvm            # blueprints work with Node 18.x
 brew install jq
+nvm use
+npm install npm@6.14.13 -g  # we suggest using npm 6.14.13, v9.7.2 has perf issues
+npm install yarn ts-node webpack webpack-cli -g
 ```
 
-Add this to your `~/.bash_profile`:
+## Developing codecatalyst-blueprints
 
+Pull down this codebase. We recommend making your own fork. See [contribution guidelines](./CONTRIBUTING.md).
 
-## Development
+```
+git clone <my-fork-codecatalyst-blueprints>
+```
 
 Run these commands to get started building blueprints. The first time set-up may take a minute or two.
 
 ```
-git clone https://github.com/aws/codecatalyst-blueprints
 cd codecatalyst-blueprints
 nvm use
 yarn && yarn build
 ```
 
-You're done!
+You're done with set up! Now you can go ahead and make changes to repo and test them out yourself.
 
-### Publish a blueprint
-You must be an admin of the target space. Your target space must be flagged for the enterprise tier.
+### Test a blueprint in CodeCatalyst
+
+The easiest way to test a blueprint directly in codecatalyst is publishing that blueprint into a space you own. Publishing a blueprint will allow you to test a codecatalyst blueprint directly in a space. You must be an admin of the target space in order for publishing to succeed. Your target space must be part of the enterprise tier as well.
 ```
 cd packages/blueprints/<blueprint>
-yarn blueprint:preview --publisher my-awesome-space
-yarn blueprint:release --publisher my-awesome-space
+yarn blueprint:preview --publisher my-awesome-space # publishes under a "preview" version tag
+yarn blueprint:release --publisher my-awesome-space # publishes normal version
 ```
-This will publish a private verision of your blueprint into `my-awesome-space`. It will only be available for that space.
+This will publish a private verision of your blueprint into `my-awesome-space`. It will only be available for that space. You may run this command multiple times to publish to multiple spaces.
 
-## Testing Changes
+### Test a blueprint locally
 
-Modify a component
+The fastest way to test a blueprint is to build it locally. You can do this by invoking this command.
+
+```
+cd packages/blueprints/<blueprint>
+yarn blueprint:synth (--cache) # cache will emulate how the wizard processes the blueprint
+yarn blueprint:resynth (--cache) 
+```
+The `yarn blueprint:synth` command will mock generating a **new** project with a set of options, while `yarn blueprint:resynth` command will mock generating into an existing project or changing options. Each of these commands result in an output bundle being added into the `./synth/` folder for each mocked wizard configuration under `wizard-configuration/*.json`. Each of these JSONs represent a partial set of options to be merged on top of the `defaults.json` when synthesizing.
+
+For a deep dive on blueprint generation, the bundle format, and how to think about lifecycle updates please take a look at our [wiki page here](https://github.com/aws/codecatalyst-blueprints/wiki/Resynthesis). 
+
+## Testing Changes to a blueprint component
+
+Blueprints are made up of components found under `./packages/components`. These component constructs represent project components (such as a source repository). Modify a component
 
 ```
 cd packages/components/<component>
@@ -70,7 +98,7 @@ yarn blueprint:synth
 This generates the blueprint in the `synth` folder
 
 ```
-packages/blueprints/<blueprint>/synth/<timestamp>
+packages/blueprints/<blueprint>/synth/
 ```
 
 ## Snapshot testing
