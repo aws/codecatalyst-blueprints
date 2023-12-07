@@ -2,7 +2,7 @@
 
 [Documentation and wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
-This guide deals with how to develop in this codebase.
+This guide deals with how to develop in this codebase
 
 ## Blueprints
 
