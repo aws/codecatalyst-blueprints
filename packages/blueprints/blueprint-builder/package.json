@@ -70,7 +70,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.3.33",
+  "version": "0.3.34",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
