@@ -6,7 +6,14 @@ import { ContextFile } from '../context-file';
 const EXAMPLE_ROOT_DIR = 'examples';
 const EXAMPLE_DIRS = readdirSync(path.join(__dirname, EXAMPLE_ROOT_DIR));
 
-[MergeStrategies.alwaysUpdate, MergeStrategies.neverUpdate, MergeStrategies.onlyAdd, MergeStrategies.threeWayMerge].forEach(mergeStrategy => {
+[
+  MergeStrategies.alwaysUpdate,
+  MergeStrategies.neverUpdate,
+  MergeStrategies.onlyAdd,
+  MergeStrategies.threeWayMerge,
+  MergeStrategies.preferExisting,
+  MergeStrategies.preferProposed,
+].forEach(mergeStrategy => {
   describe(`merge strategy: ${mergeStrategy.name}`, () => {
     it.each(EXAMPLE_DIRS)('matches snapshot for example: %s', example => {
       const { a, o, b } = getTestFiles(example);
