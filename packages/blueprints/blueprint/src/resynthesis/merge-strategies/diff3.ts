@@ -1,4 +1,5 @@
 import { diff_match_patch, Diff, DIFF_DELETE, DIFF_EQUAL, DIFF_INSERT } from 'diff-match-patch';
+import { ConflictFormatters, MergeConflictFormatter } from './conflict-formatters';
 
 const DMP = new diff_match_patch();
 export const CONFLICT_MARKER_LENGTH = 7;
@@ -20,6 +21,7 @@ type MergeChunk = MergeConflictChunk | MergeOkChunk;
 interface MergeConflictChunk {
   conflict: true;
   a: string;
+  o: string;
   b: string;
 }
 
@@ -30,16 +32,20 @@ interface MergeOkChunk {
 
 export interface Diff3Options {
   diffFunction?: (a: string, b: string) => Diff[];
+  conflictFormatter?: MergeConflictFormatter;
   aLabel?: string;
   bLabel?: string;
 }
 
-const currentLine = {
+const initialCurrentLine = {
   a: 0,
   o: 0,
   b: 0,
 };
+
 export class Diff3 {
+  private conflictFormatter: MergeConflictFormatter;
+
   private readonly lines: {
     a: string[];
     o: string[];
@@ -50,7 +56,7 @@ export class Diff3 {
     a: number;
     o: number;
     b: number;
-  } = currentLine;
+  } = { ...initialCurrentLine };
 
   private readonly matches: {
     a: Map<number, number>;
@@ -62,6 +68,7 @@ export class Diff3 {
 
   constructor(a: string, o: string, b: string, options?: Diff3Options) {
     this.options = options;
+    this.conflictFormatter = this.options?.conflictFormatter ?? ConflictFormatters.trimEnds;
     const diff = options?.diffFunction ?? diffLines;
 
     this.matches = {
@@ -79,14 +86,12 @@ export class Diff3 {
   }
 
   getMerged(): string {
-    return this.mergedChunks
-      .map(chunk =>
-        mergeChunkToString(chunk, {
-          aLabel: this.options?.aLabel,
-          bLabel: this.options?.bLabel,
-        }),
-      )
-      .join('');
+    const conflictOptions = {
+      aLabel: this.options?.aLabel,
+      bLabel: this.options?.bLabel,
+    };
+
+    return this.mergedChunks.map(chunk => (chunk.conflict ? this.conflictFormatter(chunk.a, chunk.o, chunk.b, conflictOptions) : chunk.ok)).join('');
   }
 
   // Based on the algorithm described in https://www.cis.upenn.edu/~bcpierce/papers/diff3-short.pdf
@@ -185,6 +190,7 @@ export class Diff3 {
       this.mergedChunks.push({
         conflict: true,
         a: aText,
+        o: oText,
         b: bText,
       });
     }
@@ -242,45 +248,12 @@ function countLines(s: string): number {
   return count;
 }
 
-function mergeChunkToString(
-  chunk: MergeChunk,
-  options?: {
-    aLabel?: string;
-    bLabel?: string;
-  },
-) {
-  if (chunk.conflict) {
-    let chunkContents = '';
-
-    chunkContents += createConflictMarker('<', options?.aLabel);
-    chunkContents += chunk.a;
-    if (!chunk.a.endsWith('\n')) {
-      chunkContents += '\n';
-    }
-
-    chunkContents += createConflictMarker('=');
-    chunkContents += chunk.b;
-    if (!chunk.b.endsWith('\n')) {
-      chunkContents += '\n';
-    }
-    chunkContents += createConflictMarker('>', options?.bLabel);
-
-    return chunkContents;
-  } else {
-    return chunk.ok;
-  }
-}
-
-function createConflictMarker(type: '<' | '=' | '>', label?: string): string {
-  return type.repeat(CONFLICT_MARKER_LENGTH) + `${label ? ' ' + label : ''}\n`;
-}
-
 /**
  * Splits a string into lines, preserving the newline character at the end of each line.
  * @param s the string to split
  * @returns an array of lines
  */
-function splitLines(s: string): string[] {
+export function splitLines(s: string): string[] {
   const split = s.split('\n');
 
   return split.map((line, i) => (i === split.length - 1 ? line : line + '\n'));

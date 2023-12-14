@@ -5,6 +5,19 @@ exports[`merge strategy: alwaysUpdate matches snapshot for example: empty-a 1`] 
 "
 `;
 
+exports[`merge strategy: alwaysUpdate matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+conflict b
+conflict b
+conflict b
+common suffix
+common suffix
+common suffix
+"
+`;
+
 exports[`merge strategy: alwaysUpdate matches snapshot for example: java 1`] = `
 "// Sample file used in merge strategy tests:
 package helloworld;
@@ -85,6 +98,19 @@ exports[`merge strategy: alwaysUpdate matches snapshot for example: simple 1`] =
 `;
 
 exports[`merge strategy: neverUpdate matches snapshot for example: empty-a 1`] = `""`;
+
+exports[`merge strategy: neverUpdate matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+conflict a
+conflict a
+conflict a
+common suffix
+common suffix
+common suffix
+"
+`;
 
 exports[`merge strategy: neverUpdate matches snapshot for example: java 1`] = `
 "// Sample file used in merge strategy tests:
@@ -172,6 +198,19 @@ exports[`merge strategy: neverUpdate matches snapshot for example: simple 1`] = 
 
 exports[`merge strategy: onlyAdd matches snapshot for example: empty-a 1`] = `""`;
 
+exports[`merge strategy: onlyAdd matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+conflict a
+conflict a
+conflict a
+common suffix
+common suffix
+common suffix
+"
+`;
+
 exports[`merge strategy: onlyAdd matches snapshot for example: java 1`] = `
 "// Sample file used in merge strategy tests:
 package helloworld;
@@ -256,12 +295,234 @@ exports[`merge strategy: onlyAdd matches snapshot for example: simple 1`] = `
 "
 `;
 
+exports[`merge strategy: preferExisting matches snapshot for example: empty-a 1`] = `""`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+conflict a
+conflict a
+conflict a
+common suffix
+common suffix
+common suffix
+"
+`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('a', 0));
+        }
+
+        System.out.println("Finished");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toUpperCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        // insert a comment:
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: java-multline-conflict 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('a', 0));
+        }
+
+        System.out.println("Finished a");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toUpperCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: no-conflict 1`] = `
+"first line
+inserted from a
+second line
+"
+`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: preferExisting matches snapshot for example: simple 1`] = `
+"modified in a
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: empty-a 1`] = `
+"hello world b
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+conflict b
+conflict b
+conflict b
+common suffix
+common suffix
+common suffix
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: java 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('b', 0));
+        }
+
+        System.out.println("Finished");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toLowerCase(input.charAt(i));
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        // insert a comment:
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: java-multline-conflict 1`] = `
+"// Sample file used in merge strategy tests:
+package helloworld;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Starting...");
+
+        for (int i = 0; i < args.length; i++) {
+            Map<Character, Integer> result = countCharacters(args[i]);
+            System.out.println(result.getOrDefault('b', 0));
+        }
+
+        System.out.println("Finished b");
+    }
+    
+    // Counts characters
+    public static Map<Character, Integer> countCharacters(final String input) {
+        Map<Character, Integer> result = new HashMap<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = Character.toLowerCase(input.charAt(i));
+            // Insert or update the count:
+            // Adds three to the count:
+            result.put(c, result.getOrDefault(c, 0) + 1);
+        }
+
+        return result;
+    }
+}
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: no-conflict 1`] = `
+"first line
+inserted from a
+second line
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: no-diff 1`] = `
+"this is the same line of text
+"
+`;
+
+exports[`merge strategy: preferProposed matches snapshot for example: simple 1`] = `
+"modified in b
+"
+`;
+
 exports[`merge strategy: threeWayMerge matches snapshot for example: empty-a 1`] = `
 "<<<<<<< existing
 
 =======
 hello world b
 >>>>>>> proposed
+"
+`;
+
+exports[`merge strategy: threeWayMerge matches snapshot for example: empty-o 1`] = `
+"common prefix
+common prefix
+common prefix
+<<<<<<< existing
+conflict a
+conflict a
+conflict a
+=======
+conflict b
+conflict b
+conflict b
+>>>>>>> proposed
+common suffix
+common suffix
+common suffix
 "
 `;
 
