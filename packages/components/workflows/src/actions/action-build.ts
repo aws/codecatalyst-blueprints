@@ -20,6 +20,7 @@ interface Step {
 
 export interface BuildActionConfiguration {
   Steps?: Step[];
+  Container?: BuildContainer;
 }
 
 /**
@@ -79,6 +80,12 @@ export interface BuildActionParameters {
   actionName: string;
   environment?: WorkflowEnvironment;
   dependsOn?: string[];
+  container?: BuildContainer;
+}
+
+export interface BuildContainer {
+  Registry: 'DockerHub' | 'ECR' | 'Other';
+  Image: string;
 }
 
 export const addGenericBuildAction = (
@@ -87,7 +94,7 @@ export const addGenericBuildAction = (
     workflow: WorkflowDefinition;
   },
 ): string => {
-  const { blueprint, workflow, steps, input, output } = params;
+  const { blueprint, workflow, steps, input, output, container } = params;
 
   const buildAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
@@ -99,6 +106,7 @@ export const addGenericBuildAction = (
           Run: step,
         };
       }),
+      Container: container,
     },
   };
   if (params.environment) {
