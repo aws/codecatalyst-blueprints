@@ -1,57 +1,57 @@
-# Blueprint development
+## Developing blueprints
 
-See blueprints github for full documentation and examples. https://github.com/aws/codecatalyst-blueprints/wiki
-
-## Authoring a blueprint
-
-The blueprint.ts file contains the blueprint code and options interface that will be used to generate the wizard. The blueprint can create source repositories, environments, and workflows based on options the user provides in the wizard.
+You can develop your custom blueprint to meet specific requirements, and test the blueprint by creating a project when previewing. You can develop the custom blueprint to deploy resources to a project using blueprint components, such as specific source code, account connections, workflows, and issues. For more information, see [Working with custom blueprints in CodeCatalyst](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html).
 
 
-## Local development
+The `blueprint.ts` file contains the blueprint code and options interface that will be used to generate the wizard. The blueprint can create source repositories, environments, and workflows based on options the user provides in the wizard.
 
-This assumes you have already installed standard node tooling. If not see the section below on standard node tooling.
+
+## Previewing and publishing a blueprint
+
+After configuring your custom blueprint locally, you can build and preview your blueprint before publishing it to your space. 
+
+### To view and publish a preview custom blueprint version
+
+Manually publish a preview version of your blueprint to your space using commands from your package.json file.
+
+1. Install necessary dependencies for your project using the following command:
 
 ```
-cd ./<my-blueprint-repository>
-nvm use
 yarn
+```
+2. (Optional) Projen is an open-source tool that custom blueprints use to keep themselves updated and consistent. Blueprints come as Projen packages because this framework provides you with the ability to build, bundle, and publish projects, and you can use the interface to manage a project's configurations and settings. If you made changes to the `.projenrc.ts` file, regenerate the configuration of your project before building and previewing your blueprint. Use the following command:
+
+```
 yarn projen
-yarn build
 ```
 
-Running a (re)synthesis. This will generate (or regenerate) your project from your blueprint locally. Running with `--cache` will first build a cache
-and then execute that, this takes slightly longer but emulates the wizard.
+3. Rebuild and preview your custom blueprint using the following command:
 
 ```
-yarn blueprint:synth (--cache)
-yarn blueprint:resynth (--cache)
+yarn bluerpint:preview
 ```
 
-Publish your blueprint into codecatalyst in 'preview' mode. Previewed blueprints are only visible to your space.
+Navigate to the `See this blueprint at:` link provided to preview your custom blueprint. Check that the UI, including text, appears as you expected based on your configuration. If you want to change your custom blueprint, you can edit the, resynthesize the blueprint, and then preview the version again.
+
+(Optional) You can publish a preview version of your custom blueprint, which can then be added to your space's blueprint catalog. Navigate to the `Enable version preview version at:` link to publish a preview version to your space.
+
+Custom blueprints provide preview bundles as a result of a successful synthesis. The project bundle represents the source code, configuration, and resources in a project, and it's used by CodeCatalyst deployment API operations to deploy into a project. You can emulate project creation without having to create a project in CodeCatalyst. To synthesize your project, use the following command:
 
 ```
-yarn blueprint:preview
+yarn blueprint:synth
 ```
 
-## Installing standard Node tooling
+A blueprint is generated in the `synth/synth.[options-name]/proposed-bundle/` folder. For more information, see [Synthesis](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-bp-concepts.html#synthesis-concept).
 
-This blueprint is a typescript project. You'll need to install standard node tooling globally.
+If you're updating your custom blueprint, instead, run the following command to resynthesize your project:
 
 ```
-#install nvm https://nvm.sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-nvm use
-npm install npm@6.14.13 typescript@4.8.2 yarn ts-node webpack webpack-cli -g
-brew install jq
+yarn blueprint:resynth
 ```
 
-You will also need access to the blueprint builder in your codecatalyst space. We recommend you develop on mac or a cloud desktop running linux. This
-guide assumes you are using a mac and are using `yarn`.
+A blueprint is generated in the `synth/synth.[options-name]/proposed-bundle/` folder. For more information, see [Resynthesis](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-bp-concepts.html#resynthesis-concept).
 
-## Projen
+## Adding a blueprint to a space’s blueprint catalog
 
-Blueprints are projen projects. This allows the blueprints team to propgate lifecycle improvements and it allows users to resynthesize aspects of a
-project as they evolve. You'll have to make updates to the `projenrc.ts` as your project evolves. See Projen for further details.
-https://github.com/projen/projen
+After developing and previewing your custom blueprint, you can publish and add your blueprint to the space’s blueprints catalog. For more information, see [Viewing a custom blueprint](https://docs.aws.amazon.com/codecatalyst/latest/userguide/view-bp.html), and [Adding a custom blueprint to a space](https://docs.aws.amazon.com/codecatalyst/latest/userguide/add-remove-bp.html).
 
-The projenrc.ts represents the model of your codebase. As you update this file you should run `yarn projen` to regenerate this codebase.
