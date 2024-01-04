@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Project } from 'projen';
-import { Context, ResynthesisPhase } from './context/context';
+import { BlueprintInstantiation, Context, ResynthesisPhase } from './context/context';
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { ContextFile, createContextFile, destructurePath } from './resynthesis/context-file';
@@ -59,6 +59,9 @@ export class Blueprint extends Project {
         name: process.env.CONTEXT_PROJECTNAME,
         bundlepath: process.env.EXISTING_BUNDLE_ABS,
         options: getOptions(path.join(process.env.EXISTING_BUNDLE_ABS || '', OPTIONS_FILE)),
+        blueprint: {
+          instantiations: structureExistingBlueprints(process.env.INSTANTIATIONS_ABS),
+        },
         src: {
           listRepositoryNames: (): string[] => {
             const repoBundlePath = path.join(this.context.project.bundlepath || '', 'src');
@@ -146,7 +149,6 @@ export class Blueprint extends Project {
       const filecontent = fs.readFileSync(path.join(proposedBundle, filepath));
       fs.writeFileSync(outputPath, filecontent);
     }
-
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     // only consider files under the source code 'src'
@@ -249,4 +251,19 @@ function getOptions(location: string): any {
   } catch {
     return {};
   }
+}
+
+function structureExistingBlueprints(location: string | undefined): BlueprintInstantiation[] {
+  if (!fs.existsSync(location || '')) {
+    console.warn('Could not find instantiations at ' + location);
+    return [];
+  }
+  try {
+    const result = JSON.parse(fs.readFileSync(location!).toString());
+    return result as BlueprintInstantiation[];
+  } catch (error) {
+    console.error(error);
+    console.error('Could not read instantiations at ' + location);
+  }
+  return [];
 }

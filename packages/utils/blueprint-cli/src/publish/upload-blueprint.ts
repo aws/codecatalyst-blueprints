@@ -16,6 +16,7 @@ export async function uploadBlueprint(
     blueprint: {
       publishingSpace: string;
       targetSpace: string;
+      targetProject?: string;
       packageName: string;
       version: string;
       authentication: CodeCatalystAuthentication;
@@ -113,13 +114,19 @@ export async function uploadBlueprint(
         version: blueprint.version,
         publishingSpace: blueprint.publishingSpace,
         targetSpace: blueprint.targetSpace,
+        targetProject: blueprint.targetProject,
         http: {
           endpoint: endpoint,
           headers: generateHeaders(blueprint.authentication, blueprint.identity),
         },
       };
-      log.info(`See this blueprint at: ${await generatePreviewLink(log, previewOptions)}`);
       log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
+      const previewlink = await generatePreviewLink(log, previewOptions);
+      if (previewOptions.targetProject) {
+        log.info(`Preview applied to [${previewOptions.targetProject}]: ${previewlink}`);
+      } else {
+        log.info(`Preview applied to [NEW]: ${previewlink}`);
+      }
       return;
     } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
       const curWait = baseWaitSec * 1000 + 1000 * attempt;
@@ -219,6 +226,7 @@ async function generatePreviewLink(
     version: string;
     publishingSpace: string;
     targetSpace: string;
+    targetProject?: string;
     http: {
       endpoint;
       headers: { [key: string]: string };
@@ -246,6 +254,26 @@ async function generatePreviewLink(
       },
     },
   );
+
+  /**
+   * generate a url to a project instead
+   */
+  if (options.targetProject) {
+    return [
+      resolveStageUrl(options.http.endpoint),
+      'spaces',
+      querystring.escape(options.targetSpace),
+      'projects',
+      querystring.escape(options.targetProject),
+      'blueprints',
+      querystring.escape(options.blueprintPackage),
+      'publishers',
+      querystring.escape(publishingSpaceIdResponse.data?.data?.getSpace?.id),
+      'versions',
+      querystring.escape(options.version),
+      'add',
+    ].join('/');
+  }
 
   return [
     resolveStageUrl(options.http.endpoint),

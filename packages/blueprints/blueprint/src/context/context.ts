@@ -10,6 +10,17 @@ export interface PackageConfiguration {
   readonly name?: string;
   readonly version?: string;
 }
+
+/**
+ * This represents an instantiation of a blueprint
+ */
+export interface BlueprintInstantiation {
+  /**
+   * This is a unique;
+   */
+  id: string;
+}
+
 /**
  * context about the existing project bundle (if it exists)
  */
@@ -21,6 +32,20 @@ export interface Project {
    * The options used on the previous run of this blueprint.
    */
   options?: any;
+
+  /**
+   * Information about Blueprints the existing project
+   */
+  blueprint: {
+    /**
+     * A list of all blueprint instantiations already present in your project
+     */
+    instantiations: BlueprintInstantiation[];
+  };
+
+  /**
+   * The source code from the existing project. Note, this can be across multiple repositories
+   */
   src: {
     /**
      * This can be used to list the repositories in the exisiting codebase.
