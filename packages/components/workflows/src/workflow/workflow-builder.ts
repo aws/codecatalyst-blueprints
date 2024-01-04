@@ -36,83 +36,97 @@ export class WorkflowBuilder {
     this.definition = definition;
   }
 
-  addTrigger(trigger: TriggerDefiniton) {
+  addTrigger(trigger: TriggerDefiniton): WorkflowBuilder {
     this.definition.Triggers = this.definition.Triggers || [];
     this.definition.Triggers.push(trigger);
+    return this;
   }
 
-  addCompute(compute: ComputeDefintion) {
+  addCompute(compute: ComputeDefintion): WorkflowBuilder {
     this.definition.Compute = this.definition.Compute || compute;
+    return this;
   }
 
-  addBranchTrigger(branches = ['main'], filesChanged?: string[]) {
+  addBranchTrigger(branches = ['main'], filesChanged?: string[]): WorkflowBuilder {
     addGenericBranchTrigger(this.definition, branches, filesChanged);
+    return this;
   }
 
-  addPullRequestTrigger(events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]) {
+  addPullRequestTrigger(events: PullRequestEvent[], branches = ['main'], filesChanged?: string[]): WorkflowBuilder {
     addGenericPullRequestTrigger(this.definition, events, branches, filesChanged);
+    return this;
   }
 
-  addBuildAction(configuration: BuildActionParameters) {
+  addBuildAction(configuration: BuildActionParameters): WorkflowBuilder {
     addGenericBuildAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addCfnDeployAction(configuration: CfnDeployActionParameters) {
+  addCfnDeployAction(configuration: CfnDeployActionParameters): WorkflowBuilder {
     addGenericCloudFormationDeployAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addCfnCleanupAction(configuration: CfnCleanupActionParameters) {
+  addCfnCleanupAction(configuration: CfnCleanupActionParameters): WorkflowBuilder {
     addGenericCloudFormationCleanupAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addCdkDeployAction(configuration: CdkDeployActionParameters) {
+  addCdkDeployAction(configuration: CdkDeployActionParameters): WorkflowBuilder {
     addGenericCdkDeployAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addCdkBootstrapAction(configuration: CdkBootstrapActionParameters) {
+  addCdkBootstrapAction(configuration: CdkBootstrapActionParameters): WorkflowBuilder {
     addGenericCdkBootstrapAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addTestAction(configuration: TestReportActionParameters) {
+  addTestAction(configuration: TestReportActionParameters): WorkflowBuilder {
     addGenericTestReports({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addPublishBlueprintAction(configuration: PublishBlueprintActionParameters) {
+  addPublishBlueprintAction(configuration: PublishBlueprintActionParameters): WorkflowBuilder {
     addGenericPublishBlueprintAction({
       ...configuration,
       blueprint: this.blueprint,
       workflow: this.definition,
     });
+    return this;
   }
 
-  addGenericAction<T extends {
-    ActionName: string;
-  }>(configuration: T & any) {
+  addGenericAction<
+    T extends {
+      ActionName: string;
+    },
+  >(configuration: T & any): WorkflowBuilder {
     this.definition.Actions = this.definition.Actions || {};
     this.definition.Actions[configuration.actionName] = configuration;
+    return this;
   }
 }
