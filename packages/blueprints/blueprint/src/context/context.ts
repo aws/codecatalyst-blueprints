@@ -16,9 +16,29 @@ export interface PackageConfiguration {
  */
 export interface BlueprintInstantiation {
   /**
-   * This is a unique;
+   * This is a unique identifier of this particular blueprint instantiation. This can be found on the instantiation settings.
    */
   id: string;
+
+  /**
+   * This is the identifier of the space that published this blueprint.
+   */
+  publisher?: string;
+
+  /**
+   * This is the package name of this blueprint.
+   */
+  packageName: string;
+
+  /**
+   * This is blueprint version used.
+   */
+  versionId: string;
+
+  /**
+   * This is an object that represents the options used on the blueprint.
+   */
+  options: any;
 }
 
 /**

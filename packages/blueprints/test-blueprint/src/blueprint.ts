@@ -1,6 +1,4 @@
-import { spawnSync } from 'child_process';
 import * as fs from 'fs';
-import * as path from 'path';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
@@ -206,12 +204,8 @@ export class Blueprint extends ParentBlueprint {
     new SourceFile(internalRepo, 'blueprint.d.ts', blueprintInterface);
     new SourceFile(internalRepo, 'defaults.json', blueprintDefaults);
     new SourceFile(internalRepo, 'internal/ast.json', blueprintAST);
-
-    if (process.env.INSTANTIATIONS_ABS) {
-      const instanpath = path.join(process.env.INSTANTIATIONS_ABS);
-      const instantiations = JSON.parse(fs.readFileSync(instanpath).toString());
-      new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(instantiations, null, 2));
-    }
     new SourceFile(internalRepo, 'internal/env.json', JSON.stringify(process.env, null, 2));
+
+    new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(this.context.project.blueprint.instantiations, null, 2));
   }
 }

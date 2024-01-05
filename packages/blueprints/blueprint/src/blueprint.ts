@@ -254,13 +254,23 @@ function getOptions(location: string): any {
 }
 
 function structureExistingBlueprints(location: string | undefined): BlueprintInstantiation[] {
+  if (!location) {
+    console.warn('Instantiations location not specified');
+    return [];
+  }
   if (!fs.existsSync(location || '')) {
     console.warn('Could not find instantiations at ' + location);
     return [];
   }
   try {
     const result = JSON.parse(fs.readFileSync(location!).toString());
-    return result as BlueprintInstantiation[];
+    const instantiations = (result as BlueprintInstantiation[]).map(instantiation => {
+      return {
+        ...instantiation,
+        options: JSON.parse(instantiation.options),
+      };
+    });
+    return instantiations;
   } catch (error) {
     console.error(error);
     console.error('Could not read instantiations at ' + location);
