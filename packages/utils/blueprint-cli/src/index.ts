@@ -300,11 +300,12 @@ yargs
           type: 'string',
           demandOption: true,
         })
-        .option('publisher', {
-          description: 'the name of the publishing space',
+        .option('space', {
+          description: 'The name of the publishing space. This is the space into which the blueprint will be published.',
           demandOption: true,
           type: 'string',
         })
+        .alias('space', ['publisher'])
         .option('cookie', {
           description: 'the code catalyst cookie to use for authorization. Get this from webauth.',
           demandOption: false,
@@ -337,7 +338,7 @@ yargs
       argv = useOverrideOptionals(argv);
       await publish(log, argv.endpoint, {
         blueprintPath: argv.blueprint,
-        publishingSpace: argv.publisher,
+        publishingSpace: argv.space,
         cookie: argv.cookie,
         region: argv.region || process.env.AWS_REGION || 'us-west-2',
         force: ((argv.force as boolean) && argv.force == true) || false,
