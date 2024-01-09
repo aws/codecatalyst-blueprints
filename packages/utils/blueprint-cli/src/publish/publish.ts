@@ -8,7 +8,7 @@ import { IdentityResponse, verifyIdentity } from './verify-identity';
 
 export interface PublishOptions extends yargs.Arguments {
   blueprint: string;
-  publisher: string;
+  space: string;
   cookie?: string;
   endpoint: string;
   region?: string;
