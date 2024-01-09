@@ -321,6 +321,12 @@ yargs
           demandOption: false,
           type: 'string',
         })
+        .option('project', {
+          description:
+            'Generates a preview link as if this blueprint was being added to an existing project. This does not check if the project actually exists.',
+          demandOption: false,
+          type: 'string',
+        })
         .option('force', {
           description:
             'Force publish. This will overwrite the exisiting blueprint version (if it exists). This may cause exisiting blueprint consumers unexpected difference sets.',
@@ -329,13 +335,14 @@ yargs
     },
     handler: async (argv: PublishOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      void (await publish(log, argv.endpoint, {
+      await publish(log, argv.endpoint, {
         blueprintPath: argv.blueprint,
         publishingSpace: argv.publisher,
         cookie: argv.cookie,
         region: argv.region || process.env.AWS_REGION || 'us-west-2',
         force: ((argv.force as boolean) && argv.force == true) || false,
-      }));
+        targetProject: argv.project,
+      });
       process.exit(0);
     },
   })

@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`conflict formatter: diff3 formats a conflict with a common prefix and suffix 1`] = `
+"<<<<<<< existing
+common prefix line
+common prefix line
+common prefix line
+some contents from a
+common suffix line
+common suffix line
+common suffix line
+||||||| ancestor
+common prefix line
+common prefix line
+common prefix line
+some contents from o
+common suffix line
+common suffix line
+common suffix line
+=======
+common prefix line
+common prefix line
+common prefix line
+some contents from b
+common suffix line
+common suffix line
+common suffix line
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: diff3 formats simple conflicts 1`] = `
+"<<<<<<< existing
+line 1 a
+line 2
+||||||| ancestor
+line 1 o
+line 2
+=======
+line 1 b
+line 2
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: diff3 formats simple conflicts with trailing newlines 1`] = `
+"<<<<<<< existing
+line 1 a
+line 2
+||||||| ancestor
+line 1 o
+line 2
+=======
+line 1 b
+line 2
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: diff3NoAncestor formats a conflict with a common prefix and suffix 1`] = `
+"<<<<<<< existing
+common prefix line
+common prefix line
+common prefix line
+some contents from a
+common suffix line
+common suffix line
+common suffix line
+=======
+common prefix line
+common prefix line
+common prefix line
+some contents from b
+common suffix line
+common suffix line
+common suffix line
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: diff3NoAncestor formats simple conflicts 1`] = `
+"<<<<<<< existing
+line 1 a
+line 2
+=======
+line 1 b
+line 2
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: diff3NoAncestor formats simple conflicts with trailing newlines 1`] = `
+"<<<<<<< existing
+line 1 a
+line 2
+=======
+line 1 b
+line 2
+>>>>>>> proposed
+"
+`;
+
+exports[`conflict formatter: preferExisting formats a conflict with a common prefix and suffix 1`] = `
+"common prefix line
+common prefix line
+common prefix line
+some contents from a
+common suffix line
+common suffix line
+common suffix line
+"
+`;
+
+exports[`conflict formatter: preferExisting formats simple conflicts 1`] = `
+"line 1 a
+line 2"
+`;
+
+exports[`conflict formatter: preferExisting formats simple conflicts with trailing newlines 1`] = `
+"line 1 a
+line 2
+"
+`;
+
+exports[`conflict formatter: preferProposed formats a conflict with a common prefix and suffix 1`] = `
+"common prefix line
+common prefix line
+common prefix line
+some contents from b
+common suffix line
+common suffix line
+common suffix line
+"
+`;
+
+exports[`conflict formatter: preferProposed formats simple conflicts 1`] = `
+"line 1 b
+line 2"
+`;
+
+exports[`conflict formatter: preferProposed formats simple conflicts with trailing newlines 1`] = `
+"line 1 b
+line 2
+"
+`;
+
+exports[`conflict formatter: trimEnds formats a conflict with a common prefix and suffix 1`] = `
+"common prefix line
+common prefix line
+common prefix line
+<<<<<<< existing
+some contents from a
+=======
+some contents from b
+>>>>>>> proposed
+common suffix line
+common suffix line
+common suffix line
+"
+`;
+
+exports[`conflict formatter: trimEnds formats simple conflicts 1`] = `
+"<<<<<<< existing
+line 1 a
+=======
+line 1 b
+>>>>>>> proposed
+line 2"
+`;
+
+exports[`conflict formatter: trimEnds formats simple conflicts with trailing newlines 1`] = `
+"<<<<<<< existing
+line 1 a
+=======
+line 1 b
+>>>>>>> proposed
+line 2
+"
+`;

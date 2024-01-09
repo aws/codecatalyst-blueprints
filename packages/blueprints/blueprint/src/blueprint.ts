@@ -147,7 +147,6 @@ export class Blueprint extends Project {
       fs.writeFileSync(outputPath, filecontent);
     }
 
-
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
     // only consider files under the source code 'src'
     const supersetSourcePaths: string[] = filepathSet([ancestorBundle, existingBundle, proposedBundle], ['src/**']);

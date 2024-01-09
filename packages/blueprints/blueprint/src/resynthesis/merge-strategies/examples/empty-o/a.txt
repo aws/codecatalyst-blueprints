@@ -1,0 +1,9 @@
+common prefix
+common prefix
+common prefix
+conflict a
+conflict a
+conflict a
+common suffix
+common suffix
+common suffix
