@@ -255,11 +255,11 @@ function getOptions(location: string): any {
 
 function structureExistingBlueprints(location: string | undefined): BlueprintInstantiation[] {
   if (!location) {
-    console.warn('Instantiations location not specified');
+    console.log('Instantiations location not specified');
     return [];
   }
   if (!fs.existsSync(location || '')) {
-    console.warn('Could not find instantiations at ' + location);
+    console.log('Could not find instantiations at ' + location);
     return [];
   }
   try {
