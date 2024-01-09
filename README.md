@@ -1,8 +1,9 @@
 ![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg)
 
-[Documentation and wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
+[AWS official documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
+[wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
-This guide deals with how to develop in this codebase
+This guide deals with how to develop in this codebase.
 
 ## Blueprints
 
@@ -28,15 +29,21 @@ Please take a look at our [wiki](https://github.com/aws/codecatalyst-blueprints/
 [public documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/blueprints.html) helpful.
 
 In this repository you can find our blueprints SDK, tooling, and several sample blueprints
+
 - Blueprint [Base and examples](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/blueprints): `/packages/blueprints/`
   - These are some of the blueprints available to everyone on codecatalyst.
-  - [Base blueprint](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/blueprints/blueprint): All blueprints extend this base blueprint.
-  - [Blueprint Builder](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/blueprints/blueprint-builder): Is a blueprint which generates additional blueprints
+  - [Base blueprint](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/blueprints/blueprint): All blueprints extend this base
+    blueprint.
+  - [Blueprint Builder](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/blueprints/blueprint-builder): Is a blueprint which
+    generates additional blueprints
   - ...
 - Blueprint [component constructs](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/components): `/packages/components/`
-  - These are components used to make working with and generating codecatalyst resources easier. Please consult [public documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/develop-publish-bp.html) for detailed API docs on how to use these components in your project.
+  - These are components used to make working with and generating codecatalyst resources easier. Please consult
+    [public documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/develop-publish-bp.html) for detailed API docs on how to use
+    these components in your project.
 - Blueprint [Utility Tooling](https://github.com/aws/codecatalyst-blueprints/tree/main/packages/utils): `packages/utils/`
-  - This tooling contains the blueprints CLI (used to publish blueprints) as well as basic projen constructs which define the blueprint and component construct codebases
+  - This tooling contains the blueprints CLI (used to publish blueprints) as well as basic projen constructs which define the blueprint and component
+    construct codebases
 
 # Development
 

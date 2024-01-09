@@ -123,9 +123,9 @@ export async function uploadBlueprint(
       log.info(`Enable version ${version} at: ${resolveStageUrl(endpoint)}/spaces/${blueprint.targetSpace}/blueprints`);
       const previewlink = await generatePreviewLink(log, previewOptions);
       if (previewOptions.targetProject) {
-        log.info(`Preview applied to [${previewOptions.targetProject}]: ${previewlink}`);
+        log.info(`Blueprint applied to [${previewOptions.targetProject}]: ${previewlink}`);
       } else {
-        log.info(`Preview applied to [NEW]: ${previewlink}`);
+        log.info(`Blueprint applied to [NEW]: ${previewlink}`);
       }
       return;
     } else if (fetchStatusResponse.status === 'IN_PROGRESS') {
