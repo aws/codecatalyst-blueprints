@@ -90,8 +90,10 @@ must be part of the enterprise tier as well.
 
 ```
 cd packages/blueprints/<blueprint>
-yarn blueprint:preview --publisher my-awesome-space # publishes under a "preview" version tag
-yarn blueprint:release --publisher my-awesome-space # publishes normal version
+yarn blueprint:preview --space my-awesome-space # publishes under a "preview" version tag to 'my-awesome-space'
+yarn blueprint:release --space my-awesome-space # publishes normal version to 'my-awesome-space'
+
+yarn blueprint:preview --space my-awesome-space --project my-project # previews blueprint application to an existing project
 ```
 
 This will publish a private verision of your blueprint into `my-awesome-space`. It will only be available for that space. You may run this command
