@@ -1,16 +1,16 @@
 ![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg)
 
-[AWS official documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
+Blueprints: [AWS official documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
 [wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
-This guide deals with how to develop in this codebase.
+This repository contains common blueprint components, the base blueprint contructs and several public blueprints. Codecatalyst blueprints are
+available for anyone to develop today! Blueprints are built by a number of teams internally, this repository only contains the base constructs and a
+small number of blueprints maintained by the core blueprints team.
 
 ## Blueprints
 
-The codecatalyst blueprints team maintains a [open-sourced repository](https://github.com/aws/amazon-codecatalyst/blob/main/README.md). This
-repository contains common blueprint components, the base blueprint contruct and several public blueprints. Codecatalyst blueprints are available for
-anyone to develop today! Blueprints are built by a number of teams internally, this repository only contains the base constructs and a small number of
-blueprints.
+Blueprints are code generators used to create and maintain projects in [Amazon CodeCatalyst](https://codecatalyst.aws/). Anyone can build their own
+blueprint today by upgrading to the CodeCatalyst enterprise tier.
 
 ### Building your own blueprint
 
