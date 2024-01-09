@@ -15,7 +15,7 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
 // ============================
 // Resynthetization
 // ============================
-(() => {
+void (async () => {
   // node cached-resynth.js 'options' 'outputDirectory' 'entropy' 'ancestorBundleDirectory' 'existingBundleDirectory' 'proposedBundleDirectory'
   const options = JSON.parse(process.argv[2]);
   const outputdir = process.argv[3];
@@ -45,7 +45,7 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
       ...options,
       outdir: outputdir
     })
-    bp.resynth(ancestorBundleDirectory, existingBundleDirectory, proposedBundleDirectory);
+    await bp.resynth(ancestorBundleDirectory, existingBundleDirectory, proposedBundleDirectory);
     
     console.log("===== Ending resynthesis ===== ");
   } catch (err) {

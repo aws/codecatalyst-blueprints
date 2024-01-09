@@ -201,11 +201,28 @@ export class Blueprint extends ParentBlueprint {
     const blueprintAST = fs.readFileSync('./lib/ast.json').toString();
 
     const internalRepo = new SourceRepository(this, { title: 'showcase-info' });
+
+    // easy copying of static files
+    internalRepo.copyStaticFiles({
+      from: 'subdirectory/in/static/assets',
+      to: 'subdirectory/in/my/repo',
+    });
+
     new SourceFile(internalRepo, 'blueprint.d.ts', blueprintInterface);
     new SourceFile(internalRepo, 'defaults.json', blueprintDefaults);
     new SourceFile(internalRepo, 'internal/ast.json', blueprintAST);
     new SourceFile(internalRepo, 'internal/env.json', JSON.stringify(process.env, null, 2));
 
     new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(this.context.project.blueprint.instantiations, null, 2));
+  }
+
+  async synth(): Promise<void> {
+    console.log('did async thing');
+    const asyncRepo = new SourceRepository(this, { title: 'async-repo' });
+    new SourceFile(asyncRepo, 'async-env.json', JSON.stringify(process.env, null, 2));
+    console.log('finished async thing');
+
+    // make sure you call super.synth() at the end!
+    super.synth();
   }
 }

@@ -15,7 +15,7 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
 // ============================
 // Synthetization
 // ============================
-(() => {
+void (async () => {
   // node cached-synth.js '{options-selected}' 'outputDirectory'
   const options = JSON.parse(process.argv[2]);
   const outputdir = process.argv[3];
@@ -37,10 +37,11 @@ const packageJson = require('${options?.packageJsonLocation || './package.json'}
   console.log("options: ", options);
   console.log("outputDir: ", outputdir);
   try {
-    new Blueprint({
+    const bp = new Blueprint({
       ...options,
       outdir: outputdir
-    }).synth();
+    })
+    await bp.synth();
     console.log("===== Ending synthesis ===== ");
   } catch (err) {
     const errorMessage = JSON.stringify(err, Object.getOwnPropertyNames(err));
