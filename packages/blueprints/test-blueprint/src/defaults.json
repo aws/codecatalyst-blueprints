@@ -1,4 +1,23 @@
 {
+  "multiSelectors": {
+    "stringMulti": ["C", "B"],
+    "numberMulti": [100]
+  },
+  "keyValue": {
+    "keyValue": {
+      "hello": "moto",
+      "foo": "bar"
+    },
+    "elementValue": {},
+    "numelementValue": {
+      "1": "im number 1!",
+      "2": "im number 2, sad!"
+    },
+    "numStringValue": {
+      "firstTimeAllocation": 100,
+      "secondTeamAllocation": 200
+    }
+  },
   "thisIsMyEnvironment": {
     "name": "DEFAULT_ENVIRONMENT_NAME",
     "environmentType": "PRODUCTION"

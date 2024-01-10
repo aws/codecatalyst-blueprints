@@ -5,6 +5,9 @@ import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/bl
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
+type MultiSelectPrimitive = string | number | boolean;
+type MultiSelect<T extends any> = T[] | MultiSelectPrimitive[];
+
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard
@@ -12,8 +15,58 @@ import defaults from './defaults.json';
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
  * 4. All required members of 'Options' must be defined in 'defaults.json' to synth your blueprint locally
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
+ * @requires @amazon-codecatalyst/blueprints.blueprint-builder
+ * @requires @amazon-codecatalyst/blueprints.sam-serverless-application
  */
 export interface Options extends ParentOptions {
+  /**
+   * @collapsed
+   */
+  multiSelectors?: {
+    stringMulti: MultiSelect<'First option' | 'A' | 'B' | 'B' | 'C'>;
+
+    numberMulti: MultiSelect<1 | 10 | 100 | 9999>;
+
+    /**
+     * This allows you to select one or more of any of the existing source repos in the project
+     */
+    sourceMulti?: MultiSelect<SourceRepository>;
+  };
+
+  // /**
+  //  * these are key value pairings. Note each key is unqiue within the selection. Users can add more key:value mappings, they can delete them too. Order does not matter.
+  //  * @collapsed
+  //  */
+  // keyValue?: {
+  //   /**
+  //    * Traditional string to string mapping
+  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
+  //    */
+  //   keyValue: {[key: string]: string };
+
+  //   /**
+  //    * Traditional string to string mapping #2
+  //    */
+  //   elementValue?: { [value: string]: string };
+
+  //   /**
+  //    * Traditional number to string mapping #2
+  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
+  //    */
+  //   numelementValue: {[value: number]: string };
+
+  //   /**
+  //    * Traditional number to number mapping #2
+  //    */
+  //   numNumValue?: {[value: number]: number };
+
+  //   /**
+  //    * Traditional number to number mapping #2
+  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
+  //    */
+  //   numStringValue: {[value: string]: number };
+  // };
+
   /**
    * This is some information about what type of environment and what in the world an environment is.
    * @displayName This is the Environment Title Area
