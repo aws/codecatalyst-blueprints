@@ -35,7 +35,16 @@ export const handleTupleType = (property, path: string): Node => {
     path: [path, property.name?.escapedText].filter(i => i?.length).join('.'),
   };
 
-  node.members = (property.elements || property.type?.elements || []).map((element, index) => convertToNode(element, `${node.path}[${index}]`));
+  node.members = (property.elements || property.type?.elements || []).map((element, index) => {
+    return convertToNode(
+      {
+        questionToken: property.questionToken,
+        jsDoc: property.jsDoc,
+        ...element,
+      },
+      `${node.path}[${index}]`,
+    );
+  });
   return node;
 };
 
@@ -88,7 +97,14 @@ export const handleTypeReference = (property, path: string): Node => {
   };
 
   node.members = (property.type?.typeArguments || []).map(typeArgument => {
-    return convertToNode(typeArgument, node.path);
+    return convertToNode(
+      {
+        questionToken: property.questionToken,
+        jsDoc: property.jsDoc,
+        ...typeArgument,
+      },
+      node.path,
+    );
   });
   return node;
 };

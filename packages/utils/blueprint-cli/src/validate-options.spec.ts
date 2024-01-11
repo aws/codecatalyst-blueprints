@@ -10,6 +10,8 @@ import * as astShowcaseDefaults from './ast/parser/asts/blueprint-ex/ast-fronten
 import * as astShowcase from './ast/parser/asts/blueprint-ex/ast-frontend-showcase.json';
 import * as astimportGitDefaults from './ast/parser/asts/blueprint-ex/ast-import-from-git-defaults.json';
 import * as astimportGit from './ast/parser/asts/blueprint-ex/ast-import-from-git.json';
+import * as astTupleDefaults from './ast/parser/asts/blueprint-ex/ast-tuple-blueprint-defaults.json';
+import * as astTuple from './ast/parser/asts/blueprint-ex/ast-tuple-blueprint.json';
 import * as astWebAppDefaults from './ast/parser/asts/blueprint-ex/ast-web-app-defaults.json';
 import * as astWebApp from './ast/parser/asts/blueprint-ex/ast-web-app.json';
 
@@ -79,6 +81,13 @@ describe('Verifies that properties on an AST pass the @validation regex', () => 
     it('should have no errors', () => {
       const errors = validateOptions(JSON.stringify(astimportGit), astimportGitDefaults);
       expect(errors.length).toBe(0);
+    });
+  });
+
+  describe('Example blueprint tuple', () => {
+    it('should have no errors', () => {
+      const errors = validateOptions(JSON.stringify(astTuple), astTupleDefaults);
+      expect(errors.filter(err => err.level == 'ERROR').length).toBe(0);
     });
   });
 });
