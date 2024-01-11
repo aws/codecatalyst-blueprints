@@ -3,4 +3,4 @@
  * @example multi: MultiSelect<['A', 'B', 'C']>
  * @returns ['A', 'B'];
  */
-export type MultiSelect<T extends any[]> = T;
+export type MultiSelect<T> = T[] | string[] | number[];

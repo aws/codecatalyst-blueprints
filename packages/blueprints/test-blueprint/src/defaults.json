@@ -3,19 +3,25 @@
     "stringMulti": ["C", "B"],
     "numberMulti": [100]
   },
-  "keyValue": {
-    "keyValue": {
-      "hello": "moto",
-      "foo": "bar"
+  "toupleValues": {
+    "singles": {
+      "doubleTouple": ["hello", "moto"],
+      "doubleToupleNum": [123, 456]
     },
-    "elementValue": {},
-    "numelementValue": {
-      "1": "im number 1!",
-      "2": "im number 2, sad!"
+    "lists": {
+      "doubleTouple": [
+        ["team", "first"],
+        ["team", "second"]
+      ],
+      "doubleToupleNum": [
+        ["first team", 1],
+        ["second team", 2],
+        ["third team", 3]
+      ]
     },
-    "numStringValue": {
-      "firstTimeAllocation": 100,
-      "secondTeamAllocation": 200
+    "dynamicElement": {
+      "element": ["first team", 1],
+      "description": "hello this is a description",
     }
   },
   "thisIsMyEnvironment": {

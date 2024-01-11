@@ -2,11 +2,27 @@ import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
+import { MultiSelect, Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
-type MultiSelectPrimitive = string | number | boolean;
-type MultiSelect<T extends any> = T[] | MultiSelectPrimitive[];
+
+/**
+ * We expose the touple type because typescript will treat defaulted touples as string[];
+ */
+type SupportedToupleType = string | number;
+type Tuple<K extends SupportedToupleType = string, V extends SupportedToupleType = string> = (K | V)[]
+
+type SupportedDynamic = Touple | string | number | ...
+type SimpleDynamicElement<Element extends SupportedDynamic> = {
+  element: Element;
+  /**
+   * If this is specified this particular value cannot be removed.
+   */
+  required?: boolean;
+  description?: string;
+  keyRegex?: string;
+  valueRegex?: string;
+}
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -33,39 +49,33 @@ export interface Options extends ParentOptions {
     sourceMulti?: MultiSelect<SourceRepository>;
   };
 
-  // /**
-  //  * these are key value pairings. Note each key is unqiue within the selection. Users can add more key:value mappings, they can delete them too. Order does not matter.
-  //  * @collapsed
-  //  */
-  // keyValue?: {
-  //   /**
-  //    * Traditional string to string mapping
-  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
-  //    */
-  //   keyValue: {[key: string]: string };
+  /**
+   * These are touple parings.
+   * @collapsed
+   */
+  toupleValues?: {
+    /**
+     * Only Touples of length 2 and 3 are supported
+     */
+    singles: {
 
-  //   /**
-  //    * Traditional string to string mapping #2
-  //    */
-  //   elementValue?: { [value: string]: string };
+      /**
+       * Traditional string to string mapping explictly
+       * @description overall description
+       */
+      doubleTouple: Touple<string, string>;
+      doubleToupleNum: Touple<string, number>;
+    };
 
-  //   /**
-  //    * Traditional number to string mapping #2
-  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
-  //    */
-  //   numelementValue: {[value: number]: string };
-
-  //   /**
-  //    * Traditional number to number mapping #2
-  //    */
-  //   numNumValue?: {[value: number]: number };
-
-  //   /**
-  //    * Traditional number to number mapping #2
-  //    * @validationRegex /^[a-zA-Z0-9]{1,50}$/
-  //    */
-  //   numStringValue: {[value: string]: number };
-  // };
+    lists: {
+      /**
+       * Traditional string to string mapping explictly
+       * @description overall description
+       */
+      doubleTouple: Touple<string, string>[];
+      doubleToupleNum: Touple<string, number>[];
+    };
+  };
 
   /**
    * This is some information about what type of environment and what in the world an environment is.
