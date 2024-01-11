@@ -51,7 +51,6 @@ export const validateOptions = (inputAst_: string, options: any): ValiationError
       if (optionValues && !Array.isArray(optionValues)) {
         optionValues = [`${optionValues}`];
       }
-
       const validationResult = validateNode(node, optionValues, validationRegex || '');
       if (validationResult) {
         errors = [...errors, ...validationResult];
@@ -81,7 +80,7 @@ function validateNode(node: Node, values: string[], regex: string): ValiationErr
       {
         ...error,
         level: 'ERROR',
-        value: '',
+        value: JSON.stringify(values),
         validationMessage,
       },
     ];

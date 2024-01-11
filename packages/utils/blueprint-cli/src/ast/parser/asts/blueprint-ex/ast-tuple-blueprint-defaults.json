@@ -1,0 +1,23 @@
+{
+  "toupleValues": {
+    "singles": {
+      "doubleTouple": ["hello", "moto"],
+      "doubleToupleNum": [123, 456]
+    },
+    "lists": {
+      "doubleTouple": [
+        ["team", "first"],
+        ["team", "second"]
+      ],
+      "doubleToupleNum": [
+        ["first team", 1],
+        ["second team", 2],
+        ["third team", 3]
+      ]
+    },
+    "dynamicElement": {
+      "element": ["first team", 1],
+      "description": "hello this is a description"
+    }
+  }
+}
