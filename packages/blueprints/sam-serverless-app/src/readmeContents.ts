@@ -44,7 +44,7 @@ project. After your workflow runs successfully, your deployed [AWS Cloud Develop
 
 ### Architecture overview
 
-![Architecture diagram](https://d2oq83bpv90sqw.cloudfront.net/SAM-arch.png)
+![Architecture diagram](https://dehz9bo9d1ho5.cloudfront.net/SAM_arch.png)
 
 ## Connections and permissions
 

@@ -22,7 +22,7 @@ This project uses:
 
 You can choose any of the above as the programming language.
 
-![Architecture diagram](https://d2oq83bpv90sqw.cloudfront.net/SAM-arch.png)
+![Architecture diagram](https://dehz9bo9d1ho5.cloudfront.net/SAM_arch.png)
 
 ### Connections and permissions
 
