@@ -21,7 +21,7 @@
     },
     "dynamicElement": {
       "element": ["first team", 1],
-      "description": "hello this is a description",
+      "description": "hello this is a description"
     }
   },
   "thisIsMyEnvironment": {

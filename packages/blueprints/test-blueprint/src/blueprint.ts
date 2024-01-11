@@ -2,27 +2,8 @@ import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { MultiSelect, Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
+import { MultiSelect, Blueprint as ParentBlueprint, Options as ParentOptions, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
-
-
-/**
- * We expose the touple type because typescript will treat defaulted touples as string[];
- */
-type SupportedToupleType = string | number;
-type Tuple<K extends SupportedToupleType = string, V extends SupportedToupleType = string> = (K | V)[]
-
-type SupportedDynamic = Touple | string | number | ...
-type SimpleDynamicElement<Element extends SupportedDynamic> = {
-  element: Element;
-  /**
-   * If this is specified this particular value cannot be removed.
-   */
-  required?: boolean;
-  description?: string;
-  keyRegex?: string;
-  valueRegex?: string;
-}
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -60,11 +41,16 @@ export interface Options extends ParentOptions {
     singles: {
 
       /**
+       * empty tuple map. This should default to string:string
+       */
+      emptyTouple?: Tuple;
+
+      /**
        * Traditional string to string mapping explictly
        * @description overall description
        */
-      doubleTouple: Touple<string, string>;
-      doubleToupleNum: Touple<string, number>;
+      doubleTouple: Tuple<string, string>;
+      doubleToupleNum: Tuple<string, number>;
     };
 
     lists: {
@@ -72,8 +58,8 @@ export interface Options extends ParentOptions {
        * Traditional string to string mapping explictly
        * @description overall description
        */
-      doubleTouple: Touple<string, string>[];
-      doubleToupleNum: Touple<string, number>[];
+      doubleTouple: Tuple<string, string>[];
+      doubleToupleNum: Tuple<string, number>[];
     };
   };
 
