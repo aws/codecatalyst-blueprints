@@ -1,6 +1,6 @@
 ![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg)
 
-Blueprints: [AWS official documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
+[AWS official Blueprints documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
 [Wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
 
 This repository contains common blueprint components, the base blueprint contructs and several public blueprints. Codecatalyst blueprints are
