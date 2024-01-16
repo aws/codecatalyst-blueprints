@@ -79,7 +79,7 @@ function validateNode(node: Node, values: string[], regex: string): ValiationErr
     return [
       {
         ...error,
-        level: 'ERROR',
+        level: 'WARNING',
         value: JSON.stringify(values),
         validationMessage,
       },
