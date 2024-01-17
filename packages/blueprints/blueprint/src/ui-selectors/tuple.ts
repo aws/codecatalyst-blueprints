@@ -1,9 +1,9 @@
 /**
  * We expose the touple type because typescript will treat defaulted touples as string[];
  */
-type SupportedTupleType = string | number;
+export type SupportedTupleType = string | number;
 
 /**
- * This returns a string[] of length 2
+ * This returns a string[]. Lengths of 2 are currently supported
  */
-export type Tuple<K extends SupportedTupleType = string, V extends SupportedTupleType = string> = (K | V)[]
+export type Tuple<T extends [SupportedTupleType, SupportedTupleType]> = T | SupportedTupleType[];

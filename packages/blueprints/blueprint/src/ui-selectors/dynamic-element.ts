@@ -1,6 +1,6 @@
-import { Tuple } from './tuple';
+import { Tuple, SupportedTupleType } from './tuple';
 
-type SupportedDynamic = Tuple | string | number
+type SupportedDynamic = Tuple<[SupportedTupleType, SupportedTupleType]> | string | number;
 
 /**
  * A special UI element that allows you to specify display properties via the defaults
@@ -14,4 +14,4 @@ export type SimpleDynamicElement<Element extends SupportedDynamic> = {
   description?: string;
   keyRegex?: string;
   valueRegex?: string;
-}
+};
