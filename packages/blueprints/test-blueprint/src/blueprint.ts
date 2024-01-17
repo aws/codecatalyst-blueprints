@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import { BlueprintInstantiation, MultiSelect, Blueprint as ParentBlueprint, Options as ParentOptions, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 /**
@@ -14,6 +14,23 @@ import defaults from './defaults.json';
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
+  /**
+   * @collapsed
+   */
+  multiSelectors?: {
+    stringMulti: MultiSelect<'First option' | 'A' | 'B' | 'B' | 'C'>;
+    numberMulti: MultiSelect<1 | 10 | 100 | 9999>;
+    /**
+     * This allows you to select one or more of any of the existing source repos in the project
+     */
+    sourceMulti?: MultiSelect<SourceRepository>;
+
+    /**
+     * This allows you to select one or more of any of the existing source repos in the project
+     */
+    instantiationMulti?: MultiSelect<BlueprintInstantiation>;
+  };
+
   /**
    * These are touple parings.
    * @collapsed
