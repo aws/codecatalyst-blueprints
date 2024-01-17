@@ -2,7 +2,13 @@ import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { BlueprintInstantiation, MultiSelect, Blueprint as ParentBlueprint, Options as ParentOptions, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import {
+  BlueprintInstantiation,
+  MultiSelect,
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+  Tuple,
+} from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 /**
@@ -26,7 +32,7 @@ export interface Options extends ParentOptions {
     sourceMulti?: MultiSelect<SourceRepository>;
 
     /**
-     * This allows you to select one or more of any of the existing source repos in the project
+     * This allows you to select one or more of any of the existing BlueprintInstantiations in the project
      */
     instantiationMulti?: MultiSelect<BlueprintInstantiation>;
   };
