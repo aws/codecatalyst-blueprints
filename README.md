@@ -59,7 +59,7 @@ various tooling to work properly and are available from public npm.
 brew install nvm            # blueprints work with Node 18.x
 brew install jq
 nvm use
-npm install npm@6.14.13 -g  # we suggest using npm 6.14.13, v9.7.2 has perf issues
+npm install npm@6.14.13 -g  # we suggest using npm 6.14.13, v9.7.2 has performance issues
 npm install yarn ts-node webpack webpack-cli -g
 ```
 
