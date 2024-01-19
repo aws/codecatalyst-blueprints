@@ -1,4 +1,9 @@
 {
+  "selectors": {
+    "sourceRepo": "repo-name-does-not-exist",
+    "sourceRepoOrAdd": "existing-repo",
+    "blueprintInstantiation": "prefilled-id-that-does-not-exist"
+  },
   "multiSelectors": {
     "stringMulti": ["C", "B"],
     "numberMulti": [100]

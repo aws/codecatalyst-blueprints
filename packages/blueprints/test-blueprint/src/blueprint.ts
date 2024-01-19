@@ -7,6 +7,7 @@ import {
   MultiSelect,
   Blueprint as ParentBlueprint,
   Options as ParentOptions,
+  Selector,
   Tuple,
 } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
@@ -20,6 +21,25 @@ import defaults from './defaults.json';
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
  */
 export interface Options extends ParentOptions {
+  /**
+   * @collapsed
+   */
+  selectors?: {
+    /**
+     * This is a selector that allows me to get a source repository
+     */
+    sourceRepo?: Selector<SourceRepository>;
+
+    /**
+     * This is a selector that allows me to get a source repository or enter a string
+     */
+    sourceRepoOrAdd?: Selector<SourceRepository> | string;
+
+    /**
+     * This is a selector that allows me to get a instantiation
+     */
+    blueprintInstantiation?: Selector<BlueprintInstantiation>;
+  };
   /**
    * @collapsed
    */
