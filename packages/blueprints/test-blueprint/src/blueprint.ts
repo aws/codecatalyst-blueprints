@@ -33,7 +33,7 @@ export interface Options extends ParentOptions {
     /**
      * This is a selector that allows me to get a source repository or enter a string
      */
-    sourceRepoOrAdd?: Selector<SourceRepository> | string;
+    sourceRepoOrAdd?: Selector<SourceRepository | string>;
 
     /**
      * This is a selector that allows me to get a instantiation
