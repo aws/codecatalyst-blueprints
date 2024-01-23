@@ -19,6 +19,8 @@ import defaults from './defaults.json';
  * 3. You can use JSDOCs and annotations such as: '?', @advanced, @hidden, @display - textarea, etc. to control how the wizard displays certain fields.
  * 4. All required members of 'Options' must be defined in 'defaults.json' to synth your blueprint locally
  * 5. The 'Options' member values defined in 'defaults.json' will be used to populate the wizard selection panel with default values
+ * @requires @amazon-codecatalyst/blueprints.sam-serverless-application
+ * @requires @amazon-codecatalyst/blueprints.blueprint-builder
  */
 export interface Options extends ParentOptions {
   /**

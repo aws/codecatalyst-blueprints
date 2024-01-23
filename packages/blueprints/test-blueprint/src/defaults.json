@@ -19,9 +19,9 @@
         ["team", "second"]
       ],
       "doubleToupleNum": [
-        ["first team", 1],
-        ["second team", 2],
-        ["third team", 3]
+        ["firstteam", 1],
+        ["secondteam", 2],
+        ["thirdteam", 3]
       ]
     },
     "dynamicElement": {
