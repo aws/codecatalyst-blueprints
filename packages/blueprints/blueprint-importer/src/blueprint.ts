@@ -1,5 +1,4 @@
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
-import { makeValidFolder as sanatize } from '@amazon-codecatalyst/blueprint-component.source-repositories/lib/utilities';
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
@@ -22,7 +21,7 @@ export interface Options extends ParentOptions {
      */
     repositoryName: string;
     /**
-     * NPM registry that is set as upstream
+     * NPM upstream registry which contains the blueprint
      * @placeholder https://registry.npmjs.org
      * @validationRegex .*
      */
@@ -53,7 +52,10 @@ export class Blueprint extends ParentBlueprint {
 
     options.packages.forEach(npmPackage => {
       const workflow = new WorkflowBuilder(this);
-      workflow.setName(sanatize(`import_${npmPackage.replace('@amazon-codecatalyst/', '')}`));
+      const shortPackageName = npmPackage.replace('@amazon-codecatalyst/', '');
+      const workflowName = `import_${shortPackageName}`.replace(/[^A-Za-z0-9_-]+/g, '_').substring(0, 100);
+
+      workflow.setName(workflowName);
       workflow.addBranchTrigger(['main']);
       workflow.setDefinition({
         ...workflow.getDefinition(),
@@ -120,7 +122,7 @@ export class Blueprint extends ParentBlueprint {
         additionalComments: [
           'This workflow has been generated from the blueprint importer',
           'This workflow has been configured to: ',
-          'Check 1/day NPM for blueprint package and publish it privately.',
+          'Check NPM 1/day for the blueprint package and publish it privately',
           `npm: ${options.advanced.npmRegistry}`,
           `package: ${npmPackage}`,
           '',
