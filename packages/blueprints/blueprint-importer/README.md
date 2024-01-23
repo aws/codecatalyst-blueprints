@@ -1,0 +1,1 @@
+This is a testing blueprint published by the blueprints service team. It may not be helpful to use directly, but it does expose advanced options and configurations on the blueprint wizard.
