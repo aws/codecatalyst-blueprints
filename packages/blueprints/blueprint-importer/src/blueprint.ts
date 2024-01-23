@@ -1,4 +1,5 @@
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { makeValidFolder as sanatize } from '@amazon-codecatalyst/blueprint-component.source-repositories/lib/utilities';
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
@@ -6,18 +7,24 @@ import defaults from './defaults.json';
 export interface Options extends ParentOptions {
   /**
    * Will attempt to import these NPM packages as blueprints.
+   * @validationRegex /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
+   * @validationMessage Does not match npm package regex
    * @displayName Package Name
    */
   packages: string[];
 
   /**
-   * @collapsed
+   * @collapsed true
    */
   advanced: {
+    /**
+     * @validationRegex /^.{1,50}$/
+     */
     repositoryName: string;
     /**
      * NPM registry that is set as upstream
      * @placeholder https://registry.npmjs.org
+     * @validationRegex .*
      */
     npmRegistry: string;
   };
@@ -46,6 +53,7 @@ export class Blueprint extends ParentBlueprint {
 
     options.packages.forEach(npmPackage => {
       const workflow = new WorkflowBuilder(this);
+      workflow.setName(sanatize(`import_${npmPackage.replace('@amazon-codecatalyst/', '')}`));
       workflow.addBranchTrigger(['main']);
       workflow.setDefinition({
         ...workflow.getDefinition(),
@@ -86,7 +94,7 @@ export class Blueprint extends ParentBlueprint {
       });
 
       workflow.addGenericAction({
-        ActionName: 'publish_blueprint',
+        actionName: 'publish_blueprint',
         Identifier: 'aws/publish-blueprint-action@v1',
         Inputs: {
           Artifacts: ['files'],
@@ -112,7 +120,10 @@ export class Blueprint extends ParentBlueprint {
         additionalComments: [
           'This workflow has been generated from the blueprint importer',
           'This workflow has been configured to: ',
-          `look at ${options.advanced.npmRegistry} for package ${npmPackage} and attempt to publish it as a blueprint into this space.`,
+          'Check 1/day NPM for blueprint package and publish it privately.',
+          `npm: ${options.advanced.npmRegistry}`,
+          `package: ${npmPackage}`,
+          '',
         ],
       });
     });
