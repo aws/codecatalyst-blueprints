@@ -28,7 +28,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.environments',
   ],
-  
+
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
   keywords: ['blueprint-importer', 'blueprint-publisher'],
   homepage: '',

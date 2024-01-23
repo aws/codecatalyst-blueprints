@@ -4,6 +4,7 @@
   ],
 
   "advanced": {
+    "repositoryName": "blueprint-importer",
     "npmRegistry": "https://registry.npmjs.org"
   }
 }
