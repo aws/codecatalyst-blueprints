@@ -1,4 +1,4 @@
-# Subscribe to Blueprint
+# Subscribe to External Blueprint
 
 This blueprint allows you to subscribe to community blueprint packages distributed on NPM. It creates workflows that periodically import public NPM
 packages as new private blueprints in your space. This requires that the target blueprint be avaiable through NPM.
