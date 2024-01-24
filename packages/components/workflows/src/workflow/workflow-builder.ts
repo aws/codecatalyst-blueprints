@@ -126,7 +126,9 @@ export class WorkflowBuilder {
     },
   >(configuration: T & any): WorkflowBuilder {
     this.definition.Actions = this.definition.Actions || {};
-    this.definition.Actions[configuration.actionName] = configuration;
+    const actionName = configuration.actionName;
+    delete configuration.actionName;
+    this.definition.Actions[actionName] = configuration;
     return this;
   }
 }
