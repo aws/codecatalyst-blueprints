@@ -63,7 +63,8 @@
   "keywords": [
     "blueprint",
     "blueprint-publisher",
-    "blueprint-subscriber"
+    "blueprint-subscriber",
+    "external-blueprint"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",

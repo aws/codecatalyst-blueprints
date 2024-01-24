@@ -30,7 +30,7 @@ const project = new ProjenBlueprint({
   ],
 
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
-  keywords: ['blueprint-subscriber', 'blueprint-publisher', 'blueprint'],
+  keywords: ['blueprint-subscriber', 'blueprint-publisher', 'external-blueprint', 'blueprint'],
   homepage: '',
 });
 
