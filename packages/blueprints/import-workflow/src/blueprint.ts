@@ -47,7 +47,6 @@ export class Blueprint extends ParentBlueprint {
 
     // add a repository
     const repo = new SourceRepository(this, { title: options.advanced.repositoryName });
-
     const authSteps = ['npm config set always-auth true'];
 
     options.packages.forEach(npmPackage => {

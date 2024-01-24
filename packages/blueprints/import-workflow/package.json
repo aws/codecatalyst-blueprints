@@ -1,6 +1,6 @@
 {
-  "name": "@amazon-codecatalyst/blueprints.blueprint-importer",
-  "description": "This is a blueprint that can be used to import other blueprints from NPM",
+  "name": "@amazon-codecatalyst/blueprints.import-workflow",
+  "description": "Create workflows that import blueprints into this space",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -67,10 +67,10 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "",
-  "version": "0.3.51-preview.10",
+  "version": "0.3.51-preview.18",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
-  "displayName": "Blueprint Importer",
+  "displayName": "Import Workflow",
   "files": [
     "static-assets",
     "lib"
