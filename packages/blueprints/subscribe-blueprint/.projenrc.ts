@@ -3,10 +3,10 @@ import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blue
 const project = new ProjenBlueprint({
   authorName: 'blueprints',
   publishingOrganization: 'blueprints',
-  packageName: '@amazon-codecatalyst/blueprints.import-workflow',
-  description: 'Create workflows that import blueprints into this space',
-  name: 'import-workflow',
-  displayName: 'Import Workflow',
+  packageName: '@amazon-codecatalyst/blueprints.subscribe-blueprint',
+  displayName: 'Subscribe to external blueprint',
+  description: 'Import external NPM packages as custom blueprints',
+  name: 'subscribe-blueprint',
   defaultReleaseBranch: 'main',
   projenrcTs: true,
   sampleCode: false,
@@ -30,7 +30,7 @@ const project = new ProjenBlueprint({
   ],
 
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
-  keywords: ['blueprint-importer', 'blueprint-publisher'],
+  keywords: ['blueprint-subscriber', 'blueprint-publisher', 'blueprint'],
   homepage: '',
 });
 

@@ -1,6 +1,6 @@
 {
-  "name": "@amazon-codecatalyst/blueprints.import-workflow",
-  "description": "Create workflows that import blueprints into this space",
+  "name": "@amazon-codecatalyst/blueprints.subscribe-blueprint",
+  "description": "Import external NPM packages as custom blueprints",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -61,16 +61,17 @@
     "projen": "0.71.112"
   },
   "keywords": [
-    "blueprint-importer",
-    "blueprint-publisher"
+    "blueprint",
+    "blueprint-publisher",
+    "blueprint-subscriber"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "",
-  "version": "0.3.51-preview.18",
+  "version": "0.3.51-preview.21",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
-  "displayName": "Import Workflow",
+  "displayName": "Subscribe to external blueprint",
   "files": [
     "static-assets",
     "lib"
