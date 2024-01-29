@@ -67,8 +67,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.secrets@workspace:packages/components/secrets"
   dependencies:
-    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
-    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": ^0.3.52
+    "@amazon-codecatalyst/blueprints.blueprint": 0.3.52
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -82,7 +82,7 @@ __metadata:
     ts-node: ^10
     typescript: ^5.3.3
   peerDependencies:
-    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": ^0.3.52
     projen: ^0.71.112
   languageName: unknown
   linkType: soft
@@ -193,7 +193,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-util.projen-blueprint-component@*, @amazon-codecatalyst/blueprint-util.projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
+"@amazon-codecatalyst/blueprint-util.projen-blueprint-component@*, @amazon-codecatalyst/blueprint-util.projen-blueprint-component@^0.3.52, @amazon-codecatalyst/blueprint-util.projen-blueprint-component@workspace:packages/utils/projen-blueprint-component":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-util.projen-blueprint-component@workspace:packages/utils/projen-blueprint-component"
   dependencies:
@@ -265,7 +265,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprints.blueprint@*, @amazon-codecatalyst/blueprints.blueprint@^0.3.51, @amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@amazon-codecatalyst/blueprints.blueprint@*, @amazon-codecatalyst/blueprints.blueprint@0.3.52, @amazon-codecatalyst/blueprints.blueprint@^0.3.51, @amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
