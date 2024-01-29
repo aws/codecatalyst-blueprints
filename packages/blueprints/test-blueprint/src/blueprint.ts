@@ -61,31 +61,31 @@ export interface Options extends ParentOptions {
   };
 
   /**
-   * These are tuple parings.
+   * These are touple parings.
    * @collapsed
    */
-  tupleValues?: {
+  toupleValues?: {
     /**
-     * Only Tuples of length 2 are supported
+     * Only Touples of length 2 are supported
      */
     singles: {
       /**
        * empty tuple map. This should default to string:string
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      emptyTuple?: Tuple<[string, number]>;
+      emptyTouple?: Tuple<[string, number]>;
 
       /**
        * Traditional string to string mapping explictly
        * @description overall description
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTuple: Tuple<[string, string]>;
+      doubleTouple: Tuple<[string, string]>;
 
       /**
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTupleNum: Tuple<[string, number]>;
+      doubleToupleNum: Tuple<[string, number]>;
     };
 
     lists: {
@@ -94,11 +94,11 @@ export interface Options extends ParentOptions {
        * @description overall description
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTuple: Tuple<[string, string]>[];
+      doubleTouple: Tuple<[string, string]>[];
       /**
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTupleNum: Tuple<[string, number]>[];
+      doubleToupleNum: Tuple<[string, number]>[];
     };
   };
 

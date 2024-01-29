@@ -1,5 +1,5 @@
 /**
- * We expose the tuple type because typescript will treat defaulted tuples as string[];
+ * We expose the touple type because typescript will treat defaulted touples as string[];
  */
 export type SupportedTupleType = string | number;
 
