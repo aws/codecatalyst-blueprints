@@ -26,6 +26,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.environments',
+    '@amazon-codecatalyst/blueprint-component.secrets',
   ],
   description: 'This is a test blueprint used for testing various blueprint systems',
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],

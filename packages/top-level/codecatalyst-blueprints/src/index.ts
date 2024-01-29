@@ -10,3 +10,4 @@ export * from '@amazon-codecatalyst/blueprint-component.workflows';
 export * from '@amazon-codecatalyst/blueprint-component.source-repositories';
 export * from '@amazon-codecatalyst/blueprint-component.dev-environments';
 export * from '@amazon-codecatalyst/blueprint-component.environments';
+export * from '@amazon-codecatalyst/blueprint-component.secrets';
