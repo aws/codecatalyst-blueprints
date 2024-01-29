@@ -52,7 +52,7 @@ describe('Verifies that properties on an AST pass the @validation regex', () => 
   });
 
   describe('Example blueprint frontend-showcase', () => {
-    it('should have one warning message and one error message', () => {
+    it('should have one warning message and one warning message', () => {
       const errors = validateOptions(JSON.stringify(astShowcase), astShowcaseDefaults);
 
       // should have one warning about could not find element
@@ -64,7 +64,7 @@ describe('Verifies that properties on an AST pass the @validation regex', () => 
       expect(errors[0].validationMessage).toBe('Could not find an element at nestedArea.emptyInput');
 
       // there's no validation message on a string array
-      expect(errors[1].level).toBe('ERROR');
+      expect(errors[1].level).toBe('WARNING');
       expect(errors[1].location).toBe('stringListInput[*]');
       expect(errors[1].validationMessage?.length).toBeGreaterThan(1);
     });

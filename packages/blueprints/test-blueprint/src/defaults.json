@@ -1,4 +1,34 @@
 {
+  "selectors": {
+    "sourceRepo": "repo-name-does-not-exist",
+    "sourceRepoOrAdd": "existing-repo",
+    "blueprintInstantiation": "prefilled-id-that-does-not-exist"
+  },
+  "multiSelectors": {
+    "stringMulti": ["C", "B"],
+    "numberMulti": [100]
+  },
+  "toupleValues": {
+    "singles": {
+      "doubleTouple": ["hello", "moto"],
+      "doubleToupleNum": [123, 456]
+    },
+    "lists": {
+      "doubleTouple": [
+        ["team", "first"],
+        ["team", "second"]
+      ],
+      "doubleToupleNum": [
+        ["firstteam", 1],
+        ["secondteam", 2],
+        ["thirdteam", 3]
+      ]
+    },
+    "dynamicElement": {
+      "element": ["first team", 1],
+      "description": "hello this is a description"
+    }
+  },
   "thisIsMyEnvironment": {
     "name": "DEFAULT_ENVIRONMENT_NAME",
     "environmentType": "PRODUCTION"
