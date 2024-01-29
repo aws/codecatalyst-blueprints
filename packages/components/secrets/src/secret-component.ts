@@ -33,23 +33,26 @@ export class Secret extends Component {
         });
       }
 
-      if (this.name.length < 3)
+      if (this.name.length < 3) {
         blueprint.throwSynthesisError({
           name: BlueprintSynthesisErrorTypes.ValidationError,
           message: 'Secret name must have a minimum of 3 characters.',
         });
+      }
 
-      if (this.name.length > 255)
+      if (this.name.length > 255) {
         blueprint.throwSynthesisError({
           name: BlueprintSynthesisErrorTypes.ValidationError,
           message: 'Secret name must have a maximum of 255 characters.',
         });
+      }
 
-      if (this.description && this.description.length > 1000)
+      if (this.description && this.description.length > 1000) {
         blueprint.throwSynthesisError({
           name: BlueprintSynthesisErrorTypes.ValidationError,
           message: 'Secret description must have a maxmimum of 1000 characters.',
         });
+      }
 
       const shortName = this.name.slice(0, 5);
 
