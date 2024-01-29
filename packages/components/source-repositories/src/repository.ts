@@ -73,7 +73,7 @@ export class SourceRepository extends Component {
       if (isBinary(asset.content())) {
         new File(this, path.join(to, relativeLocation), asset.content());
       } else {
-        new SourceFile(this, path.join(to, relativeLocation), asset.substitute(options?.substitute || {}));
+        new SourceFile(this, path.join(to, relativeLocation), options?.substitute ? asset.substitute(options.substitute) : asset.toString());
       }
     }
   }
