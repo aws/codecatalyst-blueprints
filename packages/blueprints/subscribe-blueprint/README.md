@@ -1,7 +1,7 @@
 # Subscribe to External Blueprint
 
 This blueprint allows you to subscribe to community blueprint packages on NPM. The generated workflows periodically pull NPM packages and publishes
-them as custom blueprints in your CodeCatalyst space. A workflow is created for each package you want imported, so the target blueprint that you want
+them as custom blueprints in your CodeCatalyst space. A workflow is created for each package you want to import, so the target blueprint that you want
 published in your space must be made available through NPM. If you publish your own blueprints to NPM, you can use this blueprint to help ensure that
 multiple spaces have the same NPM packages available as a custom blueprints. Custom blueprints are not available for all tiers. Make sure that your
 space is subscribed at a tier that supports custom blueprints before using this blueprint. For more information, see Pricing and Changing your
