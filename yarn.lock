@@ -73,11 +73,11 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
-    eslint-import-resolver-node: ^0.3.7
-    eslint-import-resolver-typescript: ^3.5.5
-    eslint-plugin-import: ^2.27.5
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
     npm-check-updates: ^16
-    projen: ^0.71.112
+    projen: "*"
     standard-version: ^9
     ts-node: ^10
     typescript: ^5.3.3
@@ -348,8 +348,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
-    eslint-import-resolver-node: ^0.3.7
-    eslint-import-resolver-typescript: ^3.5.5
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
     eslint-plugin-import: ^2.25.4
     npm-check-updates: ^16
     projen: 0.71.112
