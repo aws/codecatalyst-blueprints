@@ -61,7 +61,11 @@ export class SourceRepository extends Component {
      */
     substitute?: { [key: string]: string };
   }) {
-    const from = path.join('', options?.from || '');
+    let from = options?.from ? path.join('', options?.from) : '';
+    if (from === '.') {
+      from = '';
+    }
+
     const to = options?.to || '';
 
     let fromGlob: string | undefined = undefined;
