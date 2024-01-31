@@ -1,6 +1,6 @@
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions } from '@amazon-codecatalyst/blueprints.blueprint';
+import { Blueprint as ParentBlueprint, Options as ParentOptions, Selector } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 export interface Options extends ParentOptions {
@@ -17,11 +17,13 @@ export interface Options extends ParentOptions {
    */
   advanced: {
     /**
+     * This is the repository import workflows will be placed into.
      * @validationRegex /^.{1,50}$/
      */
-    repositoryName: string;
+    repositoryName: Selector<SourceRepository | string>;
+
     /**
-     * NPM upstream registry which contains the blueprint
+     * NPM upstream registry which contains the blueprint. Private repositories require manually adding an authentication token.
      * @placeholder https://registry.npmjs.org
      * @validationRegex .*
      */
