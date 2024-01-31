@@ -1,9 +1,15 @@
-import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+import { SourceFile, SourceRepository, StaticAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions, Selector } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 export interface Options extends ParentOptions {
+  /**
+   * This is the repository import workflows will be placed into.
+   * @validationRegex /^.{1,50}$/
+   */
+  repositoryName: Selector<SourceRepository | string>;
+
   /**
    * Will attempt to import these NPM packages as blueprints.
    * @validationRegex /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
@@ -16,12 +22,6 @@ export interface Options extends ParentOptions {
    * @collapsed true
    */
   advanced: {
-    /**
-     * This is the repository import workflows will be placed into.
-     * @validationRegex /^.{1,50}$/
-     */
-    repositoryName: Selector<SourceRepository | string>;
-
     /**
      * NPM upstream registry which contains the blueprint. Private repositories require manually adding an authentication token.
      * @placeholder https://registry.npmjs.org
@@ -48,8 +48,19 @@ export class Blueprint extends ParentBlueprint {
     const options = Object.assign(typeCheck, options_);
 
     // add a repository
-    const repo = new SourceRepository(this, { title: options.advanced.repositoryName });
+    const repo = new SourceRepository(this, { title: options.repositoryName });
     const authSteps = ['npm config set always-auth true'];
+
+    if (
+      this.context.project.src.findAll({
+        repositoryName: repo.title,
+        fileGlobs: ['**/README.md'],
+      }).length == 0
+    ) {
+      // if a readme doesn't already exist, add one.
+      const readmeContent = new StaticAsset('generated-readme.md').content().toString();
+      new SourceFile(repo, 'README.md', [readmeContent, '## Packages', ...options.packages].join('\n'));
+    }
 
     options.packages.forEach(npmPackage => {
       const workflow = new WorkflowBuilder(this);
