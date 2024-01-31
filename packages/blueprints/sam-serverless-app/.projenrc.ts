@@ -1,4 +1,5 @@
 import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
+
 const project = new ProjenBlueprint({
   defaultReleaseBranch: 'main',
   name: 'sam-serverless-application',
@@ -32,9 +33,7 @@ const project = new ProjenBlueprint({
     'This blueprint creates a project that leverages a serverless application model (SAM) to quickly create and deploy an API. You can choose Java, TypeScript, or Python as the programming language',
   packageName: '@amazon-codecatalyst/blueprints.sam-serverless-application',
   publishingOrganization: 'blueprints',
-  peerDeps: [
-    '@amazon-codecatalyst/blueprint-util.cli',
-  ],
+  peerDeps: ['@amazon-codecatalyst/blueprint-util.cli'],
   devDeps: [
     '@amazon-codecatalyst/blueprint-util.projen-blueprint',
     '@amazon-codecatalyst/blueprint-util.cli',

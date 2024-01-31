@@ -1,4 +1,5 @@
 import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
+import { NpmAccess } from 'projen/lib/javascript/node-package';
 
 const project = new ProjenBlueprint({
   authorName: 'blueprints',
@@ -8,6 +9,7 @@ const project = new ProjenBlueprint({
   description: 'Import external NPM packages as custom blueprints',
   name: 'subscribe-blueprint',
   defaultReleaseBranch: 'main',
+  npmAccess: NpmAccess.PUBLIC,
   projenrcTs: true,
   sampleCode: false,
   github: false,
