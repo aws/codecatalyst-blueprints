@@ -69,7 +69,10 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "",
-  "version": "0.3.52",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.3.58",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Subscribe to external blueprint",
