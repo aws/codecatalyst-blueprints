@@ -1,7 +1,9 @@
 import { ProjenBlueprintComponent } from '@amazon-codecatalyst/blueprint-util.projen-blueprint-component';
+import { NpmAccess } from 'projen/lib/javascript/node-package';
 
 const project = new ProjenBlueprintComponent({
   defaultReleaseBranch: 'main',
+  npmAccess: NpmAccess.PUBLIC,
   name: 'codecatalyst-secrets',
   copyrightOwner: 'Amazon.com',
   deps: ['@amazon-codecatalyst/blueprints.blueprint'],
