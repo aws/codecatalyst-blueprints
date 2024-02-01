@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
+import { Secret, SecretDefinition } from '@amazon-codecatalyst/blueprint-component.secrets';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
 import {
@@ -252,6 +253,8 @@ export interface Options extends ParentOptions {
    * @validationRegex /^[A-Z][A-Za-z]{4,24}$/
    */
   pascalCaseRegex: string;
+
+  secret: SecretDefinition;
 }
 
 /**
@@ -281,6 +284,7 @@ export class Blueprint extends ParentBlueprint {
     new SourceFile(repo, 'wizard_input.json', JSON.stringify(options, null, 2));
     new Workflow(this, repo, NodeWorkflowDefinitionSamples.build);
     new Environment(this, options.thisIsMyEnvironment);
+    new Secret(this, options.secret);
 
     // showcase the blueprint's own source files
     const blueprintInterface = fs.readFileSync('./lib/blueprint.d.ts').toString();

@@ -51,5 +51,6 @@
   "hiddenInput": "hidden1",
   "hiddenInputNoBoolean": "hiddenNoBool",
   "hiddenInputInvalid": "cantfind",
-  "pascalCaseRegex": "PascalCase"
+  "pascalCaseRegex": "PascalCase",
+  "secret": {"name" : "testName"}
 }

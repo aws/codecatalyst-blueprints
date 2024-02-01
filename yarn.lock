@@ -63,6 +63,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@amazon-codecatalyst/blueprint-component.secrets@*, @amazon-codecatalyst/blueprint-component.secrets@workspace:packages/components/secrets":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.secrets@workspace:packages/components/secrets"
+  dependencies:
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    projen: ^0.71.112
+  languageName: unknown
+  linkType: soft
+
 "@amazon-codecatalyst/blueprint-component.source-repositories@*, @amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories"
@@ -339,6 +362,7 @@ __metadata:
   resolution: "@amazon-codecatalyst/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint"
   dependencies:
     "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.secrets": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
     "@amazon-codecatalyst/blueprint-util.cli": "*"
@@ -365,6 +389,7 @@ __metadata:
   dependencies:
     "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.secrets": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
