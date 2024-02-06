@@ -60,7 +60,7 @@
     "webpack-cli": "^4.9.1"
   },
   "resolutions": {
-    "projen": "0.71.112"
+    "projen": "0.77.1"
   },
   "engines": {
     "npm": "6.14.13"

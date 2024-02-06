@@ -1,19 +1,7 @@
 {
   "dependencies": [
     {
-      "name": "@amazon-codecatalyst/blueprint-component.environments",
-      "type": "build"
-    },
-    {
-      "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
-      "type": "build"
-    },
-    {
       "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint-component",
-      "type": "build"
-    },
-    {
-      "name": "@amazon-codecatalyst/blueprints.blueprint",
       "type": "build"
     },
     {
@@ -23,16 +11,17 @@
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
-      "name": "eslint-import-resolver-node",
+      "name": "constructs",
+      "version": "^10.0.0",
       "type": "build"
     },
     {

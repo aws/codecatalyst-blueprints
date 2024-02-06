@@ -41,10 +41,10 @@
     "@types/jest": "*",
     "@types/node": "^18",
     "@types/pino": "^6.3.12",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5",
+    "@typescript-eslint/eslint-plugin": "^6",
+    "@typescript-eslint/parser": "^6",
+    "constructs": "^10.0.0",
     "eslint": "^8",
-    "eslint-import-resolver-node": "*",
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
     "jest": "*",
@@ -52,7 +52,7 @@
     "npm-check-updates": "^16",
     "pino": "^6.13.4",
     "pino-pretty": "^4.8.0",
-    "projen": "0.71.112",
+    "projen": "0.77.1",
     "standard-version": "^9",
     "ts-jest": "*",
     "ts-node": "^10",
@@ -69,12 +69,12 @@
     "@amazon-codecatalyst/blueprints.blueprint": "*",
     "globule": "*",
     "pino": "^6.13.4",
-    "projen": "0.71.112",
+    "projen": "0.77.1",
     "ts-deepmerge": "*"
   },
   "resolutions": {
     "@aws-sdk/client-codecatalyst": "3.414.0",
-    "projen": "0.71.112"
+    "projen": "0.77.1"
   },
   "keywords": [
     "aws lambda",

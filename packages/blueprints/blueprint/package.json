@@ -41,16 +41,16 @@
     "@types/diff-match-patch": "1.x",
     "@types/jest": "*",
     "@types/node": "^18",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5",
+    "@typescript-eslint/eslint-plugin": "^6",
+    "@typescript-eslint/parser": "^6",
+    "constructs": "^10.0.0",
     "eslint": "^8",
-    "eslint-import-resolver-node": "*",
     "eslint-import-resolver-typescript": "*",
     "eslint-plugin-import": "*",
     "jest": "*",
     "jest-junit": "^15",
     "npm-check-updates": "^16",
-    "projen": "0.71.112",
+    "projen": "0.77.1",
     "standard-version": "^9",
     "ts-jest": "*",
     "ts-node": "^10",
@@ -62,12 +62,12 @@
   "dependencies": {
     "diff-match-patch": "1.x",
     "globule": "*",
-    "projen": "0.71.112",
+    "projen": "0.77.1",
     "yaml": "*"
   },
   "resolutions": {
     "@aws-sdk/client-codecatalyst": "3.414.0",
-    "projen": "0.71.112"
+    "projen": "0.77.1"
   },
   "keywords": [
     "blueprint"

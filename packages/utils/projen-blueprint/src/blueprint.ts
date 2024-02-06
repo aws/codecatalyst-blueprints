@@ -118,7 +118,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
      * this.package.addDeps('projen@something-else');
      * this.addPackageResolutions('projen@something-else') in their package
      */
-    const projenVersion = options.projenVersion || '0.71.112';
+    const projenVersion = options.projenVersion || '0.77.1';
     this.package.addDeps(`projen@${projenVersion}`);
     this.package.addPackageResolutions(`projen@${projenVersion}`);
 
@@ -147,7 +147,8 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.setScript('blueprint:validate-options', 'blueprint validate-options ./lib/ast.json ./lib/defaults.json');
 
     //set local synthing
-    this.setScript('build:lib', 'rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options');
+    const pkgMgrCmd = this.getPackageManagerCommand();
+    this.setScript('build:lib', `rm -rf ./lib/ && ${pkgMgrCmd} build && ${pkgMgrCmd} blueprint:build-ast && ${pkgMgrCmd} blueprint:validate-options`);
 
     //ignore synths
     this.gitignore.addPatterns('synth');
@@ -158,25 +159,31 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     this.package.addField('publishingSpace', space);
     this.setScript('package', 'rm -rf ./dist/js/ && npx projen package');
 
-    this.setScript('blueprint:package', ['yarn build:lib', 'yarn blueprint:synth --cache --clean-up false', 'yarn package'].join(' && '));
+    this.setScript(
+      'blueprint:package',
+      [`${pkgMgrCmd} build:lib`, `${pkgMgrCmd} blueprint:synth --cache --clean-up false`, `${pkgMgrCmd} package`].join(' && '),
+    );
     this.setScript('npm:publish', 'npm publish dist/js/*.tgz');
 
-    this.setScript('blueprint:preview', ['yarn bump:preview', 'yarn blueprint:package', `blueprint publish ./ --publisher ${space} $*`].join(' && '));
+    this.setScript(
+      'blueprint:preview',
+      [`${pkgMgrCmd} bump:preview`, `${pkgMgrCmd} blueprint:package`, `blueprint publish ./ --publisher ${space} $*`].join(' && '),
+    );
 
     this.setScript(
       'blueprint:release',
       [
-        'yarn build:lib',
-        'yarn bump',
-        'yarn blueprint:synth --cache --clean-up false',
-        'yarn package',
+        `${pkgMgrCmd} build:lib`,
+        `${pkgMgrCmd} bump`,
+        `${pkgMgrCmd} blueprint:synth --cache --clean-up false`,
+        `${pkgMgrCmd} package`,
         `blueprint publish ./ --publisher ${space} $*`,
       ].join(' && '),
     );
 
     if (finalOpts.blueprintHealthConfiguration) {
-      this.setScript('blueprint:generate-assessment', 'yarn blueprint generate-assessment --wizard-option ./src/defaults.json $*');
-      this.setScript('blueprint:validate-assessment', 'yarn blueprint validate-assessment $*');
+      this.setScript('blueprint:generate-assessment', `${pkgMgrCmd} blueprint generate-assessment --wizard-option ./src/defaults.json $*`);
+      this.setScript('blueprint:validate-assessment', `${pkgMgrCmd} blueprint validate-assessment $*`);
     }
 
     //add additional metadata fields to package.json
@@ -231,5 +238,22 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
 
   synth(): void {
     super.synth();
+  }
+
+  private getPackageManagerCommand() {
+    switch (this.package.packageManager) {
+      case javascript.NodePackageManager.NPM:
+        return 'npm';
+      case javascript.NodePackageManager.PNPM:
+        return 'pnpm';
+      case javascript.NodePackageManager.BUN:
+        return 'bun';
+      case javascript.NodePackageManager.YARN:
+      case javascript.NodePackageManager.YARN2:
+      case javascript.NodePackageManager.YARN_CLASSIC:
+      case javascript.NodePackageManager.YARN_BERRY:
+      default:
+        return 'yarn';
+    }
   }
 }
