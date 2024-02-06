@@ -142,6 +142,8 @@ export class Blueprint extends Project {
      * copy all non-src file from proposedBundle into the resolved bundle
      * only src is merge constructed.
      */
+    //TODO: @ramosth, update this superset of nonSourcePaths to ignore '!issues/**'
+    //then create superset of issues source paths, then create a superset for the ancestor bundle and subtract. Okay there is a path forward here.
     const supersetNonSourcePaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**']);
     for (const filepath of supersetNonSourcePaths) {
       const outputPath = path.join(this.outdir, filepath);
