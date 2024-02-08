@@ -7,7 +7,7 @@ import { BlueprintInstantiation, Context, ResynthesisPhase } from './context/con
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { ContextFile, createContextFile, destructurePath } from './resynthesis/context-file';
-import { filepathSet } from './resynthesis/file-set';
+import { filepathSet, filepathDiffBetweenSets_B_A } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
@@ -142,12 +142,18 @@ export class Blueprint extends Project {
      * copy all non-src file from proposedBundle into the resolved bundle
      * only src is merge constructed.
      */
-    const supersetNonSourcePaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**']);
-    for (const filepath of supersetNonSourcePaths) {
-      const outputPath = path.join(this.outdir, filepath);
-      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-      const filecontent = fs.readFileSync(path.join(proposedBundle, filepath));
-      fs.writeFileSync(outputPath, filecontent);
+    const supersetNonSourceNonIssuesPaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**', '!issues/**']);
+    for (const filepath of supersetNonSourceNonIssuesPaths) {
+      this.writeNonSourceFile(filepath, proposedBundle);
+    }
+
+    /**
+     * copy all issue src files that are unique to the proposedBundle into the resolved bundle
+     * to prevent duplicate issue creation
+     */
+    const setUniqueToProposedBundle = filepathDiffBetweenSets_B_A(ancestorBundle, proposedBundle, ['issues/**']);
+    for (const filepath of setUniqueToProposedBundle) {
+      this.writeNonSourceFile(filepath, proposedBundle);
     }
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
@@ -190,6 +196,13 @@ export class Blueprint extends Project {
     const outputPath = path.join(this.outdir, 'src', file.repositoryName!, file.path);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, file.buffer);
+  }
+
+  writeNonSourceFile(filepath: string, bundle: string) {
+    const outputPath = path.join(this.outdir, filepath);
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    const filecontent = fs.readFileSync(path.join(bundle, filepath));
+    fs.writeFileSync(outputPath, filecontent);
   }
 
   throwSynthesisError(error: BlueprintSynthesisError) {
