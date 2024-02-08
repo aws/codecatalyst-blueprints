@@ -18,7 +18,7 @@ export function filepathSet(fileLocations: string[], resourcePaths?: string[]): 
 /**
  * Create a set from the difference of filepath set A from filepath set B. Remaining filepaths will be unique to set B
  */
-export function filepathDiffBetweenSets_B_A(fileLocation_A: string, fileLocation_B: string, resourcePaths: string[]): string[] {
+export function filepathDifferenceSet(fileLocation_A: string, fileLocation_B: string, resourcePaths: string[]): string[] {
   const filesetA = new Set<string>();
   const filesetB = new Set<string>();
   walkFiles(fileLocation_A, resourcePaths).forEach(filepath => {

@@ -7,7 +7,7 @@ import { BlueprintInstantiation, Context, ResynthesisPhase } from './context/con
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { ContextFile, createContextFile, destructurePath } from './resynthesis/context-file';
-import { filepathSet, filepathDiffBetweenSets_B_A } from './resynthesis/file-set';
+import { filepathSet, filepathDifferenceSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
@@ -151,7 +151,7 @@ export class Blueprint extends Project {
      * copy all issue src files that are unique to the proposedBundle into the resolved bundle
      * to prevent duplicate issue creation
      */
-    const setUniqueToProposedBundle = filepathDiffBetweenSets_B_A(ancestorBundle, proposedBundle, ['issues/**']);
+    const setUniqueToProposedBundle = filepathDifferenceSet(ancestorBundle, proposedBundle, ['issues/**']);
     for (const filepath of setUniqueToProposedBundle) {
       this.writeNonSourceFile(filepath, proposedBundle);
     }
