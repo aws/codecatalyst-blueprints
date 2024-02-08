@@ -50,10 +50,10 @@ export class Issue extends Component {
         });
       }
       //limit the number of labels being created
-      if (issueDefinition.labels.length > 1) {
+      if (issueDefinition.labels.length > 50) {
         blueprint.throwSynthesisError({
           name: BlueprintSynthesisErrorTypes.ValidationError,
-          message: 'Issue labels must contain at most ten elements.',
+          message: 'Issue labels must contain at most 50 elements.',
         });
       }
       for (const label of issueDefinition.labels) {
