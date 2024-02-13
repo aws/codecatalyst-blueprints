@@ -1,3 +1,4 @@
+In your `blueprint.ts`, file, add the following:
 ```
 import {...} from '@amazon-codecatalyst/blueprint-component.issues'
 ```
@@ -10,7 +11,7 @@ view your issues using the default views, or you can create your own views with 
 concepts related to issues, see [Issues concepts](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-concepts.html). The issue component
 generates a json representation of an issue. The component takes in an id field and issue definition as input.
 
-Issues have quotas [see full documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-quotas.html)
+Issues have quotas. For more information, [see](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-quotas.html).
 
 ### Example 1: Creating an issue
 
