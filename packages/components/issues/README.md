@@ -3,10 +3,10 @@
 In CodeCatalyst, you can monitor features, tasks, bugs, and any other work involved in your project. Each piece of work is kept in a distinct record
 called an issue. Each issue can have a description, assignee, status, and other properties, which you can search for, group and filter on. You can
 view your issues using the default views, or you can create your own views with custom filtering, sorting, or grouping. For more information about
-concepts related to issues, see [Issues concepts](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-concepts.html). The issue component
-generates a json representation of an issue. The component takes in an id field and issue definition as input.
+concepts related to issues, see [Issues concepts](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-concepts.html) and 
+[Quotas for issues](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-quotas.html).
 
-Issues have quotas. For more information, see [Quotas for issues](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues-quotas.html).
+The issue component generates a JSON representation of an issue. The component takes in an ID field and issue definition as input.
 
 In your `blueprint.ts`, file, add the following:
 ```
