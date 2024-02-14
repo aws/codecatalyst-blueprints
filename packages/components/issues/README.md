@@ -36,7 +36,7 @@ new Issue(this, 'mySecondIssue', {
 });
 ```
 
-### Example 3: Creating a low priority issue with labels
+### Example 3: Creating a low-priority issue with labels
 
 ```
 import { Issue } from '@amazon-codecatalyst/blueprint-component.issues';
