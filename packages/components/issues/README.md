@@ -24,7 +24,7 @@ new Issue(this, 'myFirstIssue', {
 });
 ```
 
-### Example 2: Creating a high priority issue
+### Example 2: Creating a high-priority issue
 
 ```
 import { Issue } from '@amazon-codecatalyst/blueprint-component.issues';
