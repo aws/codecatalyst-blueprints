@@ -303,8 +303,9 @@ export class Blueprint extends ParentBlueprint {
     new SourceFile(internalRepo, 'defaults.json', blueprintDefaults);
     new SourceFile(internalRepo, 'internal/ast.json', blueprintAST);
     new SourceFile(internalRepo, 'internal/env.json', JSON.stringify(process.env, null, 2));
+    new SourceFile(internalRepo, 'internal/blueprint-instantiation.json', JSON.stringify(this.context.project.blueprint || {}, null, 2));
 
-    new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(this.context.project.blueprint.instantiations, null, 2));
+    new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(this.context.project.blueprint, null, 2));
   }
 
   async synth(): Promise<void> {
