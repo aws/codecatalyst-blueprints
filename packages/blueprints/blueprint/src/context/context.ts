@@ -58,6 +58,10 @@ export interface Project {
    */
   blueprint: {
     /**
+     * This is the Id of the current Instantiation (if it exists)
+     */
+    instantiationId?: string;
+    /**
      * A list of all blueprint instantiations already present in your project
      */
     instantiations: BlueprintInstantiation[];
