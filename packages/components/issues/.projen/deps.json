@@ -1,11 +1,15 @@
 {
   "dependencies": [
     {
-      "name": "@amazon-codecatalyst/blueprint-util.cli",
+      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint-component",
       "type": "build"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-util.projen-blueprint",
+      "name": "@amazon-codecatalyst/blueprints.blueprint",
+      "type": "build"
+    },
+    {
+      "name": "@types/jest",
       "type": "build"
     },
     {
@@ -41,6 +45,15 @@
       "type": "build"
     },
     {
+      "name": "jest",
+      "type": "build"
+    },
+    {
+      "name": "jest-junit",
+      "version": "^15",
+      "type": "build"
+    },
+    {
       "name": "npm-check-updates",
       "version": "^16",
       "type": "build"
@@ -55,47 +68,44 @@
       "type": "build"
     },
     {
+      "name": "ts-jest",
+      "type": "build"
+    },
+    {
       "name": "ts-node",
       "version": "^10",
       "type": "build"
     },
     {
       "name": "typescript",
-      "version": "^4.x",
       "type": "build"
     },
     {
-      "name": "@aws-sdk/client-codecatalyst",
-      "version": "3.414.0",
-      "type": "override"
+      "name": "@amazon-codecatalyst/blueprints.blueprint",
+      "type": "peer"
     },
     {
       "name": "projen",
-      "version": "0.71.112",
-      "type": "override"
+      "type": "peer"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-component.environments",
+      "name": "camelcase",
       "type": "runtime"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-component.issues",
+      "name": "decamelize",
       "type": "runtime"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-component.secrets",
+      "name": "glob",
       "type": "runtime"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
+      "name": "minimatch",
       "type": "runtime"
     },
     {
-      "name": "@amazon-codecatalyst/blueprint-component.workflows",
-      "type": "runtime"
-    },
-    {
-      "name": "@amazon-codecatalyst/blueprints.blueprint",
+      "name": "mustache",
       "type": "runtime"
     },
     {
