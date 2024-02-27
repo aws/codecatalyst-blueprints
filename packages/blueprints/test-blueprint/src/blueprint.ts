@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { Environment, EnvironmentDefinition, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
+import { Issue } from '@amazon-codecatalyst/blueprint-component.issues';
 import { Secret, SecretDefinition } from '@amazon-codecatalyst/blueprint-component.secrets';
 import { SourceRepository, SourceFile } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, NodeWorkflowDefinitionSamples } from '@amazon-codecatalyst/blueprint-component.workflows';
@@ -306,6 +307,23 @@ export class Blueprint extends ParentBlueprint {
     new SourceFile(internalRepo, 'internal/blueprint-instantiation.json', JSON.stringify(this.context.project.blueprint || {}, null, 2));
 
     new SourceFile(internalRepo, 'internal/INSTANTIATIONS_ABS.json', JSON.stringify(this.context.project.blueprint, null, 2));
+
+    new Issue(this, 'myFirstIssue', {
+      title: 'myFirstIssue',
+      content: 'this is an example issue',
+    });
+
+    new Issue(this, 'mySecondIssue', {
+      title: 'mySecondIssue',
+      content: 'this is an example high priority issue',
+      priority: 'HIGH',
+    });
+    new Issue(this, 'myThirdIssue', {
+      title: 'myThirdIssue',
+      content: 'this is an example of a low priority issue with a label',
+      priority: 'LOW',
+      labels: ['exampleLabel'],
+    });
   }
 
   async synth(): Promise<void> {

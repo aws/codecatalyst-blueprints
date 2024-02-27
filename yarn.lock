@@ -63,6 +63,39 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@amazon-codecatalyst/blueprint-component.issues@*, @amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues"
+  dependencies:
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@types/jest": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    camelcase: 5.3.x
+    decamelize: 5.0.x
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    glob: ^10
+    jest: "*"
+    jest-junit: ^15
+    minimatch: ^9
+    mustache: ^4
+    npm-check-updates: ^16
+    projen: "*"
+    standard-version: ^9
+    ts-jest: "*"
+    ts-node: ^10
+    typescript: ^4.x
+  peerDependencies:
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    projen: "*"
+  languageName: unknown
+  linkType: soft
+
 "@amazon-codecatalyst/blueprint-component.secrets@*, @amazon-codecatalyst/blueprint-component.secrets@workspace:packages/components/secrets":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.secrets@workspace:packages/components/secrets"
@@ -362,6 +395,7 @@ __metadata:
   resolution: "@amazon-codecatalyst/blueprints.test-blueprint@workspace:packages/blueprints/test-blueprint"
   dependencies:
     "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
     "@amazon-codecatalyst/blueprint-component.secrets": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
@@ -389,6 +423,7 @@ __metadata:
   dependencies:
     "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
     "@amazon-codecatalyst/blueprint-component.secrets": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
