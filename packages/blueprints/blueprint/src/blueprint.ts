@@ -60,6 +60,7 @@ export class Blueprint extends Project {
         bundlepath: process.env.EXISTING_BUNDLE_ABS,
         options: getOptions(path.join(process.env.EXISTING_BUNDLE_ABS || '', OPTIONS_FILE)),
         blueprint: {
+          instantiationId: process.env.CUR_INSTANTIATION_ID,
           instantiations: structureExistingBlueprints(process.env.INSTANTIATIONS_ABS),
         },
         src: {

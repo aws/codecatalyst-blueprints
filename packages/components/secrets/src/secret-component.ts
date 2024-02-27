@@ -17,11 +17,13 @@ const getHashedEntropy = (length: number, str: string) => hash(str).slice(2, 2 +
 export class Secret extends Component {
   name: string;
   description?: string;
+  reference: string;
 
   constructor(blueprint: Blueprint, secret: SecretDefinition) {
     super(blueprint);
     this.name = secret.name;
     this.description = secret.description;
+    this.reference = '${Secrets.' + this.name + '}';
 
     const nameRegex = /^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$/;
 
@@ -59,7 +61,7 @@ export class Secret extends Component {
       new YamlFile(blueprint, `secrets/${shortName}-${getHashedEntropy(5, shortName)}.yaml`, {
         readonly: false,
         marker: false,
-        obj: secret,
+        obj: { name: this.name, description: this.description },
       });
     }
   }
