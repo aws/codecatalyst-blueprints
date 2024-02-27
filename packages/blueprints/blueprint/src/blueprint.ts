@@ -41,8 +41,9 @@ export class Blueprint extends Project {
     });
 
     const OPTIONS_FILE = 'options.json';
+    const rootDir = path.resolve(this.outdir);
     this.context = {
-      rootDir: path.resolve(this.outdir),
+      rootDir,
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       branchName: process.env.BRANCH_NAME,
@@ -77,6 +78,8 @@ export class Blueprint extends Project {
           findAll: (_options?: TraversalOptions) => traverse(this.context.project.bundlepath, _options),
         },
       },
+      durableStoragePath:
+        process.env.DURABLE_STORAGE_ABS && fs.existsSync(process.env.DURABLE_STORAGE_ABS) ? process.env.DURABLE_STORAGE_ABS : rootDir,
     };
 
     for (const component of this.components) {
