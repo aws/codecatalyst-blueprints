@@ -113,6 +113,13 @@ export class Blueprint extends Project {
     this.strategies[bundlepath] = strategies;
   }
 
+  setInstantiation(configurableOptions: { description: string }) {
+    const INSTANTIATION_FILE = 'instantiation.json';
+    const instantiationRecordPath = path.join(this.outdir, INSTANTIATION_FILE);
+    fs.mkdirSync(path.dirname(instantiationRecordPath), { recursive: true });
+    fs.writeFileSync(instantiationRecordPath, JSON.stringify(configurableOptions, null, 2));
+  }
+
   getResynthStrategies(bundlepath: string): Strategy[] {
     return (this.strategies || {})[bundlepath] || [];
   }
