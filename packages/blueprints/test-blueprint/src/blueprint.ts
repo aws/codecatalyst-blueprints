@@ -41,7 +41,7 @@ export interface Options extends ParentOptions {
 
     /**
      * This is a selector that allows me to get a instantiation
-     * @filter Test Blueprint
+     * @filter /Test Blueprint/
      */
     blueprintInstantiation?: Selector<BlueprintInstantiation>;
   };
