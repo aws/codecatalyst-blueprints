@@ -300,6 +300,10 @@ export class Blueprint extends ParentBlueprint {
       to: 'subdirectory/in/my/repo',
     });
 
+    this.setInstantiation({
+      description: 'This is a overridden description',
+    });
+
     new SourceFile(internalRepo, 'blueprint.d.ts', blueprintInterface);
     new SourceFile(internalRepo, 'defaults.json', blueprintDefaults);
     new SourceFile(internalRepo, 'internal/ast.json', blueprintAST);
