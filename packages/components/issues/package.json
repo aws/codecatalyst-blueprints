@@ -1,5 +1,5 @@
 {
-  "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
+  "name": "@amazon-codecatalyst/blueprint-component.issues",
   "description": "This is a representation of a codecatalyst source repository.",
   "scripts": {
     "build": "npx projen build",

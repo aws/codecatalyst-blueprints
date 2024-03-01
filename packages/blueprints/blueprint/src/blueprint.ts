@@ -7,7 +7,7 @@ import { BlueprintInstantiation, Context, ResynthesisPhase } from './context/con
 import { TraversalOptions, traverse } from './context/traverse';
 import { createLifecyclePullRequest } from './pull-requests/create-lifecycle-pull-request';
 import { ContextFile, createContextFile, destructurePath } from './resynthesis/context-file';
-import { filepathSet } from './resynthesis/file-set';
+import { filepathSet, filepathDifferenceSet } from './resynthesis/file-set';
 import { StrategyLocations, deserializeStrategies, filterStrategies, merge } from './resynthesis/merge-strategies/deserialize-strategies';
 import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/match';
 import { Strategy } from './resynthesis/merge-strategies/models';
@@ -41,8 +41,9 @@ export class Blueprint extends Project {
     });
 
     const OPTIONS_FILE = 'options.json';
+    const rootDir = path.resolve(this.outdir);
     this.context = {
-      rootDir: path.resolve(this.outdir),
+      rootDir,
       spaceName: process.env.CONTEXT_SPACENAME,
       environmentId: process.env.CONTEXT_ENVIRONMENTID,
       branchName: process.env.BRANCH_NAME,
@@ -60,6 +61,7 @@ export class Blueprint extends Project {
         bundlepath: process.env.EXISTING_BUNDLE_ABS,
         options: getOptions(path.join(process.env.EXISTING_BUNDLE_ABS || '', OPTIONS_FILE)),
         blueprint: {
+          instantiationId: process.env.CUR_INSTANTIATION_ID,
           instantiations: structureExistingBlueprints(process.env.INSTANTIATIONS_ABS),
         },
         src: {
@@ -76,6 +78,8 @@ export class Blueprint extends Project {
           findAll: (_options?: TraversalOptions) => traverse(this.context.project.bundlepath, _options),
         },
       },
+      durableStoragePath:
+        process.env.DURABLE_STORAGE_ABS && fs.existsSync(process.env.DURABLE_STORAGE_ABS) ? process.env.DURABLE_STORAGE_ABS : rootDir,
     };
 
     for (const component of this.components) {
@@ -107,6 +111,13 @@ export class Blueprint extends Project {
       this.strategies = {};
     }
     this.strategies[bundlepath] = strategies;
+  }
+
+  setInstantiation(configurableOptions: { description: string }) {
+    const INSTANTIATION_FILE = 'instantiation.json';
+    const instantiationRecordPath = path.join(this.outdir, INSTANTIATION_FILE);
+    fs.mkdirSync(path.dirname(instantiationRecordPath), { recursive: true });
+    fs.writeFileSync(instantiationRecordPath, JSON.stringify(configurableOptions, null, 2));
   }
 
   getResynthStrategies(bundlepath: string): Strategy[] {
@@ -142,12 +153,18 @@ export class Blueprint extends Project {
      * copy all non-src file from proposedBundle into the resolved bundle
      * only src is merge constructed.
      */
-    const supersetNonSourcePaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**']);
-    for (const filepath of supersetNonSourcePaths) {
-      const outputPath = path.join(this.outdir, filepath);
-      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-      const filecontent = fs.readFileSync(path.join(proposedBundle, filepath));
-      fs.writeFileSync(outputPath, filecontent);
+    const supersetNonSourceNonIssuesPaths: string[] = filepathSet([proposedBundle], ['**/*', '!src/**', '!issues/**']);
+    for (const filepath of supersetNonSourceNonIssuesPaths) {
+      this.writeNonSourceFile(filepath, proposedBundle);
+    }
+
+    /**
+     * copy all issue src files that are unique to the proposedBundle into the resolved bundle
+     * to prevent duplicate issue creation
+     */
+    const setUniqueToProposedBundle = filepathDifferenceSet(ancestorBundle, proposedBundle, ['issues/**']);
+    for (const filepath of setUniqueToProposedBundle) {
+      this.writeNonSourceFile(filepath, proposedBundle);
     }
 
     //2. construct the superset of files between [ancestorBundle, existingBundle, proposedBundle]/src
@@ -190,6 +207,13 @@ export class Blueprint extends Project {
     const outputPath = path.join(this.outdir, 'src', file.repositoryName!, file.path);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, file.buffer);
+  }
+
+  writeNonSourceFile(filepath: string, bundle: string) {
+    const outputPath = path.join(this.outdir, filepath);
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    const filecontent = fs.readFileSync(path.join(bundle, filepath));
+    fs.writeFileSync(outputPath, filecontent);
   }
 
   throwSynthesisError(error: BlueprintSynthesisError) {

@@ -58,6 +58,10 @@ export interface Project {
    */
   blueprint: {
     /**
+     * This is the Id of the current Instantiation (if it exists)
+     */
+    instantiationId?: string;
+    /**
      * A list of all blueprint instantiations already present in your project
      */
     instantiations: BlueprintInstantiation[];
@@ -108,4 +112,14 @@ export interface Context {
   readonly npmConfiguration: NpmConfiguration;
   readonly package: PackageConfiguration;
   readonly project: Project;
+  /**
+   * Durable storage that is persisted between synthesis executions.
+   *
+   * This location is suitable for storing artifacts that are computationally exepensive to create and
+   * do not change between synthesis executions.
+   *
+   * If the underlying synthesis engine does not support durable storage then this value will be the
+   * same as `rootDir`.
+   */
+  readonly durableStoragePath: string;
 }
