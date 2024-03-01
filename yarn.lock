@@ -446,9 +446,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/open-in-codecatalyst@workspace:packages/utils/codecatalyst-link":
+"@amazon-codecatalyst/codecatalyst-link@workspace:packages/utils/codecatalyst-link":
   version: 0.0.0-use.local
-  resolution: "@amazon-codecatalyst/open-in-codecatalyst@workspace:packages/utils/codecatalyst-link"
+  resolution: "@amazon-codecatalyst/codecatalyst-link@workspace:packages/utils/codecatalyst-link"
   dependencies:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint-component": "*"
     "@types/jest": 26.0.24

@@ -7,7 +7,7 @@ const project = new ProjenBlueprintComponent({
   deps: ['yargs', 'pino'],
   peerDeps: [],
   description: 'This is a cli utility used for opening projects in CodeCatalyst.',
-  packageName: '@amazon-codecatalyst/open-in-codecatalyst',
+  packageName: '@amazon-codecatalyst/codecatalyst-link',
   devDeps: [
     '@amazon-codecatalyst/blueprint-util.projen-blueprint-component',
     '@types/jest',
