@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/codecatalyst-link",
-  "description": "This is a cli utility used for opening projects in CodeCatalyst.",
+  "description": "This is a cli utility used for linking projects in CodeCatalyst.",
   "bin": {
     "codecatalyst-link": "lib/index.js"
   },

@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 /* eslint-disable import/no-extraneous-dependencies */
-import * as path from 'path';
-import { GetObjectCommand, S3 } from '@aws-sdk/client-s3';
-import { STS } from '@aws-sdk/client-sts';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
@@ -12,20 +8,16 @@ import { stableLink } from './stable-link/stable-link';
 export * from './stable-link/stable-link';
 
 const log = pino.default({
-  prettyPrint: true,
   level: process.env.LOG_LEVEL || 'debug',
 });
-
-const s3 = new S3();
-const sts = new STS();
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 yargs
   .default(hideBin(process.argv))
   //open command
   .command({
-    command: 'stable-link',
-    describe: 'Generates a stable link with options to this blueprint',
+    command: 'verbose',
+    describe: 'Stable link generator with verbose options',
     builder: (args: yargs.Argv<unknown>) => {
       return args
         .option('blueprint', {
@@ -39,20 +31,34 @@ yargs
           demandOption: false,
         })
         .option('version', {
-          describe: 'Path to the root of the imported repository',
+          describe: 'version of the blueprint',
           type: 'string',
           default: 'latest',
+          demandOption: false,
+        })
+        .option('publisherId', {
+          describe: 'Id of the blueprint publisher space',
+          type: 'string',
           demandOption: false,
         })
         .option('endpoint', {
           describe: 'endpoint to generate the link against',
           type: 'string',
           demandOption: false,
+          default: 'codecatalyst.aws',
         });
     },
     handler: async (argv): Promise<void> => {
       argv = useOverrideOptionals(argv);
-      const publicStableLink = stableLink();
+      const publicStableLink = stableLink({
+        endpoint: argv.endpoint,
+        query: {
+          blueprintPackage: argv.blueprint,
+          publisher: argv.publisherId,
+          version: argv.version,
+          options: argv.options,
+        },
+      });
 
       log.info('Access CodeCatalyst public stable link at:');
       log.info('=================================');

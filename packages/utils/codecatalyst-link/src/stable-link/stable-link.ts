@@ -45,16 +45,3 @@ function makeQueryParam(key: string, value?: string): string | undefined {
   }
   return undefined;
 }
-
-// https://integ.stage.quokka.codes/launch?blueprintName=serverlessimageoss&publisher=1b965559-c56d-4542-88d1-7933e467b0b0&version=0.1.92&options=%7B%22code%22%3A%7B%22sourceCodeRepo%22%3A%22test%22%7D%7D
-// https://codecatalyst.aws/launch?blueprintName=serverlessimageoss&publisher=1b965559-c56d-4542-88d1-7933e467b0b0&version=0.1.92&options=%7B%22code%22%3A%7B%22sourceCodeRepo%22%3A%22test%22%7D%7D
-
-(() => {
-  const link = stableLink({
-    endpoint: 'integ.stage.quokka.codes',
-    query: {
-      blueprintPackage: 'serverlessimageoss',
-    },
-  });
-  console.log(link);
-})();

@@ -402,6 +402,7 @@ __metadata:
     "@amazon-codecatalyst/blueprint-util.cli": "*"
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
     "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@amazon-codecatalyst/codecatalyst-link": "*"
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
@@ -446,7 +447,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/codecatalyst-link@workspace:packages/utils/codecatalyst-link":
+"@amazon-codecatalyst/codecatalyst-link@*, @amazon-codecatalyst/codecatalyst-link@workspace:packages/utils/codecatalyst-link":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/codecatalyst-link@workspace:packages/utils/codecatalyst-link"
   dependencies:
