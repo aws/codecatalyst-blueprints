@@ -40,16 +40,18 @@ export interface Options extends ParentOptions {
     }>;
   }>;
 
-  /** d
-   * Allow unauthenticated users to self-register their own accounts.
-   * If **enabled**, this will allow anyone to sign up with an account and access your chatbot.
-   * If this is **disabled**, you must register users via cognito yourself.
+  /**
+   * Allow unauthenticated users to self-register their own accounts to login to the chatbot.
+   *
+   *  - If **enabled**: this will allow anyone to sign up with an account and access your chatbot.
+   *  - If **disabled**: you must register each users via cognito yourself.
    * @displayName Self registration
    */
   enableSelfRegistration: 'Enabled' | 'Disabled';
 
   /**
-   * @displayName Additional configuraiton options
+   * These are additional configurations used to fine tune code.
+   * @displayName Additional Configurations
    * @collapsed true
    */
   code: {

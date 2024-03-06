@@ -6,7 +6,8 @@ const project = new ProjenBlueprint({
   publishingOrganization: 'blueprints',
   packageName: '@amazon-codecatalyst/blueprints.gen-ai-chatbot',
   displayName: 'Bedrock GenAI Chatbot',
-  description: 'Generates an secure, log-in protected chatbot that can be customized on your data.',
+  description:
+    'Builds a secure, log-in protected chatbot that can be customized on your data. Use this blueprint to build and deploy your own chatbot.',
   name: 'gen-ai-chatbot',
   defaultReleaseBranch: 'main',
   npmAccess: NpmAccess.PUBLIC,
