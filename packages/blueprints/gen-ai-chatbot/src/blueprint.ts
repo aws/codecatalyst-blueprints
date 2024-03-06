@@ -1,4 +1,5 @@
 import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
+import { Issue } from '@amazon-codecatalyst/blueprint-component.issues';
 import { SourceRepository, SourceFile, SubstitionAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow } from '@amazon-codecatalyst/blueprint-component.workflows';
 import {
@@ -38,6 +39,14 @@ export interface Options extends ParentOptions {
       deployRole: Role<['codecatalyst*']>;
     }>;
   }>;
+
+  /** d
+   * Allow unauthenticated users to self-register their own accounts.
+   * If **enabled**, this will allow anyone to sign up with an account and access your chatbot.
+   * If this is **disabled**, you must register users via cognito yourself.
+   * @displayName Self registration
+   */
+  enableSelfRegistration: 'Enabled' | 'Disabled';
 
   /**
    * @displayName Additional configuraiton options
@@ -111,12 +120,6 @@ export interface Options extends ParentOptions {
     allowedIpV6AddressRanges?: string[];
 
     /**
-     * Allow unauthenticated users to self-register their own accounts.
-     * @displayName Self registration
-     */
-    enableSelfRegistration: 'Enabled' | 'Disabled';
-
-    /**
      * Enables user usage analysis via an admin console.
      * @displayName Usage Analysis
      */
@@ -132,6 +135,7 @@ export class Blueprint extends ParentBlueprint {
     const typeCheck: Options = {
       outdir: this.outdir,
       ...defaults,
+      enableSelfRegistration: defaults.enableSelfRegistration as Options['enableSelfRegistration'],
       // typescript needs some help disambiguating enums
       code: defaults.code as Options['code'],
     };
@@ -147,11 +151,10 @@ export class Blueprint extends ParentBlueprint {
 
     this.seedRepository(repository, options);
 
-    const cdkContext = new SubstitionAsset('chatbot-genai-cdk/cdk.json');
     new SourceFile(
       repository,
       'cdk.json',
-      cdkContext.substitute({
+      new SubstitionAsset('chatbot-genai-cdk/cdk.json').substitute({
         allowedIpV4AddressRanges: this.toCsv(options.code.allowedIpV4AddressRanges),
         allowedIpV6AddressRanges: this.toCsv(options.code.allowedIpV6AddressRanges),
         region: options.code.region,
@@ -159,10 +162,23 @@ export class Blueprint extends ParentBlueprint {
         stackName: options.code.stackName,
         bucketRemovalPolicy: options.code.bucketRemovalPolicy.toUpperCase(),
         bucketNamePrefix: options.code.bucketNamePrefix,
-        enableSelfRegistration: options.code.enableSelfRegistration === 'Enabled',
+        enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
         enableUsageAnalysis: options.code.enableUsageAnalysis === 'Enabled',
       }),
     );
+
+    if (options.enableSelfRegistration == 'Disabled') {
+      new Issue(this, 'register-first-user', {
+        title: 'Register your first chatbot user',
+        content:
+          'Log into the AWS account in which this chatbot is deployed. Navigate to cognito and then add a verified user in order to allow them to log in.',
+      });
+    }
+
+    new Issue(this, 'personalize-your-bot', {
+      title: 'Add custom data to re-train your bot',
+      content: 'Log into your chatbot and use the bot console on the left to add custom data to the bot.',
+    });
 
     const environment = new Environment(this, options.environment);
     const workflowBuilder = getDeploymentWorkflow(this, options, environment);

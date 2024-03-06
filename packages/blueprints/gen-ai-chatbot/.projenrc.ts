@@ -6,7 +6,7 @@ const project = new ProjenBlueprint({
   publishingOrganization: 'blueprints',
   packageName: '@amazon-codecatalyst/blueprints.gen-ai-chatbot',
   displayName: 'Bedrock GenAI Chatbot',
-  description: 'This blueprint generates an environment that enables customers to quickly setup a chatbot.',
+  description: 'Generates an secure, log-in protected chatbot that can be customized on your data.',
   name: 'gen-ai-chatbot',
   defaultReleaseBranch: 'main',
   npmAccess: NpmAccess.PUBLIC,
@@ -30,6 +30,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.environments',
+    '@amazon-codecatalyst/blueprint-component.issues',
   ],
 
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
