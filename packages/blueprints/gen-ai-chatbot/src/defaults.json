@@ -1,0 +1,19 @@
+{
+  "environment": {
+    "name": "DEFAULT_ENVIRONMENT_NAME",
+    "environmentType": "PRODUCTION"
+  },
+  "code": {
+    "region": "us-west-2",
+    "bedrockRegion": "us-west-2",
+    "runtime": "Python",
+    "stackName": "BedrockChatBotStack-",
+    "repositoryName": "chatbot",
+    "bucketNamePrefix": "chatbot-frontend-assets-",
+    "bucketRemovalPolicy": "Destroy",
+    "allowedIpV4AddressRanges": [],
+    "allowedIpV6AddressRanges": [],
+    "enableSelfRegistration": "Disabled",
+    "enableUsageAnalysis": "Enabled"
+  }
+}
