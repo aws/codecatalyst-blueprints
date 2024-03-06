@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Action": [
+            "iam:DeleteRole",
+            "iam:GetRole",
+            "iam:TagRole",
+            "iam:CreateRole",
+            "iam:AttachRolePolicy",
+            "iam:DetachRolePolicy",
+            "iam:DeleteRolePolicy",
+            "cloudformation:*",
+            "lambda:*",
+            "apigateway:*",
+            "ecr:*",
+            "ssm:PutParameter",
+            "ssm:DeleteParameter",
+            "iam:PutRolePolicy",
+            "s3:*",
+            "ssm:GetParameter",
+            "ssm:GetParameters"
+          ],
+          "Resource": "*"
+      },
+      {
+          "Effect": "Allow",
+          "Action": [
+              "sts:AssumeRole"
+          ],
+          "Resource": [
+              "arn:aws:iam::*:role/cdk-*"
+          ]
+      }
+  ]
+}
