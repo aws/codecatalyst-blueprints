@@ -155,6 +155,7 @@ export class Blueprint extends ParentBlueprint {
         'typescript',
         `@amazon-codecatalyst/blueprint-util.projen-blueprint@${projenBlueprintPackage.version}`,
         `@amazon-codecatalyst/blueprint-util.cli@${cliPackage.version}`,
+        'fast-xml-parser'
       ],
       keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
       homepage: '',
@@ -191,7 +192,7 @@ export class Blueprint extends ParentBlueprint {
               '@amazon-codecatalyst/blueprint-component.dev-environments',
               '@amazon-codecatalyst/blueprint-component.environments',
             ],
-            devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
+            devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli', 'fast-xml-parser'],
           },
           null,
           2,
