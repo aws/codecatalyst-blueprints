@@ -147,3 +147,20 @@ The IAM roles also require the Amazon CodeCatalyst service principals `codecatal
 ### Admin features
 
 - [ ] Admin console to analyze user usage
+
+### RAG (Retrieval Augmented Generation)
+
+See [here](./docs/RAG.md).
+
+## Authors
+
+- [Takehiro Suzuki](https://github.com/statefb)
+- [Yusuke Wada](https://github.com/wadabee)
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
+
+***
+
+When you create or update a project using a blueprint, CodeCatalyst may generate resources such as source repository, sample source code, CI/CD workflows, build and test reports, secrets, integrated issue tracking tools, etc. You should review the generated artifacts/project before deploying to a production or publicly accessible environment. You are responsible for all activities in your production and publicly accessible environments.
