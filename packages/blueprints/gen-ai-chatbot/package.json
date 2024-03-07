@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/blueprints.gen-ai-chatbot",
-  "description": "Generates an secure, log-in protected chatbot that can be customized on your data.",
+  "description": "Builds a secure, log-in protected chatbot that can be customized on your data. Use this blueprint to build and deploy your own chatbot.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
