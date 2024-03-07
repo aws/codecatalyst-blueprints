@@ -2,12 +2,12 @@ import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blue
 import { NpmAccess } from 'projen/lib/javascript/node-package';
 
 const project = new ProjenBlueprint({
-  authorName: 'blueprints',
+  authorName: 'Amazon Web Services',
   publishingOrganization: 'blueprints',
   packageName: '@amazon-codecatalyst/blueprints.gen-ai-chatbot',
   displayName: 'Bedrock GenAI Chatbot',
   description:
-    'Builds a secure, log-in protected chatbot that can be customized on your data. Use this blueprint to build and deploy your own chatbot.',
+    'Builds a secure, log-in protected LLM playground that can be customized to your data. Use this blueprint to build and deploy your own chatbot.',
   name: 'gen-ai-chatbot',
   defaultReleaseBranch: 'main',
   npmAccess: NpmAccess.PUBLIC,

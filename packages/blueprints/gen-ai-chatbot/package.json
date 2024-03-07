@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/blueprints.gen-ai-chatbot",
-  "description": "Builds a secure, log-in protected chatbot that can be customized on your data. Use this blueprint to build and deploy your own chatbot.",
+  "description": "Builds a secure, log-in protected LLM playground that can be customized to your data. Use this blueprint to build and deploy your own chatbot.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -30,7 +30,7 @@
     "blueprint:resynth": "blueprint drive-resynth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations $*"
   },
   "author": {
-    "name": "blueprints",
+    "name": "Amazon Web Services",
     "organization": false
   },
   "devDependencies": {
