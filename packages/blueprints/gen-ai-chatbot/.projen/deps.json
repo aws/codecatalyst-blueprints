@@ -79,6 +79,10 @@
       "type": "runtime"
     },
     {
+      "name": "@amazon-codecatalyst/blueprint-component.issues",
+      "type": "runtime"
+    },
+    {
       "name": "@amazon-codecatalyst/blueprint-component.source-repositories",
       "type": "runtime"
     },

@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/blueprints.gen-ai-chatbot",
-  "description": "This blueprint generates an environment that enables customers to quickly setup a chatbot.",
+  "description": "Generates an secure, log-in protected chatbot that can be customized on your data.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@amazon-codecatalyst/blueprint-component.environments": "*",
+    "@amazon-codecatalyst/blueprint-component.issues": "*",
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-component.workflows": "*",
     "@amazon-codecatalyst/blueprints.blueprint": "*",
@@ -75,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.65",
+  "version": "0.3.66-preview.6",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Bedrock GenAI Chatbot",
