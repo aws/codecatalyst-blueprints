@@ -25,6 +25,7 @@ const waf = new FrontendWafStack(app, `Waf${app.node.tryGetContext('stackName')}
   },
   allowedIpV4AddressRanges: ALLOWED_IP_V4_ADDRESS_RANGES,
   allowedIpV6AddressRanges: ALLOWED_IP_V6_ADDRESS_RANGES,
+  aclName: app.node.tryGetContext('webAclName') ?? 'FrontendWebAcl',
 });
 
 new ChatbotGenAiCdkStack(app, app.node.tryGetContext('stackName'), {
