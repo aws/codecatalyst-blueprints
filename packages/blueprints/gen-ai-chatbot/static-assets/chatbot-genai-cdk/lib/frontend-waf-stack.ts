@@ -6,6 +6,7 @@ import { Construct } from "constructs";
 interface FrontendWafStackProps extends StackProps {
   readonly allowedIpV4AddressRanges: string[];
   readonly allowedIpV6AddressRanges: string[];
+  readonly aclName: string;
 }
 
 /**
@@ -49,7 +50,7 @@ export class FrontendWafStack extends Stack {
 
     const webAcl = new wafv2.CfnWebACL(this, "WebAcl", {
       defaultAction,
-      name: "FrontendWebAcl",
+      name: props.aclName,
       scope: "CLOUDFRONT",
       visibilityConfig: {
         cloudWatchMetricsEnabled: true,

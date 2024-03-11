@@ -22,6 +22,7 @@
     "bedrockRegion": "{{bedrockRegion}}",
     "bucketRemovalPolicy": "{{bucketRemovalPolicy}}",
     "bucketNamePrefix": "{{bucketNamePrefix}}",
+    "webAclName": "{{webAclName}}",
     "allowedIpV4AddressRanges": [{{#allowedIpV4AddressRanges}}"{{{value}}}"{{#comma}},{{/comma}}{{/allowedIpV4AddressRanges}}],
     "allowedIpV6AddressRanges": [{{#allowedIpV6AddressRanges}}"{{{value}}}"{{#comma}},{{/comma}}{{/allowedIpV6AddressRanges}}],
     "enableSelfRegistration": {{enableSelfRegistration}},

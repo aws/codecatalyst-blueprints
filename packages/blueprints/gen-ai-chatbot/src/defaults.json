@@ -4,11 +4,13 @@
     "environmentType": "PRODUCTION"
   },
   "enableSelfRegistration": "Disabled",
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
   "code": {
     "region": "us-west-2",
     "bedrockRegion": "us-west-2",
     "runtime": "Python",
     "stackName": "BedrockChatBotStack-",
+    "webAclName": "FrontendWebAcl-",
     "repositoryName": "chatbot",
     "bucketNamePrefix": "chatbot-frontend-assets-",
     "bucketRemovalPolicy": "Destroy",
