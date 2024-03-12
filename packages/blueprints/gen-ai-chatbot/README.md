@@ -50,7 +50,9 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 
 ## Connections and permissions
 
-This blueprint requires a custom development role.  To create one, click "Add an existing IAM role" from the add IAM role options. The IAM role needs to contain the CodeCatalyst trust policy, as well as the following permissions:
+This blueprint supports the Amazon CodeCatalyst Development Role, which can be created from the [AWS console Codecatalyst management application](https://console.aws.amazon.com/codecatalyst/home#/). When clicking "add IAM role", the first option is to create a CodeCatalyst development role. This role can be used across multiple blueprints.
+
+The other option is creating a blueprint specific IAM role, which can be added to the Amazon CodeCatalyst space by selecting "Add an existing IAM role" from the add IAM role options. The IAM role needs to contain the CodeCatalyst trust policy, as well as the following permissions:
 
 ```json
 {
