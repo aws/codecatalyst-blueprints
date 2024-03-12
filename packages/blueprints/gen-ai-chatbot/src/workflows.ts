@@ -87,6 +87,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
       dependsOn: [...bootstrapActions, 'BuildFrontend'],
       computeName: {
         Type: 'EC2',
+        Fleet: 'Linux.Arm64.2XLarge',
       },
       environment: workflowEnvironment!,
     });
