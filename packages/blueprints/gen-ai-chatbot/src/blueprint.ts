@@ -221,7 +221,7 @@ export class Blueprint extends ParentBlueprint {
       new Issue(this, 'validate-model-access', {
         title: 'Validate Bedrock model access',
         content:
-          `Log into the AWS account in which this chabot is deployed and navigate to Amazon Bedrock > Model access. Validate that access has been requested to the following models: ${modelNames}.`,
+          `Log into the AWS account the chatbot is deployed to in region ${options.code.bedrockRegion} and navigate to Amazon Bedrock > Model access. Validate that access has been requested to the following models: ${modelNames}.`,
       });
     }
 
