@@ -235,9 +235,10 @@ export class Blueprint extends ParentBlueprint {
       // create the cleanup workflow
       const cleanupWorkflow = new WorkflowBuilder(this, emptyWorkflow);
       cleanupWorkflow.setName(DEFAULT_DELETE_RESOURCE_WORKFLOW_NAME);
+      const cleanupBackendActionName = `delete_${options.code.stackName}`;
       cleanupWorkflow
         .addCfnCleanupAction({
-          actionName: `delete_${options.code.stackName}`,
+          actionName: cleanupBackendActionName,
           environment: {
             Name: options.environment.name || '<<PUT_YOUR_ENVIRONMENT_NAME_HERE>>',
             Connections: [
@@ -266,6 +267,7 @@ export class Blueprint extends ParentBlueprint {
           region: 'us-east-1',
           templateBucketName: options.cleanupWorkflowTemplateBucketName,
           cloudFrontWebAclName: options.code.webAclName,
+          dependsOn: [cleanupBackendActionName],
         });
       const additionalComments = [
         'The following workflow is intentionally disabled by the blueprint author to prevent project contributors from accidentally executing it.',
