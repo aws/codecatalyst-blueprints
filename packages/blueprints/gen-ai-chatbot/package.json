@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.72",
+  "version": "0.3.73",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Bedrock GenAI Chatbot",
