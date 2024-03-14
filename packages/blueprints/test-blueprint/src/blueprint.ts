@@ -41,6 +41,7 @@ export interface Options extends ParentOptions {
 
     /**
      * This is a selector that allows me to get a instantiation
+     * @filter /Test Blueprint/
      */
     blueprintInstantiation?: Selector<BlueprintInstantiation>;
   };
@@ -62,31 +63,31 @@ export interface Options extends ParentOptions {
   };
 
   /**
-   * These are touple parings.
+   * These are tuple parings.
    * @collapsed
    */
-  toupleValues?: {
+  tupleValues?: {
     /**
-     * Only Touples of length 2 are supported
+     * Only Tuples of length 2 are supported
      */
     singles: {
       /**
        * empty tuple map. This should default to string:string
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      emptyTouple?: Tuple<[string, number]>;
+      emptyTuple?: Tuple<[string, number]>;
 
       /**
        * Traditional string to string mapping explictly
        * @description overall description
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTouple: Tuple<[string, string]>;
+      doubleTuple: Tuple<[string, string]>;
 
       /**
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleToupleNum: Tuple<[string, number]>;
+      doubleTupleNum: Tuple<[string, number]>;
     };
 
     lists: {
@@ -95,11 +96,11 @@ export interface Options extends ParentOptions {
        * @description overall description
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleTouple: Tuple<[string, string]>[];
+      doubleTuple: Tuple<[string, string]>[];
       /**
        * @validationRegex /^[a-zA-Z0-9]{1,50}$/
        */
-      doubleToupleNum: Tuple<[string, number]>[];
+      doubleTupleNum: Tuple<[string, number]>[];
     };
   };
 
