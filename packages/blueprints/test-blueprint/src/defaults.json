@@ -8,17 +8,17 @@
     "stringMulti": ["C", "B"],
     "numberMulti": [100]
   },
-  "toupleValues": {
+  "tupleValues": {
     "singles": {
-      "doubleTouple": ["hello", "moto"],
-      "doubleToupleNum": [123, 456]
+      "doubleTuple": ["hello", "moto"],
+      "doubleTupleNum": [123, 456]
     },
     "lists": {
-      "doubleTouple": [
+      "doubleTuple": [
         ["team", "first"],
         ["team", "second"]
       ],
-      "doubleToupleNum": [
+      "doubleTupleNum": [
         ["firstteam", 1],
         ["secondteam", 2],
         ["thirdteam", 3]
