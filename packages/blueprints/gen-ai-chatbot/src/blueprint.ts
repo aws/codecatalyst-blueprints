@@ -12,12 +12,6 @@ import ipaddr from 'ipaddr.js';
 import defaults from './defaults.json';
 import { getDeploymentWorkflow } from './workflows';
 
-const requiredModels: Record<string, string> = {
-  'anthropic.claude-instant-v1': 'Anthropic Claude Instant',
-  'anthropic.claude-v2': 'Anthropic Claude',
-  'cohere.embed-multilingual-v3': 'Cohere Embed Multilingual',
-};
-
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
  * 1. It MUST be called 'Options' in order to be interpreted by the wizard
@@ -80,13 +74,18 @@ export interface Options extends ParentOptions {
    */
   code: {
     /**
+     * The backend resources for this blueprint can be deployed to any AWS region, however Amazon Bedrock models are only
+     * available in regions where Amazon Bedrock is deployed.
+     *
+     * Note that this blueprint will *always* deploy a WAF stack in Cloudformation to `us-east-1` region due to
+     * [Cloudfront restrictions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html).
      * @displayName Deployment region
      */
     region: Region<['*']>;
 
     /**
-     * AWS Regions for this blueprint are limited to the Regions where Amazon Bedrock is available.
-     * @displayName Bedrock region
+     * AWS Regions for Amazon Bedrock access are limited to the Regions where [Amazon Bedrock is available](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html).
+     * @displayName Amazon Bedrock region
      */
     bedrockRegion: Region<['us-east-1', 'us-west-2']>;
 
@@ -213,17 +212,6 @@ export class Blueprint extends ParentBlueprint {
       title: 'Add custom data to re-train your bot',
       content: 'Log into your chatbot and use the bot console on the left to add custom data to the bot.',
     });
-
-    {
-      const models = Object.values(requiredModels);
-      const last = models.pop();
-      const modelNames = `${models.join(', ')}, and ${last}`;
-      new Issue(this, 'validate-model-access', {
-        title: 'Validate Bedrock model access',
-        content:
-          `Log into the AWS account the chatbot is deployed to in region ${options.code.bedrockRegion} and navigate to Amazon Bedrock > Model access. Validate that access has been requested to the following models: ${modelNames}.`,
-      });
-    }
 
     const environment = new Environment(this, options.environment);
     const workflowBuilder = getDeploymentWorkflow(this, options, environment);
