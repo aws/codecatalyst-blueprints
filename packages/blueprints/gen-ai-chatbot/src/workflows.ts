@@ -5,6 +5,15 @@ import { Options } from './blueprint';
 
 const cdkVersion = '2.121.1';
 
+/**
+ * Models used by the chatbot
+ */
+const requiredModels: Record<string, string> = {
+  'anthropic.claude-instant-v1': 'Anthropic Claude Instant',
+  'anthropic.claude-v2': 'Anthropic Claude',
+  'cohere.embed-multilingual-v3': 'Cohere Embed Multilingual',
+};
+
 export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Options, environment: Environment): WorkflowBuilder => {
   const workflowEnvironment = convertToWorkflowEnvironment(environment);
 
@@ -15,6 +24,21 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
 
   const workflowBuilderDev = new WorkflowBuilder(blueprint);
   workflowBuilderDev.setName('cdk-workflow');
+  workflowBuilderDev.addBuildAction({
+    actionName: 'ValidateModelAccess',
+    steps: [
+      `region=${options.code.bedrockRegion}`,
+      ...Object.keys(requiredModels).flatMap(model => {
+        return [
+          `MODEL_ACCESS=$(aws bedrock-runtime invoke-model --region $region --model-id "${model}" --body ${btoa(
+            JSON.stringify({ dummy: 'param' }),
+          )} /dev/null 2>&1 || true)`,
+          `if [[ $MODEL_ACCESS == *"AccessDeniedException"* ]]; then echo "Access denied for model ${model}"; exit 1; else echo "Access validated for model ${model}"; fi`,
+        ];
+      }),
+    ],
+    environment: workflowEnvironment!,
+  });
 
   const bootstrapActions: string[] = [];
   for (const region of bootstrapRegions) {
@@ -32,6 +56,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
         Type: 'EC2',
       },
       environment: workflowEnvironment!,
+      dependsOn: ['ValidateModelAccess'],
     });
   }
 
@@ -51,6 +76,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
         ],
       },
       steps: [],
+      dependsOn: ['ValidateModelAccess'],
     })
     .addBuildAction({
       actionName: 'BuildFrontend',
@@ -91,10 +117,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
       environment: workflowEnvironment!,
     });
 
-  const upgradeCdkActions = [
-    ...bootstrapActions,
-    'CDKDeployAction',
-  ];
+  const upgradeCdkActions = [...bootstrapActions, 'CDKDeployAction'];
 
   for (const actionName of upgradeCdkActions) {
     const action = workflow.getDefinition()?.Actions?.[actionName];
