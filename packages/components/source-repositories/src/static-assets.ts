@@ -5,26 +5,36 @@ import * as Mustache from 'mustache';
 
 const STATIC_ASSET_DIRECTORY = 'static-assets';
 
+interface StaticAssetOptions {
+  cwd?: string;
+}
 /**
  * Helper that makes working with static assets easier.
  */
 export class StaticAsset {
-  static findAll<T extends StaticAsset>(this: new (path: string) => T, globPath?: string, globOptions?: any): T[] {
+  static findAll<T extends StaticAsset>(this: new (path: string, options?: StaticAssetOptions) => T, globPath?: string, globOptions?: any): T[] {
+    const cwd = STATIC_ASSET_DIRECTORY || globOptions.cwd;
     return glob
       .sync(pathing.join(globPath ?? '**/*'), {
-        cwd: STATIC_ASSET_DIRECTORY,
+        cwd,
         nodir: true,
         dot: true,
         ...globOptions,
       })
-      .map(path => new this(path));
+      .map(
+        path =>
+          new this(path, {
+            cwd,
+          }),
+      );
   }
 
   private content_: Buffer;
   private location: string;
 
-  constructor(public path_: string) {
-    this.content_ = fs.readFileSync(pathing.join(STATIC_ASSET_DIRECTORY, path_));
+  constructor(public path_: string, options?: StaticAssetOptions) {
+    const workingDirectory = options?.cwd || STATIC_ASSET_DIRECTORY;
+    this.content_ = fs.readFileSync(pathing.join(workingDirectory, path_));
     this.location = path_;
   }
 
