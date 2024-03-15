@@ -50,7 +50,7 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
         'WEB_ACL_ARN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.ARN\')',
         'if [ -n "$WEB_ACL_ID" ]; then ' +
         "echo 'Deleting web ACL' $WEB_ACL_ID; " +
-        "for DISTRIBUTION_ID in $(aws cloudfront list-distributions-by-web-acl-id --web-acl-id $WEB_ACL_ARN --region $region | jq -r '.DistributionList.Items[].Id'); do " +
+        "for DISTRIBUTION_ID in $(aws cloudfront list-distributions-by-web-acl-id --web-acl-id $WEB_ACL_ARN --region $region | jq -r '.DistributionList.Items[]?.Id'); do " +
         '  echo "Removing ACL from distribution" $DISTRIBUTION_ID; ' +
         '  aws cloudfront get-distribution-config --id $DISTRIBUTION_ID --region $region > ${DISTRIBUTION_ID}.json;' +
         "  ETAG_ID=$(jq -r '.ETag' ./${DISTRIBUTION_ID}.json);" +
