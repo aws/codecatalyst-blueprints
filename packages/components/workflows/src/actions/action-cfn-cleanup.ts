@@ -40,6 +40,8 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
     "echo 'Store the list of associated S3 buckets and Elastic Container Registries'",
     'BUCKET_NAMES=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::S3::Bucket") | .PhysicalResourceId\')',
     'ECR_NAMES=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::ECR::Repository") | .PhysicalResourceId\')',
+    'USER_POOLS=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::Cognito::UserPool") | .PhysicalResourceId\')',
+    'for USER_POOL in $USER_POOLS; do aws cognito-idp describe-user-pool --user-pool-id $USER_POOL --region $region > /dev/null 2>&1 && aws cognito-idp delete-user-pool --user-pool-id $USER_POOL --region $region || true; done',
     ...(options?.cloudFrontWebAclName
       ? [
         `WEB_ACL=$(aws wafv2 list-web-acls --region $region --scope CLOUDFRONT | jq '.WebACLs[] | select(.Name == "${options.cloudFrontWebAclName}")')`,
