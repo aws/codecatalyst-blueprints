@@ -45,9 +45,10 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
     ...(options?.cloudFrontWebAclName
       ? [
         `WEB_ACL=$(aws wafv2 list-web-acls --region $region --scope CLOUDFRONT | jq '.WebACLs[] | select(.Name == "${options.cloudFrontWebAclName}")')`,
-        'WEB_ACL_ID=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.Id\')',
-        'WEB_ACL_LOCK_TOKEN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.LockToken\')',
-        'WEB_ACL_ARN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.ARN\')',
+        'if [ -n "$WEB_ACL" ]; then ' +
+        'WEB_ACL_ID=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.Id\');' +
+        'WEB_ACL_LOCK_TOKEN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.LockToken\');' +
+        'WEB_ACL_ARN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.ARN\');' +
         'if [ -n "$WEB_ACL_ID" ]; then ' +
         "echo 'Deleting web ACL' $WEB_ACL_ID; " +
         "for DISTRIBUTION_ID in $(aws cloudfront list-distributions-by-web-acl-id --web-acl-id $WEB_ACL_ARN --region $region | jq -r '.DistributionList.Items[]?.Id'); do " +
@@ -59,7 +60,10 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
         'done; ' +
         `aws wafv2 delete-web-acl --region $region --id $WEB_ACL_ID --lock-token $WEB_ACL_LOCK_TOKEN --name "${options.cloudFrontWebAclName}" --scope CLOUDFRONT; ` +
         `else echo 'Web ACL named ${options.cloudFrontWebAclName} was not found'; ` +
+        'fi; ' +
         'fi;',
+        'IP_SETS=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::WAFv2::IPSet") | .PhysicalResourceId\')',
+        'for IP_SET in $IP_SETS; do RESOURCE=(${IP_SET//|/ }); LOCK_TOKEN=$(aws wafv2 get-ip-set --region $region --scope CLOUDFRONT --id ${RESOURCE[1]} --name ${RESOURCE[0]}  --query LockToken --output text) > /dev/null 2>&1 && aws wafv2 delete-ip-set --id ${RESOURCE[1]} --name ${RESOURCE[0]} --scope CLOUDFRONT --lock-token $LOCK_TOKEN --region $region || true; done;',
       ]
       : []),
     "echo 'Initiate cloudformation delete-stack command and wait for completion.'",
