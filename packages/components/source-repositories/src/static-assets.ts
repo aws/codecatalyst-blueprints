@@ -13,7 +13,7 @@ interface StaticAssetOptions {
  */
 export class StaticAsset {
   static findAll<T extends StaticAsset>(this: new (path: string, options?: StaticAssetOptions) => T, globPath?: string, globOptions?: any): T[] {
-    const cwd = globOptions.cwd || STATIC_ASSET_DIRECTORY;
+    const cwd = globOptions?.cwd || STATIC_ASSET_DIRECTORY;
     return glob
       .sync(pathing.join(globPath ?? '**/*'), {
         cwd,
