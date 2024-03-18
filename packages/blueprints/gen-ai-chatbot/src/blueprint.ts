@@ -77,7 +77,7 @@ export interface Options extends ParentOptions {
      * The backend resources for this blueprint can be deployed to any AWS region, however Amazon Bedrock models are only
      * available in regions where Amazon Bedrock is deployed.
      *
-     * Note that this blueprint will *always* deploy a WAF stack in Cloudformation to `us-east-1` region due to
+     * Note that this blueprint will *always* deploy a WAF stack in Cloudformation to the `us-east-1` region due to
      * [Cloudfront restrictions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html).
      * @displayName Deployment region
      */
