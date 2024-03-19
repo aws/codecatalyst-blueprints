@@ -1,59 +1,78 @@
-# LLM Chatbot Playground
+# Bedrock GenAI chatbot
+This blueprint allows you to build, customize, and manage a chatbot using Anthropic’s LLM [Claude](https://www.anthropic.com/index/claude-2), a model provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI. The chatbot supports multiple languages, content formats, conversation capabilities, and ability to monitor usage. You can set necessary permissions with IAM roles for a secure and login-protected LLM playground that can be customized to your data. 
 
-This blueprint generates a sample chatbot using the Anthropic company's LLM [Claude 2](https://www.anthropic.com/index/claude-2), one of the foundational models provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI.
+## Bot conversation and bot personalization
+You can personalize your chatbot through custom instructions and external knowledge that can be provided through URLs or files (for example, [retrieval-augmented generation (RAG)](https://github.com/aws-samples/bedrock-claude-chat/blob/main/docs/RAG.md)). When a chatbot is created or updated, it pulls and breaks down data into text, and uses Cohere Multilingual to find and match the text to provide responses to user questions. The customized bot can be shared among application users.
 
-### Basic Conversation
+## Features
+With this blueprint, you can modify your chatbot capabilities using chat features, customization capabilities, personal data, and usage tracking. The features besides IP address restriction are made available by default.
 
-![](https://d107sfil7rheid.cloudfront.net/demo.gif)
+### Basic chat features
+* Authentication (Sign-up, Sign-in)
+* Creation, storage, and deletion of conversations
+* Copying of chatbot replies
+* Automatic subject suggestion for conversations
+* Syntax highlighting for code
+* Rendering of Markdown
+* Streaming Response
+* IP address restriction (not available by default)
+* Edit message and resend
+* I18n
+* Model switch (Claude Instant / Claude)
 
-### Bot Personalization
+### Customized bot featuers
+* Customized bot creation
+* Customized bot sharing
 
-Add your own instruction and give external knowledge as URL or files (a.k.a [RAG](./docs/RAG.md)). The bot can be shared among application users.
+### Retrieval-augmented generation (RAG) features
+* Web (html)
+* Text data (txt, csv, markdown and etc)
+* PDF
+* Microsoft office files (pptx, docx, xlsx)
+* Youtube transcript
 
-![](https://d107sfil7rheid.cloudfront.net/bot_creation.png)
-![](https://d107sfil7rheid.cloudfront.net/bot_chat.png)
+### Admin features
+* Admin console to analyze user usage
 
-## 📚 Supported Languages
+## Supported languages
+The following languages are supported for a custom chatbot:
+* English 
+* Japanese (日本語)
+* Korean (한국어)
+* Chinese (中文)
 
-- English 💬
-- 日本語 💬 (ドキュメントは[こちら](./docs/README_ja.md))
-- 한국어 💬
-- 中文 💬
+## Deployment
+After building your chatbot, you can also deploy it with this blueprint. Before a chatbot can be deployed with a CodeCatalyst workflow, you must enable model access.
 
-## 🚀 Super-easy Deployment
-
-- On us-east-1, open [Bedrock Model access](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) > `Manage model access` > Check `Anthropic / Claude`, `Anthropic / Claude Instant` and `Cohere / Embed Multilingual` then `Save changes`.
-
-<details>
-<summary>Screenshot</summary>
-
-![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
-
-</details>
+**To enable model access a chatbot**
+1. Navigate to the [AWS Management Console](https://console.aws.amazon.com/).
+2. From the region dropdown menu, choose the region where Amazon Bedrock will be called. This should be the same deployment region you choose under Additional configurations when creating a project in Amazon CodeCatalyst with the Bedrock GenAI chatbot blueprint. 
+3. Navigate to [Amazon Bedrock access](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess).
+4. Choose Manage model access.
+5. Choose the checkboxes for Anthropic/Claude, Anthropic/Claude Instant, and Cohere/Embed Multilingual.
+6. Choose Request model access.
 
 ## Architecture
+The architecture of this blueprint leverages AWS-managed services to minimize the need for infrastructure management. Integration of Amazon Bedrock eliminates the need to communicate with external APIs, which allows for scalable, reliable, and secure applications.
 
-It's an architecture built on AWS managed services, eliminating the need for infrastructure management. Utilizing Amazon Bedrock, there's no need to communicate with APIs outside of AWS. This enables deploying scalable, reliable, and secure applications.
-
-- [Amazon DynamoDB](https://aws.amazon.com/dynamodb/): NoSQL database for conversation history storage
-- [Amazon API Gateway](https://aws.amazon.com/api-gateway/) + [AWS Lambda](https://aws.amazon.com/lambda/): Backend API endpoint ([AWS Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter), [FastAPI](https://fastapi.tiangolo.com/))
-- [Amazon SNS](https://aws.amazon.com/sns/): Used to decouple streaming calls between API Gateway and Bedrock because streaming responses can take over 30 seconds in total, exceeding the limitations of HTTP integration (See [quota](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)).
-- [Amazon CloudFront](https://aws.amazon.com/cloudfront/) + [S3](https://aws.amazon.com/s3/): Frontend application delivery ([React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/))
-- [AWS WAF](https://aws.amazon.com/waf/): IP address restriction
-- [Amazon Cognito](https://aws.amazon.com/cognito/): User authentication
-- [Amazon Bedrock](https://aws.amazon.com/bedrock/): Managed service to utilize foundational models via APIs. Claude is used for chat response and Cohere for vector embedding
-- [Amazon EventBridge Pipes](https://aws.amazon.com/eventbridge/pipes/): Receiving event from DynamoDB stream and launching ECS task to embed external knowledge
-- [Amazon Elastic Container Service](https://aws.amazon.com/ecs/): Run crawling, parsing and embedding tasks. [Cohere Multilingual](https://txt.cohere.com/multilingual/) is the model used for embedding.
-- [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
+The following AWS services are integrated in the architecture:
+* [Amazon DynamoDB](https://aws.amazon.com/dynamodb/): NoSQL database for conversation history storage
+* [Amazon API Gateway](https://aws.amazon.com/api-gateway/) + [AWS Lambda](https://aws.amazon.com/lambda/): Backend API endpoint ([AWS Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter), [FastAPI](https://fastapi.tiangolo.com/))
+* [Amazon SNS](https://aws.amazon.com/sns/): Used to decouple streaming calls between API Gateway and Bedrock because streaming responses can take over 30 seconds in total, exceeding the limitations of HTTP integration. For more information, see [Amazon API Gateway quotas and important notes](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html).
+* [Amazon CloudFront](https://aws.amazon.com/cloudfront/) + [S3](https://aws.amazon.com/s3/): Frontend application delivery ([React](https://tailwindcss.com/), [Tailwind CSS](https://tailwindcss.com/))
+* [AWS WAF](https://aws.amazon.com/waf/): IP address restriction
+* [Amazon Cognito](https://aws.amazon.com/cognito/): User authentication
+* [Amazon Bedrock](https://aws.amazon.com/bedrock/): Managed service to utilize foundational models via APIs. Claude used for chat response and Cohere for vector embedding
+* [Amazon EventBridge Pipes](https://aws.amazon.com/eventbridge/pipes/): Receiving event from DynamoDB stream and launching ECS task to embed external knowledge
+* [Amazon Elastic Container Service](https://aws.amazon.com/ecs/): Run crawling, parsing and embedding tasks. [Cohere Multilingual](https://txt.cohere.com/multilingual/) model used for embedding
+* [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
 
 ![](https://d107sfil7rheid.cloudfront.net/arch.png)
 
 ## Connections and permissions
+This blueprint supports the Amazon CodeCatalyst development administrator role in IAM, which can be created from the [AWS Management Console](https://console.aws.amazon.com/). The role can be used across multiple blueprints. An alternative option is creating a blueprint-specific IAM role by adding an existing IAM role to your CodeCatalyst space. For more information, see [Adding an AWS account to a space](https://docs.aws.amazon.com//codecatalyst/latest/userguide/ipa-connect-account-create.html) and [Adding IAM roles to account connections](https://docs.aws.amazon.com//codecatalyst/latest/userguide/ipa-connect-account-addroles.html).
 
-This blueprint supports the Amazon CodeCatalyst Development Role, which can be created from the [AWS console Codecatalyst management application](https://console.aws.amazon.com/codecatalyst/home#/). When clicking "add IAM role", the first option is to create a CodeCatalyst development role. This role can be used across multiple blueprints.
-
-The other option is creating a blueprint specific IAM role, which can be added to the Amazon CodeCatalyst space by selecting "Add an existing IAM role" from the add IAM role options. The IAM role needs to contain the CodeCatalyst trust policy, as well as the following permissions:
-
+When using an existing IAM role, make sure it contains the CodeCatalyst trust policy, as well as the following permissions:
 ```json
 {
   "Version": "2012-10-17",
@@ -93,11 +112,7 @@ The other option is creating a blueprint specific IAM role, which can be added t
   ]
 }
 ```
-
 The IAM roles also require the Amazon CodeCatalyst service principals `codecatalyst.amazonaws.com` and `codecatalyst-runner.amazonaws.com`.
-
-### Required IAM role trust policy:
-
 ```
 {
     "Version": "2012-10-17",
@@ -117,52 +132,5 @@ The IAM roles also require the Amazon CodeCatalyst service principals `codecatal
 }
 ```
 
-## Features and Roadmap
-
-### Basic chat features
-
-- [x] Authentication (Sign-up, Sign-in)
-- [x] Creation, storage, and deletion of conversations
-- [x] Copying of chatbot replies
-- [x] Automatic subject suggestion for conversations
-- [x] Syntax highlighting for code
-- [x] Rendering of Markdown
-- [x] Streaming Response
-- [x] IP address restriction
-- [x] Edit message & re-send
-- [x] I18n
-- [x] Model switch (Claude Instant / Claude)
-
-### Customized bot features
-
-- [x] Customized bot creation
-- [x] Customized bot sharing
-
-### RAG features
-
-- [x] Web (html)
-- [x] Text data (txt, csv, markdown and etc)
-- [x] PDF
-- [x] Microsoft office files (pptx, docx, xlsx)
-- [x] Youtube transcript
-
-### Admin features
-
-- [ ] Admin console to analyze user usage
-
-### RAG (Retrieval Augmented Generation)
-
-See [here](./docs/RAG.md).
-
-## Authors
-
-- [Takehiro Suzuki](https://github.com/statefb)
-- [Yusuke Wada](https://github.com/wadabee)
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
-***
-
-When you create or update a project using a blueprint, CodeCatalyst may generate resources such as source repository, sample source code, CI/CD workflows, build and test reports, secrets, integrated issue tracking tools, etc. You should review the generated artifacts/project before deploying to a production or publicly accessible environment. You are responsible for all activities in your production and publicly accessible environments.
+## Additional resources
+See the Amazon CodeCatalyst user guide for additional information on using the features and resources of Amazon CodeCatalyst. To learn more about blueprints, see the [Project blueprint reference](https://docs.aws.amazon.com//codecatalyst/latest/userguide/project-blueprints.html) and [Working with custom blueprints in CodeCatalyst](https://docs.aws.amazon.com//codecatalyst/latest/userguide/custom-blueprints.html).
