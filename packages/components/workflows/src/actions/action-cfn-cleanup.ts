@@ -16,7 +16,7 @@ const generateUniqueS3BucketName = () => {
   return bucketName;
 };
 
-export const cfnCleanupSteps = (stackName: string, region: string, options?: { bucketName?: string }) => {
+export const cfnCleanupSteps = (stackName: string, region: string, options?: { bucketName?: string; cloudFrontWebAclName?: string }) => {
   const bucketName = options?.bucketName ?? generateUniqueS3BucketName();
 
   return [
@@ -40,6 +40,32 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
     "echo 'Store the list of associated S3 buckets and Elastic Container Registries'",
     'BUCKET_NAMES=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::S3::Bucket") | .PhysicalResourceId\')',
     'ECR_NAMES=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::ECR::Repository") | .PhysicalResourceId\')',
+    'USER_POOLS=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::Cognito::UserPool") | .PhysicalResourceId\')',
+    'for USER_POOL in $USER_POOLS; do aws cognito-idp describe-user-pool --user-pool-id $USER_POOL --region $region > /dev/null 2>&1 && aws cognito-idp delete-user-pool --user-pool-id $USER_POOL --region $region || true; done',
+    ...(options?.cloudFrontWebAclName
+      ? [
+        `WEB_ACL=$(aws wafv2 list-web-acls --region $region --scope CLOUDFRONT | jq '.WebACLs[] | select(.Name == "${options.cloudFrontWebAclName}")')`,
+        'if [ -n "$WEB_ACL" ]; then ' +
+        'WEB_ACL_ID=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.Id\');' +
+        'WEB_ACL_LOCK_TOKEN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.LockToken\');' +
+        'WEB_ACL_ARN=$(jq -n --argjson acl "$WEB_ACL" -r \'$acl.ARN\');' +
+        'if [ -n "$WEB_ACL_ID" ]; then ' +
+        "echo 'Deleting web ACL' $WEB_ACL_ID; " +
+        "for DISTRIBUTION_ID in $(aws cloudfront list-distributions-by-web-acl-id --web-acl-id $WEB_ACL_ARN --region $region | jq -r '.DistributionList.Items[]?.Id'); do " +
+        '  echo "Removing ACL from distribution" $DISTRIBUTION_ID; ' +
+        '  aws cloudfront get-distribution-config --id $DISTRIBUTION_ID --region $region > ${DISTRIBUTION_ID}.json;' +
+        "  ETAG_ID=$(jq -r '.ETag' ./${DISTRIBUTION_ID}.json);" +
+        "  jq --arg replace_acl_id \"\" '.DistributionConfig.WebACLId = $replace_acl_id | del(.ETag) | .DistributionConfig' ./${DISTRIBUTION_ID}.json > input.json;" +
+        '  aws cloudfront update-distribution --id $DISTRIBUTION_ID --region $region --if-match $ETAG_ID --distribution-config file://input.json; ' +
+        'done; ' +
+        `aws wafv2 delete-web-acl --region $region --id $WEB_ACL_ID --lock-token $WEB_ACL_LOCK_TOKEN --name "${options.cloudFrontWebAclName}" --scope CLOUDFRONT; ` +
+        `else echo 'Web ACL named ${options.cloudFrontWebAclName} was not found'; ` +
+        'fi; ' +
+        'fi;',
+        'IP_SETS=$(aws cloudformation list-stack-resources --stack-name $stack_name --region $region | jq -r \'.StackResourceSummaries[] | select(.ResourceType=="AWS::WAFv2::IPSet") | .PhysicalResourceId\')',
+        'for IP_SET in $IP_SETS; do RESOURCE=(${IP_SET//|/ }); LOCK_TOKEN=$(aws wafv2 get-ip-set --region $region --scope CLOUDFRONT --id ${RESOURCE[1]} --name ${RESOURCE[0]}  --query LockToken --output text) > /dev/null 2>&1 && aws wafv2 delete-ip-set --id ${RESOURCE[1]} --name ${RESOURCE[0]} --scope CLOUDFRONT --lock-token $LOCK_TOKEN --region $region || true; done;',
+      ]
+      : []),
     "echo 'Initiate cloudformation delete-stack command and wait for completion.'",
     'aws cloudformation delete-stack --stack-name $stack_name --region $region',
     'aws cloudformation wait stack-delete-complete --stack-name $stack_name --region $region',
@@ -71,6 +97,10 @@ export interface CfnCleanupActionParameters extends Pick<BuildActionParameters, 
    * @default - a randomly generated bucket name
    */
   templateBucketName?: string;
+  /**
+   * CloudFront Web ACL that should be deleted as part of the workflow.
+   */
+  cloudFrontWebAclName?: string;
 }
 
 export const addGenericCloudFormationCleanupAction = (
@@ -87,6 +117,7 @@ export const addGenericCloudFormationCleanupAction = (
     Configuration: {
       Steps: cfnCleanupSteps(stackName, region, {
         bucketName: params.templateBucketName,
+        cloudFrontWebAclName: params.cloudFrontWebAclName,
       }).map(step => {
         return {
           Run: step,

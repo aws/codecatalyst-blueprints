@@ -74,8 +74,8 @@ export const generateInputs = (params: BuildInputConfiguration): InputsDefinitio
 };
 
 export interface BuildActionParameters {
-  input: BuildInputConfiguration;
-  output: BuildOutputConfiguration;
+  input?: BuildInputConfiguration;
+  output?: BuildOutputConfiguration;
   steps: string[];
   actionName: string;
   environment?: WorkflowEnvironment;
@@ -98,8 +98,8 @@ export const addGenericBuildAction = (
 
   const buildAction: ActionDefiniton = {
     Identifier: getDefaultActionIdentifier(ActionIdentifierAlias.build, blueprint.context.environmentId),
-    Inputs: generateInputs(input),
-    Outputs: generateOutput(output),
+    Inputs: input && generateInputs(input),
+    Outputs: output && generateOutput(output),
     Configuration: {
       Steps: steps.map(step => {
         return {
