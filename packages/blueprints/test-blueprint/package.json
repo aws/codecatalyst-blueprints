@@ -24,7 +24,6 @@
     "build:lib": "rm -rf ./lib/ && yarn build && yarn blueprint:build-ast && yarn blueprint:validate-options",
     "blueprint:package": "yarn build:lib && yarn blueprint:synth --cache --clean-up false && yarn package",
     "npm:publish": "npm publish dist/js/*.tgz",
-    "cclink": "codecatalyst-link $*",
     "blueprint:preview": "yarn bump:preview && yarn blueprint:package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:release": "yarn build:lib && yarn bump && yarn blueprint:synth --cache --clean-up false && yarn package && blueprint publish ./ --publisher blueprints $*",
     "blueprint:synth": "yarn build:lib && blueprint drive-synth --blueprint ./ --outdir ./synth --default-options ./src/defaults.json --additional-options ./src/wizard-configurations --additionalOptionOverrides ./src/wizard-configurations $*",
@@ -70,7 +69,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "",
-  "version": "0.3.81",
+  "version": "0.3.82",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
