@@ -51,6 +51,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
       },
       configuration: {
         Region: region,
+        CdkCliVersion: cdkVersion,
       },
       computeName: {
         Type: 'EC2',
@@ -109,6 +110,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
         Region: options.code.region as string,
         StackName: options.code.stackName as string,
         CfnOutputVariables: ['FrontendURL'],
+        CdkCliVersion: cdkVersion,
       },
       dependsOn: [...bootstrapActions, 'BuildFrontend'],
       computeName: {
@@ -116,21 +118,6 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
       },
       environment: workflowEnvironment!,
     });
-
-  const upgradeCdkActions = [...bootstrapActions, 'CDKDeployAction'];
-
-  for (const actionName of upgradeCdkActions) {
-    const action = workflow.getDefinition()?.Actions?.[actionName];
-    if (action) {
-      workflow.getDefinition()!.Actions![actionName]! = {
-        ...action,
-        Configuration: {
-          ...action.Configuration,
-          CdkCliVersion: cdkVersion,
-        },
-      };
-    }
-  }
 
   return workflow;
 };

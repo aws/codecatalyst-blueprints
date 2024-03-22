@@ -18,6 +18,7 @@ export interface CdkDeployActionConfiguration {
   Context?: { [key: string]: string };
   CfnOutputVariables?: string[];
   CdkRootPath?: string;
+  CdkCliVersion?: string;
 }
 
 // Need this as the current 1PAs can only take in JSON strings
@@ -28,6 +29,7 @@ export interface CdkDeployActionYamlOutput {
   Context?: string;
   CfnOutputVariables?: string;
   CdkRootPath?: string;
+  CdkCliVersion?: string;
 }
 
 // Convert all provided data types to JSON strings for 1PA ingestion
@@ -40,6 +42,7 @@ export const convertYamlInputToString = (paramterInput: CdkDeployActionConfigura
     Context: typeof paramterInput.Context === 'undefined' ? undefined : convertInputsToJsonString(paramterInput.Context),
     CfnOutputVariables:
       typeof paramterInput.CfnOutputVariables === 'undefined' ? undefined : convertInputsToJsonString(paramterInput.CfnOutputVariables),
+    CdkCliVersion: typeof paramterInput.CdkCliVersion === 'undefined' ? undefined : paramterInput.CdkCliVersion,
   };
   return stringifiedInput;
 };
