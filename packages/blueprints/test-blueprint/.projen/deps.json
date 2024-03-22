@@ -99,10 +99,6 @@
       "type": "runtime"
     },
     {
-      "name": "@amazon-codecatalyst/codecatalyst-link",
-      "type": "runtime"
-    },
-    {
       "name": "projen",
       "version": "0.71.112",
       "type": "runtime"
