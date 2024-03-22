@@ -56,7 +56,6 @@
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-component.workflows": "*",
     "@amazon-codecatalyst/blueprints.blueprint": "*",
-    "@amazon-codecatalyst/codecatalyst-link": "*",
     "projen": "0.71.112"
   },
   "resolutions": {
