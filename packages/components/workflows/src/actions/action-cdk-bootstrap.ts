@@ -12,6 +12,7 @@ import { WorkflowDefinition } from '../workflow/workflow-definition';
 
 export interface CdkBootstrapActionConfiguration {
   Region: string;
+  CdkCliVersion?: string;
 }
 
 export interface CdkBootstrapActionParameters {
