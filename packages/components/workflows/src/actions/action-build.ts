@@ -84,7 +84,7 @@ export interface BuildActionParameters {
 }
 
 export interface BuildContainer {
-  Registry: 'DockerHub' | 'ECR' | 'Other';
+  Registry: 'DockerHub' | 'ECR' | 'Other' | 'CODECATALYST';
   Image: string;
 }
 

@@ -64,26 +64,10 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
   const workflow = workflowBuilderDev
     .addBranchTrigger(['main'])
     .addBuildAction({
-      actionName: 'PullSource',
-      input: {
-        Sources: ['WorkflowSource'],
-      },
-      output: {
-        Artifacts: [
-          {
-            Name: 'source_result',
-            Files: ['**/*'],
-          },
-        ],
-      },
-      steps: [],
-      dependsOn: ['ValidateModelAccess'],
-    })
-    .addBuildAction({
       actionName: 'BuildFrontend',
       input: {
-        Sources: [],
-        Artifacts: ['source_result'],
+        Sources: ['WorkflowSource'],
+        Artifacts: [],
       },
       output: {
         Artifacts: [
@@ -94,11 +78,11 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
         ],
       },
       container: {
-        Registry: 'ECR',
-        Image: 'public.ecr.aws/amazonlinux/amazonlinux:2023',
+        Registry: 'CODECATALYST',
+        Image: 'CodeCatalystLinux_x86_64:2024_03',
       },
       steps: ['dnf install -y nodejs', 'cd frontend', 'npm i'],
-      dependsOn: ['PullSource'],
+      dependsOn: ['ValidateModelAccess'],
     })
     .addCdkDeployAction({
       actionName: 'CDKDeployAction',
