@@ -366,6 +366,7 @@ __metadata:
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": ^0.3.82
     "@amazon-codecatalyst/blueprints.blueprint": ^0.3.82
     "@types/node": ^18
+    "@types/yaml": "*"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
@@ -377,6 +378,7 @@ __metadata:
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
+    yaml: "*"
   languageName: unknown
   linkType: soft
 
@@ -3744,6 +3746,15 @@ __metadata:
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
   checksum: 205fdbe3326b7046d7eaf5e494d8084f2659086a266f3f9cf00bccc549c8e36e407f88168ad4383c8b07099957ad669f75f2532ed4bc70be2b037330f7bae019
+  languageName: node
+  linkType: hard
+
+"@types/yaml@npm:*":
+  version: 1.9.6
+  resolution: "@types/yaml@npm:1.9.6"
+  dependencies:
+    yaml: "*"
+  checksum: 3df74c9d4028641e2ed710b627ac533e97707713ac17c665df5cc477602f77925a3ceeaf5db76c7400ea42be114609bba990079907e89219ffd905a539997469
   languageName: node
   linkType: hard
 

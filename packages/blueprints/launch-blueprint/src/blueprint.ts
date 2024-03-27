@@ -3,15 +3,9 @@ import * as fs from 'fs';
 import path from 'path';
 import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
-import {
-  BuildActionParameters,
-  Workflow,
-  WorkflowDefinition,
-  addGenericBranchTrigger,
-  addGenericBuildAction,
-  makeEmptyWorkflow,
-} from '@amazon-codecatalyst/blueprint-component.workflows';
+import { ConnectionDefinition, InputVariable, WorkflowDefinition, WorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
 import { Blueprint as ParentBlueprint, Options as ParentOptions, Selector, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import * as yaml from 'yaml';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import defaults from './defaults.json';
 
@@ -29,7 +23,10 @@ export interface Options extends ParentOptions {
    */
   destinationRepositoryName: Selector<SourceRepository | string>;
 
-  environment: EnvironmentDefinition<{
+  /**
+   * @showName readOnly
+   */
+  environments: EnvironmentDefinition<{
     /**
      * An AWS account connection is required by the project workflow to deploy to aws.
      * @displayName AWS account connection
@@ -42,28 +39,15 @@ export interface Options extends ParentOptions {
        * @inlinePolicy ./inline-policy-deploy.json
        * @trustPolicy ./trust-policy.json
        */
-      deployRole: Role<['codecatalyst*']>;
+      launchRole: Role<['codecatalyst*']>;
     }>;
-  }>;
+  }>[];
 
   options: Tuple<[string, string]>[];
-
-  /**
-   * Deployment options
-   * @collapsed true
-   */
-  deployment: {
-    /**
-     * Steps to build and deploy
-     */
-    buildSteps: string[];
-
-    /**
-     * Custom container image for build and deployment
-     */
-    containerImage?: string;
-  };
 }
+
+const OPTIONS_PREFIX = 'LAUNCH_OPTIONS_';
+const GIT_CLONE_TIMEOUT = 30_000;
 
 /**
  * This is the actual blueprint class.
@@ -91,93 +75,25 @@ export class Blueprint extends ParentBlueprint {
       title: options.destinationRepositoryName,
     });
 
+    // create environments
+    for (const environment of options.environments) {
+      new Environment(this, environment);
+    }
+
     this.state = {
       options,
       repository,
     };
-
-    if (options.deployment.buildSteps?.length) {
-      const workflowDefinition: WorkflowDefinition = {
-        ...makeEmptyWorkflow(),
-        SchemaVersion: '1.0',
-        Name: 'launch',
-      };
-
-      addGenericBranchTrigger(workflowDefinition, ['main']);
-
-      addGenericBuildAction({
-        blueprint: this,
-        workflow: workflowDefinition,
-        actionName: 'source',
-        input: {
-          Sources: ['WorkflowSource'],
-        },
-        output: {
-          AutoDiscoverReports: {
-            Enabled: false,
-            ReportNamePrefix: 'rpt',
-          },
-          Artifacts: [
-            {
-              Name: 'src',
-              Files: ['**/*'],
-            },
-          ],
-        },
-        steps: ['ls -la'],
-      });
-
-      const buildAction: BuildActionParameters & {
-        blueprint: ParentBlueprint;
-        workflow: WorkflowDefinition;
-      } = {
-        blueprint: this,
-        workflow: workflowDefinition,
-        actionName: 'deploy',
-        input: {
-          Sources: [],
-          Artifacts: ['src'],
-        },
-        output: {
-          AutoDiscoverReports: {
-            Enabled: false,
-            ReportNamePrefix: 'rpt',
-          },
-        },
-        steps: [...options.deployment.buildSteps],
-        environment: {
-          Name: options.environment.name || ' ',
-          Connections: [
-            {
-              Name: options.environment.awsAccountConnection?.name || ' ',
-              Role: options.environment.awsAccountConnection?.deployRole?.name || ' ',
-            },
-          ],
-        },
-      };
-
-      if (options.deployment.containerImage) {
-        buildAction.container = {
-          Image: options.deployment.containerImage,
-          Registry: 'ECR',
-        };
-      }
-
-      addGenericBuildAction(buildAction);
-
-      // create an environment
-      new Environment(this, options.environment);
-      new Workflow(this, repository, workflowDefinition);
-    }
   }
 
   override synth(): void {
     const pathToRepository = path.join(this.context.durableStoragePath, this.state.repository.title);
+
     if (!fs.existsSync(pathToRepository)) {
       cp.spawnSync('git', ['clone', '--depth', '1', this.state.options.sourceRepository, this.state.repository.title], {
         cwd: this.context.durableStoragePath,
         stdio: [0, 1, 1],
-        timeout: 30_000,
+        timeout: GIT_CLONE_TIMEOUT,
       });
 
       // remove .git - we have no use for it and the large number of objects
@@ -186,6 +102,55 @@ export class Blueprint extends ParentBlueprint {
     }
 
     fs.cpSync(pathToRepository, this.state.repository.path, { recursive: true });
+
+    //map options and environments to workflows
+    const workflowPath = path.join(this.state.repository.path, '.codecatalyst', 'workflows');
+    if (fs.existsSync(workflowPath)) {
+      const workflowFiles = fs.readdirSync(workflowPath);
+
+      //load each workflow from the cloned repository
+      for (const workflowFile of workflowFiles) {
+        const workflowFilePath = path.join(workflowPath, workflowFile);
+        const workflowYaml = fs.readFileSync(workflowFilePath).toString('utf-8');
+        const workflow = yaml.parse(workflowYaml) as WorkflowDefinition;
+        for (const actionName of Object.keys(workflow.Actions ?? [])) {
+          const action = workflow.Actions?.[actionName];
+
+          //set variables with options where applicable
+          const variables = action.Inputs?.Variables as InputVariable[] | undefined;
+          for (const variable of variables ?? []) {
+            if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
+              const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
+              const optionValue = this.state.options.options.find(option => option[0] == optionName)?.[1];
+              if (optionValue) {
+                variable.Value = optionValue?.toString();
+              }
+            }
+          }
+
+          //set action environments from options where applicable
+          const actionEnvironment = action.Environment as WorkflowEnvironment | undefined;
+          if (actionEnvironment?.Name) {
+            const environment = this.state.options.environments.find(env => env.name == actionEnvironment.Name) as EnvironmentDefinition<{
+              awsAccountConnection: AccountConnection<{
+                launchRole: Role<['codecatalyst*']>;
+              }>;
+            }>;
+            if (environment?.awsAccountConnection?.name) {
+              actionEnvironment.Connections = [
+                {
+                  Name: environment.awsAccountConnection.name,
+                  Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
+                } as ConnectionDefinition,
+              ];
+            }
+          }
+        }
+
+        //overwrite existing workflow
+        fs.writeFileSync(workflowFilePath, yaml.stringify(workflow));
+      }
+    }
 
     super.synth();
   }

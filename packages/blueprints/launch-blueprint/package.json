@@ -37,6 +37,7 @@
     "@amazon-codecatalyst/blueprint-util.cli": "^0.3.82",
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": "^0.3.82",
     "@types/node": "^18",
+    "@types/yaml": "*",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",
@@ -54,7 +55,8 @@
     "@amazon-codecatalyst/blueprint-component.source-repositories": "^0.3.82",
     "@amazon-codecatalyst/blueprint-component.workflows": "^0.3.82",
     "@amazon-codecatalyst/blueprints.blueprint": "^0.3.82",
-    "projen": "0.71.112"
+    "projen": "0.71.112",
+    "yaml": "*"
   },
   "resolutions": {
     "@aws-sdk/client-codecatalyst": "3.414.0",
@@ -71,7 +73,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.82",
+  "version": "0.3.91",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Launch with CodeCatalyst",
