@@ -24,6 +24,7 @@ const project = new ProjenBlueprint({
   },
   copyrightOwner: 'blueprints',
   deps: [
+    'yaml',
     '@amazon-codecatalyst/blueprints.blueprint',
     'projen',
     '@amazon-codecatalyst/blueprint-component.workflows',
@@ -31,7 +32,13 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.environments',
   ],
 
-  devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
+  devDeps: [
+    'ts-node',
+    'typescript',
+    '@amazon-codecatalyst/blueprint-util.projen-blueprint',
+    '@amazon-codecatalyst/blueprint-util.cli',
+    '@types/yaml',
+  ],
   keywords: ['blueprint-publisher', 'external-blueprint', 'blueprint'],
   homepage: '',
 });

@@ -1,17 +1,6 @@
 {
   "sourceRepository": "https://github.com/aws-solutions/qnabot-on-aws",
   "destinationRepositoryName": "launch-with-codecatalyst",
-  "environment": {
-    "name": "default_environment",
-    "environmentType": "PRODUCTION"
-  },
-  "options": [
-
-  ],
-  "deployment": {
-    "containerImage": "public.ecr.aws/amazonlinux/amazonlinux:2023",
-    "buildSteps": [
-      "yum install -y nodejs make git", "npm install", "npm run config", "npm run bootstrap", "npm run up"
-    ]
-  }
+  "environments": [],
+  "options": []
 }
