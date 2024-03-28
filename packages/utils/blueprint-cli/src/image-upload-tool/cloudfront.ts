@@ -1,3 +1,4 @@
+import path from 'path';
 import {
   CloudFrontClient,
   CreateCloudFrontOriginAccessIdentityCommand,
@@ -103,7 +104,7 @@ export const createCloudFrontDistribution = async (
     log.info('CloudFront distribution created');
 
     if (createDistributionCommandResponse.Distribution?.DomainName) {
-      return `${createDistributionCommandResponse.Distribution?.DomainName}/${image.name}`;
+      return path.join(createDistributionCommandResponse.Distribution.DomainName, image.folder ?? '', image.name);
     }
 
     throw new Error('Domain name not found in response');

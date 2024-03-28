@@ -414,6 +414,16 @@ yargs
           type: 'string',
           demandOption: true,
         })
+        .option('name', {
+          describe: 'name of the image to create, if not provided then the file name is used',
+          type: 'string',
+          demandOption: false,
+        })
+        .option('folder', {
+          describe: 'folder within the bucket to store the image. if not provided, then the root bucket is used.',
+          type: 'string',
+          demandOption: false,
+        })
         .option('bucket', {
           describe: 'name of bucket to create',
           type: 'string',
@@ -425,6 +435,8 @@ yargs
       log.info(argv);
       const { imageUrl, imageName } = await uploadImagePublicly(log, argv.pathToImage, {
         bucketName: argv.bucket,
+        imageName: argv.name,
+        folder: argv.folder,
       });
       log.info(`URL to image '${imageName}': ${imageUrl} \n The URL might take a few minutes to be available.`);
       process.exit(0);

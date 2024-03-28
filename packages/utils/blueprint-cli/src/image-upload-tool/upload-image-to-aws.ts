@@ -13,6 +13,8 @@ export interface UploadOptions extends yargs.Arguments {
   pathToImage: string;
   bucket?: string;
   region?: string;
+  name?: string;
+  folder?: string;
 }
 
 /**
@@ -22,6 +24,7 @@ export interface Image {
   name: string;
   body: Buffer;
   extension: string | undefined;
+  folder: string | undefined;
 }
 
 /**
@@ -51,6 +54,8 @@ export const uploadImagePublicly = async (
   log: pino.BaseLogger,
   pathToImage: string,
   options?: {
+    imageName?: string;
+    folder?: string;
     bucketName?: string;
     region?: string;
   },
@@ -67,9 +72,10 @@ export const uploadImagePublicly = async (
   };
 
   const image: Image = {
-    name: path.basename(pathToImage),
+    name: options?.imageName ?? path.basename(pathToImage),
     body: fs.readFileSync(pathToImage),
     extension: pathToImage.split('.').pop(),
+    folder: options?.folder,
   };
 
   const extensionList: string[] = ['png', 'jpeg', 'jpg', 'jpe', 'jif', 'jfif', 'jfi', 'gif', 'bmp', 'dib', 'tiff', 'tif', 'svg', 'svgz'];
@@ -89,7 +95,7 @@ export const uploadImagePublicly = async (
   const existingCloudfrontDomain = await getExistingCloudfrontDistro(log, fullBucketName);
   if (existingCloudfrontDomain) {
     return {
-      imageUrl: `${existingCloudfrontDomain}/${image.name}`,
+      imageUrl: path.join(existingCloudfrontDomain, image.folder ?? '', image.name),
       imageName: image.name,
     };
   }

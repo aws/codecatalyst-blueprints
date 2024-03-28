@@ -1,3 +1,4 @@
+import path from 'path';
 import {
   S3Client,
   ListBucketsCommand,
@@ -162,7 +163,7 @@ export const uploadImageToBucket = async (log: pino.BaseLogger, bucketName: stri
     await s3Client.send(
       new PutObjectCommand({
         Bucket: bucketName,
-        Key: image.name,
+        Key: path.join(image.folder ?? '', image.name),
         Body: image.body,
         ContentType: `image/${image.extension}`,
       }),
