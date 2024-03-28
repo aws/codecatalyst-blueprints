@@ -1,5 +1,7 @@
 # Bedrock GenAI chatbot
-This blueprint allows you to build, customize, and manage a chatbot using Anthropic’s LLM [Claude](https://www.anthropic.com/index/claude-2), a model provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI. The chatbot supports multiple languages, content formats, conversation capabilities, and ability to monitor usage. You can set necessary permissions with IAM roles for a secure and login-protected LLM playground that can be customized to your data. 
+This blueprint allows you to build, customize, and manage a chatbot using Anthropic’s LLM [Claude](https://www.anthropic.com/index/claude-2), a model provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI. The chatbot supports multiple languages, content formats, conversation capabilities, and ability to monitor usage. You can set necessary permissions with IAM roles for a secure and login-protected LLM playground that can be customized to your data.
+
+**Important**: Changing to a blueprint version with a different Claude model deletes the conversation history. A new blueprint version is not backwards compatible with an older version.
 
 ## Bot conversation and bot personalization
 You can personalize your chatbot through custom instructions and external knowledge that can be provided through URLs or files (for example, [retrieval-augmented generation (RAG)](https://github.com/aws-samples/bedrock-claude-chat/blob/main/docs/RAG.md)). When a chatbot is created or updated, it pulls and breaks down data into text, and uses Cohere Multilingual to find and match the text to provide responses to user questions. The customized bot can be shared among application users.
