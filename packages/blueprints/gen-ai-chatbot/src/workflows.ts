@@ -3,14 +3,14 @@ import { WorkflowBuilder, convertToWorkflowEnvironment } from '@amazon-codecatal
 import { Blueprint as ParentBlueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { Options } from './blueprint';
 
-const cdkVersion = '2.121.1';
+const cdkVersion = '2.132.0';
 
 /**
  * Models used by the chatbot
  */
 const requiredModels: Record<string, string> = {
-  'anthropic.claude-instant-v1': 'Anthropic Claude Instant',
-  'anthropic.claude-v2': 'Anthropic Claude',
+  'anthropic.claude-3-sonnet-20240229-v1:0': 'Anthropic Claude 3 Sonnet',
+  'anthropic.claude-3-haiku-20240307-v1:0': 'Anthropic Claude 3 Haiku',
   'cohere.embed-multilingual-v3': 'Cohere Embed Multilingual',
 };
 
