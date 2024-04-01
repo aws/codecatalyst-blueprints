@@ -1,17 +1,24 @@
 # Bedrock Claude Chat
 
-This blueprint generates a sample chatbot using the Anthropic company's LLM [Claude 2](https://www.anthropic.com/index/claude-2), one of the foundational models provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI.
+This blueprint generates a sample chatbot using the Anthropic company's LLM [Claude](https://www.anthropic.com/), one of the foundational models provided by [Amazon Bedrock](https://aws.amazon.com/bedrock/) for generative AI.
 
 ### Basic Conversation
 
-![](https://d107sfil7rheid.cloudfront.net/demo.gif)
+![](./docs/imgs/demo.gif)
 
 ### Bot Personalization
 
-Add your own instruction and give external knowledge as URL or files (a.k.a [RAG](./docs/RAG.md)). The bot can be shared among application users.
+Add your own instruction and give external knowledge as URL or files (a.k.a [RAG](./docs/RAG.md)). The bot can be shared among application users. The customized bot also can be published as stand-alone API (See the [detail](./docs/PUBLISH_API.md)).
 
-![](https://d107sfil7rheid.cloudfront.net/bot_creation.png)
-![](https://d107sfil7rheid.cloudfront.net/bot_chat.png)
+![](./docs/imgs/bot_creation.png)
+![](./docs/imgs/bot_chat.png)
+![](./docs/imgs/bot_api_publish_screenshot3.png)
+
+### Administrator dashboard
+
+Analyze usage for each user / bot on administrator dashboard. [detail](./docs/ADMINISTRATOR.md)
+
+![](./docs/imgs/admin_bot_analytics.png)
 
 ## 📚 Supported Languages
 
@@ -22,12 +29,12 @@ Add your own instruction and give external knowledge as URL or files (a.k.a [RAG
 
 ## 🚀 Super-easy Deployment
 
-- On us-east-1, open [Bedrock Model access](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) > `Manage model access` > Check `Anthropic / Claude`, `Anthropic / Claude Instant` and `Cohere / Embed Multilingual` then `Save changes`.
+- In the {{bedrockRegion}} region, open [Bedrock Model access](https://{{bedrockRegion}}.console.aws.amazon.com/bedrock/home?region={{bedrockRegion}}#/modelaccess) > `Manage model access` > Check `Anthropic / Claude 3 Haiku`, `Anthropic / Claude 3 Sonnet` and `Cohere / Embed Multilingual` then `Save changes`.
 
 <details>
 <summary>Screenshot</summary>
 
-![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
+![](./docs/imgs/model_screenshot.png)
 
 </details>
 
@@ -47,7 +54,7 @@ chmod +x bin.sh
 Frontend URL: https://xxxxxxxxx.cloudfront.net
 ```
 
-![](https://d107sfil7rheid.cloudfront.net/signin.png)
+![](./docs/imgs/signin.png)
 
 The sign-up screen will appear as shown above, where you can register your email and log in.
 
@@ -60,7 +67,6 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 
 - [Amazon DynamoDB](https://aws.amazon.com/dynamodb/): NoSQL database for conversation history storage
 - [Amazon API Gateway](https://aws.amazon.com/api-gateway/) + [AWS Lambda](https://aws.amazon.com/lambda/): Backend API endpoint ([AWS Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter), [FastAPI](https://fastapi.tiangolo.com/))
-- [Amazon SNS](https://aws.amazon.com/sns/): Used to decouple streaming calls between API Gateway and Bedrock because streaming responses can take over 30 seconds in total, exceeding the limitations of HTTP integration (See [quota](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)).
 - [Amazon CloudFront](https://aws.amazon.com/cloudfront/) + [S3](https://aws.amazon.com/s3/): Frontend application delivery ([React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/))
 - [AWS WAF](https://aws.amazon.com/waf/): IP address restriction
 - [Amazon Cognito](https://aws.amazon.com/cognito/): User authentication
@@ -68,12 +74,14 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 - [Amazon EventBridge Pipes](https://aws.amazon.com/eventbridge/pipes/): Receiving event from DynamoDB stream and launching ECS task to embed external knowledge
 - [Amazon Elastic Container Service](https://aws.amazon.com/ecs/): Run crawling, parsing and embedding tasks. [Cohere Multilingual](https://txt.cohere.com/multilingual/) is the model used for embedding.
 - [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
+- [Amazon Athena](https://aws.amazon.com/athena/): Query service to analyze S3 bucket
 
-![](https://d107sfil7rheid.cloudfront.net/arch.png)
+![](./docs/imgs/arch.png)
 
 ## Features and Roadmap
 
-### Basic chat features
+<details>
+<summary>Basic chat features</summary>
 
 - [x] Authentication (Sign-up, Sign-in)
 - [x] Creation, storage, and deletion of conversations
@@ -85,24 +93,35 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 - [x] IP address restriction
 - [x] Edit message & re-send
 - [x] I18n
-- [x] Model switch (Claude Instant / Claude)
+- [x] Model switch
+</details>
 
-### Customized bot features
+<details>
+<summary>Customized bot features</summary>
 
 - [x] Customized bot creation
 - [x] Customized bot sharing
+- [x] Publish as stand-alone API
+</details>
 
-### RAG features
+<details>
+<summary>RAG features</summary>
 
 - [x] Web (html)
 - [x] Text data (txt, csv, markdown and etc)
 - [x] PDF
 - [x] Microsoft office files (pptx, docx, xlsx)
 - [x] Youtube transcript
+- [ ] Import from S3 bucket
+- [ ] Import external existing Kendra / OpenSearch / KnowledgeBase
+</details>
 
-### Admin features
+<details>
+<summary>Admin features</summary>
 
-- [ ] Admin console to analyze user usage
+- [x] Tracking usage fees per bot
+- [x] List all published bot
+</details>
 
 ## Others
 
@@ -111,24 +130,25 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 Edit [config.py](./backend/app/config.py) and run `cdk deploy`.
 
 ```py
+# See: https://docs.anthropic.com/claude/reference/complete_post
 GENERATION_CONFIG = {
-    "max_tokens_to_sample": 500,
-    "temperature": 0.6,
+    "max_tokens": 2000,
     "top_k": 250,
     "top_p": 0.999,
+    "temperature": 0.6,
     "stop_sequences": ["Human: ", "Assistant: "],
 }
 
 EMBEDDING_CONFIG = {
-    "model_id": "amazon.titan-embed-text-v1",
+    "model_id": "cohere.embed-multilingual-v3",
     "chunk_size": 1000,
-    "chunk_overlap": 100,
+    "chunk_overlap": 200,
 }
 ```
 
 ### Remove resources
 
-If using cli and CDK, please `cdk destroy`. If not, access to [CloudFormation](https://console.aws.amazon.com/cloudformation/home) then delete `BedrockChatStack` and `FrontendWafStack` manually. Please note that `FrontendWafStack` is on `us-east-1` region.
+Uncomment the `chatbot-DANGER-hard-delete-deployed-resources` workflow in [.codecatalyst/workflows`](./codecatalyst/workflows/chatbot-DANGER-hard-delete-deployed-resources.yaml) and then manually trigger the workflow. This will remove the stacks and all associated resources.
 
 ### Language Settings
 
@@ -142,7 +162,7 @@ See [LOCAL DEVELOPMENT](./docs/LOCAL_DEVELOPMENT.md).
 
 ### Contribution
 
-Thank you for considering contribution on this repository! We welcome for bug fixes, language translation, feature enhancements, and other improvements. Please see following:
+Thank you for considering contribution to this repository! We welcome bug fixes, language translation, feature enhancements, and other improvements. Please see following:
 
 - [Local Development](./docs/LOCAL_DEVELOPMENT.md)
 - [CONTRIBUTING](./CONTRIBUTING.md)

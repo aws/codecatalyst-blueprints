@@ -4,7 +4,6 @@ import os
 
 import pg8000
 from app.bedrock import calculate_query_embedding
-from app.utils import get_bedrock_client
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -50,10 +49,10 @@ def search_related_docs(bot_id: str, limit: int, query: str) -> list[SearchResul
             # It's important to choose the same distance metric as the one used for indexing.
             # Ref: https://github.com/pgvector/pgvector?tab=readme-ov-file#getting-started
             search_query = """
-SELECT id, botid, content, source, embedding 
-FROM items 
-WHERE botid = %s 
-ORDER BY embedding <-> %s 
+SELECT id, botid, content, source, embedding
+FROM items
+WHERE botid = %s
+ORDER BY embedding <-> %s
 LIMIT %s
 """
             cursor.execute(search_query, (bot_id, json.dumps(query_embedding), limit))

@@ -15,10 +15,9 @@ interface PullRequestYaml {
 }
 
 export const writePullRequest = (bundle: string, identifier: string, pullRequest: PullRequestYaml) => {
-
   const pullRequestYamlLocation = path.join(bundle, BUNDLE_PATH_PULL_REQUEST, `${identifier}.yaml`);
   fs.mkdirSync(path.dirname(pullRequestYamlLocation), { recursive: true });
 
   const doc = new YAML.Document(pullRequest);
-  fs.writeFileSync(pullRequestYamlLocation, doc.toString());
+  fs.writeFileSync(pullRequestYamlLocation, doc.toString({ blockQuote: 'literal' }));
 };

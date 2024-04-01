@@ -28,6 +28,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprints.blueprint',
     'projen',
     'ipaddr.js@^2.1.0',
+    'semver',
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.environments',

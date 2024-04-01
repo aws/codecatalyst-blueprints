@@ -8,11 +8,14 @@
 
 このサンプルは、以下の図に示す単純なロジックを実装しています。
 
-![](https://d107sfil7rheid.cloudfront.net/rag.png)
+![](./imgs/rag.png)
 
 ボットが作成または更新されると、ドキュメントローダーが S3 やインターネットからドキュメントを取得し、テキストに変換します。次にスプリッターが、トークン数に基づいてテキストをいくつかのチャンクに分割します。Bedrock(Cohere Multilingual)は埋め込みベクトル値を計算し、それをデータベースに格納します。ユーザーが質問をすると、その文も Bedrock(Cohere)を使用してベクトル化され、pgvector がベクトルデータベースから類似のチャンクを検索します。質問と検索結果は Bedrock(Claude)に渡され、ユーザーへの応答が生成されます。
 
 本サンプルでは、いくつかのパラメータを設定できます([Configure RAG Parameters](./CONFIGURE_KNOWLEDGE.md))。RAG ロジックをカスタマイズするには、ECS タスクの embedding を編集し、クエリ処理の [vector_search.py](../backend/app/vector_search.py) を編集してください。
+
+> [!Note]
+> 現在 RAG についてははマルチモーダルをサポートしていません。検索クエリには文章のテキストのみが使用されます (添付された画像は無視されます) 。
 
 ## 依存関係
 

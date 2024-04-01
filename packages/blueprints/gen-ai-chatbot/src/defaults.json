@@ -5,6 +5,7 @@
   },
   "enableSelfRegistration": "Disabled",
   "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
+  "cleanupWafWorkflowTemplateBucketName": "tmp-cleanup-waf-workflow-",
   "code": {
     "region": "us-west-2",
     "bedrockRegion": "us-west-2",
