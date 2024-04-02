@@ -50,6 +50,9 @@ export interface Options extends ParentOptions {
     }>;
   }>[];
 
+  /**
+   * @readOnly
+   */
   options: Tuple<[string, string]>[];
 }
 
