@@ -170,6 +170,13 @@ export interface Options extends ParentOptions {
      * @displayName Usage Analysis
      */
     enableUsageAnalysis: 'Enabled' | 'Disabled';
+
+    /**
+     * Disambiguator to add to Cloudformation exports in order to avoid collisions between stacks.
+     * @hidden true
+     * @defaultEntropy 8
+     */
+    exportDisambiguator?: string;
   };
 }
 
@@ -211,6 +218,7 @@ export class Blueprint extends ParentBlueprint {
         bucketNamePrefix: options.code.bucketNamePrefix,
         enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
         enableUsageAnalysis: options.code.enableUsageAnalysis === 'Enabled',
+        exportDisambiguator: options.code.exportDisambiguator,
       }),
     );
 
@@ -315,7 +323,7 @@ export class Blueprint extends ParentBlueprint {
     return currentInstantiation
       ? {
         from2To3: semver.lte(currentInstantiation.versionId, claude2MaxBlueprintVersion),
-        from3To2: semver.lt(claude2MaxBlueprintVersion, currentInstantiation.versionId),
+        from3To2: this.context.package.version && semver.lt(this.context.package.version, claude2MaxBlueprintVersion),
       }
       : undefined;
   }
