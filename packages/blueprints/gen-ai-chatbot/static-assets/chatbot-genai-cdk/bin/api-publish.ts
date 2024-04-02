@@ -53,21 +53,25 @@ console.log(
 console.log(`PUBLISHED_API_ID: ${PUBLISHED_API_ID}`);
 console.log(`PUBLISHED_API_ALLOWED_ORIGINS: ${PUBLISHED_API_ALLOWED_ORIGINS}`);
 
-const webAclArn = cdk.Fn.importValue("PublishedApiWebAclArn");
-const vpcId = cdk.Fn.importValue("BedrockClaudeChatVpcId");
-const availabilityZone0 = cdk.Fn.importValue(
-  "BedrockClaudeChatAvailabilityZone0"
+const webAclArn = importValue("PublishedApiWebAclArn", app);
+const vpcId = importValue("BedrockClaudeChatVpcId", app);
+const availabilityZone0 = importValue(
+  "BedrockClaudeChatAvailabilityZone0",
+  app
 );
-const availabilityZone1 = cdk.Fn.importValue(
-  "BedrockClaudeChatAvailabilityZone1"
+const availabilityZone1 = importValue(
+  "BedrockClaudeChatAvailabilityZone1",
+  app
 );
-const publicSubnetId0 = cdk.Fn.importValue("BedrockClaudeChatPublicSubnetId0");
-const publicSubnetId1 = cdk.Fn.importValue("BedrockClaudeChatPublicSubnetId1");
-const privateSubnetId0 = cdk.Fn.importValue(
-  "BedrockClaudeChatPrivateSubnetId0"
+const publicSubnetId0 = importValue("BedrockClaudeChatPublicSubnetId0", app);
+const publicSubnetId1 = importValue("BedrockClaudeChatPublicSubnetId1", app);
+const privateSubnetId0 = importValue(
+  "BedrockClaudeChatPrivateSubnetId0",
+  app
 );
-const privateSubnetId1 = cdk.Fn.importValue(
-  "BedrockClaudeChatPrivateSubnetId1"
+const privateSubnetId1 = importValue(
+  "BedrockClaudeChatPrivateSubnetId1",
+  app
 );
 
 const vpcConfig = {
@@ -78,28 +82,34 @@ const vpcConfig = {
   isolatedSubnetIds: [],
 };
 
-const conversationTableName = cdk.Fn.importValue(
-  "BedrockClaudeChatConversationTableName"
+const conversationTableName = importValue(
+  "BedrockClaudeChatConversationTableName",
+  app
 );
-const tableAccessRoleArn = cdk.Fn.importValue(
-  "BedrockClaudeChatTableAccessRoleArn"
+const tableAccessRoleArn = importValue(
+  "BedrockClaudeChatTableAccessRoleArn",
+  app
 );
 
-const dbConfigHostname = cdk.Fn.importValue(
-  "BedrockClaudeChatDbConfigHostname"
+const dbConfigHostname = importValue(
+  "BedrockClaudeChatDbConfigHostname",
+  app
 );
 const dbConfigPort = cdk.Token.asNumber(
-  cdk.Fn.importValue("BedrockClaudeChatDbConfigPort")
+  importValue("BedrockClaudeChatDbConfigPort", app)
 );
 
-const dbConfigSecretArn = cdk.Fn.importValue(
-  "BedrockClaudeChatDbConfigSecretArn"
+const dbConfigSecretArn = importValue(
+  "BedrockClaudeChatDbConfigSecretArn",
+  app
 );
-const dbSecurityGroupId = cdk.Fn.importValue(
-  "BedrockClaudeChatDbSecurityGroupId"
+const dbSecurityGroupId = importValue(
+  "BedrockClaudeChatDbSecurityGroupId",
+  app
 );
-const largeMessageBucketName = cdk.Fn.importValue(
-  "BedrockClaudeChatLargeMessageBucketName"
+const largeMessageBucketName = importValue(
+  "BedrockClaudeChatLargeMessageBucketName",
+  app
 );
 
 // NOTE: DO NOT change the stack id naming rule.
@@ -147,3 +157,8 @@ const publishedApi = new ApiPublishmentStack(
     },
   }
 );
+
+function importValue(importName: string, app: cdk.App) {
+  const disambiguator = app.node.tryGetContext('exportDisambiguator');
+  return cdk.Fn.importValue(disambiguator ? `${importName}-${disambiguator}` : importName);
+}

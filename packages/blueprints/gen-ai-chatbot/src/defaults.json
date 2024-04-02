@@ -17,6 +17,7 @@
     "bucketRemovalPolicy": "Destroy",
     "allowedIpV4AddressRanges": [],
     "allowedIpV6AddressRanges": [],
-    "enableUsageAnalysis": "Enabled"
+    "enableUsageAnalysis": "Enabled",
+    "exportDisambiguator": ""
   }
 }
