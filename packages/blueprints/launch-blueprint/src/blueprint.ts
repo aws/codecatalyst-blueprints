@@ -11,11 +11,18 @@ import defaults from './defaults.json';
 
 export interface Options extends ParentOptions {
   /**
-   * This is the repository import workflows will be placed into.
+   * This is the URL for the cloned repository.
    * @validationRegex /^.*$/
    * @hidden
    */
   sourceRepository: string;
+
+  /**
+   * This is the branch to clone from sourceRepository.
+   * @validationRegex /^.*$/
+   * @hidden
+   */
+  sourceBranch?: string;
 
   /**
    * This is the name of the destination repository to store your cloned copy of the code.
@@ -90,7 +97,13 @@ export class Blueprint extends ParentBlueprint {
     const pathToRepository = path.join(this.context.durableStoragePath, this.state.repository.title);
 
     if (!fs.existsSync(pathToRepository)) {
-      cp.spawnSync('git', ['clone', '--depth', '1', this.state.options.sourceRepository, this.state.repository.title], {
+
+      let cloneOptions = ['clone', '--depth', '1'].concat
+      (this.state.options.sourceBranch ? ['--branch', this.state.options.sourceBranch] : [],
+        [this.state.options.sourceRepository, this.state.repository.title]);
+
+
+      cp.spawnSync('git', cloneOptions, {
         cwd: this.context.durableStoragePath,
         stdio: [0, 1, 1],
         timeout: GIT_CLONE_TIMEOUT,
