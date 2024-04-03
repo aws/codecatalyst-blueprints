@@ -32,7 +32,7 @@
       "8000:0000:0000:0000:0000:0000:0000:0000/1"
     ],
     "enableUsageAnalysis": {{enableUsageAnalysis}},
-    "exportDisambiguator": "{{exportDisambiguator}}",
+    "stackDisambiguator": "{{stackDisambiguator}}",
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [
