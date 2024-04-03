@@ -159,6 +159,6 @@ const publishedApi = new ApiPublishmentStack(
 );
 
 function importValue(importName: string, app: cdk.App) {
-  const disambiguator = app.node.tryGetContext('exportDisambiguator');
+  const disambiguator = app.node.tryGetContext('stackDisambiguator');
   return cdk.Fn.importValue(disambiguator ? `${importName}-${disambiguator}` : importName);
 }

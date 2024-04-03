@@ -176,7 +176,7 @@ export interface Options extends ParentOptions {
      * @hidden true
      * @defaultEntropy 8
      */
-    exportDisambiguator?: string;
+    stackDisambiguator?: string;
   };
 }
 
@@ -218,7 +218,7 @@ export class Blueprint extends ParentBlueprint {
         bucketNamePrefix: options.code.bucketNamePrefix,
         enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
         enableUsageAnalysis: options.code.enableUsageAnalysis === 'Enabled',
-        exportDisambiguator: options.code.exportDisambiguator,
+        stackDisambiguator: options.code.stackDisambiguator,
       }),
     );
 

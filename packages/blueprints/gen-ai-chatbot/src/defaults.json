@@ -18,6 +18,6 @@
     "allowedIpV4AddressRanges": [],
     "allowedIpV6AddressRanges": [],
     "enableUsageAnalysis": "Enabled",
-    "exportDisambiguator": ""
+    "stackDisambiguator": ""
   }
 }
