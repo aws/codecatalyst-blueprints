@@ -168,6 +168,7 @@ export class Blueprint extends ParentBlueprint {
       }
     }
 
+    this.addExcludeFromCleanup(path.join(this.outdir, this.state.repository.title, '**'));
     super.synth();
   }
 }
