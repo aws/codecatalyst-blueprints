@@ -39,7 +39,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-util.cli',
     '@types/yaml',
   ],
-  keywords: ['blueprint-publisher', 'external-blueprint', 'blueprint'],
+  keywords: ['project-launcher', 'blueprint'],
   homepage: '',
 });
 
