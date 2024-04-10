@@ -65,6 +65,10 @@ const ACTION_IDENTIFIERS: { [key: string]: { default: string; prod: string } } =
     default: 'aws/publish-blueprint-action@v1',
     prod: 'aws/publish-blueprint-action@v1',
   },
+  'aws/github-actions-runner@v1': {
+    default: 'aws/github-actions-runner-beta@v1',
+    prod: 'aws/github-actions-runner@v1',
+  },
 };
 
 export function getDefaultActionIdentifier(identifer: string, environmentIdentifier: string = 'default'): string | undefined {
