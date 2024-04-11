@@ -9,21 +9,21 @@
 
 ### 基本的な会話
 
-![](./imgs/demo_ja.gif)
+![](https://d107sfil7rheid.cloudfront.net/demo_ja.gif)
 
 ### ボットのカスタマイズ
 
 外部のナレッジおよび具体的なインストラクションを組み合わせ、ボットをカスタマイズすることが可能です（外部のナレッジを利用した方法は[RAG](./RAG_ja.md)として知られています）。なお、作成したボットはアプリケーションのユーザー間で共有することができます。カスタマイズされたボットはスタンドアロンの API として公開できます (詳細は[こちら](./docs/PUBLISH_API.md)をご覧ください)。
 
-![](./imgs/bot_creation_ja.png)
-![](./imgs/bot_chat_ja.png)
-![](./imgs/bot_api_publish_screenshot3.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_creation_ja.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_chat_ja.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot3.png)
 
 ### 管理者ダッシュボード
 
 管理者ダッシュボードで各ユーザー/ボットの使用状況を分析できます。[詳細](./docs/ADMINISTRATOR.md)
 
-![](./imgs/admin_bot_analytics.png)
+![](https://d107sfil7rheid.cloudfront.net/admin_bot_analytics.png)
 
 ## 🚀 まずはお試し
 
@@ -31,7 +31,7 @@
 <details>
 <summary>スクリーンショット</summary>
 
-![](./imgs/model_screenshot.png)
+![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
 
 </details>
 - [CloudShell](https://console.aws.amazon.com/cloudshell/home)をデプロイしたいリージョン (ap-northeast-1など) で開きます
@@ -51,7 +51,7 @@ chmod +x bin.sh
 Frontend URL: https://xxxxxxxxx.cloudfront.net
 ```
 
-![](./imgs/signin.png)
+![](https://d107sfil7rheid.cloudfront.net/signin.png)
 
 上記のようなサインアップ画面が現れますので、E メールを登録・ログインしご利用ください。
 
@@ -73,7 +73,7 @@ AWS のマネージドサービスで構成した、インフラストラクチ�
 - [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): [pgvector](https://github.com/pgvector/pgvector) プラグインを利用したスケーラブルなベクトル DB
 - [Amazon Athena](https://aws.amazon.com/athena/): S3 バケット内のデータを分析するクエリサービス
 
-![](./imgs/arch.png)
+![](https://d107sfil7rheid.cloudfront.net/arch.png)
 
 ## 機能・ロードマップ
 
