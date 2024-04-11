@@ -14,25 +14,25 @@ Using only an API key is not recommended as described in: [AWS API Gateway Devel
 
 For governance reasons, only limited users are able to publish bots. Before publishing, the user must be a member of group called `PublishAllowed`, which can be set up via the management console > Amazon Cognito User pools or aws cli. Note that the user pool id can be referred by accessing CloudFormation > BedrockChatStack > Outputs > `AuthUserPoolIdxxxx`.
 
-![](./imgs/group_membership_publish_allowed.png)
+![](https://d107sfil7rheid.cloudfront.net/group_membership_publish_allowed.png)
 
 ### API Publish Settings
 
 After logging in as a `PublishedAllowed` user and create a bot, choose `API PublishSettings`. Note that only a shared bot can be published.
-![](./imgs/bot_api_publish_screenshot.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot.png)
 
 On the following screen, we can configure several parameters regarding throttling. For the detail, please also see: [Throttle API requests for better throughput](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html).
-![](./imgs/bot_api_publish_screenshot2.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot2.png)
 
 After deployment, following screen will appear where you can get the endpoint url and a api key. We can also add and delete api keys.
 
-![](./imgs/bot_api_publish_screenshot3.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot3.png)
 
 ## Architecture
 
 The API is published as following diagram:
 
-![](./imgs/published_arch.png)
+![](https://d107sfil7rheid.cloudfront.net/published_arch.png)
 
 The WAF is used for ip address restriction. The address can be configured by setting parameters `publishedApiAllowedIpV4AddressRanges` and `publishedApiAllowedIpV6AddressRanges` in `cdk.json`.
 

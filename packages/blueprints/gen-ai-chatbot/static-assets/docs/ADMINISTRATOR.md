@@ -6,7 +6,7 @@ The administrator dashboard is a vital tool as it provides essential insights in
 
 Currently provides a basic overview of chatbot and user usage, focusing on aggregating data for each bot and user over specified time periods and sorting the results by usage fees.
 
-![](./imgs/admin_bot_analytics.png)
+![](https://d107sfil7rheid.cloudfront.net/admin_bot_analytics.png)
 
 > [!Note]
 > User usage analytics is coming soon.
@@ -15,7 +15,7 @@ Currently provides a basic overview of chatbot and user usage, focusing on aggre
 
 The admin user must be a member of group called `Admin`, which can be set up via the management console > Amazon Cognito User pools or aws cli. Note that the user pool id can be referred by accessing CloudFormation > BedrockChatStack > Outputs > `AuthUserPoolIdxxxx`.
 
-![](./imgs/group_membership_admin.png)
+![](https://d107sfil7rheid.cloudfront.net/group_membership_admin.png)
 
 ## Notes
 
