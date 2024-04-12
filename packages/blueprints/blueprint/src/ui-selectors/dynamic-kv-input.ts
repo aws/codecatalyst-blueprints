@@ -19,6 +19,11 @@ export type DynamicKVInput = {
      * default: false
      */
   optional?: boolean;
+
+  /**
+    * Display name for field in wizard. If not specified, key will be used.
+    */
+  displayName?: string;
   /**
     * Text description displayed in wizard.
     */
