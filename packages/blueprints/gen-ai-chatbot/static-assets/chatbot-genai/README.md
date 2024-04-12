@@ -4,21 +4,21 @@ This blueprint generates a sample chatbot using the Anthropic company's LLM [Cla
 
 ### Basic Conversation
 
-![](./docs/imgs/demo.gif)
+![](https://d107sfil7rheid.cloudfront.net/demo.gif)
 
 ### Bot Personalization
 
 Add your own instruction and give external knowledge as URL or files (a.k.a [RAG](./docs/RAG.md)). The bot can be shared among application users. The customized bot also can be published as stand-alone API (See the [detail](./docs/PUBLISH_API.md)).
 
-![](./docs/imgs/bot_creation.png)
-![](./docs/imgs/bot_chat.png)
-![](./docs/imgs/bot_api_publish_screenshot3.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_creation.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_chat.png)
+![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot3.png)
 
 ### Administrator dashboard
 
 Analyze usage for each user / bot on administrator dashboard. [detail](./docs/ADMINISTRATOR.md)
 
-![](./docs/imgs/admin_bot_analytics.png)
+![](https://d107sfil7rheid.cloudfront.net/admin_bot_analytics.png)
 
 ## 📚 Supported Languages
 
@@ -34,7 +34,7 @@ Analyze usage for each user / bot on administrator dashboard. [detail](./docs/AD
 <details>
 <summary>Screenshot</summary>
 
-![](./docs/imgs/model_screenshot.png)
+![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
 
 </details>
 
@@ -54,7 +54,7 @@ chmod +x bin.sh
 Frontend URL: https://xxxxxxxxx.cloudfront.net
 ```
 
-![](./docs/imgs/signin.png)
+![](https://d107sfil7rheid.cloudfront.net/signin.png)
 
 The sign-up screen will appear as shown above, where you can register your email and log in.
 
@@ -76,7 +76,7 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 - [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
 - [Amazon Athena](https://aws.amazon.com/athena/): Query service to analyze S3 bucket
 
-![](./docs/imgs/arch.png)
+![](https://d107sfil7rheid.cloudfront.net/arch_202403.png)
 
 ## Features and Roadmap
 

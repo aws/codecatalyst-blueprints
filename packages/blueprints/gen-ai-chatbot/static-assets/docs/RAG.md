@@ -8,7 +8,7 @@ In this example, we've implemented the RAG feature using [pgvector](https://gith
 
 This example implements a simple logic as described in the following diagram:
 
-![](./imgs/rag.png)
+![](https://d107sfil7rheid.cloudfront.net/rag.png)
 
 When a bot is created or updated, the document loader retrieves documents from S3 and the internet, converting them into text. The splitter then divides these texts into several chunks for efficiency, based on the number of tokens. Bedrock (Cohere Multilingual) calculates embedding vector values and stores them in a database. When a user asks a question, the sentence is also converted into a vector using Bedrock (Cohere), and then pgvector retrieves similar chunks from the vector database. The question, along with the search results, is passed to Bedrock (Claude), which then generates responses for the user.
 
