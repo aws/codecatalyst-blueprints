@@ -11,6 +11,7 @@ import {
   Options as ParentOptions,
   Selector,
   Tuple,
+  DynamicKVInput,
 } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
@@ -257,6 +258,8 @@ export interface Options extends ParentOptions {
   pascalCaseRegex: string;
 
   secret: SecretDefinition;
+
+  dyanmicKvInput: DynamicKVInput[];
 }
 
 /**

@@ -5,6 +5,7 @@ export * from './resynthesis/merge-strategies/models';
 export * from './resynthesis/merge-strategies/merge-strategies';
 
 export * from './ui-selectors/region';
+export * from './ui-selectors/dynamic-kv-input';
 export * from './ui-selectors/multiselect';
 export * from './ui-selectors/selector';
 export * from './ui-selectors/tuple';
