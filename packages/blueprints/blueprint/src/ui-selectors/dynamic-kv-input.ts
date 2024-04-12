@@ -8,7 +8,7 @@ export type DynamicKVInput = {
   /** The type of component to display in the wizard.
     * default: 'string'
     */
-  displayComponent?: DISPLAY_COMPONENT_TYPE | string;
+  displayType?: DISPLAY_COMPONENT_TYPE | string;
 
   /**
    * Possible accepted values for dropdown type.

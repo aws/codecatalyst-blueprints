@@ -54,14 +54,14 @@
   "pascalCaseRegex": "PascalCase",
   "secret": {"name" : "testName"},
   "dyanmicKvInput" : [{"key": "testKey", "value": "defaultVal", "displayName": "test display name str", 
-  "displayDescription": "this is a description for string input using dynamicKvInput", 
+  "description": "this is a description for string input using dynamicKvInput", 
   "placeholderText": "type me", 
   "validationRegex" : "/^[a-zA-Z0-9_-\\s]+$/", 
   "validationMessage" : "This is the constraint text to be displayed under string input"},
   {"key": "dropdownKey", "value": "B", "displayName": "test display name dropdown", 
-  "displayComponent": "dropdown",
+  "displayType": "dropdown",
   "possibleValues": ["A", "B", "C", "D"],
-  "displayDescription": "this is a description for string input using dynamicKvInput"
+  "description": "this is a description for string input using dynamicKvInput"
 
   }]
 }
