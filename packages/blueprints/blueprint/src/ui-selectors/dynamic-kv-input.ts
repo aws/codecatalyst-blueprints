@@ -1,10 +1,31 @@
+
+/**
+ * string: generates a string input in the wizard. Must specify validationRegex used to validate user input
+ *
+ * number: generates a number input in the wizard.
+ *
+ * checkbox: generates a checkbox in the wizard.
+ *
+ * dropdown: generates a radio input for 3 or fewer options, or a dropdown for 4 or more options. Must specify possibleValues.
+ *
+ * textarea: generates a text area input.
+ *
+ * label: generates a header text label in the wizard.
+ *
+ * region: generates a region dropdown.
+ *
+ * Example possibleValues for region :
+ * ['us-west-2', 'us-east-1']: Allows user to choose US West (Oregon) or US East (N. Virginia)
+ * ['*']: Allows user to choose any AWS region
+
+*/
 export type DISPLAY_COMPONENT_TYPE =
-    'string' | 'number' | 'checkbox' | 'dropdown' | 'textarea' | 'label'
+    'string' | 'number' | 'checkbox' | 'dropdown' | 'textarea' | 'label' | 'region'
 
 
 export type DynamicKVInput = {
   key: string;
-  value: string | number | boolean | null;
+  value: string | number | boolean | string[] | null;
   /** The type of component to display in the wizard.
     * default: 'string'
     */
@@ -19,6 +40,11 @@ export type DynamicKVInput = {
      * default: false
      */
   optional?: boolean;
+
+  /**
+   * Allows users to choose more than one option in a dropdown. Can only use with dropdown or region displayTypes.
+   */
+  multiselect?: boolean;
 
   /**
     * Display name for field in wizard. If not specified, key will be used.
