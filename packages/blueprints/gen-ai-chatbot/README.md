@@ -67,7 +67,7 @@ The following AWS services are integrated in the architecture:
 * [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
 - [Amazon Athena](https://aws.amazon.com/athena/): Query service to analyze S3 bucket
 
-![](https://d107sfil7rheid.cloudfront.net/arch_202403.png)
+![](https://d107sfil7rheid.cloudfront.net/chatbot/arch_202404.png)
 
 ## Connections and permissions
 This blueprint supports the Amazon CodeCatalyst development administrator role in IAM, which can be created from the [AWS Management Console](https://console.aws.amazon.com/). The role can be used across multiple blueprints. An alternative option is creating a blueprint-specific IAM role by adding an existing IAM role to your CodeCatalyst space. For more information, see [Adding an AWS account to a space](https://docs.aws.amazon.com//codecatalyst/latest/userguide/ipa-connect-account-create.html) and [Adding IAM roles to account connections](https://docs.aws.amazon.com//codecatalyst/latest/userguide/ipa-connect-account-addroles.html).
