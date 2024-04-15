@@ -17,16 +17,21 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { DbConfig, Embedding } from "./constructs/embedding";
 import { VectorStore } from "./constructs/vectorstore";
 import { UsageAnalysis } from "./constructs/usage-analysis";
+import { TIdentityProvider, identityProvider } from "./utils/identity-provider";
 import { ApiPublishCodebuild } from "./constructs/api-publish-codebuild";
 import { WebAclForPublishedApi } from "./constructs/webacl-for-published-api";
 import { VpcConfig } from "./api-publishment-stack";
+import { CronScheduleProps, createCronSchedule } from "./utils/cron-schedule";
 
 export interface ChatbotGenAiCdkStackProps extends StackProps {
   readonly bedrockRegion: string;
   readonly webAclId: string;
-  readonly enableUsageAnalysis: boolean;
+  readonly identityProviders: TIdentityProvider[];
+  readonly userPoolDomainPrefix: string;
   readonly publishedApiAllowedIpV4AddressRanges: string[];
   readonly publishedApiAllowedIpV6AddressRanges: string[];
+  readonly allowedSignUpEmailDomains: string[];
+  readonly rdsSchedules: CronScheduleProps;
 }
 
 export class ChatbotGenAiCdkStack extends cdk.Stack {
@@ -35,11 +40,14 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       description: "Bedrock Chat Stack",
       ...props,
     });
+    const cronSchedule = createCronSchedule(props.rdsSchedules);
 
     const vpc = new ec2.Vpc(this, "VPC", {});
     const vectorStore = new VectorStore(this, "VectorStore", {
       vpc: vpc,
+      rdsSchedule: cronSchedule,
     });
+    const idp = identityProvider(props.identityProviders);
     // CodeBuild is used for api publication
     const apiPublishCodebuild = new ApiPublishCodebuild(
       this,
@@ -73,6 +81,21 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       autoDeleteObjects: true,
     });
 
+    const frontend = new Frontend(this, "Frontend", {
+      accessLogBucket,
+      webAclId: props.webAclId,
+      assetBucket: {
+        prefix: `${this.node.tryGetContext('bucketNamePrefix') ?? 'chatbot-frontend-assets'}-${this.account}-${this.region}`,
+        removalPolicy: this.node.tryGetContext('bucketRemovalPolicy') ?? 'DESTROY',
+      },
+    });
+
+    const auth = new Auth(this, "Auth", {
+      origin: frontend.getOrigin(),
+      userPoolDomainPrefixKey: props.userPoolDomainPrefix,
+      idp,
+      allowedSignUpEmailDomains: props.allowedSignUpEmailDomains,
+    });
     const largeMessageBucket = new Bucket(this, "LargeMessageBucket", {
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -107,18 +130,14 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       }),
     });
 
-    const auth = new Auth(this, "Auth");
     const database = new Database(this, "Database", {
-      // Enable PITR to export data to s3 if usage analysis is enabled
-      pointInTimeRecovery: props.enableUsageAnalysis,
+      // Enable PITR to export data to s3
+      pointInTimeRecovery: true,
     });
 
-    let usageAnalysis;
-    if (props.enableUsageAnalysis) {
-      usageAnalysis = new UsageAnalysis(this, "UsageAnalysis", {
-        sourceDatabase: database,
-      });
-    }
+    const usageAnalysis = new UsageAnalysis(this, "UsageAnalysis", {
+      sourceDatabase: database,
+    });
 
     const backendApi = new Api(this, "BackendApi", {
       vpc,
@@ -146,17 +165,14 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       largeMessageBucket,
     });
 
-    const frontend = new Frontend(this, "Frontend", {
+    frontend.buildViteApp({
       backendApiEndpoint: backendApi.api.apiEndpoint,
       webSocketApiEndpoint: websocket.apiEndpoint,
+      userPoolDomainPrefix: props.userPoolDomainPrefix,
       auth,
-      accessLogBucket,
-      webAclId: props.webAclId,
-      assetBucket: {
-        prefix: `${this.node.tryGetContext('bucketNamePrefix') ?? 'chatbot-frontend-assets'}-${this.account}-${this.region}`,
-        removalPolicy: this.node.tryGetContext('bucketRemovalPolicy') ?? 'DESTROY',
-      },
+      idp,
     });
+
     documentBucket.addCorsRule({
       allowedMethods: [HttpMethods.PUT],
       allowedOrigins: [frontend.getOrigin(), "http://localhost:5173"],

@@ -3,6 +3,8 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { ChatbotGenAiCdkStack } from "../lib/chatbot-genai-cdk-stack";
 import { FrontendWafStack } from "../lib/frontend-waf-stack";
+import { TIdentityProvider } from "../lib/utils/identity-provider";
+import { CronScheduleProps } from "../lib/utils/cron-schedule";
 
 const app = new cdk.App();
 
@@ -20,10 +22,15 @@ const PUBLISHED_API_ALLOWED_IP_V4_ADDRESS_RANGES: string[] =
 const PUBLISHED_API_ALLOWED_IP_V6_ADDRESS_RANGES: string[] =
   app.node.tryGetContext("publishedApiAllowedIpV6AddressRanges");
 
-const ENABLE_USAGE_ANALYSIS: boolean = app.node.tryGetContext(
-  "enableUsageAnalysis"
+const ALLOWED_SIGN_UP_EMAIL_DOMAINS: string[] =
+  app.node.tryGetContext('allowedSignUpEmailDomains');
+const IDENTITY_PROVIDERS: TIdentityProvider[] =
+  app.node.tryGetContext("identityProviders");
+const USER_POOL_DOMAIN_PREFIX: string = app.node.tryGetContext(
+  "userPoolDomainPrefix"
 );
 
+const RDS_SCHEDULES: CronScheduleProps = app.node.tryGetContext("rdbSchedules");
 // WAF for frontend
 // 2023/9: Currently, the WAF for CloudFront needs to be created in the North America region (us-east-1), so the stacks are separated
 // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html
@@ -42,11 +49,15 @@ const chat = new ChatbotGenAiCdkStack(app, app.node.tryGetContext('stackName'), 
   },
   crossRegionReferences: true,
   webAclId: waf.webAclArn.value,
+  identityProviders: IDENTITY_PROVIDERS,
+  userPoolDomainPrefix: USER_POOL_DOMAIN_PREFIX,
   bedrockRegion: app.node.tryGetContext('bedrockRegion'),
-  enableUsageAnalysis: ENABLE_USAGE_ANALYSIS,
   publishedApiAllowedIpV4AddressRanges:
     PUBLISHED_API_ALLOWED_IP_V4_ADDRESS_RANGES,
   publishedApiAllowedIpV6AddressRanges:
     PUBLISHED_API_ALLOWED_IP_V6_ADDRESS_RANGES,
+  allowedSignUpEmailDomains:
+    ALLOWED_SIGN_UP_EMAIL_DOMAINS,
+  rdsSchedules: RDS_SCHEDULES,
 });
 chat.addDependency(waf);

@@ -76,7 +76,7 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 - [Amazon Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/): Scalable vector store with [pgvector](https://github.com/pgvector/pgvector) plugin
 - [Amazon Athena](https://aws.amazon.com/athena/): Query service to analyze S3 bucket
 
-![](https://d107sfil7rheid.cloudfront.net/arch_202403.png)
+![](https://d107sfil7rheid.cloudfront.net/chatbot/arch_202404.png)
 
 ## Features and Roadmap
 
@@ -125,7 +125,7 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 
 ## Others
 
-### Configure text generation / embedding parameters
+### Configure text generation
 
 Edit [config.py](./backend/app/config.py) and run `cdk deploy`.
 
@@ -138,23 +138,45 @@ GENERATION_CONFIG = {
     "temperature": 0.6,
     "stop_sequences": ["Human: ", "Assistant: "],
 }
-
-EMBEDDING_CONFIG = {
-    "model_id": "cohere.embed-multilingual-v3",
-    "chunk_size": 1000,
-    "chunk_overlap": 200,
-}
 ```
 
 ### Remove resources
 
 Uncomment the `chatbot-DANGER-hard-delete-deployed-resources` workflow in [.codecatalyst/workflows`](./codecatalyst/workflows/chatbot-DANGER-hard-delete-deployed-resources.yaml) and then manually trigger the workflow. This will remove the stacks and all associated resources.
 
+### Stopping Vector DB for RAG
+
+By setting [cdk.json](./cdk.json) in the following CRON format, you can stop and restart Aurora Serverless resources created by the [VectorStore construct](./lib/constructs/vectorstore.ts). Applying this setting can reduce operating costs. By default, Aurora Serverless is always running. Note that it will be executed in UTC time.
+
+```json
+...
+"rdbSchedules": {
+  "stop": {
+    "minute": "50",
+    "hour": "10",
+    "day": "*",
+    "month": "*",
+    "year": "*"
+  },
+  "start": {
+    "minute": "40",
+    "hour": "2",
+    "day": "*",
+    "month": "*",
+    "year": "*"
+  }
+}
+```
+
 ### Language Settings
 
 This asset automatically detects the language using [i18next-browser-languageDetector](https://github.com/i18next/i18next-browser-languageDetector). You can switch languages from the application menu. Alternatively, you can use Query String to set the language as shown below.
 
 > `https://example.com?lng=ja`
+
+### External Identity Provider
+
+This application supports an external identity provider. Currently we support [Google](./docs/idp/SET_UP_GOOGLE.md) and [custom OIDC provider](./docs/idp/SET_UP_CUSTOM_OIDC.md).
 
 ### Local Development
 
