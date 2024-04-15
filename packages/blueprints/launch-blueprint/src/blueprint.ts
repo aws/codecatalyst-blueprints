@@ -137,8 +137,8 @@ export class Blueprint extends ParentBlueprint {
         for (const actionName of Object.keys(workflow.Actions ?? [])) {
           const action = workflow.Actions?.[actionName];
           this.mapParametersToAction(action);
-          for (const childActioName of Object.keys(action.Actions ?? [])) {
-            const childAction = action.Actions?.[childActioName];
+          for (const childActionName of Object.keys(action.Actions ?? [])) {
+            const childAction = action.Actions?.[childActionName];
             this.mapParametersToAction(childAction);
           }
         }
