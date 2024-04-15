@@ -4,7 +4,7 @@ import path from 'path';
 import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ConnectionDefinition, InputVariable, WorkflowDefinition, WorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { Blueprint as ParentBlueprint, Options as ParentOptions, Selector, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import { DynamicKVInput, Blueprint as ParentBlueprint, Options as ParentOptions, Selector, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
 import * as yaml from 'yaml';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import defaults from './defaults.json';
@@ -52,8 +52,14 @@ export interface Options extends ParentOptions {
 
   /**
    * @readOnly
+   * @deprecated use `paremeters` property instead
    */
   options: Tuple<[string, string]>[];
+
+  /**
+   * @readOnly
+   */
+  parameters: DynamicKVInput[];
 }
 
 const OPTIONS_PREFIX = 'LAUNCH_OPTIONS_';
@@ -100,11 +106,10 @@ export class Blueprint extends ParentBlueprint {
     const pathToRepository = path.join(this.context.durableStoragePath, this.state.repository.title);
 
     if (!fs.existsSync(pathToRepository)) {
-
-      let cloneOptions = ['clone', '--depth', '1'].concat
-      (this.state.options.sourceBranch ? ['--branch', this.state.options.sourceBranch] : [],
-        [this.state.options.sourceRepository, this.state.repository.title]);
-
+      let cloneOptions = ['clone', '--depth', '1'].concat(this.state.options.sourceBranch ? ['--branch', this.state.options.sourceBranch] : [], [
+        this.state.options.sourceRepository,
+        this.state.repository.title,
+      ]);
 
       cp.spawnSync('git', cloneOptions, {
         cwd: this.context.durableStoragePath,
@@ -137,9 +142,11 @@ export class Blueprint extends ParentBlueprint {
           for (const variable of variables ?? []) {
             if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
               const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
-              const optionValue = this.state.options.options.find(option => option[0] == optionName)?.[1];
-              if (optionValue) {
-                variable.Value = optionValue?.toString();
+              const specifiedValue =
+                this.state.options.parameters.find(parameter => parameter.key == optionName)?.value ??
+                this.state.options.options.find(option => option[0] == optionName)?.[1];
+              if (specifiedValue) {
+                variable.Value = specifiedValue.toString();
               }
             }
           }
