@@ -136,37 +136,10 @@ export class Blueprint extends ParentBlueprint {
         const workflow = yaml.parse(workflowYaml) as WorkflowDefinition;
         for (const actionName of Object.keys(workflow.Actions ?? [])) {
           const action = workflow.Actions?.[actionName];
-
-          //set variables with options where applicable
-          const variables = action.Inputs?.Variables as InputVariable[] | undefined;
-          for (const variable of variables ?? []) {
-            if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
-              const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
-              const specifiedValue =
-                this.state.options.parameters.find(parameter => parameter.key == optionName)?.value ??
-                this.state.options.options.find(option => option[0] == optionName)?.[1];
-              if (specifiedValue) {
-                variable.Value = specifiedValue.toString();
-              }
-            }
-          }
-
-          //set action environments from options where applicable
-          const actionEnvironment = action.Environment as WorkflowEnvironment | undefined;
-          if (actionEnvironment?.Name) {
-            const environment = this.state.options.environments.find(env => env.name == actionEnvironment.Name) as EnvironmentDefinition<{
-              awsAccountConnection: AccountConnection<{
-                launchRole: Role<['codecatalyst*']>;
-              }>;
-            }>;
-            if (environment?.awsAccountConnection?.name) {
-              actionEnvironment.Connections = [
-                {
-                  Name: environment.awsAccountConnection.name,
-                  Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
-                } as ConnectionDefinition,
-              ];
-            }
+          this.mapParametersToAction(action);
+          for (const childActionName of Object.keys(action.Actions ?? [])) {
+            const childAction = action.Actions?.[childActionName];
+            this.mapParametersToAction(childAction);
           }
         }
 
@@ -177,5 +150,39 @@ export class Blueprint extends ParentBlueprint {
 
     this.addExcludeFromCleanup(path.join(this.outdir, 'src', this.state.repository.title, '**'));
     super.synth();
+  }
+
+  protected mapParametersToAction(action: { [id: string]: any }) {
+    //set variables with options where applicable
+    const variables = action.Inputs?.Variables as InputVariable[] | undefined;
+    for (const variable of variables ?? []) {
+      if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
+        const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
+        const specifiedValue =
+          this.state.options.parameters.find(parameter => parameter.key == optionName)?.value ??
+          this.state.options.options.find(option => option[0] == optionName)?.[1];
+        if (specifiedValue) {
+          variable.Value = specifiedValue.toString();
+        }
+      }
+    }
+
+    //set action environments from options where applicable
+    const actionEnvironment = action.Environment as WorkflowEnvironment | undefined;
+    if (actionEnvironment?.Name) {
+      const environment = this.state.options.environments.find(env => env.name == actionEnvironment.Name) as EnvironmentDefinition<{
+        awsAccountConnection: AccountConnection<{
+          launchRole: Role<['codecatalyst*']>;
+        }>;
+      }>;
+      if (environment?.awsAccountConnection?.name) {
+        actionEnvironment.Connections = [
+          {
+            Name: environment.awsAccountConnection.name,
+            Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
+          } as ConnectionDefinition,
+        ];
+      }
+    }
   }
 }
