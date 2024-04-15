@@ -130,7 +130,7 @@ export class Blueprint extends ParentBlueprint {
       const workflowFiles = fs.readdirSync(workflowPath);
 
       //load each workflow from the cloned repository
-      for (const workflowFile of workflowFiles) {
+      for (const workflowFile of workflowFiles.filter(name => name.match(/^(.*)(\.yaml|\.yml)$/i))) {
         const workflowFilePath = path.join(workflowPath, workflowFile);
         const workflowYaml = fs.readFileSync(workflowFilePath).toString('utf-8');
         const workflow = yaml.parse(workflowYaml) as WorkflowDefinition;
