@@ -4,6 +4,7 @@
     "environmentType": "PRODUCTION"
   },
   "enableSelfRegistration": "Disabled",
+  "allowedSignUpEmailDomains": [],
   "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
   "cleanupWafWorkflowTemplateBucketName": "tmp-cleanup-waf-workflow-",
   "code": {
@@ -17,7 +18,6 @@
     "bucketRemovalPolicy": "Destroy",
     "allowedIpV4AddressRanges": [],
     "allowedIpV6AddressRanges": [],
-    "enableUsageAnalysis": "Enabled",
     "stackDisambiguator": ""
   }
 }

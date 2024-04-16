@@ -51,6 +51,14 @@ export interface Options extends ParentOptions {
   enableSelfRegistration: 'Enabled' | 'Disabled';
 
   /**
+   * Allowed email address domains for self-registration. Has no effect if self-registration is disabled.
+   * @validationRegex /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/
+   * @validationMessage Must be a valid domain name
+   * @displayName Allowed email sign-up domains
+   */
+  allowedSignUpEmailDomains?: string[];
+
+  /**
    * This is an intentionally hidden field that determines if the cleanup workflow will be generated as commented out.
    * This will be set to true during blueprint health assessment run for cleanup workflow to run as expected.
    * @hidden true
@@ -166,12 +174,6 @@ export interface Options extends ParentOptions {
     allowedIpV6AddressRanges?: string[];
 
     /**
-     * Enables user usage analysis via an admin console.
-     * @displayName Usage Analysis
-     */
-    enableUsageAnalysis: 'Enabled' | 'Disabled';
-
-    /**
      * Disambiguator to add to Cloudformation exports in order to avoid collisions between stacks.
      * @hidden true
      * @defaultEntropy 8
@@ -208,6 +210,7 @@ export class Blueprint extends ParentBlueprint {
       repository,
       'cdk.json',
       new SubstitionAsset('chatbot-genai-cdk/cdk.json').substitute({
+        allowedSignUpEmailDomains: this.toCsv(options.allowedSignUpEmailDomains),
         allowedIpV4AddressRanges: this.toCsv(options.code.allowedIpV4AddressRanges),
         allowedIpV6AddressRanges: this.toCsv(options.code.allowedIpV6AddressRanges),
         region: options.code.region,
@@ -217,7 +220,6 @@ export class Blueprint extends ParentBlueprint {
         bucketRemovalPolicy: options.code.bucketRemovalPolicy.toUpperCase(),
         bucketNamePrefix: options.code.bucketNamePrefix,
         enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
-        enableUsageAnalysis: options.code.enableUsageAnalysis === 'Enabled',
         stackDisambiguator: options.code.stackDisambiguator,
       }),
     );
@@ -226,7 +228,7 @@ export class Blueprint extends ParentBlueprint {
       new Issue(this, 'register-first-user', {
         title: 'Register your first chatbot user',
         content:
-          'Log into the AWS account in which this chatbot is deployed. Navigate to cognito and then add a verified user in order to allow them to log in.',
+          `Log into the AWS account in which this chatbot is deployed. Navigate to Amazon Cognito in ${options.code.region} and then add a verified user in order to allow them to log in.`,
       });
     }
 
