@@ -34,7 +34,7 @@ from app.routes.schemas.bot import (
     BotModifyOutput,
     BotOutput,
     BotSummaryOutput,
-    EmbeddingParamsModel,
+    EmbeddingParams,
     Knowledge,
     type_sync_status,
 )
