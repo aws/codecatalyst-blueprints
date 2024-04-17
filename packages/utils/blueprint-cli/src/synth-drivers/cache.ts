@@ -56,7 +56,7 @@ const fsLinkerPlugin = {
       cp.execSync('rm -rf ./lib/externals');
     });
 
-    build.onLoad({ filter: /.*/ }, ({ path: filePath }) => {
+    build.onLoad({ filter: /\.(t|j)s/ }, ({ path: filePath }) => {
       if (filePath.match(nodeModulesRegex)) {
         const pathSegments = filePath.split('node_modules/');
         let segments = pathSegments[pathSegments.length - 1].split('/');
