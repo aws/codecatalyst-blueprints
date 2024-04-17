@@ -68,7 +68,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "",
-  "version": "0.3.104",
+  "version": "0.3.105",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
