@@ -4,6 +4,7 @@ import {
   Bucket,
   BucketEncryption,
   HttpMethods,
+  IBucket,
   ObjectOwnership,
 } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
@@ -22,6 +23,7 @@ import { ApiPublishCodebuild } from "./constructs/api-publish-codebuild";
 import { WebAclForPublishedApi } from "./constructs/webacl-for-published-api";
 import { VpcConfig } from "./api-publishment-stack";
 import { CronScheduleProps, createCronSchedule } from "./utils/cron-schedule";
+import { CF_SKIP_ACCESS_LOGGING_REGIONS } from "./utils/constants";
 
 export interface ChatbotGenAiCdkStackProps extends StackProps {
   readonly bedrockRegion: string;
@@ -72,14 +74,17 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
         .toString(),
     };
 
-    const accessLogBucket = new Bucket(this, "AccessLogBucket", {
-      encryption: BucketEncryption.S3_MANAGED,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-      enforceSSL: true,
-      removalPolicy: RemovalPolicy.DESTROY,
-      objectOwnership: ObjectOwnership.OBJECT_WRITER,
-      autoDeleteObjects: true,
-    });
+    const accessLogBucket: IBucket | undefined =
+      CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
+        ? undefined
+        : new Bucket(this, "AccessLogBucket", {
+            encryption: BucketEncryption.S3_MANAGED,
+            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+            enforceSSL: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+            objectOwnership: ObjectOwnership.OBJECT_WRITER,
+            autoDeleteObjects: true,
+          });
 
     const frontend = new Frontend(this, "Frontend", {
       accessLogBucket,

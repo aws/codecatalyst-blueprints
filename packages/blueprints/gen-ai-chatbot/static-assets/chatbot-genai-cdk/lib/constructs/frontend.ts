@@ -15,7 +15,7 @@ import { Auth } from "./auth";
 import { Idp } from "../utils/identity-provider";
 
 export interface FrontendProps {
-  readonly accessLogBucket: IBucket;
+  readonly accessLogBucket?: IBucket;
   readonly webAclId: string;
   readonly assetBucket: {
     prefix: string;
@@ -70,7 +70,7 @@ export class Frontend extends Construct {
           responsePagePath: "/",
         },
       ],
-      loggingConfig: {
+      loggingConfig: props.accessLogBucket && {
         bucket: props.accessLogBucket,
         prefix: "Frontend/",
       },
