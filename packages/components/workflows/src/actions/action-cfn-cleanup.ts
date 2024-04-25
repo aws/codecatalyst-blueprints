@@ -34,7 +34,7 @@ export const cfnCleanupSteps = (stackName: string, region: string, options?: { b
       region === 'us-east-1' ? '' : '--create-bucket-configuration LocationConstraint=$region'
     } || true`,
     'echo \'Update the cloudformation stack and wait for the status to no longer be "UPDATE_IN_PROGRESS" , ignoring the case when it needs not be updated.\'',
-    'aws s3 cp ./updated-template-$stack_name.json s3://$cfn_template_upload_bucket/updated-template-$stack_name.json',
+    'aws s3 cp ./updated-template-$stack_name.json s3://$cfn_template_upload_bucket/updated-template-$stack_name.json --region $region',
     'aws cloudformation update-stack --stack-name $stack_name --region $region --template-url https://s3.amazonaws.com/$cfn_template_upload_bucket/updated-template-$stack_name.json --capabilities CAPABILITY_NAMED_IAM || true',
     'timeout 300 bash -c \'while true; do status=$(aws cloudformation describe-stacks --stack-name "$stack_name" --region $region --query "Stacks[0].StackStatus" --output text); if [[ "$status" == "UPDATE_IN_PROGRESS" ]]; then sleep 10; else break; fi; done\'',
     "echo 'Store the list of associated S3 buckets and Elastic Container Registries'",
