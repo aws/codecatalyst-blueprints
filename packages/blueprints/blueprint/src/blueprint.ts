@@ -219,6 +219,11 @@ export class Blueprint extends Project {
   throwSynthesisError(error: BlueprintSynthesisError) {
     throw error;
   }
+
+  override synth(): void {
+    this.addExcludeFromCleanup(path.join(this.outdir, '**'));
+    super.synth();
+  }
 }
 
 export enum BlueprintSynthesisErrorTypes {
