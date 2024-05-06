@@ -11,6 +11,7 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { aws_glue } from "aws-cdk-lib";
 import { Database } from "./database";
 import * as iam from "aws-cdk-lib/aws-iam";
+import { CF_SKIP_ACCESS_LOGGING_REGIONS } from "../utils/constants";
 
 export interface UsageAnalysisProps {
   sourceDatabase: Database;
@@ -31,7 +32,7 @@ export class UsageAnalysis extends Construct {
     ).stackName.toLowerCase()}_usage_analysis`;
     const DDB_EXPORT_TABLE_NAME = "ddb_export";
 
-     // Bucket to export DynamoDB data
+    // Bucket to export DynamoDB data
     const ddbBucket = new s3.Bucket(this, "DdbBucket", {
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -40,21 +41,23 @@ export class UsageAnalysis extends Construct {
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      serverAccessLogsBucket: new s3.Bucket(this, 'DdbBucketLogs', {
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        enforceSSL: true,
-        removalPolicy: RemovalPolicy.DESTROY,
-        lifecycleRules: [
-          {
-            enabled: true,
-            expiration: Duration.days(3653),
-            id: 'ExpireAfterTenYears',
-          },
-        ],
-        versioned: true,
-        serverAccessLogsPrefix: 'self/',
-      }),
+      serverAccessLogsBucket: CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
+        ? undefined
+        : new s3.Bucket(this, "DdbBucketLogs", {
+            encryption: s3.BucketEncryption.S3_MANAGED,
+            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+            enforceSSL: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+            lifecycleRules: [
+              {
+                enabled: true,
+                expiration: Duration.days(3653),
+                id: "ExpireAfterTenYears",
+              },
+            ],
+            versioned: true,
+            serverAccessLogsPrefix: "self/",
+          }),
     });
 
     // Bucket for Athena query results
@@ -94,7 +97,11 @@ export class UsageAnalysis extends Construct {
       },
       {
         name: "MessageMap",
-        type: glue.Schema.STRING,
+        type: glue.Schema.struct([{ name: "S", type: glue.Schema.STRING }]),
+      },
+      {
+        name: "IsLargeMessage",
+        type: glue.Schema.struct([{ name: "BOOL", type: glue.Schema.BOOLEAN }]),
       },
       {
         name: "PK",

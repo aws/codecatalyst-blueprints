@@ -21,6 +21,7 @@ export interface FrontendProps {
     prefix: string;
     removalPolicy: string;
   };
+  enableMistral: boolean;
 }
 
 export class Frontend extends Construct {
@@ -34,7 +35,10 @@ export class Frontend extends Construct {
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
-      removalPolicy: props.assetBucket.removalPolicy === 'RETAIN' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+      removalPolicy:
+        props.assetBucket.removalPolicy === "RETAIN"
+          ? RemovalPolicy.RETAIN
+          : RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
 
@@ -88,12 +92,14 @@ export class Frontend extends Construct {
     backendApiEndpoint,
     webSocketApiEndpoint,
     userPoolDomainPrefix,
+    enableMistral,
     auth,
     idp,
   }: {
     backendApiEndpoint: string;
     webSocketApiEndpoint: string;
     userPoolDomainPrefix: string;
+    enableMistral: boolean;
     auth: Auth;
     idp: Idp;
   }) {
@@ -106,6 +112,7 @@ export class Frontend extends Construct {
         VITE_APP_WS_ENDPOINT: webSocketApiEndpoint,
         VITE_APP_USER_POOL_ID: auth.userPool.userPoolId,
         VITE_APP_USER_POOL_CLIENT_ID: auth.client.userPoolClientId,
+        VITE_APP_ENABLE_MISTRAL: enableMistral.toString(),
         VITE_APP_REGION: region,
         VITE_APP_USE_STREAMING: "true",
       };
