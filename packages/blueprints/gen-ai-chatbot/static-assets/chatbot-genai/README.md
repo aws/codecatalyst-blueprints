@@ -26,6 +26,9 @@ Analyze usage for each user / bot on administrator dashboard. [detail](./docs/AD
 - 日本語 💬 (ドキュメントは[こちら](./docs/README_ja.md))
 - 한국어 💬
 - 中文 💬
+- Français 💬
+- Deutsch 💬
+- Español 💬
 
 ## 🚀 Super-easy Deployment
 
@@ -124,6 +127,18 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 </details>
 
 ## Others
+
+### Configure Mistral models support
+
+Update `enableMistral` to `true` in [cdk.json](./cdk/cdk.json), and run `cdk deploy`.
+
+```json
+...
+  "enableMistral": true,
+```
+
+> [!Important]
+> This project focus on Anthropic Claude models, the Mistral models are limited supported. For example, prompt examples are based on Claude models. This is a Mistral-only option, once you toggled to enable Mistral models, you can only use Mistral models for all the chat features, NOT both Claude and Mistral models.
 
 ### Configure text generation
 

@@ -18,6 +18,7 @@ class RecordNotFoundError(Exception):
 class RecordAccessNotAllowedError(Exception):
     pass
 
+
 class ResourceConflictError(Exception):
     pass
 

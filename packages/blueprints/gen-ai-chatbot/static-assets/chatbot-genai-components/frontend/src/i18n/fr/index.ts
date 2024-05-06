@@ -85,14 +85,14 @@ const translation = {
         },
         mailCategorizer: {
           title: 'Classificateur de courrier',
-          prompt: `Vous êtes un agent du service client chargé de classer les e-mails par type. Veuillez indiquer votre réponse, puis justifier votre classification.
+          prompt: `Vous êtes un agent du service client chargé de classer les e-mails par type. Veuillez indiquer votre réponse, puis justifier votre classification. 
 
 Les catégories de classification sont :
 (A) Question préalable à la vente
 (B) Article cassé ou défectueux
 (C) Question sur la facturation
 (D) Autre (veuillez expliquer)
-
+          
 Comment catégoriseriez-vous cet e-mail ?`,
         },
         fitnessCoach: {

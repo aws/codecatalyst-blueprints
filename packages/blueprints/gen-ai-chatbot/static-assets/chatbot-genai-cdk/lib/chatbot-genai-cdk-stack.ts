@@ -34,6 +34,7 @@ export interface ChatbotGenAiCdkStackProps extends StackProps {
   readonly publishedApiAllowedIpV6AddressRanges: string[];
   readonly allowedSignUpEmailDomains: string[];
   readonly rdsSchedules: CronScheduleProps;
+  readonly enableMistral: boolean;
 }
 
 export class ChatbotGenAiCdkStack extends cdk.Stack {
@@ -93,6 +94,7 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
         prefix: `${this.node.tryGetContext('bucketNamePrefix') ?? 'chatbot-frontend-assets'}-${this.account}-${this.region}`,
         removalPolicy: this.node.tryGetContext('bucketRemovalPolicy') ?? 'DESTROY',
       },
+      enableMistral: props.enableMistral,
     });
 
     const auth = new Auth(this, "Auth", {
@@ -118,21 +120,23 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       objectOwnership: ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      serverAccessLogsBucket: new Bucket(this, 'DdbBucketLogs', {
-        encryption: BucketEncryption.S3_MANAGED,
-        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-        enforceSSL: true,
-        removalPolicy: RemovalPolicy.DESTROY,
-        lifecycleRules: [
-          {
-            enabled: true,
-            expiration: Duration.days(3653),
-            id: 'ExpireAfterTenYears',
-          },
-        ],
-        versioned: true,
-        serverAccessLogsPrefix: 'self/',
-      }),
+      serverAccessLogsBucket: CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
+        ? undefined
+        : new Bucket(this, "DdbBucketLogs", {
+            encryption: BucketEncryption.S3_MANAGED,
+            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+            enforceSSL: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+            lifecycleRules: [
+              {
+                enabled: true,
+                expiration: Duration.days(3653),
+                id: "ExpireAfterTenYears",
+              },
+            ],
+            versioned: true,
+            serverAccessLogsPrefix: "self/",
+          }),
     });
 
     const database = new Database(this, "Database", {
@@ -174,13 +178,14 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       backendApiEndpoint: backendApi.api.apiEndpoint,
       webSocketApiEndpoint: websocket.apiEndpoint,
       userPoolDomainPrefix: props.userPoolDomainPrefix,
+      enableMistral: props.enableMistral,
       auth,
       idp,
     });
 
     documentBucket.addCorsRule({
       allowedMethods: [HttpMethods.PUT],
-      allowedOrigins: [frontend.getOrigin(), "http://localhost:5173"],
+      allowedOrigins: [frontend.getOrigin(), "http://localhost:5173", "*"],
       allowedHeaders: ["*"],
       maxAge: 3000,
     });
@@ -228,35 +233,51 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
     });
     new CfnOutput(this, "AvailabilityZone0", {
       value: vpc.availabilityZones[0],
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatAvailabilityZone0"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatAvailabilityZone0"
+      ),
     });
     new CfnOutput(this, "AvailabilityZone1", {
       value: vpc.availabilityZones[1],
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatAvailabilityZone1"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatAvailabilityZone1"
+      ),
     });
     new CfnOutput(this, "PublicSubnetId0", {
       value: vpc.publicSubnets[0].subnetId,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatPublicSubnetId0"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatPublicSubnetId0"
+      ),
     });
     new CfnOutput(this, "PublicSubnetId1", {
       value: vpc.publicSubnets[1].subnetId,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatPublicSubnetId1"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatPublicSubnetId1"
+      ),
     });
     new CfnOutput(this, "PrivateSubnetId0", {
       value: vpc.privateSubnets[0].subnetId,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatPrivateSubnetId0"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatPrivateSubnetId0"
+      ),
     });
     new CfnOutput(this, "PrivateSubnetId1", {
       value: vpc.privateSubnets[1].subnetId,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatPrivateSubnetId1"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatPrivateSubnetId1"
+      ),
     });
     new CfnOutput(this, "DbConfigSecretArn", {
       value: vectorStore.secret.secretArn,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatDbConfigSecretArn"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatDbConfigSecretArn"
+      ),
     });
     new CfnOutput(this, "DbConfigHostname", {
       value: vectorStore.cluster.clusterEndpoint.hostname,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatDbConfigHostname"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatDbConfigHostname"
+      ),
     });
     new CfnOutput(this, "DbConfigPort", {
       value: vectorStore.cluster.clusterEndpoint.port.toString(),
@@ -264,24 +285,32 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
     });
     new CfnOutput(this, "ConversationTableName", {
       value: database.table.tableName,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatConversationTableName"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatConversationTableName"
+      ),
     });
     new CfnOutput(this, "TableAccessRoleArn", {
       value: database.tableAccessRole.roleArn,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatTableAccessRoleArn"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatTableAccessRoleArn"
+      ),
     });
     new CfnOutput(this, "DbSecurityGroupId", {
       value: vectorStore.securityGroup.securityGroupId,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatDbSecurityGroupId"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatDbSecurityGroupId"
+      ),
     });
     new CfnOutput(this, "LargeMessageBucketName", {
       value: largeMessageBucket.bucketName,
-      exportName: this.disambiguateIdentifier("BedrockClaudeChatLargeMessageBucketName"),
+      exportName: this.disambiguateIdentifier(
+        "BedrockClaudeChatLargeMessageBucketName"
+      ),
     });
   }
 
   private disambiguateIdentifier(identifier: string) {
-    const disambiguator = this.node.tryGetContext('stackDisambiguator');
+    const disambiguator = this.node.tryGetContext("stackDisambiguator");
     return disambiguator ? `${identifier}-${disambiguator}` : identifier;
   }
 }

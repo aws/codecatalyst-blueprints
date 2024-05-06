@@ -40,6 +40,9 @@ The following languages are supported for a custom chatbot:
 * Japanese (日本語)
 * Korean (한국어)
 * Chinese (中文)
+* Français
+* Deutsch
+* Español
 
 ## Deployment
 After building your chatbot, you can also deploy it with this blueprint. Before a chatbot can be deployed with a CodeCatalyst workflow, you must enable model access.
