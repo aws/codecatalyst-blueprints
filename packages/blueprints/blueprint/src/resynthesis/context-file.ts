@@ -84,3 +84,7 @@ export function createContextFile(bundlepath: string, resourcePrefix: string, re
   }
   return undefined;
 }
+
+export function getAbsoluteContextFilePath(bundlepath: string, resourcePrefix: string, contextFile: ContextFile): string {
+  return path.join(bundlepath, resourcePrefix, contextFile.repositoryName, contextFile.path);
+}
