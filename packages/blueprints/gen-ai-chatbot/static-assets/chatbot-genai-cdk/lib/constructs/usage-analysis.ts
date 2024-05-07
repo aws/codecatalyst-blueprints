@@ -41,23 +41,21 @@ export class UsageAnalysis extends Construct {
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      serverAccessLogsBucket: CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
-        ? undefined
-        : new s3.Bucket(this, "DdbBucketLogs", {
-            encryption: s3.BucketEncryption.S3_MANAGED,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-            enforceSSL: true,
-            removalPolicy: RemovalPolicy.DESTROY,
-            lifecycleRules: [
-              {
-                enabled: true,
-                expiration: Duration.days(3653),
-                id: "ExpireAfterTenYears",
-              },
-            ],
-            versioned: true,
-            serverAccessLogsPrefix: "self/",
-          }),
+      serverAccessLogsBucket: new s3.Bucket(this, 'DdbBucketLogs', {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        enforceSSL: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+        lifecycleRules: [
+          {
+            enabled: true,
+            expiration: Duration.days(3653),
+            id: 'ExpireAfterTenYears',
+          },
+        ],
+        versioned: true,
+        serverAccessLogsPrefix: 'self/',
+      }),
     });
 
     // Bucket for Athena query results
