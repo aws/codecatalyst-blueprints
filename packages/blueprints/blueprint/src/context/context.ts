@@ -122,4 +122,9 @@ export interface Context {
    * same as `rootDir`.
    */
   readonly durableStoragePath: string;
+
+  /**
+   * Folder that contains dynamic wizard options that can be loaded at synthesis time.
+   */
+  readonly wizardOptionsPath: string;
 }

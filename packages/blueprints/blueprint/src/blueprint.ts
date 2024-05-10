@@ -80,6 +80,7 @@ export class Blueprint extends Project {
       },
       durableStoragePath:
         process.env.DURABLE_STORAGE_ABS && fs.existsSync(process.env.DURABLE_STORAGE_ABS) ? process.env.DURABLE_STORAGE_ABS : rootDir,
+      wizardOptionsPath: process.env.WIZARD_OPTIONS_ABS ?? path.join(rootDir, 'options'),
     };
 
     for (const component of this.components) {
