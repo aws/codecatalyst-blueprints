@@ -96,3 +96,15 @@ function structureOutputLocation(
     tarPathAbs: absTarPath,
   };
 }
+
+function tarFolder(_logger: pino.BaseLogger, folderPath: string, tarOutputPath: string): string {
+  tar.c(
+    {
+      gzip: true,
+      cwd: path.join(folderPath, '..'),
+      file: tarOutputPath,
+    },
+    [folderPath],
+  );
+  return tarOutputPath;
+}

@@ -8,6 +8,8 @@ import { hideBin } from 'yargs/helpers';
 import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessment/generate-assessment-cli';
 import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
+import { exportBundle } from './bundle/export-bundle';
+import { getCodeCatalystClient } from './gql-clients/get-codecatalyst-client';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish/publish';
 import { EXISTING_BUNDLE_SUBPATH, ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
@@ -530,6 +532,60 @@ yargs
         log.error(`[Failure] Assessment at ${argv.path} does NOT pass schema validation. See BlueprintAssessmentObject`);
         log.error(JSON.stringify(reasons, null, 2));
       }
+      process.exit(0);
+    },
+  })
+  .command({
+    command: 'prepare-bundle',
+    describe: 'Prepares a bundle from a project in a CodeCatalyst space',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('project', {
+          describe: 'CodeCatalyst project name',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('space', {
+          describe: 'CodeCatalyst space name',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('output', {
+          description: 'path to output location of the bundle',
+          type: 'string',
+          default: '/tmp/project-bundle',
+          demandOption: false,
+        })
+        .option('endpoint', {
+          description: 'CodeCatalyst endpoint',
+          type: 'string',
+          default: 'public.console.codecatalyst.aws',
+          demandOption: false,
+        });
+    },
+    handler: async (argv: { project: string; space: string; output: string; endpoint: string }): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      log.warn('===============================================');
+      log.warn('EXPERIMENTAL: generation bundle from project');
+      log.warn('===============================================');
+
+      const client = await getCodeCatalystClient(log, argv.endpoint, {
+        target: {
+          projectName: argv.project,
+          spaceName: argv.space,
+        },
+      });
+      if (!client) {
+        return;
+      }
+      const exportResult = await exportBundle(log, client, {
+        target: {
+          projectName: argv.project,
+          spaceName: argv.space,
+        },
+        outputPath: argv.output,
+      });
+      console.log(exportResult);
       process.exit(0);
     },
   })
