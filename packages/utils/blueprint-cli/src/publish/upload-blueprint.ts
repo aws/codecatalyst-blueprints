@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as querystring from 'querystring';
 import * as axios from 'axios';
+import axiosRetry, { exponentialDelay } from 'axios-retry';
 import * as pino from 'pino';
 import { blueprintVersionExists } from './blueprint-version-exists';
 import { CodeCatalystAuthentication, generateHeaders } from './codecatalyst-authentication';
@@ -70,7 +71,31 @@ export async function uploadBlueprint(
     blueprint.packageName,
   )}/versions/${querystring.escape(blueprint.version)}/packages`;
 
-  const publishBlueprintPackageResponse = await axios.default({
+  const maxRetries = 2;
+  const publishAxios = axios.default.create();
+  axiosRetry(publishAxios, {
+    retries: maxRetries,
+    shouldResetTimeout: true,
+    retryDelay: exponentialDelay,
+    retryCondition: error => {
+      switch (error.response?.status) {
+        case 500:
+          return true;
+        default:
+          return false;
+      }
+    },
+    onRetry: (retryCount, error) => {
+      console.log(`publishing attempt ${retryCount}/${maxRetries + 1} failed: ${error.message}...`);
+      console.log('retrying...');
+    },
+    onMaxRetryTimesExceeded: error => {
+      console.log(`publishing attempt ${maxRetries}/${maxRetries + 1} failed: ${error.message}...`);
+      console.log('all publishing attempts have failed');
+    },
+  });
+
+  const publishBlueprintPackageResponse = await publishAxios({
     method: 'PUT',
     url,
     data: blueprintTarballStream,

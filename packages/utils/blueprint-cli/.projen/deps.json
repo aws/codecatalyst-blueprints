@@ -126,6 +126,10 @@
       "type": "runtime"
     },
     {
+      "name": "axios-retry",
+      "type": "runtime"
+    },
+    {
       "name": "deepmerge",
       "type": "runtime"
     },
