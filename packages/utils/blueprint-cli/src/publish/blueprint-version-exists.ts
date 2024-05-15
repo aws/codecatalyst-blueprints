@@ -17,7 +17,7 @@ export async function blueprintVersionExists(
     };
     auth: {
       authentication: CodeCatalystAuthentication;
-      identity: IdentityResponse;
+      identity: IdentityResponse | undefined;
     };
   },
 ): Promise<boolean> {
