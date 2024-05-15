@@ -114,6 +114,11 @@ export class Blueprint extends ParentBlueprint {
     this.repository = repository;
     this.repository.setResynthStrategies([
       {
+        identifier: 'resolve_merge_conflicts',
+        strategy: MergeStrategies.preferProposed,
+        globs: ['**/**'],
+      },
+      {
         identifier: 'never_update_sample_code',
         strategy: MergeStrategies.neverUpdate,
         globs: ['static-assets/**', 'src/**'],
@@ -192,7 +197,13 @@ export class Blueprint extends ParentBlueprint {
               '@amazon-codecatalyst/blueprint-component.dev-environments',
               '@amazon-codecatalyst/blueprint-component.environments',
             ],
-            devDeps: ['ts-node@^10', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli', 'fast-xml-parser'],
+            devDeps: [
+              'ts-node@^10',
+              'typescript',
+              '@amazon-codecatalyst/blueprint-util.projen-blueprint',
+              '@amazon-codecatalyst/blueprint-util.cli',
+              'fast-xml-parser',
+            ],
           },
           null,
           2,
