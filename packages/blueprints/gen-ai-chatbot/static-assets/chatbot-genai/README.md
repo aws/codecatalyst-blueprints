@@ -34,28 +34,7 @@ Analyze usage for each user / bot on administrator dashboard. [detail](./docs/AD
 
 - In the {{bedrockRegion}} region, open [Bedrock Model access](https://{{bedrockRegion}}.console.aws.amazon.com/bedrock/home?region={{bedrockRegion}}#/modelaccess) > `Manage model access` > Check `Anthropic / Claude 3 Haiku`, `Anthropic / Claude 3 Sonnet` and `Cohere / Embed Multilingual` then `Save changes`.
 
-<details>
-<summary>Screenshot</summary>
-
-![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
-
-</details>
-
-- Open [CloudShell](https://console.aws.amazon.com/cloudshell/home) at the region where you want to deploy
-- Run deployment via following commands
-
-```sh
-git clone https://github.com/aws-samples/bedrock-claude-chat.git
-cd bedrock-claude-chat
-chmod +x bin.sh
-./bin.sh
-```
-
-- After about 30 minutes, you will get the following output, which you can access from your browser
-
-```
-Frontend URL: https://xxxxxxxxx.cloudfront.net
-```
+Run the workflow in CodeCatalyst. After the workflow succeeds, navigate to `Variables` tab under the `CDKDeployAction` action and the frontend URL of the application will be displayed.
 
 ![](https://d107sfil7rheid.cloudfront.net/signin.png)
 
