@@ -19,6 +19,7 @@ const project = new ProjenBlueprintComponent({
     'tar',
     'ts-node',
     'axios',
+    'axios-retry',
     'esbuild',
     'pino-pretty',
     'typescript',

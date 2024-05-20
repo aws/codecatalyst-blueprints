@@ -26,33 +26,15 @@ Analyze usage for each user / bot on administrator dashboard. [detail](./docs/AD
 - 日本語 💬 (ドキュメントは[こちら](./docs/README_ja.md))
 - 한국어 💬
 - 中文 💬
+- Français 💬
+- Deutsch 💬
+- Español 💬
 
 ## 🚀 Super-easy Deployment
 
 - In the {{bedrockRegion}} region, open [Bedrock Model access](https://{{bedrockRegion}}.console.aws.amazon.com/bedrock/home?region={{bedrockRegion}}#/modelaccess) > `Manage model access` > Check `Anthropic / Claude 3 Haiku`, `Anthropic / Claude 3 Sonnet` and `Cohere / Embed Multilingual` then `Save changes`.
 
-<details>
-<summary>Screenshot</summary>
-
-![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
-
-</details>
-
-- Open [CloudShell](https://console.aws.amazon.com/cloudshell/home) at the region where you want to deploy
-- Run deployment via following commands
-
-```sh
-git clone https://github.com/aws-samples/bedrock-claude-chat.git
-cd bedrock-claude-chat
-chmod +x bin.sh
-./bin.sh
-```
-
-- After about 30 minutes, you will get the following output, which you can access from your browser
-
-```
-Frontend URL: https://xxxxxxxxx.cloudfront.net
-```
+Run the workflow in CodeCatalyst. After the workflow succeeds, navigate to `Variables` tab under the `CDKDeployAction` action and the frontend URL of the application will be displayed.
 
 ![](https://d107sfil7rheid.cloudfront.net/signin.png)
 
@@ -124,6 +106,18 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 </details>
 
 ## Others
+
+### Configure Mistral models support
+
+Update `enableMistral` to `true` in [cdk.json](./cdk/cdk.json), and run `cdk deploy`.
+
+```json
+...
+  "enableMistral": true,
+```
+
+> [!Important]
+> This project focus on Anthropic Claude models, the Mistral models are limited supported. For example, prompt examples are based on Claude models. This is a Mistral-only option, once you toggled to enable Mistral models, you can only use Mistral models for all the chat features, NOT both Claude and Mistral models.
 
 ### Configure text generation
 

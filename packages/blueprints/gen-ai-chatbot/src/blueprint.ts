@@ -179,6 +179,13 @@ export interface Options extends ParentOptions {
      * @defaultEntropy 8
      */
     stackDisambiguator?: string;
+
+    /**
+     * This project is focused on Antrophic Claude models; limit support is provided for Mistral models. Enabling this option
+     * means that only Mistral models will be used for *all* the chat features.
+     * @displayName Enable Mistral
+     */
+    enableMistral?: boolean;
   };
 }
 
@@ -221,6 +228,7 @@ export class Blueprint extends ParentBlueprint {
         bucketNamePrefix: options.code.bucketNamePrefix,
         enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
         stackDisambiguator: options.code.stackDisambiguator,
+        enableMistral: options.code.enableMistral ?? false,
       }),
     );
 

@@ -9,7 +9,7 @@ const isOptional = (property): boolean => {
 export const handleArrayType = (property, path: string): Node => {
   const node: Node = {
     kind: property.type?.kind,
-    type: property.type?.elementType?.kind,
+    type: property.type?.elementType?.kind ?? property.elementType?.kind,
     name: property.name?.escapedText,
     optional: isOptional(property),
     jsDoc: extractJsdoc(property.jsDoc),
@@ -18,7 +18,7 @@ export const handleArrayType = (property, path: string): Node => {
 
   node.members = [
     {
-      ...convertToNode(property.type?.elementType, node.path),
+      ...convertToNode(property.type?.elementType ?? property.elementType, node.path),
       jsDoc: node.jsDoc,
     },
   ];
