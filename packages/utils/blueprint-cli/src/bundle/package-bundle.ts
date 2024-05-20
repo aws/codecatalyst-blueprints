@@ -1,110 +1,31 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import * as cp from 'child_process';
+import path from 'path';
 import * as pino from 'pino';
-import * as tar from 'tar';
-import { getBundleAWSAccountToEnvironment } from './get-bundle-aws-account-to-environment';
-import { getBundleEnvironments } from './get-bundle-environments';
-import { getBundleSecrets } from './get-bundle-secrets';
-import { getBundleSrc } from './get-bundle-src';
-import { writeElements } from './write-elements';
 
-export interface ExportTarget {
-  spaceName: string;
-  projectName: string;
-}
-
-export type ExportableResourceType = 'src' | 'aws-account-to-environment' | 'environments' | 'secrets' | 'instantiations' | 'issues';
 /**
- * We do this due to a transcompilation issue with enums when executed by the MCE handler
- * note: tsconfig updates don't work. Investigation pending
+ * EXPERIMENTAL. This relies on 'zip' being available locally.
  */
-export const ExportableResource: { [key: string]: ExportableResourceType } = {
-  SRC: 'src',
-  AWS_ACCOUNT_TO_ENVIRONMENT: 'aws-account-to-environment',
-  ENVIRONMENTS: 'environments',
-  SECRETS: 'secrets',
-  INSTANTIATIONS: 'instantiations',
-  ISSUES: 'issues',
-};
-
-export async function prepareBundle(
+export function packageBundle(
   logger: pino.BaseLogger,
-  client: ApolloClient<NormalizedCacheObject>,
+  folderPathAbs: string,
+  outputPathAbs: string,
   options: {
-    target: ExportTarget;
-    outputPath: string;
+    encrypt?: boolean;
   },
-): Promise<{ folderPathAbs: string }> {
-  const code = await getBundleSrc(logger, client, {
-    target: options.target,
-  });
-  const environments = await getBundleEnvironments(logger, client, {
-    target: options.target,
-  });
-  const awsAccountAssociations = await getBundleAWSAccountToEnvironment(logger, client, {
-    target: options.target,
-    environmentNames: Object.keys(environments),
-  });
-  const secrets = await getBundleSecrets(logger, client, {
-    target: options.target,
-  });
-
-  const bundle = {
-    code,
-    environments,
-    awsAccountAssociations,
-    secrets,
-  };
-  console.log(bundle);
-
-  const outputLocation = structureOutputLocation(logger, options.outputPath);
-  const folderLocation = await writeElements(logger, outputLocation.folderPathAbs, {
-    bundle,
-  });
-
-  return {
-    folderPathAbs: folderLocation,
-  };
-}
-
-function structureOutputLocation(
-  _logger: pino.BaseLogger,
-  outputPath: string,
-): {
-  folderPathAbs: string;
-  tarPathAbs: string;
-} {
-  const absOutputPath = path.resolve(outputPath);
-  if (fs.existsSync(absOutputPath)) {
-    fs.rmSync(absOutputPath, {
-      recursive: true,
-      force: true,
+) {
+  try {
+    let zipCommand = [`zip ${path.basename(outputPathAbs)}`, `-r ${path.basename(folderPathAbs)}`, '-x **/.git/**'].join(' ');
+    logger.debug(zipCommand);
+    if (options.encrypt) {
+      logger.info('Packing folder. Enter zip password ...');
+      zipCommand = `${zipCommand} -e`;
+    }
+    cp.execSync(zipCommand, {
+      stdio: 'inherit',
+      cwd: path.dirname(folderPathAbs),
     });
+  } catch (e: any) {
+    logger.warn(e);
+    logger.warn('Zip Failed. Do you have the zip cli installed?');
   }
-  const absTarPath = `${absOutputPath}.tgz`;
-  if (fs.existsSync(absTarPath)) {
-    fs.rmSync(absTarPath, {
-      recursive: true,
-      force: true,
-    });
-  }
-
-  fs.mkdirSync(absOutputPath, { recursive: true });
-  return {
-    folderPathAbs: absOutputPath,
-    tarPathAbs: absTarPath,
-  };
-}
-
-function tarFolder(_logger: pino.BaseLogger, folderPath: string, tarOutputPath: string): string {
-  tar.c(
-    {
-      gzip: true,
-      cwd: path.join(folderPath, '..'),
-      file: tarOutputPath,
-    },
-    [folderPath],
-  );
-  return tarOutputPath;
 }

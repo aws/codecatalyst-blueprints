@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import { ApolloClient, ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
 import * as pino from 'pino';
-import { ExportTarget } from './export-bundle';
+import { ExportTarget } from './prepare-bundle';
 import { executeRequest } from '../gql-clients/execute-request';
 import { ListAwsAccountAssociationsQuery } from '../gql-clients/gql/aws-account-to-environment';
 

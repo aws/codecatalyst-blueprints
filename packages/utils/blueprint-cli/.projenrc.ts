@@ -54,6 +54,7 @@ const project = new ProjenBlueprintComponent({
       lib: ['es2019', 'dom'],
       esModuleInterop: true,
       noImplicitAny: false,
+      skipLibCheck: true,
     },
   },
 });

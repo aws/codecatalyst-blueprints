@@ -8,7 +8,8 @@ import { hideBin } from 'yargs/helpers';
 import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessment/generate-assessment-cli';
 import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
-import { exportBundle } from './bundle/export-bundle';
+import { packageBundle } from './bundle/package-bundle';
+import { prepareBundle } from './bundle/prepare-bundle';
 import { getCodeCatalystClient } from './gql-clients/get-codecatalyst-client';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish/publish';
@@ -535,9 +536,10 @@ yargs
       process.exit(0);
     },
   })
+  //bundle-project
   .command({
-    command: 'prepare-bundle',
-    describe: 'Prepares a bundle from a project in a CodeCatalyst space',
+    command: 'bundle-project',
+    describe: 'EXPERIMENTAL: Prepares a bundle from a project in a CodeCatalyst space',
     builder: (args: yargs.Argv<unknown>) => {
       return args
         .option('project', {
@@ -566,7 +568,7 @@ yargs
     handler: async (argv: { project: string; space: string; output: string; endpoint: string }): Promise<void> => {
       argv = useOverrideOptionals(argv);
       log.warn('===============================================');
-      log.warn('EXPERIMENTAL: generation bundle from project');
+      log.warn('EXPERIMENTAL: generate a bundle from project');
       log.warn('===============================================');
 
       const client = await getCodeCatalystClient(log, argv.endpoint, {
@@ -578,7 +580,7 @@ yargs
       if (!client) {
         return;
       }
-      const exportResult = await exportBundle(log, client, {
+      const exportResult = await prepareBundle(log, client, {
         target: {
           projectName: argv.project,
           spaceName: argv.space,
@@ -586,6 +588,36 @@ yargs
         outputPath: argv.output,
       });
       console.log(exportResult);
+      process.exit(0);
+    },
+  })
+  //package-bundle
+  .command({
+    command: 'package-bundle',
+    describe: 'EXPERIMENTAL: Prepares a zip distribution from a project bundle',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('input', {
+          describe: 'path to the bundle folder',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('encrypted', {
+          description: 'Encrypt the output bundle with a password',
+          type: 'boolean',
+          default: false,
+          demandOption: false,
+        });
+    },
+    handler: async (argv: { input: string; encrypted: boolean }): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      log.warn('===============================================');
+      log.warn('EXPERIMENTAL: package a project bundle');
+      log.warn('===============================================');
+
+      packageBundle(log, path.resolve(argv.input), `${path.resolve(argv.input)}.zip`, {
+        encrypt: argv.encrypted,
+      });
       process.exit(0);
     },
   })

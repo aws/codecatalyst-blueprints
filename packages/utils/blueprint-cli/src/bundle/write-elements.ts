@@ -3,11 +3,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as pino from 'pino';
 import * as yaml from 'yaml';
-import { ExportableResource } from './export-bundle';
 import { AWSAccountToEnvironmentRepresentation } from './get-bundle-aws-account-to-environment';
 import { EnvironmentRepresentation } from './get-bundle-environments';
 import { SecretReference } from './get-bundle-secrets';
 import { RepositoryRepresentation } from './get-bundle-src';
+import { ExportableResource } from './prepare-bundle';
 
 export async function writeElements(
   logger: pino.BaseLogger,

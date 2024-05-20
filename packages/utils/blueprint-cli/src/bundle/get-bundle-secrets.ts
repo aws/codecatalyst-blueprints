@@ -1,6 +1,6 @@
 import { ApolloClient, NormalizedCacheObject, ApolloQueryResult } from '@apollo/client';
 import * as pino from 'pino';
-import { ExportTarget } from './export-bundle';
+import { ExportTarget } from './prepare-bundle';
 import { executeRequest } from '../gql-clients/execute-request';
 import { listSecretsQuery } from '../gql-clients/gql/secrets';
 

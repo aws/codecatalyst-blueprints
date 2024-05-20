@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import * as pino from 'pino';
-import * as tar from 'tar';
 import { getBundleAWSAccountToEnvironment } from './get-bundle-aws-account-to-environment';
 import { getBundleEnvironments } from './get-bundle-environments';
 import { getBundleSecrets } from './get-bundle-secrets';
@@ -28,6 +27,13 @@ export const ExportableResource: { [key: string]: ExportableResourceType } = {
   ISSUES: 'issues',
 };
 
+/**
+ * EXPERIMENTAL. Exports an existing project as a bundle
+ * @param logger
+ * @param client
+ * @param options
+ * @returns
+ */
 export async function prepareBundle(
   logger: pino.BaseLogger,
   client: ApolloClient<NormalizedCacheObject>,
