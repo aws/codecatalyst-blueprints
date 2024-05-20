@@ -1,6 +1,6 @@
 import { SourceFile, SourceRepository, StaticAsset } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions, Selector } from '@amazon-codecatalyst/blueprints.blueprint';
+import { Blueprint as ParentBlueprint, Options as ParentOptions, Selector } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
 
 export interface Options extends ParentOptions {
