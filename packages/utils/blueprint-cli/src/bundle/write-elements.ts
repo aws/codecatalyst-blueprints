@@ -42,7 +42,7 @@ export async function writeElements(
     writeYaml(logger, location, {
       name: resourceRepresentation.name,
       description: resourceRepresentation.description,
-      environmentType: resourceRepresentation.description,
+      environmentType: resourceRepresentation.environmentType,
     });
   }
 
