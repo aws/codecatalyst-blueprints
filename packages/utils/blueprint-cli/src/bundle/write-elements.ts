@@ -74,6 +74,40 @@ function writeYaml(logger: pino.BaseLogger, filePathAbs: string, content: any) {
   fs.writeFileSync(filePathAbs, yamlcontent);
 }
 
+const BAD_CHARACTERS = [
+  '!',
+  '?',
+  '@',
+  '#',
+  '$',
+  '%',
+  '^',
+  '&',
+  '*',
+  '(',
+  ')',
+  '+',
+  '=',
+  '{',
+  '}',
+  '[',
+  ']',
+  '|',
+  '\\',
+  '/',
+  '>',
+  '<',
+  '~',
+  '`',
+  "'",
+  '"',
+  ';',
+  ':',
+  ' ',
+];
+
 function stripName(name: string): string {
-  return name;
+  const maxlength = 100;
+  const result = name.replace(new RegExp(`[${BAD_CHARACTERS.join('\\')}]`, 'g'), '').substring(0, maxlength);
+  return result;
 }
