@@ -39,19 +39,29 @@ export async function writeElements(
   // environments
   for (const [resourceName, resourceRepresentation] of Object.entries(options.bundle.environments)) {
     const location = path.join(folderPathAbs, ExportableResource.ENVIRONMENTS, `${stripName(resourceName)}.yaml`);
-    writeYaml(logger, location, resourceRepresentation);
+    writeYaml(logger, location, {
+      name: resourceRepresentation.name,
+      description: resourceRepresentation.description,
+      environmentType: resourceRepresentation.description,
+    });
   }
 
   // awsAccountAssociations
   for (const [resourceName, resourceRepresentation] of Object.entries(options.bundle.awsAccountAssociations)) {
     const location = path.join(folderPathAbs, ExportableResource.AWS_ACCOUNT_TO_ENVIRONMENT, `${stripName(resourceName)}.yaml`);
-    writeYaml(logger, location, resourceRepresentation);
+    writeYaml(logger, location, {
+      environmentName: resourceRepresentation.environmentName,
+      name: resourceRepresentation.awsAccount,
+    });
   }
 
   // secrets
   for (const [resourceName, resourceRepresentation] of Object.entries(options.bundle.secrets)) {
     const location = path.join(folderPathAbs, ExportableResource.SECRETS, `${stripName(resourceName)}.yaml`);
-    writeYaml(logger, location, resourceRepresentation);
+    writeYaml(logger, location, {
+      name: resourceRepresentation.name,
+      description: resourceRepresentation.description,
+    });
   }
 
   return folderPathAbs;
@@ -60,9 +70,8 @@ export async function writeElements(
 function writeYaml(logger: pino.BaseLogger, filePathAbs: string, content: any) {
   logger.debug(`Writing: ${filePathAbs}`);
   const yamlcontent = yaml.stringify(content);
-  console.log(yamlcontent);
   fs.mkdirSync(path.dirname(filePathAbs), { recursive: true });
-  fs.writeFileSync(filePathAbs, yaml.stringify(content));
+  fs.writeFileSync(filePathAbs, yamlcontent);
 }
 
 function stripName(name: string): string {

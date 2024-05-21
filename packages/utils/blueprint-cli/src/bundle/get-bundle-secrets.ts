@@ -10,6 +10,8 @@ export interface SecretReference {
      * This is the value of the secret. We do not propagate the secret value
      */
     name: string;
+
+    description?: string;
   };
 }
 
@@ -38,6 +40,7 @@ export const getBundleSecrets = async (
   const secrets = (response.data?.listSecrets?.items || []).map(ele => {
     return {
       name: ele.name,
+      description: ele.description,
     };
   });
 

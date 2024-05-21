@@ -5,6 +5,7 @@ export const listSecretsQuery = gql`
     listSecrets(input: $input) {
       items {
         name
+        description
       }
       nextToken
     }
