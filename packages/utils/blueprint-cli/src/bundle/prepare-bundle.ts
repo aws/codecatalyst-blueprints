@@ -78,9 +78,9 @@ function structureOutputLocation(
   _logger: pino.BaseLogger,
   outputPath: string,
 ): {
-  folderPathAbs: string;
-  tarPathAbs: string;
-} {
+    folderPathAbs: string;
+    tarPathAbs: string;
+  } {
   const absOutputPath = path.resolve(outputPath);
   if (fs.existsSync(absOutputPath)) {
     fs.rmSync(absOutputPath, {

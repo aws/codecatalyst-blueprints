@@ -42,9 +42,9 @@ const listSourceRepositories = async (
     nextToken?: string;
   },
 ): Promise<
-  {
-    name: string;
-  }[]
+{
+  name: string;
+}[]
 > => {
   const listSourceRepositoryRequest = client.query({
     query: ListSourceRepositoriesQuery,
