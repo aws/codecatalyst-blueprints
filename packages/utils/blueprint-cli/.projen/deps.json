@@ -101,6 +101,10 @@
       "type": "build"
     },
     {
+      "name": "@apollo/client",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-cloudfront",
       "type": "runtime"
     },
@@ -130,11 +134,19 @@
       "type": "runtime"
     },
     {
+      "name": "cross-fetch",
+      "type": "runtime"
+    },
+    {
       "name": "deepmerge",
       "type": "runtime"
     },
     {
       "name": "esbuild",
+      "type": "runtime"
+    },
+    {
+      "name": "graphql",
       "type": "runtime"
     },
     {
@@ -155,11 +167,19 @@
       "type": "runtime"
     },
     {
+      "name": "tar",
+      "type": "runtime"
+    },
+    {
       "name": "ts-node",
       "type": "runtime"
     },
     {
       "name": "typescript",
+      "type": "runtime"
+    },
+    {
+      "name": "yaml",
       "type": "runtime"
     },
     {
