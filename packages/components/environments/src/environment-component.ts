@@ -24,14 +24,14 @@ export class Environment extends Component {
 
   constructor(blueprint: Blueprint, environment: EnvironmentDefinition<any>) {
     super(blueprint);
-    this.name = environment.name;
+    this.name = environment?.name || 'default-env-name';
     this.definition = environment;
     this.accountKeys = [];
 
     const writtenEnvironment = {
-      name: environment.name,
+      name: this.name,
       description: environment.description || environment.name,
-      environmentType: environment.environmentType,
+      environmentType: environment.environmentType || 'PRODUCTION',
     };
 
     const connectedAccounts: {
