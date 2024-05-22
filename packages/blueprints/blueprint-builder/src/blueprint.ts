@@ -167,6 +167,9 @@ export class Blueprint extends ParentBlueprint {
     };
     console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
     this.newBlueprintOptions = newBlueprintOptions;
+    this.setInstantiation({
+      description: options.description || '',
+    });
 
     // copy-paste additional code over it
     StaticAsset.findAll().forEach(asset => {
