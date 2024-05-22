@@ -22,8 +22,9 @@ export class Environment extends Component {
   name: string;
   accountKeys: string[];
 
-  constructor(blueprint: Blueprint, environment: EnvironmentDefinition<any>) {
+  constructor(blueprint: Blueprint, environment_: EnvironmentDefinition<any>) {
     super(blueprint);
+    const environment = environment_ || {};
     this.name = environment?.name || 'default-env-name';
     this.definition = environment;
     this.accountKeys = [];
