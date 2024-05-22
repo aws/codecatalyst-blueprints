@@ -4,7 +4,7 @@ import { Strategy } from './models';
 import { Ownership } from '../ownership';
 import { matchesGlob } from '../walk-files';
 
-export const FALLBACK_STRATEGY = MergeStrategies.threeWayMerge;
+export const FALLBACK_STRATEGY = MergeStrategies.preferProposed;
 export const FALLBACK_STRATEGY_ID = `FALLBACK_${FALLBACK_STRATEGY.name}`;
 
 export function match(sourceCodePath: string, strategies: { [bundlepath: string]: Strategy[] }): Strategy {
