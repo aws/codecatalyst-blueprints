@@ -46,12 +46,14 @@ export async function publish(
     region: options.region,
   });
 
-  let identity: IdentityResponse;
+  let identity: IdentityResponse | undefined;
   if (authentication) {
-    log.info('Verifying identity...');
-    identity = await verifyIdentity(endpoint, { authentication });
-    log.info(`Publishing as ${identity.name} at ${identity.email}`);
-    log.info('Against endpoint: %s', endpoint);
+    if (authentication.type != 'workflowtoken') {
+      log.info('Verifying identity...');
+      identity = await verifyIdentity(endpoint, { authentication });
+      log.info(`Publishing as ${identity.name} at ${identity.email}`);
+      log.info('Against endpoint: %s', endpoint);
+    }
   } else {
     log.error('Could not authenticate');
     process.exit(255);
