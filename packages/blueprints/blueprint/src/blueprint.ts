@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -93,7 +94,7 @@ export class Blueprint extends Project {
     fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
 
     this.resynthPullRequest = {
-      originBranch: this.context.branchName || 'resynthesis-update',
+      originBranch: this.context.branchName || this.defaultResynthBranchName(),
       title: `chore(resynthesis): update [${this.context.package.name}@${this.context.package.version}]`,
       description: [
         'This is a pull request created from a resynthesis update.',
@@ -105,6 +106,22 @@ export class Blueprint extends Project {
         '```',
       ].join('\n'),
     };
+  }
+
+  /**
+   * This generates the default branch that resynth updates will go onto.
+   */
+  defaultResynthBranchName(): string {
+    // if branch name is set by the environment, respect that.
+    if (this.context.branchName) {
+      return this.context.branchName;
+    }
+    if (!this.context.project.blueprint.instantiationId) {
+      // if this blueprint has no instantiation id it is being applied
+      return `apply-blueprint-${this.context.package.name}-${(hash(Date.now().toString()), 10)}`;
+    } else {
+      return `update-blueprint-${this.context.package.name}-${this.context.project.blueprint.instantiationId.slice(0, 10)}`;
+    }
   }
 
   setResynthStrategies(bundlepath: string, strategies: Strategy[]) {
@@ -203,7 +220,7 @@ export class Blueprint extends Project {
       originBranch: this.resynthPullRequest.originBranch,
       targetBranch: this.resynthPullRequest.targetBranch,
       pullRequest: {
-        id: this.context.branchName || 'resynthesis-update',
+        id: this.context.branchName || this.defaultResynthBranchName(),
         title: this.resynthPullRequest.title,
         description: this.resynthPullRequest.description,
       },
@@ -318,3 +335,11 @@ function structureExistingBlueprints(location: string | undefined): BlueprintIns
   }
   return [];
 }
+
+const hash = (input: string, length?: number): string => {
+  return crypto
+    .createHash('sha256')
+    .update(input)
+    .digest('hex')
+    .slice(0, length || 5);
+};
