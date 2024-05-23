@@ -21,7 +21,7 @@ export async function uploadBlueprint(
       packageName: string;
       version: string;
       authentication: CodeCatalystAuthentication;
-      identity: IdentityResponse;
+      identity: IdentityResponse | undefined;
     };
   },
 ) {

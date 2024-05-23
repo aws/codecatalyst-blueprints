@@ -14,7 +14,7 @@ export async function deleteBlueprintVersion(
     };
     auth: {
       authentication: CodeCatalystAuthentication;
-      identity: IdentityResponse;
+      identity: IdentityResponse | undefined;
     };
   },
 ): Promise<void> {
