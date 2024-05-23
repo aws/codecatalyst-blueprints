@@ -329,7 +329,7 @@ function defaultResynthPR(params: { options: any; context: Context }): {
     return {
       branch: `update-blueprint-${formatBlueprintName(
         params.context.package.name || 'unknown',
-      )}-${params.context.project.blueprint.instantiationId.slice(0, 10)}`,
+      )}-${params.context.project.blueprint.instantiationId.slice(0, 8)}`,
       title: `chore(resynthesis): update [${params.context.package.name}@${params.context.package.version}]`,
       description: [
         'This is a pull request created from the options/versions being changed on your blueprint instance.',
@@ -376,7 +376,7 @@ function formatBlueprintName(packageName: string, replacement: string = '-'): st
     return input.slice(lastIndex + 1);
   };
 
-  return parseFromLast(packageName, '.').replace(/[^a-zA-Z]/g, replacement);
+  return parseFromLast(packageName, '.').replace(/[^a-zA-Z0-9]/g, replacement);
 }
 
 const hash = (input: string, length?: number): string => {
