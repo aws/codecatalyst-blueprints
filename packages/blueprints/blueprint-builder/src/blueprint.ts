@@ -112,6 +112,7 @@ export class Blueprint extends ParentBlueprint {
       title: dashName,
     });
     this.repository = repository;
+    const neverUpdateFiles = ['static-assets/**', 'src/**', 'README.md'];
     this.repository.setResynthStrategies([
       {
         identifier: 'resolve_merge_conflicts',
@@ -120,8 +121,29 @@ export class Blueprint extends ParentBlueprint {
       },
       {
         identifier: 'never_update_sample_code',
-        strategy: MergeStrategies.neverUpdate,
-        globs: ['static-assets/**', 'src/**'],
+        strategy: (commonAncestorFile, existingFile, proposedFile) => {
+          if (existingFile || commonAncestorFile) {
+            /**
+             * never replace existing files
+             * mever replace a file that was removed
+             */
+            console.log(`file [${proposedFile?.path}] exists or there is an ancestor`);
+            return existingFile;
+          } else if (
+            this.context.project.src.findAll({
+              repositoryName: this.repository.title,
+              fileGlobs: ['static-assets/**', 'src/**'],
+            }).length > 0
+          ) {
+            /**
+             * handles the case where im applying on top of an existing repository.
+             * if there are already files in static-assets or src, dont update them
+             */
+            return existingFile;
+          }
+          return proposedFile;
+        },
+        globs: neverUpdateFiles,
       },
     ]);
 
@@ -167,6 +189,9 @@ export class Blueprint extends ParentBlueprint {
     };
     console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
     this.newBlueprintOptions = newBlueprintOptions;
+    this.setInstantiation({
+      description: options.description || '',
+    });
 
     // copy-paste additional code over it
     StaticAsset.findAll().forEach(asset => {

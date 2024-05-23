@@ -8,6 +8,9 @@ import { hideBin } from 'yargs/helpers';
 import { GenerateAssessmentCLIOptions, generateAssessmentCLI } from './assessment/generate-assessment-cli';
 import { ValidateAssessmentCLIOptions, validateAssessment } from './assessment/validate-assessment';
 import { AstOptions, buildAst } from './build-ast';
+import { packageBundle } from './bundle/package-bundle';
+import { prepareBundle } from './bundle/prepare-bundle';
+import { getCodeCatalystClient } from './gql-clients/get-codecatalyst-client';
 import { UploadOptions, uploadImagePublicly } from './image-upload-tool/upload-image-to-aws';
 import { PublishOptions, publish } from './publish/publish';
 import { EXISTING_BUNDLE_SUBPATH, ResynthesizeCliOptions, resynthesize } from './resynth-drivers/resynth';
@@ -530,6 +533,91 @@ yargs
         log.error(`[Failure] Assessment at ${argv.path} does NOT pass schema validation. See BlueprintAssessmentObject`);
         log.error(JSON.stringify(reasons, null, 2));
       }
+      process.exit(0);
+    },
+  })
+  //bundle-project
+  .command({
+    command: 'bundle-project',
+    describe: 'EXPERIMENTAL: Prepares a bundle from a project in a CodeCatalyst space',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('project', {
+          describe: 'CodeCatalyst project name',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('space', {
+          describe: 'CodeCatalyst space name',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('output', {
+          description: 'path to output location of the bundle',
+          type: 'string',
+          default: '/tmp/project-bundle',
+          demandOption: false,
+        })
+        .option('endpoint', {
+          description: 'CodeCatalyst endpoint',
+          type: 'string',
+          default: 'public.console.codecatalyst.aws',
+          demandOption: false,
+        });
+    },
+    handler: async (argv: { project: string; space: string; output: string; endpoint: string }): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      log.warn('===============================================');
+      log.warn('EXPERIMENTAL: generate a bundle from project');
+      log.warn('===============================================');
+
+      const client = await getCodeCatalystClient(log, argv.endpoint, {
+        target: {
+          projectName: argv.project,
+          spaceName: argv.space,
+        },
+      });
+      if (!client) {
+        return;
+      }
+      const exportResult = await prepareBundle(log, client, {
+        target: {
+          projectName: argv.project,
+          spaceName: argv.space,
+        },
+        outputPath: argv.output,
+      });
+      console.log(exportResult);
+      process.exit(0);
+    },
+  })
+  //package-bundle
+  .command({
+    command: 'package-bundle',
+    describe: 'EXPERIMENTAL: Prepares a zip distribution from a project bundle',
+    builder: (args: yargs.Argv<unknown>) => {
+      return args
+        .option('input', {
+          describe: 'path to the bundle folder',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('encrypted', {
+          description: 'Encrypt the output bundle with a password',
+          type: 'boolean',
+          default: false,
+          demandOption: false,
+        });
+    },
+    handler: async (argv: { input: string; encrypted: boolean }): Promise<void> => {
+      argv = useOverrideOptionals(argv);
+      log.warn('===============================================');
+      log.warn('EXPERIMENTAL: package a project bundle');
+      log.warn('===============================================');
+
+      packageBundle(log, path.resolve(argv.input), `${path.resolve(argv.input)}.zip`, {
+        encrypt: argv.encrypted,
+      });
       process.exit(0);
     },
   })
