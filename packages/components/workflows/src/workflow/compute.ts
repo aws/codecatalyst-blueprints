@@ -1,7 +1,7 @@
 import { WorkflowDefinition } from './workflow-definition';
 export interface ComputeDefintion {
   Type: ComputeType;
-  Fleet: ComputeFleet;
+  Fleet?: ComputeFleet;
   //todo add other compute variables
 }
 
@@ -18,12 +18,14 @@ export enum ComputeFleet {
 export function addGenericCompute(
   workflow: WorkflowDefinition,
   type: ComputeType,
-  fleet: ComputeFleet,
+  fleet?: ComputeFleet,
   //todo add more variables based on compute definition
 ) {
   const computeDefintion: ComputeDefintion = {
     Type: type,
-    Fleet: fleet,
   };
+  if (fleet) {
+    computeDefintion.Fleet = fleet;
+  }
   workflow.Compute = computeDefintion;
 }
