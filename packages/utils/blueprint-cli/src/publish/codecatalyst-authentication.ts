@@ -25,12 +25,14 @@ export function generateHeaders(authentication: CodeCatalystAuthentication, iden
   }
 }
 
-export const codecatalystAuthentication = async (log: pino.BaseLogger, options: {
-  cookie?: string;
-  endpoint: string;
-  region?: string;
-}): Promise<CodeCatalystAuthentication | undefined> => {
-
+export const codecatalystAuthentication = async (
+  log: pino.BaseLogger,
+  options: {
+    cookie?: string;
+    endpoint: string;
+    region?: string;
+  },
+): Promise<CodeCatalystAuthentication | undefined> => {
   if (options.cookie) {
     return {
       type: 'cookie',
@@ -46,7 +48,7 @@ export const codecatalystAuthentication = async (log: pino.BaseLogger, options: 
 
     let bearertoken = '';
     codecatalyst.middlewareStack.add(
-      (next, _context) => async (args) => {
+      (next, _context) => async args => {
         const result = await next(args);
         bearertoken = (args as any).request.headers.authorization;
         return result;
@@ -70,10 +72,8 @@ export const codecatalystAuthentication = async (log: pino.BaseLogger, options: 
     log.info('> ');
     log.info('> # https://docs.aws.amazon.com/codecatalyst/latest/userguide/set-up-cli.html');
     log.info('> ');
-    log.info('> aws sso login --profile codecatalyst');
-    log.info('> export AWS_PROFILE=codecatalyst');
+    log.info('> aws sso login --profile codecatalyst && export AWS_PROFILE=codecatalyst');
     log.info('> ');
   }
   return undefined;
 };
-

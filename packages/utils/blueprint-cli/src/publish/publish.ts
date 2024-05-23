@@ -13,6 +13,7 @@ export interface PublishOptions extends yargs.Arguments {
   endpoint: string;
   region?: string;
   project?: string;
+  instance?: string;
 }
 
 export async function publish(
@@ -22,6 +23,7 @@ export async function publish(
     blueprintPath: string;
     publishingSpace: string;
     targetProject?: string;
+    targetInstance?: string;
     cookie?: string;
     region: string;
     force?: boolean;
@@ -93,6 +95,7 @@ export async function publish(
       publishingSpace: options.publishingSpace,
       targetSpace: options.publishingSpace,
       targetProject: options.targetProject,
+      targetInstance: options.targetInstance,
       packageName,
       version,
       authentication,
