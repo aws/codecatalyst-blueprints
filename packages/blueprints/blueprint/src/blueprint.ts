@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -92,18 +93,14 @@ export class Blueprint extends Project {
     fs.mkdirSync(path.dirname(optionsRecordPath), { recursive: true });
     fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
 
+    const { branch, title, description } = defaultResynthPR({
+      context: this.context,
+      options,
+    });
     this.resynthPullRequest = {
-      originBranch: this.context.branchName || 'resynthesis-update',
-      title: `chore(resynthesis): update [${this.context.package.name}@${this.context.package.version}]`,
-      description: [
-        'This is a pull request created from a resynthesis update.',
-        '',
-        `Blueprint: [${this.context.package.name}@${this.context.package.version}]`,
-        '### New Options',
-        '```',
-        JSON.stringify(options, null, 2),
-        '```',
-      ].join('\n'),
+      originBranch: branch,
+      title,
+      description,
     };
   }
 
@@ -203,7 +200,7 @@ export class Blueprint extends Project {
       originBranch: this.resynthPullRequest.originBranch,
       targetBranch: this.resynthPullRequest.targetBranch,
       pullRequest: {
-        id: this.context.branchName || 'resynthesis-update',
+        id: this.resynthPullRequest.originBranch,
         title: this.resynthPullRequest.title,
         description: this.resynthPullRequest.description,
       },
@@ -318,3 +315,74 @@ function structureExistingBlueprints(location: string | undefined): BlueprintIns
   }
   return [];
 }
+
+/**
+ * This generates the default PR information that resynth updates will go onto.
+ */
+function defaultResynthPR(params: { options: any; context: Context }): {
+  branch: string;
+  title: string;
+  description: string;
+} {
+  if (params.context.project.blueprint.instantiationId) {
+    // The blueprint options/versions are being changed.
+    return {
+      branch: `update-blueprint-${formatBlueprintName(
+        params.context.package.name || 'unknown',
+      )}-${params.context.project.blueprint.instantiationId.slice(0, 8)}`,
+      title: `chore(resynthesis): update [${params.context.package.name}@${params.context.package.version}]`,
+      description: [
+        'This is a pull request created from the options/versions being changed on your blueprint instance.',
+        '',
+        `Blueprint: [${params.context.package.name}@${params.context.package.version}]`,
+        `Instance Id: [${params.context.project.blueprint.instantiationId}]`,
+        '### New Options',
+        '```',
+        JSON.stringify(params.options, null, 2),
+        '```',
+      ].join('\n'),
+    };
+  } else {
+    // The blueprint has no existing instantiationId and is being applied for the first time.
+    return {
+      branch: `apply-blueprint-${formatBlueprintName(params.context.package.name || 'unknown')}-${hash(Date.now().toString())}`,
+      title: `feat: application [${params.context.package.name}@${params.context.package.version}]`,
+      description: [
+        'This is the initial pull request created from a new blueprint instance being applied to your project.',
+        '',
+        `Blueprint: [${params.context.package.name}@${params.context.package.version}]`,
+        '### Selected Options',
+        '```',
+        JSON.stringify(params.options, null, 2),
+        '```',
+      ].join('\n'),
+    };
+  }
+}
+
+/**
+ * Does custom formatting of the blueprint name to make it more human readable.
+ * By default, blueprint package names come in the form: "@amazon-codecatalyst/blueprints.sam-serverless-application"
+ * The default form is too long, this function formats that to something like sam-serverless-application
+ * @param packageName - package name
+ * @returns string
+ */
+function formatBlueprintName(packageName: string, replacement: string = '-'): string {
+  const parseFromLast = (input: string, char: string): string => {
+    const lastIndex = input.lastIndexOf(char);
+    if (lastIndex === -1) {
+      return input;
+    }
+    return input.slice(lastIndex + 1);
+  };
+
+  return parseFromLast(packageName, '.').replace(/[^a-zA-Z0-9]/g, replacement);
+}
+
+const hash = (input: string, length?: number): string => {
+  return crypto
+    .createHash('sha256')
+    .update(input)
+    .digest('hex')
+    .slice(0, length || 5);
+};
