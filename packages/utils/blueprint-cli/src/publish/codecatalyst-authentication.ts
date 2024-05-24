@@ -86,8 +86,7 @@ export const codecatalystAuthentication = async (
       log.info('> ');
       log.info('> # https://docs.aws.amazon.com/codecatalyst/latest/userguide/set-up-cli.html');
       log.info('> ');
-      log.info('> aws sso login --profile codecatalyst');
-      log.info('> export AWS_PROFILE=codecatalyst');
+      log.info('> aws sso login --profile codecatalyst && export AWS_PROFILE=codecatalyst');
       log.info('> ');
     }
   }

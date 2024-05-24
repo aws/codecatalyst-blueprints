@@ -331,6 +331,12 @@ yargs
           demandOption: false,
           type: 'string',
         })
+        .option('instance', {
+          description:
+            'Generates a preview link as if this blueprint was the next upgrade of an existing blueprint instance. This command allows you to mock what an upgrade of an exisiting blueprint would look like by adding the instance id. This requires that a project also be provided. Instance Ids are available on the blueprint instance settings page.',
+          demandOption: false,
+          type: 'string',
+        })
         .option('force', {
           description:
             'Force publish. This will overwrite the exisiting blueprint version (if it exists). This may cause exisiting blueprint consumers unexpected difference sets.',
@@ -339,6 +345,10 @@ yargs
     },
     handler: async (argv: PublishOptions): Promise<void> => {
       argv = useOverrideOptionals(argv);
+      if (argv.instance && !argv.project) {
+        log.error('--instance REQUIRES --project is provided');
+        return;
+      }
       await publish(log, argv.endpoint, {
         blueprintPath: argv.blueprint,
         publishingSpace: argv.space,
@@ -346,6 +356,7 @@ yargs
         region: argv.region || process.env.AWS_REGION || 'us-west-2',
         force: ((argv.force as boolean) && argv.force == true) || false,
         targetProject: argv.project,
+        targetInstance: argv.instance,
       });
       process.exit(0);
     },
