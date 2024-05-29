@@ -83,20 +83,24 @@ export type DynamicKVInput = {
    */
   collapsed?: boolean;
 
-  // Options for 'environment' display type
-
+  /**
+   * Options for 'environment' display type
+  */
+  environmentOptions: {
   /**
  * Configure account connections for 'environment' display type
  */
-  accountConnections?: AccountConnectionInput[];
-  /**
+    accountConnections?: AccountConnectionInput[];
+    /**
    * if true, display environment name as editable in wizard. if 'readOnly', show read only environment name
    */
-  showName?: boolean | string;
-  /**
+    showName?: boolean | string;
+    /**
    * if true, show environment type chooser dropdown in wizard
    */
-  showEnvironmentType?: boolean;
+    showEnvironmentType?: boolean;
+  };
+
 
 };
 
