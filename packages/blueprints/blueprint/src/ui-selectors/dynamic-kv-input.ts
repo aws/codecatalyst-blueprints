@@ -92,9 +92,14 @@ export type DynamicKVInput = {
  */
     accountConnections?: AccountConnectionInput[];
     /**
-   * if true, display environment name as editable in wizard. if 'readOnly', show read only environment name
+   * if true, display environment name input in wizard
    */
-    showName?: boolean | string;
+    showName?: boolean;
+
+    /**
+   * if true, environment name in wizard will be read only
+   */
+    readOnlyName?: boolean;
     /**
    * if true, show environment type chooser dropdown in wizard
    */
