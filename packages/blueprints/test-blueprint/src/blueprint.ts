@@ -12,8 +12,12 @@ import {
   Selector,
   Tuple,
   DynamicKVInput,
+  KVSchema,
+  OptionsSchemaDefinition,
+  OptionsSchema,
 } from '@amazon-codecatalyst/blueprints.blueprint';
 import defaults from './defaults.json';
+import { myOptions } from './options';
 
 /**
  * This is the 'Options' interface. The 'Options' interface is interpreted by the wizard to dynamically generate a selection UI.
@@ -260,6 +264,8 @@ export interface Options extends ParentOptions {
   secret: SecretDefinition;
 
   dyanmicKvInput: DynamicKVInput[];
+
+  optionsFromFile: OptionsSchemaDefinition<'optionsIdentifier', KVSchema>;
 }
 
 /**
@@ -280,6 +286,9 @@ export class Blueprint extends ParentBlueprint {
     const options = Object.assign(typeCheck, options_);
 
     options.thisIsMyEnvironment.thisIsMyFirstAccountConnection;
+
+    new OptionsSchema(this, 'optionsIdentifier', myOptions);
+
 
     // add a repository
     const repo = new SourceRepository(this, { title: 'code' });
