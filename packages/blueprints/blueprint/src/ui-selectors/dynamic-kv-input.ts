@@ -86,7 +86,7 @@ export type DynamicKVInput = {
   /**
    * Options for 'environment' display type
   */
-  environmentOptions: {
+  environmentOptions?: {
   /**
  * Configure account connections for 'environment' display type
  */
