@@ -118,6 +118,7 @@ type AccountConnectionInput = {
 type RoleInput = {
   name: string;
   displayName?: string;
+  description?: string;
   /**
    * Display required role capabilites in wizard
    */
