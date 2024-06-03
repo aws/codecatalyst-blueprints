@@ -4,7 +4,14 @@ import path from 'path';
 import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ConnectionDefinition, InputVariable, WorkflowDefinition, WorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { DynamicKVInput, Blueprint as ParentBlueprint, Options as ParentOptions, Selector, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import {
+  KVSchema,
+  OptionsSchema,
+  OptionsSchemaDefinition,
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+  Selector,
+} from '@amazon-codecatalyst/blueprints.blueprint';
 import * as yaml from 'yaml';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import defaults from './defaults.json';
@@ -26,12 +33,12 @@ export interface Options extends ParentOptions {
 
   /**
    * This is the name of the destination repository to store your cloned copy of the code.
-   * @validationRegex /^.*$/
    */
   destinationRepositoryName: Selector<SourceRepository | string>;
 
   /**
    * @showName readOnly
+   * @deprecated environments will be removed in a future release and can be embedded in parameters: https://github.com/aws/codecatalyst-blueprints/pull/565
    */
   environments: EnvironmentDefinition<{
     /**
@@ -50,19 +57,9 @@ export interface Options extends ParentOptions {
     }>;
   }>[];
 
-  /**
-   * @readOnly
-   * @deprecated use `paremeters` property instead
-   */
-  options: Tuple<[string, string]>[];
-
-  /**
-   * @readOnly
-   */
-  parameters: DynamicKVInput[];
+  parameters: OptionsSchemaDefinition<'launch-options', KVSchema, KVSchema>;
 }
 
-const OPTIONS_PREFIX = 'LAUNCH_OPTIONS_';
 const GIT_CLONE_TIMEOUT = 30_000;
 
 /**
@@ -86,7 +83,6 @@ export class Blueprint extends ParentBlueprint {
     };
 
     const options = Object.assign(typeCheck, options_);
-
     const repository = new SourceRepository(this, {
       title: options.destinationRepositoryName,
     });
@@ -124,6 +120,13 @@ export class Blueprint extends ParentBlueprint {
 
     fs.cpSync(pathToRepository, this.state.repository.path, { recursive: true });
 
+    //register options to blueprint
+    const embeddedOptionsPath = path.join(this.state.repository.path, '.codecatalyst', 'launch-options.yaml');
+    if (fs.existsSync(embeddedOptionsPath)) {
+      const embeddedOptions = yaml.parse(fs.readFileSync(embeddedOptionsPath).toString()) as { options: KVSchema };
+      new OptionsSchema(this, 'launch-options', embeddedOptions.options);
+    }
+
     //map options and environments to workflows
     const workflowPath = path.join(this.state.repository.path, '.codecatalyst', 'workflows');
     if (fs.existsSync(workflowPath)) {
@@ -156,14 +159,10 @@ export class Blueprint extends ParentBlueprint {
     //set variables with options where applicable
     const variables = action.Inputs?.Variables as InputVariable[] | undefined;
     for (const variable of variables ?? []) {
-      if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
-        const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
-        const specifiedValue =
-          this.state.options.parameters.find(parameter => parameter.key == optionName)?.value ??
-          this.state.options.options.find(option => option[0] == optionName)?.[1];
-        if (specifiedValue) {
-          variable.Value = specifiedValue.toString();
-        }
+      const optionName = variable.Name as string;
+      const specifiedValue = this.state.options.parameters?.find(parameter => parameter.key == optionName)?.value;
+      if (specifiedValue) {
+        variable.Value = specifiedValue.toString();
       }
     }
 
@@ -182,6 +181,28 @@ export class Blueprint extends ParentBlueprint {
             Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
           } as ConnectionDefinition,
         ];
+      }
+    }
+
+    //set parameter overrides
+    if (action.Identifier?.startsWith('aws/cfn-deploy@')) {
+      const overrides = action.Configuration?.['parameter-overrides'];
+      if (overrides) {
+        const parameters: { key: string; value: string }[] = overrides.split(',').map((p: string) => {
+          const tuple = p.split('=');
+          return { key: tuple[0], value: tuple[1] };
+        });
+
+        let newOverrides = '';
+        for (const parameter of parameters) {
+          const override = this.state.options.parameters?.find(option => option.key == parameter.key)?.value;
+          newOverrides += `${parameter.key}=${override ?? parameter.value},`;
+        }
+
+        //remove trailing comma and overwrite
+        if (newOverrides) {
+          action.Configuration['parameter-overrides'] = newOverrides.substring(0, newOverrides.length - 1);
+        }
       }
     }
   }
