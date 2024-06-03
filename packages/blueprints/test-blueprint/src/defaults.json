@@ -62,6 +62,6 @@
   "displayType": "dropdown",
   "possibleValues": ["A", "B", "C", "D"],
   "description": "this is a description for string input using dynamicKvInput"
-
-  }]
+  }],
+  "optionsFromFile" : {}
 }
