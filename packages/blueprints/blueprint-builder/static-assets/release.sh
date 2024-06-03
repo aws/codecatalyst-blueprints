@@ -1,6 +1,7 @@
 # This script is used by the blueprint-release workflow to build
 # the blueprint, bump its package version, and commit the version
 # bump back into the repository.
+export PROJEN_DISABLE_POST=1
 set -euo pipefail
 echo "Installing dependencies..."
 yum install -y rsync
