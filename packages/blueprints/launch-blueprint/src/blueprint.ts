@@ -1,10 +1,11 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import path from 'path';
-import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
+import { EnvironmentDefinition, Environment, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ConnectionDefinition, InputVariable, WorkflowDefinition, WorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
 import {
+  DynamicKVInput,
   KVSchema,
   OptionsSchema,
   OptionsSchemaDefinition,
@@ -33,12 +34,13 @@ export interface Options extends ParentOptions {
 
   /**
    * This is the name of the destination repository to store your cloned copy of the code.
+   * @validationRegex /^.*$/
    */
   destinationRepositoryName: Selector<SourceRepository | string>;
 
   /**
    * @showName readOnly
-   * @deprecated environments will be removed in a future release and can be embedded in parameters: https://github.com/aws/codecatalyst-blueprints/pull/565
+   * @deprecated due to URL size limitations, use embedded ".codecatalyst/launch-options.yaml" to specify environments
    */
   environments: EnvironmentDefinition<{
     /**
@@ -57,9 +59,19 @@ export interface Options extends ParentOptions {
     }>;
   }>[];
 
-  parameters: OptionsSchemaDefinition<'launch-options', KVSchema, KVSchema>;
+  /**
+   * @readOnly
+   * @deprecated due to URL size limitations, use embedded ".codecatalyst/launch-options.yaml" to specify options
+   */
+  parameters: DynamicKVInput[];
+
+  /**
+   * @readOnly
+   */
+  launchOptions: OptionsSchemaDefinition<'launch-options', KVSchema, KVSchema>;
 }
 
+const OPTIONS_PREFIX = 'LAUNCH_OPTIONS_';
 const GIT_CLONE_TIMEOUT = 30_000;
 
 /**
@@ -87,7 +99,13 @@ export class Blueprint extends ParentBlueprint {
       title: options.destinationRepositoryName,
     });
 
-    // create environments
+    // create environments from launch options file
+    for (const environment of options.launchOptions?.filter(param => param.displayType == 'environment') ?? []) {
+      const definition = environment.value as EnvironmentDefinition<any>;
+      new Environment(this, definition);
+    }
+
+    //create environments passed on URL
     for (const environment of options.environments) {
       new Environment(this, environment);
     }
@@ -160,7 +178,9 @@ export class Blueprint extends ParentBlueprint {
     const variables = action.Inputs?.Variables as InputVariable[] | undefined;
     for (const variable of variables ?? []) {
       const optionName = variable.Name as string;
-      const specifiedValue = this.state.options.parameters?.find(parameter => parameter.key == optionName)?.value;
+      const specifiedValue =
+        this.state.options.launchOptions?.find(option => option.key == optionName)?.value ??
+        this.state.options.parameters.find(parameter => `${OPTIONS_PREFIX}${parameter.key}` == optionName)?.value;
       if (specifiedValue) {
         variable.Value = specifiedValue.toString();
       }
@@ -169,16 +189,20 @@ export class Blueprint extends ParentBlueprint {
     //set action environments from options where applicable
     const actionEnvironment = action.Environment as WorkflowEnvironment | undefined;
     if (actionEnvironment?.Name) {
-      const environment = this.state.options.environments.find(env => env.name == actionEnvironment.Name) as EnvironmentDefinition<{
+      const launchEnvironment = (this.state.options.launchOptions?.find(
+        option => option.displayType == 'environment' && option.value?.name == actionEnvironment.Name,
+      )?.value ?? this.state.options.environments?.find(env => env.name == actionEnvironment.Name)) as EnvironmentDefinition<{
         awsAccountConnection: AccountConnection<{
           launchRole: Role<['codecatalyst*']>;
         }>;
       }>;
-      if (environment?.awsAccountConnection?.name) {
+
+      if (launchEnvironment?.awsAccountConnection?.name) {
+        const connection = launchEnvironment.awsAccountConnection;
         actionEnvironment.Connections = [
           {
-            Name: environment.awsAccountConnection.name,
-            Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
+            Name: connection.name,
+            Role: connection.launchRole?.name ?? 'No role selected',
           } as ConnectionDefinition,
         ];
       }
@@ -195,7 +219,9 @@ export class Blueprint extends ParentBlueprint {
 
         let newOverrides = '';
         for (const parameter of parameters) {
-          const override = this.state.options.parameters?.find(option => option.key == parameter.key)?.value;
+          const override =
+            this.state.options.launchOptions?.find(option => option.key == parameter.key)?.value ??
+            this.state.options.parameters?.find(option => `${OPTIONS_PREFIX}${option.key}` == parameter.key);
           newOverrides += `${parameter.key}=${override ?? parameter.value},`;
         }
 
