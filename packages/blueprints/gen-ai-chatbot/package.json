@@ -79,7 +79,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.132",
+  "version": "0.3.133",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "LLM Playground",
