@@ -5,9 +5,8 @@ const project = new ProjenBlueprint({
   authorName: 'Amazon Web Services',
   publishingOrganization: 'blueprints',
   packageName: '@amazon-codecatalyst/blueprints.gen-ai-chatbot',
-  displayName: 'Bedrock GenAI Chatbot',
-  description:
-    'Builds a secure, log-in protected LLM playground that can be customized to your data. Use this blueprint to build and deploy your own chatbot.',
+  displayName: 'LLM Playground',
+  description: 'Create your own private LLM playground in minutes with code you can instantly customize and deploy.',
   name: 'gen-ai-chatbot',
   defaultReleaseBranch: 'main',
   npmAccess: NpmAccess.PUBLIC,
@@ -36,7 +35,7 @@ const project = new ProjenBlueprint({
   ],
 
   devDeps: ['ts-node', 'typescript', '@amazon-codecatalyst/blueprint-util.projen-blueprint', '@amazon-codecatalyst/blueprint-util.cli'],
-  keywords: ['genai', 'bedrock', 'chatbot', 'blueprint-publisher', 'external-blueprint', 'blueprint'],
+  keywords: ['log-in-protected', 'private', 'genai', 'bedrock', 'chatbot', 'blueprint-publisher', 'external-blueprint', 'blueprint'],
   homepage: '',
 });
 
