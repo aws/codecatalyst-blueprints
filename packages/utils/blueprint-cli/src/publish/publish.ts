@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 import { codecatalystAuthentication } from './codecatalyst-authentication';
+import { setCatalogVersion } from './set-catalog-version';
 import { uploadBlueprint } from './upload-blueprint';
 import { IdentityResponse, verifyIdentity } from './verify-identity';
 
@@ -14,6 +15,7 @@ export interface PublishOptions extends yargs.Arguments {
   region?: string;
   project?: string;
   instance?: string;
+  updateCatalog?: boolean;
 }
 
 export async function publish(
@@ -27,6 +29,7 @@ export async function publish(
     cookie?: string;
     region: string;
     force?: boolean;
+    setToCatalog?: boolean;
   },
 ): Promise<void> {
   if (!fs.existsSync(options.blueprintPath)) {
@@ -104,4 +107,18 @@ export async function publish(
       identity,
     },
   });
+
+  if (options.setToCatalog) {
+    await setCatalogVersion(log, endpoint, {
+      blueprint: {
+        space: options.publishingSpace,
+        version,
+        package: packageName,
+      },
+      auth: {
+        authentication,
+        identity,
+      },
+    });
+  }
 }

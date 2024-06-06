@@ -341,6 +341,12 @@ yargs
           description:
             'Force publish. This will overwrite the exisiting blueprint version (if it exists). This may cause exisiting blueprint consumers unexpected difference sets.',
           demandOption: false,
+        })
+        .option('update-catalog', {
+          description: 'updates this blueprint to your codecatalyst space catalog',
+          demandOption: false,
+          type: 'boolean',
+          default: false,
         });
     },
     handler: async (argv: PublishOptions): Promise<void> => {
@@ -357,6 +363,7 @@ yargs
         force: ((argv.force as boolean) && argv.force == true) || false,
         targetProject: argv.project,
         targetInstance: argv.instance,
+        setToCatalog: argv.updateCatalog || false,
       });
       process.exit(0);
     },
