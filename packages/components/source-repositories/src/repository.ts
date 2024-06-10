@@ -64,7 +64,7 @@ export class SourceRepository extends Component {
      * @param subsitution
      * @returns
      */
-    substitute?: { [key: string]: string };
+    substitute?: { [key: string]: string | object };
 
     /**
      * Allows iteration across all copied files. This is run after substitutions and final path resolution and prior to initializing the file object.
