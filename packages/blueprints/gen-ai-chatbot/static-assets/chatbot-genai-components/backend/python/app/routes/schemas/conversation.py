@@ -52,6 +52,7 @@ class FeedbackOutput(BaseSchema):
 
 class Chunk(BaseSchema):
     content: str
+    content_type: str
     source: str
     rank: int
 
@@ -80,10 +81,6 @@ class ChatInput(BaseSchema):
     conversation_id: str
     message: MessageInput
     bot_id: str | None = Field(None)
-
-
-class ChatInputWithToken(ChatInput):
-    token: str
 
 
 class ChatOutput(BaseSchema):

@@ -226,7 +226,7 @@ export class Blueprint extends ParentBlueprint {
         webAclName: options.code.webAclName,
         bucketRemovalPolicy: options.code.bucketRemovalPolicy.toUpperCase(),
         bucketNamePrefix: options.code.bucketNamePrefix,
-        enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
+        selfSignUpEnabled: options.enableSelfRegistration === 'Enabled',
         stackDisambiguator: options.code.stackDisambiguator,
         enableMistral: options.code.enableMistral ?? false,
       }),
@@ -355,6 +355,7 @@ export class Blueprint extends ParentBlueprint {
         bedrockRegion: options.code.bedrockRegion as string,
       },
     });
+    repository.copyStaticFiles({ from: 'examples', to: 'examples' });
     repository.copyStaticFiles({
       from: 'chatbot-genai-components/frontend',
       to: 'frontend',
