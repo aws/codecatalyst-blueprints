@@ -1,25 +1,15 @@
-import { Workspace, SampleWorkspaces } from '@amazon-codecatalyst/blueprint-component.dev-environments';
-import devEnvPackage from '@amazon-codecatalyst/blueprint-component.dev-environments/package.json';
-import envPackage from '@amazon-codecatalyst/blueprint-component.environments/package.json';
-import { SourceRepository, SourceFile, StaticAsset, File } from '@amazon-codecatalyst/blueprint-component.source-repositories';
-import sourceReposPackage from '@amazon-codecatalyst/blueprint-component.source-repositories/package.json';
+import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
+
 import { Workflow, WorkflowBuilder } from '@amazon-codecatalyst/blueprint-component.workflows';
-import workflowsPackage from '@amazon-codecatalyst/blueprint-component.workflows/package.json';
-import cliPackage from '@amazon-codecatalyst/blueprint-util.cli/package.json';
-import { ProjenBlueprint, ProjenBlueprintOptions } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';
-import projenBlueprintPackage from '@amazon-codecatalyst/blueprint-util.projen-blueprint/package.json';
-import {
-  BlueprintSynthesisErrorTypes,
-  MergeStrategies,
-  Blueprint as ParentBlueprint,
-  Options as ParentOptions,
-} from '@amazon-codecatalyst/blueprints.blueprint';
-import baseBlueprintPackage from '@amazon-codecatalyst/blueprints.blueprint/package.json';
+
+import { MergeStrategies, Blueprint as ParentBlueprint, Options as ParentOptions, Selector } from '@amazon-codecatalyst/blueprints.blueprint';
+
 import * as decamelize from 'decamelize';
+import { buildBlueprintPackage } from './build-blueprint-package';
+import { buildInitialStaticAssets } from './build-initial-static-assets';
 import { buildReleaseWorkflow } from './build-release-workflow';
 import defaults from './defaults.json';
 
-devEnvPackage.version;
 export interface Options extends ParentOptions {
   /**
    * What do you want to call your new blueprint?
@@ -46,6 +36,12 @@ export interface Options extends ParentOptions {
    * @collapsed true
    */
   advancedSettings: {
+    /**
+     * If set during intial creation, this converts the repository into a blueprint.
+     * @displayName Source Repository
+     */
+    repository?: Selector<SourceRepository>;
+
     /**
      * Blueprint tags get added to the package.json
      * @validationRegex /^[a-z-]+$/
@@ -83,14 +79,12 @@ export interface Options extends ParentOptions {
 
 export class Blueprint extends ParentBlueprint {
   repository: SourceRepository;
-  newBlueprintOptions: any;
+  isBlueprintConversion: boolean = false;
 
   constructor(options_: Options) {
-    const spaceName = process.env.CONTEXT_SPACENAME || '<<unknown-space>>';
-    const dashName = decamelize.default(options_.blueprintName.toString()).replace(/[_ ]/g, '-');
-    const defaultPackageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
-    options_.advancedSettings.blueprintPackageName = options_.advancedSettings.blueprintPackageName || defaultPackageName;
-    super(options_);
+    super({
+      ...options_,
+    });
     /**
      * This is a typecheck to ensure that the defaults passed in are of the correct type.
      * There are some cases where the typecheck will fail, but the defaults will still be valid, such when using enums.
@@ -104,14 +98,105 @@ export class Blueprint extends ParentBlueprint {
         license: defaults.advancedSettings.license as any,
       },
     };
-    const options = Object.assign(typeCheck, options_);
+    const userSelectedOptions = Object.assign(typeCheck, options_);
+
+    const spaceName = process.env.CONTEXT_SPACENAME || '<<unknown-space>>';
+    const dashName = decamelize.default(options_.blueprintName.toString()).replace(/[_ ]/g, '-');
+    const defaultPackageName = `@amazon-codecatalyst/${spaceName}.${dashName}`.substring(0, 214).toLocaleLowerCase().replace(/[_ ]/g, '-');
+    const options = {
+      ...userSelectedOptions,
+      advancedSettings: {
+        ...userSelectedOptions.advancedSettings,
+        blueprintPackageName: userSelectedOptions.advancedSettings.blueprintPackageName || defaultPackageName,
+        repository: userSelectedOptions.advancedSettings.repository || dashName,
+      },
+    };
+
+    this.setInstantiation({
+      options,
+      description: options.description,
+    });
+
+    /**
+     * Create a new Source repo
+     */
+    this.repository = new SourceRepository(this, {
+      title: options.advancedSettings.repository,
+    });
+
+    /**
+     * Builds the assets for the basic blueprint npm package
+     */
+    buildBlueprintPackage(this, this.repository, {
+      bpOptions: options,
+      space: this.context.spaceName || 'unknown',
+      packageName: options.advancedSettings.blueprintPackageName,
+      dashname: dashName,
+    });
+
+    /**
+     * If the release option is set, respect that and build a release workflow
+     */
+    if (options.advancedSettings.releaseWorkflow) {
+      new Workflow(
+        this,
+        this.repository,
+        buildReleaseWorkflow(new WorkflowBuilder(this), {
+          includePublishStep: options.advancedSettings.includePublishingAction,
+        }).getDefinition(),
+      );
+      this.repository.copyStaticFiles({
+        from: 'release',
+      });
+    }
+
+    /**
+     * this is the first time this blueprint is being applied, and its being applied to a repository that already exists.
+     * this blueprint is being added as a conversion on an existing codebase.
+     */
+    if (!this.context.project.blueprint.instantiationId && userSelectedOptions.advancedSettings.repository) {
+      console.log('CONVERTING A BLUEPRINT!!!');
+      this.isBlueprintConversion = true;
+      buildInitialStaticAssets(this.repository, {
+        existingFiles: this.context.project.src.findAll({
+          repositoryName: this.repository.title,
+        }),
+      });
+
+      this.repository.copyStaticFiles({
+        from: 'converted-blueprint',
+      });
+    } else {
+      /**
+       * Otherwise use the standard static assets
+       */
+      this.repository.copyStaticFiles({
+        from: 'standard-static-assets',
+        to: 'static-assets',
+      });
+    }
+
+    this.setStandardResynthStrategies();
+  }
+
+  /**
+   * This is the standard way we deal with resynthesis
+   */
+  setStandardResynthStrategies() {
+    if (this.isBlueprintConversion) {
+      console.log('THIS IS A BLUEPRINT CONVERSION. FORCING OVERWRITE');
+      this.repository.setResynthStrategies([
+        {
+          identifier: 'inital_conversion',
+          strategy: MergeStrategies.alwaysUpdate,
+          globs: ['**/**'],
+        },
+      ]);
+      return;
+    } else {
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-    const repository = new SourceRepository(this, {
-      title: dashName,
-    });
-    this.repository = repository;
     const neverUpdateFiles = ['static-assets/**', 'src/**', 'README.md'];
     this.repository.setResynthStrategies([
       {
@@ -146,159 +231,5 @@ export class Blueprint extends ParentBlueprint {
         globs: neverUpdateFiles,
       },
     ]);
-
-    const newBlueprintOptions: ProjenBlueprintOptions = {
-      authorName: options.authorName,
-      publishingOrganization: spaceName,
-      packageName: options_.advancedSettings.blueprintPackageName,
-      name: dashName,
-      displayName: options.blueprintName,
-      defaultReleaseBranch: 'main',
-      license: options.advancedSettings?.license || 'MIT',
-      projenrcTs: true,
-      sampleCode: false,
-      github: false,
-      eslint: true,
-      jest: false,
-      npmignoreEnabled: true,
-      tsconfig: {
-        compilerOptions: {
-          esModuleInterop: true,
-          noImplicitAny: false,
-        },
-      },
-      copyrightOwner: spaceName || 'unknown',
-      deps: [
-        'projen',
-        `@amazon-codecatalyst/blueprints.blueprint@${baseBlueprintPackage.version}`,
-        `@amazon-codecatalyst/blueprint-component.workflows@${workflowsPackage.version}`,
-        `@amazon-codecatalyst/blueprint-component.source-repositories@${sourceReposPackage.version}`,
-        `@amazon-codecatalyst/blueprint-component.dev-environments@${devEnvPackage.version}`,
-        `@amazon-codecatalyst/blueprint-component.environments@${envPackage.version}`,
-      ],
-      description: `${options.description}`,
-      devDeps: [
-        'ts-node@^10',
-        'typescript',
-        `@amazon-codecatalyst/blueprint-util.projen-blueprint@${projenBlueprintPackage.version}`,
-        `@amazon-codecatalyst/blueprint-util.cli@${cliPackage.version}`,
-        'fast-xml-parser',
-      ],
-      keywords: [...(options.advancedSettings?.tags || ['<<tag>>'])],
-      homepage: '',
-    };
-    console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
-    this.newBlueprintOptions = newBlueprintOptions;
-    this.setInstantiation({
-      description: options.description || '',
-    });
-
-    // copy-paste additional code over it
-    StaticAsset.findAll().forEach(asset => {
-      if (asset.path() === 'release.sh' && !options.advancedSettings.releaseWorkflow) {
-        return;
-      }
-
-      new File(repository, asset.path(), asset.content());
-    });
-
-    /**
-     * Write the projenrc.ts
-     */
-    new SourceFile(
-      repository,
-      '.projenrc.ts',
-      [
-        "import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blueprint';",
-        '',
-        `const project = new ProjenBlueprint(${JSON.stringify(
-          {
-            ...newBlueprintOptions,
-            deps: [
-              'projen',
-              '@amazon-codecatalyst/blueprints.blueprint',
-              '@amazon-codecatalyst/blueprint-component.workflows',
-              '@amazon-codecatalyst/blueprint-component.source-repositories',
-              '@amazon-codecatalyst/blueprint-component.dev-environments',
-              '@amazon-codecatalyst/blueprint-component.environments',
-            ],
-            devDeps: [
-              'ts-node@^10',
-              'typescript',
-              '@amazon-codecatalyst/blueprint-util.projen-blueprint',
-              '@amazon-codecatalyst/blueprint-util.cli',
-              'fast-xml-parser',
-            ],
-          },
-          null,
-          2,
-        )});`,
-        '',
-        'project.synth();',
-      ].join('\n'),
-    );
-
-    /**
-     * write a dev file that allows publishing within codecatalyst
-     */
-    new Workspace(this, repository, {
-      ...SampleWorkspaces.latest,
-      ...{
-        components: [
-          {
-            name: 'aws-runtime',
-            container: {
-              image: 'public.ecr.aws/aws-mde/universal-image:3.0',
-              env: [
-                {
-                  name: 'AWS_PROFILE',
-                  value: 'codecatalyst',
-                },
-              ],
-              mountSources: true,
-              volumeMounts: [
-                {
-                  name: 'docker-store',
-                  path: '/var/lib/docker',
-                },
-              ],
-            } as any,
-          },
-          {
-            name: 'docker-store',
-            volume: {
-              size: '16Gi',
-            },
-          },
-        ],
-      },
-    });
-
-    if (options.advancedSettings.releaseWorkflow) {
-      const releaseWorkflow = new WorkflowBuilder(this);
-      new Workflow(
-        this,
-        repository,
-        buildReleaseWorkflow(releaseWorkflow, {
-          includePublishStep: options.advancedSettings.includePublishingAction,
-        }).getDefinition(),
-      );
-    }
-  }
-
-  synth(): void {
-    super.synth();
-    try {
-      new ProjenBlueprint({
-        outdir: this.repository.path,
-        ...this.newBlueprintOptions,
-        overridePackageVersion: '0.0.0',
-      }).synth();
-    } catch (error) {
-      this.throwSynthesisError({
-        name: BlueprintSynthesisErrorTypes.BlueprintSynthesisError,
-        message: 'Invalid, could not synthesize code',
-      });
-    }
   }
 }

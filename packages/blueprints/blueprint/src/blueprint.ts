@@ -14,6 +14,8 @@ import { FALLBACK_STRATEGY_ID, match } from './resynthesis/merge-strategies/matc
 import { Strategy } from './resynthesis/merge-strategies/models';
 import { Ownership } from './resynthesis/ownership';
 
+const OPTIONS_FILE = 'options.json';
+
 export interface ParentOptions {
   outdir: string;
   parent?: Project;
@@ -41,7 +43,6 @@ export class Blueprint extends Project {
       ...options,
     });
 
-    const OPTIONS_FILE = 'options.json';
     const rootDir = path.resolve(this.outdir);
     this.context = {
       rootDir,
@@ -89,9 +90,7 @@ export class Blueprint extends Project {
     }
 
     // write the options to the bundle
-    const optionsRecordPath = path.join(this.outdir, OPTIONS_FILE);
-    fs.mkdirSync(path.dirname(optionsRecordPath), { recursive: true });
-    fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
+    this.writeOptionsToBundle(options);
 
     const { branch, title, description } = defaultResynthPR({
       context: this.context,
@@ -111,11 +110,31 @@ export class Blueprint extends Project {
     this.strategies[bundlepath] = strategies;
   }
 
-  setInstantiation(configurableOptions: { description: string }) {
+  setInstantiation<T extends Options>(configurableOptions: {
+    description?: string;
+
+    /**
+     * Force overrides the options that are recorded the the inital super() call.
+     */
+    options?: T;
+  }) {
     const INSTANTIATION_FILE = 'instantiation.json';
     const instantiationRecordPath = path.join(this.outdir, INSTANTIATION_FILE);
     fs.mkdirSync(path.dirname(instantiationRecordPath), { recursive: true });
-    fs.writeFileSync(instantiationRecordPath, JSON.stringify(configurableOptions, null, 2));
+    fs.writeFileSync(
+      instantiationRecordPath,
+      JSON.stringify(
+        {
+          description: configurableOptions.description,
+        },
+        null,
+        2,
+      ),
+    );
+
+    if (configurableOptions.options) {
+      this.writeOptionsToBundle(configurableOptions.options);
+    }
   }
 
   getResynthStrategies(bundlepath: string): Strategy[] {
@@ -232,6 +251,12 @@ export class Blueprint extends Project {
   override synth(): void {
     this.addExcludeFromCleanup(path.join(this.outdir, '**'));
     super.synth();
+  }
+
+  private writeOptionsToBundle<T extends Options>(options: T) {
+    const optionsRecordPath = path.join(this.outdir, OPTIONS_FILE);
+    fs.mkdirSync(path.dirname(optionsRecordPath), { recursive: true });
+    fs.writeFileSync(optionsRecordPath, JSON.stringify(options, null, 2));
   }
 }
 
