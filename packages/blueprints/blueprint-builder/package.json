@@ -50,6 +50,7 @@
   "dependencies": {
     "@amazon-codecatalyst/blueprint-component.dev-environments": "*",
     "@amazon-codecatalyst/blueprint-component.environments": "*",
+    "@amazon-codecatalyst/blueprint-component.issues": "*",
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*",
     "@amazon-codecatalyst/blueprint-component.workflows": "*",
     "@amazon-codecatalyst/blueprint-util.cli": "*",
@@ -70,7 +71,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "homepage": "https://aws.amazon.com/",
-  "version": "0.3.135",
+  "version": "0.3.136",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "mediaUrls": [
