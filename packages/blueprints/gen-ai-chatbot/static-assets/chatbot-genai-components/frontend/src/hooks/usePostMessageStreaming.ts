@@ -2,6 +2,7 @@ import { Auth } from 'aws-amplify';
 import { PostMessageRequest } from '../@types/conversation';
 import { create } from 'zustand';
 import i18next from 'i18next';
+import { AgentThinkingEventKeys } from '../features/agent/xstates/agentThinkProgress';
 
 const WS_ENDPOINT: string = import.meta.env.VITE_APP_WS_ENDPOINT;
 const CHUNK_SIZE = 32 * 1024; //32KB
@@ -11,10 +12,13 @@ const usePostMessageStreaming = create<{
     input: PostMessageRequest;
     hasKnowledge?: boolean;
     dispatch: (completion: string) => void;
+    thinkingDispatch: (
+      event: Exclude<AgentThinkingEventKeys, 'wakeup'>
+    ) => void;
   }) => Promise<string>;
 }>(() => {
   return {
-    post: async ({ input, dispatch, hasKnowledge }) => {
+    post: async ({ input, dispatch, hasKnowledge, thinkingDispatch }) => {
       if (hasKnowledge) {
         dispatch(i18next.t('bot.label.retrievingKnowledge'));
       } else {
@@ -41,7 +45,12 @@ const usePostMessageStreaming = create<{
         const ws = new WebSocket(WS_ENDPOINT);
 
         ws.onopen = () => {
-          ws.send('START');
+          ws.send(
+            JSON.stringify({
+              step: 'START',
+              token: token,
+            })
+          );
         };
 
         ws.onmessage = (message) => {
@@ -59,6 +68,7 @@ const usePostMessageStreaming = create<{
               chunkedPayloads.forEach((chunk, index) => {
                 ws.send(
                   JSON.stringify({
+                    step: 'BODY',
                     index,
                     part: chunk,
                   })
@@ -68,27 +78,53 @@ const usePostMessageStreaming = create<{
             } else if (message.data === 'Message part received.') {
               receivedCount++;
               if (receivedCount === chunkedPayloads.length) {
-                ws.send('END');
+                ws.send(
+                  JSON.stringify({
+                    step: 'END',
+                  })
+                );
               }
               return;
             }
 
             const data = JSON.parse(message.data);
 
-            if (data.completion || data.completion === '') {
-              if (completion.endsWith(i18next.t('app.chatWaitingSymbol'))) {
-                completion = completion.slice(0, -1);
-              }
+            if (data.status) {
+              switch (data.status) {
+                case 'FETCHING_KNOWLEDGE':
+                  dispatch(i18next.t('bot.label.retrievingKnowledge'));
+                  break;
+                case 'THINKING':
+                  thinkingDispatch('go-on');
+                  break;
+                case 'STREAMING':
+                  if (data.completion || data.completion === '') {
+                    if (
+                      completion.endsWith(i18next.t('app.chatWaitingSymbol'))
+                    ) {
+                      completion = completion.slice(0, -1);
+                    }
+                    completion +=
+                      data.completion + i18next.t('app.chatWaitingSymbol');
+                    dispatch(completion);
+                  }
+                  break;
+                case 'STREAMING_END':
+                  thinkingDispatch('goodbye');
 
-              completion +=
-                data.completion +
-                (data.stop_reason ? '' : i18next.t('app.chatWaitingSymbol'));
-              dispatch(completion);
-              if (data.stop_reason) {
-                ws.close();
+                  if (completion.endsWith(i18next.t('app.chatWaitingSymbol'))) {
+                    completion = completion.slice(0, -1);
+                    dispatch(completion);
+                  }
+                  ws.close();
+                  break;
+                case 'ERROR':
+                  ws.close();
+                  console.error(data);
+                  throw new Error(i18next.t('error.predict.invalidResponse'));
+                default:
+                  dispatch(i18next.t('app.chatWaitingSymbol'));
               }
-            } else if (data.status) {
-              dispatch(i18next.t('app.chatWaitingSymbol'));
             } else {
               ws.close();
               console.error(data);

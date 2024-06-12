@@ -10,12 +10,52 @@ const translation = {
     },
     app: {
       name: 'Bedrock Claude Chat',
+      nameWithoutClaude: 'Bedrock Chat',
       inputMessage: '入力してください',
       starredBots: 'スター付きのボット',
       recentlyUsedBots: '最近使用したボット',
       conversationHistory: '会話履歴',
       chatWaitingSymbol: '▍',
       adminConsoles: '管理者用',
+    },
+    agent: {
+      label: 'エージェント',
+      help: {
+        overview:
+          'エージェント機能を使用すると、チャットボットはより複雑なタスクを自動的に処理できます。',
+      },
+      hint: 'エージェントは、ユーザーの質問に答えるため、どのツールを使用するかを自動的に判断します。考える時間が必要なため、応答時間が長くなる傾向にあります。1つ以上のツールをアクティブにすると、エージェントの機能が有効になります。逆に、ツールが選択されていない場合、エージェントの機能は利用されません。エージェントの機能が有効になると、ナレッジの利用も一つのツールとして扱われます。つまり、応答の際にナレッジが利用されない場合があります。',
+      progress: {
+        label: 'エージェント思考中...',
+      },
+      tools: {
+        get_weather: {
+          name: '現在の天気',
+          description: '現在の天気予報を取得します。',
+        },
+        sql_db_query: {
+          name: 'データベースクエリ',
+          description:
+            'データベースから結果を取得するために、詳細で正確なSQLクエリを実行します。',
+        },
+        sql_db_schema: {
+          name: 'データベーススキーマ',
+          description: 'テーブルのリストのスキーマとサンプル行を取得します。',
+        },
+        sql_db_list_tables: {
+          name: 'データベーステーブル一覧',
+          description:
+            'データベースで利用可能なすべてのテーブルをリストします。',
+        },
+        sql_db_query_checker: {
+          name: 'クエリチェッカー',
+          description: '実行前にSQLクエリが正しいかどうかを確認します。',
+        },
+        internet_search: {
+          name: 'インターネット検索',
+          desciription: 'インターネットで情報を検索します。',
+        },
+      },
     },
     bot: {
       label: {
@@ -49,6 +89,7 @@ const translation = {
           uploaded: 'アップロード完了',
           error: 'エラー',
         },
+        citeRetrievedContexts: '取得したコンテキストの引用',
       },
       titleSubmenu: {
         edit: 'ボットを編集',
@@ -67,6 +108,8 @@ const translation = {
           sitemap:
             'サイトマップのURLを指定すると、そのサイトマップ内のサイトを自動的にスクレイピングして得られた情報がナレッジとして利用されます。',
           file: 'アップロードしたファイルがナレッジとして利用されます。',
+          citeRetrievedContexts:
+            'ユーザーの質問に答えるために取得したコンテキストを引用情報として表示するかどうかを設定します。\n有効にすると、ユーザーは元のソースURLやファイルにアクセスできます。',
         },
       },
       alert: {
@@ -379,6 +422,11 @@ const translation = {
         label: 'チャンクオーバーラップ',
         hint: '隣接するチャンク同士で重複する文字数を指定します。',
       },
+      enablePartitionPdf: {
+        label:
+          'PDFの詳細解析の有効化。有効にすると時間をかけてPDFを詳細に分析します。',
+        hint: '検索精度を高めたい場合に有効です。計算により多くの時間がかかるため計算コストが増加します。',
+      },
       help: {
         chunkSize:
           'チャンクサイズが小さすぎると文脈情報が失われ、大きすぎると同一チャンクの中に異なる文脈の情報が存在することになり、検索精度が低下する場合があります。',
@@ -392,6 +440,43 @@ const translation = {
             body: 'チャンクオーバーラップ値を小さくして再試行してください',
           },
         },
+      },
+    },
+    generationConfig: {
+      title: '推論パラメーターの設定',
+      description:
+        'LLM の推論パラメーターを設定して、モデルからの応答を制御することができます。',
+      maxTokens: {
+        label: '最大長',
+        hint: '生成されるトークン数の最大長を指定します。',
+      },
+      temperature: {
+        label: '温度（Temperature）',
+        hint: '予測される出力の確率分布の形状に影響を与え、モデルが低確率の出力を選択する可能性に影響を及ぼします。',
+        help: '温度を低くするとランダム性の低い出力を行い、温度を高くするとランダム性の高い出力を行います。',
+      },
+      topK: {
+        label: 'Top-k',
+        hint: 'モデルが次のトークンを予測する際に、最も可能性の高い候補の数を指定します。',
+        help: '値を小さくすると候補の数が少なくなり、結果としてランダム性が低くなります。値を大きくすると候補の数が多くなり、結果としてランダム性が高くなります。',
+      },
+      topP: {
+        label: 'Top-p',
+        hint: 'モデルが次のトークンを予測する際に、最も可能性が高い候補の割合を示します。',
+        help: '値を小さくすると候補の数が少なくなり、結果としてランダム性が低くなります。値を大きくすると候補の数が多くなり、結果としてランダム性が高くなります。',
+      },
+      stopSequences: {
+        label: '停止シーケンス',
+        hint: '指定したキーワードを含む場合、モデルは生成を停止します。複数の単語を設定する場合は、カンマ区切りで入力してください。',
+      },
+    },
+    searchSettings: {
+      title: '検索設定',
+      description:
+        'ベクトルストアから関連ドキュメントを検索する際の設定が行えます。',
+      maxResults: {
+        label: '最大検索数',
+        hint: 'ベクトルストアから検索するレコードの最大数',
       },
     },
     error: {
@@ -409,6 +494,9 @@ const translation = {
       title: 'バリデーションエラー',
       maxRange: {
         message: '設定できる最大値は{{size}}です',
+      },
+      minRange: {
+        message: '設定できる最小値は{{size}}です',
       },
       chunkOverlapLessThanChunkSize: {
         message:

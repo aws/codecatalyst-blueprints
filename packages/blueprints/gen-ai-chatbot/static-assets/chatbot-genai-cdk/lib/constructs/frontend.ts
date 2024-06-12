@@ -13,15 +13,16 @@ import {
 import { NodejsBuild } from "deploy-time-build";
 import { Auth } from "./auth";
 import { Idp } from "../utils/identity-provider";
+import { NagSuppressions } from "cdk-nag";
 
 export interface FrontendProps {
-  readonly accessLogBucket?: IBucket;
   readonly webAclId: string;
-  readonly assetBucket: {
-    prefix: string;
-    removalPolicy: string;
+  readonly enableMistral: boolean;
+  readonly accessLogBucket?: IBucket;
+  readonly env: {
+    account: string;
+    region: string;
   };
-  enableMistral: boolean;
 }
 
 export class Frontend extends Construct {
@@ -31,15 +32,22 @@ export class Frontend extends Construct {
     super(scope, id);
 
     const assetBucket = new Bucket(this, "AssetBucket", {
-      bucketName: props.assetBucket.prefix,
+      bucketName: `${
+        this.node.tryGetContext("bucketNamePrefix") ?? "chatbot-frontend-assets"
+      }-${props.env.account}-${props.env.region}`,
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       removalPolicy:
-        props.assetBucket.removalPolicy === "RETAIN"
+        (this.node.tryGetContext("bucketRemovalPolicy") ?? "DESTROY") ===
+        "RETAIN"
           ? RemovalPolicy.RETAIN
           : RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      ...(props.accessLogBucket && {
+        serverAccessLogsBucket: props.accessLogBucket,
+        serverAccessLogsPrefix: "AssetBucket",
+      })
     });
 
     const originAccessIdentity = new OriginAccessIdentity(
@@ -74,12 +82,22 @@ export class Frontend extends Construct {
           responsePagePath: "/",
         },
       ],
-      loggingConfig: props.accessLogBucket && {
-        bucket: props.accessLogBucket,
-        prefix: "Frontend/",
-      },
+      ...(props.accessLogBucket && {
+        loggingConfig: {
+          bucket: props.accessLogBucket,
+          prefix: "Frontend/",
+        },
+      }),
       webACLId: props.webAclId,
     });
+
+    NagSuppressions.addResourceSuppressions(distribution, [
+      {
+        id: "AwsPrototyping-CloudFrontDistributionGeoRestrictions",
+        reason: "this asset is being used all over the world",
+      },
+    ]);
+
     this.assetBucket = assetBucket;
     this.cloudFrontWebDistribution = distribution;
   }
@@ -105,7 +123,6 @@ export class Frontend extends Construct {
   }) {
     const region = Stack.of(auth.userPool).region;
     const cognitoDomain = `${userPoolDomainPrefix}.auth.${region}.amazoncognito.com/`;
-
     const buildEnvProps = (() => {
       const defaultProps = {
         VITE_APP_API_ENDPOINT: backendApiEndpoint,

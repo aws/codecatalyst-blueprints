@@ -219,6 +219,9 @@ def find_conversation_by_id(user_id: str, conversation_id: str) -> ConversationM
                     [
                         ChunkModel(
                             content=c["content"],
+                            content_type=(
+                                c["content_type"] if "content_type" in c else "s3"
+                            ),
                             source=c["source"],
                             rank=c["rank"],
                         )
@@ -227,6 +230,7 @@ def find_conversation_by_id(user_id: str, conversation_id: str) -> ConversationM
                     if v.get("used_chunks")
                     else None
                 ),
+                thinking_log=v.get("thinking_log"),
             )
             for k, v in message_map.items()
         },

@@ -14,16 +14,24 @@ export type Content = {
   body: string;
 };
 
+export type UsedChunk = {
+  content: string;
+  contentType: 's3' | 'url' | 'youtube';
+  source: string;
+  rank: number;
+};
+
 export type MessageContent = {
   role: Role;
   content: Content[];
   model: Model;
   feedback: null | Feedback;
+  usedChunks: null | UsedChunk[];
 };
 
 export type RelatedDocument = {
   chunkBody: string;
-  contentType: 's3' | 'url';
+  contentType: 's3' | 'url' | 'youtube';
   sourceLink: string;
   rank: number;
 };
@@ -57,7 +65,7 @@ export type GetRelatedDocumentsRequest = {
   botId: string;
 };
 
-export type GetRelatedDocumentsResponse = RelatedDocument[];
+export type GetRelatedDocumentsResponse = RelatedDocument[] | null;
 
 export type ConversationMeta = {
   id: string;
