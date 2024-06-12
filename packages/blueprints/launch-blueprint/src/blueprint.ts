@@ -131,12 +131,42 @@ export class Blueprint extends ParentBlueprint {
         timeout: GIT_CLONE_TIMEOUT,
       });
 
-      // remove .git - we have no use for it and the large number of objects
-      // contained within it could slow down the copying of sources to our workspace
-      fs.rmSync(path.join(pathToRepository, '.git'), { recursive: true, force: true });
+      if (this.context.resynthesisPhase === 'PROPOSED') {
+        const revParse = cp.spawnSync('git', ['rev-parse', 'HEAD'], {
+          cwd: pathToRepository,
+        });
+
+        this.augmentOptions({ commit: revParse.stdout.toString('utf-8').trim() });
+      }
     }
 
-    fs.cpSync(pathToRepository, this.state.repository.path, { recursive: true });
+    const currentInstantiation = this.context.project?.blueprint?.instantiationId
+      ? this.context.project.blueprint.instantiations?.find(i => i.id === this.context.project.blueprint.instantiationId)
+      : undefined;
+    const commitHash = currentInstantiation?.options?.authorDefined?.commit;
+    if (this.context.resynthesisPhase === 'ANCESTOR' && commitHash) {
+      // need to refetch since we previously just cloned at --depth=1
+      cp.spawnSync('git', ['fetch', '--depth', '1', 'origin', commitHash], {
+        cwd: pathToRepository,
+        stdio: [0, 1, 1],
+        timeout: GIT_CLONE_TIMEOUT,
+      });
+      cp.spawnSync('git', ['checkout', commitHash], {
+        cwd: pathToRepository,
+        stdio: [0, 1, 1],
+      });
+    } else if (commitHash) {
+      // ensure repo is checked out at HEAD if phase is not ancestor
+      const branch = this.state.options.sourceBranch ?? 'HEAD';
+      cp.spawnSync('git', ['checkout', `refs/remotes/origin/${branch}`], {
+        cwd: pathToRepository,
+        stdio: [0, 1, 1],
+      });
+    }
+
+    // exclude .git - we have no use for it and the large number of objects
+    // contained within it could slow down the copying of sources to our workspace
+    fs.cpSync(pathToRepository, this.state.repository.path, { recursive: true, filter: src => src.indexOf('.git/') === -1 });
 
     //register options to blueprint
     const embeddedOptionsPath = path.join(this.state.repository.path, '.codecatalyst', 'launch-options.yaml');
