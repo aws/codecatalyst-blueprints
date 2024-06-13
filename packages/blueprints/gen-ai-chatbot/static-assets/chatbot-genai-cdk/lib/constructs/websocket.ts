@@ -54,10 +54,8 @@ export class WebSocket extends Construct {
         removalPolicy: RemovalPolicy.DESTROY,
         objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
         autoDeleteObjects: true,
-        ...(props.accessLogBucket && {
-          serverAccessLogsBucket: props.accessLogBucket,
-          serverAccessLogsPrefix: "LargePayloadSupportBucket",
-        }),
+        serverAccessLogsBucket: props.accessLogBucket,
+        serverAccessLogsPrefix: "LargePayloadSupportBucket",
       }
     );
 

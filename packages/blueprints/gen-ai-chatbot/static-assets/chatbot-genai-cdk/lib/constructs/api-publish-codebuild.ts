@@ -25,10 +25,8 @@ export class ApiPublishCodebuild extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
-      ...(props.accessLogBucket && {
-        serverAccessLogsBucket: props.accessLogBucket,
-        serverAccessLogsPrefix: "ApiPublishCodebuildBucket",
-      }),
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "ApiPublishCodebuildBucket",
     });
 
     new s3deploy.BucketDeployment(this, "PublishApiSourceDeploy", {

@@ -22,7 +22,6 @@ import { TIdentityProvider, identityProvider } from "./utils/identity-provider";
 import { ApiPublishCodebuild } from "./constructs/api-publish-codebuild";
 import { WebAclForPublishedApi } from "./constructs/webacl-for-published-api";
 import { CronScheduleProps, createCronSchedule } from "./utils/cron-schedule";
-import { SKIP_ACCESS_LOGGING_REGIONS } from "./utils/constants";
 import { NagSuppressions } from "cdk-nag";
 
 export interface ChatbotGenAiCdkStackProps extends StackProps {
@@ -60,16 +59,14 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
     });
     const idp = identityProvider(props.identityProviders);
 
-    const accessLogBucket = !SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
-      ? new Bucket(this, "AccessLogBucket", {
-          encryption: BucketEncryption.S3_MANAGED,
-          blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-          enforceSSL: true,
-          removalPolicy: RemovalPolicy.DESTROY,
-          objectOwnership: ObjectOwnership.OBJECT_WRITER,
-          autoDeleteObjects: true,
-        })
-      : undefined;
+    const accessLogBucket = new Bucket(this, "AccessLogBucket", {
+      encryption: BucketEncryption.S3_MANAGED,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+      objectOwnership: ObjectOwnership.OBJECT_WRITER,
+      autoDeleteObjects: true,
+    });
 
     // CodeBuild is used for api publication
     const apiPublishCodebuild = new ApiPublishCodebuild(
@@ -116,24 +113,22 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       objectOwnership: ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      ...(!SKIP_ACCESS_LOGGING_REGIONS.includes(this.region) && {
-        serverAccessLogsBucket: new Bucket(this, "DdbBucketLogs", {
-          encryption: BucketEncryption.S3_MANAGED,
-          blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-          enforceSSL: true,
-          removalPolicy: RemovalPolicy.DESTROY,
-          lifecycleRules: [
-            {
-              enabled: true,
-              expiration: Duration.days(3653),
-              id: "ExpireAfterTenYears",
-            },
-          ],
-          versioned: true,
-          serverAccessLogsPrefix: "self/",
-        }),
-        serverAccessLogsPrefix: "DocumentBucket",
+      serverAccessLogsBucket: new Bucket(this, "DdbBucketLogs", {
+        encryption: BucketEncryption.S3_MANAGED,
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+        enforceSSL: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+        lifecycleRules: [
+          {
+            enabled: true,
+            expiration: Duration.days(3653),
+            id: "ExpireAfterTenYears",
+          },
+        ],
+        versioned: true,
+        serverAccessLogsPrefix: "self/",
       }),
+      serverAccessLogsPrefix: "DocumentBucket",
     });
 
     const database = new Database(this, "Database", {

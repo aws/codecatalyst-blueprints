@@ -44,10 +44,8 @@ export class Frontend extends Construct {
           ? RemovalPolicy.RETAIN
           : RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
-      ...(props.accessLogBucket && {
-        serverAccessLogsBucket: props.accessLogBucket,
-        serverAccessLogsPrefix: "AssetBucket",
-      })
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "AssetBucket",
     });
 
     const originAccessIdentity = new OriginAccessIdentity(
@@ -82,7 +80,7 @@ export class Frontend extends Construct {
           responsePagePath: "/",
         },
       ],
-      ...(props.accessLogBucket && {
+      ...(!this.shouldSkipAccessLogging() && {
         loggingConfig: {
           bucket: props.accessLogBucket,
           prefix: "Frontend/",
@@ -170,5 +168,26 @@ export class Frontend extends Construct {
         value: idp.getSocialProviders(),
       });
     }
+  }
+
+  /**
+   * CloudFront does not support access log delivery in the following regions
+   * @see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#access-logs-choosing-s3-bucket
+   */
+  private shouldSkipAccessLogging(): boolean {
+    const skipLoggingRegions = [
+      "af-south-1",
+      "ap-east-1",
+      "ap-south-2",
+      "ap-southeast-3",
+      "ap-southeast-4",
+      "ca-west-1",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-central-2",
+      "il-central-1",
+      "me-central-1",
+    ];
+    return skipLoggingRegions.includes(Stack.of(this).region);
   }
 }

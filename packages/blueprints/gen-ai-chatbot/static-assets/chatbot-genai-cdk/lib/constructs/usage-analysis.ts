@@ -41,10 +41,8 @@ export class UsageAnalysis extends Construct {
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      ...(props.accessLogBucket && {
-        serverAccessLogsBucket: props.accessLogBucket,
-        serverAccessLogsPrefix: "DdbBucket",
-      }),
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "DdbBucket",
     });
 
     // Bucket for Athena query results
@@ -55,10 +53,8 @@ export class UsageAnalysis extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
-      ...(props.accessLogBucket && {
-        serverAccessLogsBucket: props.accessLogBucket,
-        serverAccessLogsPrefix: "QueryResultBucket",
-      }),
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "QueryResultBucket",
     });
 
     // Workgroup for Athena
