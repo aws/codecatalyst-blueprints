@@ -11,19 +11,45 @@ import ButtonIcon from '../components/ButtonIcon';
 import { produce } from 'immer';
 import Alert from '../components/Alert';
 import KnowledgeFileUploader from '../components/KnowledgeFileUploader';
-import { BotFile, EmdeddingPrams } from '../@types/bot';
+import GenerationConfig from '../components/GenerationConfig';
+import { BotFile, EmdeddingParams, SearchParams } from '../@types/bot';
+
 import { ulid } from 'ulid';
-import { DEFAULT_EMBEDDING_CONFIG, EDGE_EMBEDDING_PARAMS } from '../constants';
+import {
+  DEFAULT_EMBEDDING_CONFIG,
+  EDGE_EMBEDDING_PARAMS,
+  EDGE_GENERATION_PARAMS,
+  EDGE_MISTRAL_GENERATION_PARAMS,
+  DEFAULT_GENERATION_CONFIG,
+  DEFAULT_MISTRAL_GENERATION_CONFIG,
+  DEFAULT_SEARCH_CONFIG,
+  EDGE_SEARCH_PARAMS,
+} from '../constants';
 import { Slider } from '../components/Slider';
 import ExpandableDrawerGroup from '../components/ExpandableDrawerGroup';
 import useErrorMessage from '../hooks/useErrorMessage';
 import Help from '../components/Help';
+import Toggle from '../components/Toggle';
+import { useAgent } from '../features/agent/hooks/useAgent';
+import { AgentTool } from '../features/agent/types';
+import { AvailableTools } from '../features/agent/components/AvailableTools';
+
+const edgeGenerationParams =
+  import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true'
+    ? EDGE_MISTRAL_GENERATION_PARAMS
+    : EDGE_GENERATION_PARAMS;
+
+const defaultGenerationConfig =
+  import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true'
+    ? DEFAULT_MISTRAL_GENERATION_CONFIG
+    : DEFAULT_GENERATION_CONFIG;
 
 const BotEditPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { botId: paramsBotId } = useParams();
   const { getMyBot, registerBot, updateBot } = useBot();
+  const { availableTools } = useAgent();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,13 +58,30 @@ const BotEditPage: React.FC = () => {
   const [instruction, setInstruction] = useState('');
   const [urls, setUrls] = useState<string[]>(['']);
   const [files, setFiles] = useState<BotFile[]>([]);
-  const [embeddingParams, setEmbeddingParams] = useState<EmdeddingPrams>({
+  const [embeddingParams, setEmbeddingParams] = useState<EmdeddingParams>({
     chunkSize: DEFAULT_EMBEDDING_CONFIG.chunkSize,
     chunkOverlap: DEFAULT_EMBEDDING_CONFIG.chunkOverlap,
+    enablePartitionPdf: DEFAULT_EMBEDDING_CONFIG.enablePartitionPdf,
   });
   const [addedFilenames, setAddedFilenames] = useState<string[]>([]);
   const [unchangedFilenames, setUnchangedFilenames] = useState<string[]>([]);
   const [deletedFilenames, setDeletedFilenames] = useState<string[]>([]);
+  const [displayRetrievedChunks, setDisplayRetrievedChunks] = useState(true);
+  const [maxTokens, setMaxTokens] = useState<number>(
+    defaultGenerationConfig.maxTokens
+  );
+  const [topK, setTopK] = useState<number>(defaultGenerationConfig.topK);
+  const [topP, setTopP] = useState<number>(defaultGenerationConfig.topP);
+  const [temperature, setTemperature] = useState<number>(
+    defaultGenerationConfig.temperature
+  );
+  const [stopSequences, setStopSequences] = useState<string>(
+    defaultGenerationConfig.stopSequences?.join(',') || ''
+  );
+  const [searchParams, setSearchParams] = useState<SearchParams>(
+    DEFAULT_SEARCH_CONFIG
+  );
+  const [tools, setTools] = useState<AgentTool[]>([]);
 
   const {
     errorMessages,
@@ -59,6 +102,7 @@ const BotEditPage: React.FC = () => {
       setIsLoading(true);
       getMyBot(botId)
         .then((bot) => {
+          setTools(bot.agent.tools);
           setTitle(bot.title);
           setDescription(bot.description);
           setInstruction(bot.instruction);
@@ -73,8 +117,15 @@ const BotEditPage: React.FC = () => {
               status: 'UPLOADED',
             }))
           );
-          setEmbeddingParams(() => bot.embeddingParams);
+          setEmbeddingParams(bot.embeddingParams);
+          setSearchParams(bot.searchParams);
+          setTopK(bot.generationParams.topK);
+          setTopP(bot.generationParams.topP);
+          setTemperature(bot.generationParams.temperature);
+          setMaxTokens(bot.generationParams.maxTokens);
+          setStopSequences(bot.generationParams.stopSequences.join(','));
           setUnchangedFilenames([...bot.knowledge.filenames]);
+          setDisplayRetrievedChunks(bot.displayRetrievedChunks);
           if (bot.syncStatus === 'FAILED') {
             setErrorMessages(
               isSyncChunkError(bot.syncStatusReason)
@@ -222,6 +273,31 @@ const BotEditPage: React.FC = () => {
     history.back();
   }, []);
 
+  const isValidGenerationConfigParam = useCallback(
+    (value: number, key: 'maxTokens' | 'topK' | 'topP' | 'temperature') => {
+      if (value < edgeGenerationParams[key].MIN) {
+        setErrorMessages(
+          key,
+          t('validation.minRange.message', {
+            size: edgeGenerationParams[key].MIN,
+          })
+        );
+        return false;
+      } else if (value > edgeGenerationParams[key].MAX) {
+        setErrorMessages(
+          key,
+          t('validation.maxRange.message', {
+            size: edgeGenerationParams[key].MAX,
+          })
+        );
+        return false;
+      }
+
+      return true;
+    },
+    [setErrorMessages, t]
+  );
+
   const isValid = useCallback((): boolean => {
     clearErrorMessages();
     if (embeddingParams.chunkSize > EDGE_EMBEDDING_PARAMS.chunkSize.MAX) {
@@ -252,13 +328,56 @@ const BotEditPage: React.FC = () => {
       return false;
     }
 
-    return true;
-  }, [embeddingParams, clearErrorMessages, setErrorMessages, t]);
+    if (stopSequences.length === 0) {
+      setErrorMessages('stopSequences', t('input.validationError.required'));
+      return false;
+    }
+
+    if (searchParams.maxResults < EDGE_SEARCH_PARAMS.maxResults.MIN) {
+      setErrorMessages(
+        'maxResults',
+        t('validation.minRange.message', {
+          size: EDGE_SEARCH_PARAMS.maxResults.MIN,
+        })
+      );
+      return false;
+    } else if (searchParams.maxResults > EDGE_SEARCH_PARAMS.maxResults.MAX) {
+      setErrorMessages(
+        'maxResults',
+        t('validation.maxRange.message', {
+          size: EDGE_SEARCH_PARAMS.maxResults.MAX,
+        })
+      );
+      return false;
+    }
+
+    return (
+      isValidGenerationConfigParam(maxTokens, 'maxTokens') &&
+      isValidGenerationConfigParam(topK, 'topK') &&
+      isValidGenerationConfigParam(topP, 'topP') &&
+      isValidGenerationConfigParam(temperature, 'temperature')
+    );
+  }, [
+    embeddingParams,
+    maxTokens,
+    topK,
+    topP,
+    temperature,
+    stopSequences,
+    searchParams,
+    clearErrorMessages,
+    setErrorMessages,
+    isValidGenerationConfigParam,
+    t,
+  ]);
 
   const onClickCreate = useCallback(() => {
     if (!isValid()) return;
     setIsLoading(true);
     registerBot({
+      agent: {
+        tools: tools.map(({ name }) => name),
+      },
       id: botId,
       title,
       description,
@@ -266,13 +385,23 @@ const BotEditPage: React.FC = () => {
       embeddingParams: {
         chunkSize: embeddingParams.chunkSize,
         chunkOverlap: embeddingParams.chunkOverlap,
+        enablePartitionPdf: embeddingParams.enablePartitionPdf,
       },
+      generationParams: {
+        maxTokens,
+        temperature,
+        topK,
+        topP,
+        stopSequences: stopSequences.split(','),
+      },
+      searchParams,
       knowledge: {
         sourceUrls: urls.filter((s) => s !== ''),
         // Sitemap cannot be used yet.
         sitemapUrls: [],
         filenames: files.map((f) => f.filename),
       },
+      displayRetrievedChunks,
     })
       .then(() => {
         navigate('/bot/explore');
@@ -283,6 +412,7 @@ const BotEditPage: React.FC = () => {
   }, [
     registerBot,
     isValid,
+    tools,
     botId,
     title,
     description,
@@ -290,6 +420,13 @@ const BotEditPage: React.FC = () => {
     urls,
     files,
     embeddingParams,
+    displayRetrievedChunks,
+    maxTokens,
+    temperature,
+    topK,
+    topP,
+    stopSequences,
+    searchParams,
     navigate,
   ]);
 
@@ -299,13 +436,25 @@ const BotEditPage: React.FC = () => {
     if (!isNewBot) {
       setIsLoading(true);
       updateBot(botId, {
+        agent: {
+          tools: tools.map(({ name }) => name),
+        },
         title,
         description,
         instruction,
         embeddingParams: {
           chunkSize: embeddingParams?.chunkSize,
           chunkOverlap: embeddingParams?.chunkOverlap,
+          enablePartitionPdf: embeddingParams?.enablePartitionPdf,
         },
+        generationParams: {
+          maxTokens,
+          temperature,
+          topK,
+          topP,
+          stopSequences: stopSequences.split(','),
+        },
+        searchParams,
         knowledge: {
           sourceUrls: urls.filter((s) => s !== ''),
           // Sitemap cannot be used yet.
@@ -314,6 +463,7 @@ const BotEditPage: React.FC = () => {
           deletedFilenames,
           unchangedFilenames,
         },
+        displayRetrievedChunks,
       })
         .then(() => {
           navigate('/bot/explore');
@@ -326,6 +476,7 @@ const BotEditPage: React.FC = () => {
     isNewBot,
     isValid,
     updateBot,
+    tools,
     botId,
     title,
     description,
@@ -335,6 +486,13 @@ const BotEditPage: React.FC = () => {
     deletedFilenames,
     unchangedFilenames,
     embeddingParams,
+    displayRetrievedChunks,
+    maxTokens,
+    temperature,
+    topK,
+    topP,
+    stopSequences,
+    searchParams,
     navigate,
   ]);
 
@@ -392,6 +550,13 @@ const BotEditPage: React.FC = () => {
                   onChange={setInstruction}
                 />
               </div>
+
+              <div className="mt-3" />
+              <AvailableTools
+                availableTools={availableTools}
+                tools={tools}
+                setTools={setTools}
+              />
 
               <div className="mt-3">
                 <div className="flex items-center gap-1">
@@ -468,7 +633,43 @@ const BotEditPage: React.FC = () => {
                     />
                   </div>
                 </div>
+
+                <div className="mt-2">
+                  <div className="font-semibold">
+                    {t('bot.label.citeRetrievedContexts')}
+                  </div>
+                  <div className="flex">
+                    <Toggle
+                      value={displayRetrievedChunks}
+                      onChange={setDisplayRetrievedChunks}
+                    />
+                    <div className="whitespace-pre-wrap text-sm text-aws-font-color/50">
+                      {t('bot.help.knowledge.citeRetrievedContexts')}
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <ExpandableDrawerGroup
+                isDefaultShow={false}
+                label={t('generationConfig.title')}
+                className="py-2">
+                <GenerationConfig
+                  topK={topK}
+                  setTopK={setTopK}
+                  topP={topP}
+                  setTopP={setTopP}
+                  temperature={temperature}
+                  setTemperature={setTemperature}
+                  maxTokens={maxTokens}
+                  setMaxTokens={setMaxTokens}
+                  stopSequences={stopSequences}
+                  setStopSequences={setStopSequences}
+                  isLoading={isLoading}
+                  errorMessages={errorMessages}
+                />
+              </ExpandableDrawerGroup>
+
               <ExpandableDrawerGroup
                 isDefaultShow={false}
                 label={t('embeddingSettings.title')}
@@ -528,6 +729,47 @@ const BotEditPage: React.FC = () => {
                       }))
                     }
                     errorMessage={errorMessages['chunkOverlap']}
+                  />
+                </div>
+                <div className="mt-2">
+                  <Toggle
+                    value={embeddingParams?.enablePartitionPdf ?? false}
+                    label={t('embeddingSettings.enablePartitionPdf.label')}
+                    hint={t('embeddingSettings.enablePartitionPdf.hint')}
+                    onChange={(enablePartitionPdf) =>
+                      setEmbeddingParams((params) => ({
+                        ...params,
+                        enablePartitionPdf: enablePartitionPdf,
+                      }))
+                    }
+                  />
+                </div>
+              </ExpandableDrawerGroup>
+
+              <ExpandableDrawerGroup
+                isDefaultShow={false}
+                label={t('searchSettings.title')}
+                className="py-2">
+                <div className="text-sm text-aws-font-color/50">
+                  {t('searchSettings.description')}
+                </div>
+                <div className="mt-2">
+                  <Slider
+                    value={searchParams.maxResults}
+                    hint={t('searchSettings.maxResults.hint')}
+                    label={t('searchSettings.maxResults.label')}
+                    range={{
+                      min: EDGE_SEARCH_PARAMS.maxResults.MIN,
+                      max: EDGE_SEARCH_PARAMS.maxResults.MAX,
+                      step: EDGE_SEARCH_PARAMS.maxResults.STEP,
+                    }}
+                    onChange={(maxResults) =>
+                      setSearchParams((params) => ({
+                        ...params,
+                        maxResults,
+                      }))
+                    }
+                    errorMessage={errorMessages['maxResults']}
                   />
                 </div>
               </ExpandableDrawerGroup>

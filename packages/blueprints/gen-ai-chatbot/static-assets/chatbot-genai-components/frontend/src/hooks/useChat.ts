@@ -21,6 +21,8 @@ import { convertMessageMapToArray } from '../utils/MessageUtils';
 import { useTranslation } from 'react-i18next';
 import useModel from './useModel';
 import useFeedbackApi from './useFeedbackApi';
+import { useMachine } from '@xstate/react';
+import { agentThinkingState } from '../features/agent/xstates/agentThinkProgress';
 
 type ChatStateType = {
   [id: string]: MessageMap;
@@ -29,7 +31,14 @@ type ChatStateType = {
 type BotInputType = {
   botId: string;
   hasKnowledge: boolean;
+  hasAgent: boolean;
 };
+
+export type ThinkingAction =
+  | {
+      type: 'doing';
+    }
+  | { type: 'init' };
 
 const NEW_MESSAGE_ID = {
   USER: 'new-message',
@@ -220,6 +229,8 @@ const useChatState = create<{
 
 const useChat = () => {
   const { t } = useTranslation();
+  const [agentThinking, send] = useMachine(agentThinkingState);
+
   const {
     chats,
     conversationId,
@@ -322,6 +333,7 @@ const useChat = () => {
         ],
         model: messageContent.model,
         feedback: messageContent.feedback,
+        usedChunks: messageContent.usedChunks,
       }
     );
   };
@@ -371,6 +383,7 @@ const useChat = () => {
       model: modelToPost,
       role: 'user',
       feedback: null,
+      usedChunks: null,
     };
     const input: PostMessageRequest = {
       conversationId: isNewChat ? newConversationId : conversationId,
@@ -404,11 +417,16 @@ const useChat = () => {
     // post message
     const postPromise: Promise<string> = new Promise((resolve, reject) => {
       if (USE_STREAMING) {
+        if (bot?.hasAgent) send({ type: 'wakeup' });
+
         postStreaming({
           input,
           hasKnowledge: bot?.hasKnowledge,
           dispatch: (c: string) => {
             editMessage(conversationId, NEW_MESSAGE_ID.ASSISTANT, c);
+          },
+          thinkingDispatch: (event) => {
+            send({ type: event });
           },
         })
           .then((message) => {
@@ -460,8 +478,10 @@ const useChat = () => {
           message: input.message,
         })
         .then((res) => {
-          documents.push(...res.data);
-          setRelatedDocuments(NEW_MESSAGE_ID.ASSISTANT, documents);
+          if (res.data) {
+            documents.push(...res.data);
+            setRelatedDocuments(NEW_MESSAGE_ID.ASSISTANT, documents);
+          }
         });
     }
   };
@@ -530,6 +550,7 @@ const useChat = () => {
           ],
           model: messages[index].model,
           feedback: messages[index].feedback,
+          usedChunks: messages[index].usedChunks,
         }
       );
     } else {
@@ -538,10 +559,15 @@ const useChat = () => {
 
     setCurrentMessageId(NEW_MESSAGE_ID.ASSISTANT);
 
+    if (props?.bot?.hasAgent) send({ type: 'wakeup' });
+
     postStreaming({
       input,
       dispatch: (c: string) => {
         editMessage(conversationId, NEW_MESSAGE_ID.ASSISTANT, c);
+      },
+      thinkingDispatch: (event) => {
+        send({ type: event });
       },
     })
       .then(() => {
@@ -566,8 +592,10 @@ const useChat = () => {
           message: input.message,
         })
         .then((res) => {
-          documents.push(...res.data);
-          setRelatedDocuments(NEW_MESSAGE_ID.ASSISTANT, documents);
+          if (res.data) {
+            documents.push(...res.data);
+            setRelatedDocuments(NEW_MESSAGE_ID.ASSISTANT, documents);
+          }
         });
     }
   };
@@ -578,6 +606,7 @@ const useChat = () => {
   }, [messages]);
 
   return {
+    agentThinking,
     hasError,
     setConversationId,
     conversationId,
@@ -606,9 +635,10 @@ const useChat = () => {
           content: params.content ?? latestMessage.content[0].body,
           bot: params.bot
             ? {
-              botId: params.bot.botId,
-              hasKnowledge: params.bot.hasKnowledge,
-            }
+                botId: params.bot.botId,
+                hasKnowledge: params.bot.hasKnowledge,
+                hasAgent: params.bot.hasAgent,
+              }
             : undefined,
         });
       } else {

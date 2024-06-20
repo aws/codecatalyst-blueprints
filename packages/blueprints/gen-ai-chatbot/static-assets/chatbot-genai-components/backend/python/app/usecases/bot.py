@@ -1,6 +1,10 @@
 import logging
 import os
 
+from app.agents.utils import get_available_tools, get_tool_by_name
+from app.config import DEFAULT_EMBEDDING_CONFIG
+from app.config import DEFAULT_GENERATION_CONFIG as DEFAULT_CLAUDE_GENERATION_CONFIG
+from app.config import DEFAULT_MISTRAL_GENERATION_CONFIG, DEFAULT_SEARCH_CONFIG
 from app.repositories.common import (
     RecordNotFoundError,
     _get_table_client,
@@ -22,20 +26,28 @@ from app.repositories.custom_bot import (
     update_bot_pin_status,
 )
 from app.repositories.models.custom_bot import (
+    AgentModel,
+    AgentToolModel,
     BotAliasModel,
     BotMeta,
     BotModel,
     EmbeddingParamsModel,
+    GenerationParamsModel,
     KnowledgeModel,
+    SearchParamsModel,
 )
 from app.routes.schemas.bot import (
+    Agent,
+    AgentTool,
     BotInput,
     BotModifyInput,
     BotModifyOutput,
     BotOutput,
     BotSummaryOutput,
     EmbeddingParams,
+    GenerationParams,
     Knowledge,
+    SearchParams,
     type_sync_status,
 )
 from app.utils import (
@@ -48,14 +60,19 @@ from app.utils import (
     get_current_time,
     move_file_in_s3,
 )
-
-from app.config import DEFAULT_EMBEDDING_CONFIG
 from boto3.dynamodb.conditions import Attr, Key
 from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
 DOCUMENT_BUCKET = os.environ.get("DOCUMENT_BUCKET", "bedrock-documents")
+ENABLE_MISTRAL = os.environ.get("ENABLE_MISTRAL", "") == "true"
+
+DEFAULT_GENERATION_CONFIG = (
+    DEFAULT_MISTRAL_GENERATION_CONFIG
+    if ENABLE_MISTRAL
+    else DEFAULT_CLAUDE_GENERATION_CONFIG
+)
 
 
 def _update_s3_documents_by_diff(
@@ -115,6 +132,37 @@ def create_new_bot(user_id: str, bot_input: BotInput) -> BotOutput:
         else DEFAULT_EMBEDDING_CONFIG["chunk_overlap"]
     )
 
+    enable_partition_pdf = (
+        bot_input.embedding_params.enable_partition_pdf
+        if bot_input.embedding_params
+        else DEFAULT_EMBEDDING_CONFIG["enable_partition_pdf"]
+    )
+
+    generation_params = (
+        bot_input.generation_params.model_dump()
+        if bot_input.generation_params
+        else DEFAULT_GENERATION_CONFIG
+    )
+
+    search_params = (
+        bot_input.search_params.model_dump()
+        if bot_input.search_params
+        else DEFAULT_SEARCH_CONFIG
+    )
+
+    agent = (
+        AgentModel(
+            tools=[
+                AgentToolModel(name=t.name, description=t.description)
+                for t in [
+                    get_tool_by_name(tool_name) for tool_name in bot_input.agent.tools
+                ]
+            ]
+        )
+        if bot_input.agent
+        else AgentModel(tools=[])
+    )
+
     store_bot(
         user_id,
         BotModel(
@@ -130,7 +178,11 @@ def create_new_bot(user_id: str, bot_input: BotInput) -> BotOutput:
             embedding_params=EmbeddingParamsModel(
                 chunk_size=chunk_size,
                 chunk_overlap=chunk_overlap,
+                enable_partition_pdf=enable_partition_pdf,
             ),
+            generation_params=GenerationParamsModel(**generation_params),  # type: ignore
+            search_params=SearchParamsModel(**search_params),
+            agent=agent,
             knowledge=KnowledgeModel(
                 source_urls=source_urls, sitemap_urls=sitemap_urls, filenames=filenames
             ),
@@ -140,6 +192,7 @@ def create_new_bot(user_id: str, bot_input: BotInput) -> BotOutput:
             published_api_stack_name=None,
             published_api_datetime=None,
             published_api_codebuild_id=None,
+            display_retrieved_chunks=bot_input.display_retrieved_chunks,
         ),
     )
     return BotOutput(
@@ -155,6 +208,15 @@ def create_new_bot(user_id: str, bot_input: BotInput) -> BotOutput:
         embedding_params=EmbeddingParams(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
+            enable_partition_pdf=enable_partition_pdf,
+        ),
+        generation_params=GenerationParams(**generation_params),
+        search_params=SearchParams(**search_params),
+        agent=Agent(
+            tools=[
+                AgentTool(name=tool.name, description=tool.description)
+                for tool in agent.tools
+            ]
         ),
         knowledge=Knowledge(
             source_urls=source_urls, sitemap_urls=sitemap_urls, filenames=filenames
@@ -162,6 +224,7 @@ def create_new_bot(user_id: str, bot_input: BotInput) -> BotOutput:
         sync_status=sync_status,
         sync_status_reason="",
         sync_last_exec_id="",
+        display_retrieved_chunks=bot_input.display_retrieved_chunks,
     )
 
 
@@ -207,6 +270,38 @@ def modify_owned_bot(
         else DEFAULT_EMBEDDING_CONFIG["chunk_overlap"]
     )
 
+    enable_partition_pdf = (
+        modify_input.embedding_params.enable_partition_pdf
+        if modify_input.embedding_params
+        else DEFAULT_EMBEDDING_CONFIG["enable_partition_pdf"]
+    )
+
+    generation_params = (
+        modify_input.generation_params.model_dump()
+        if modify_input.generation_params
+        else DEFAULT_GENERATION_CONFIG
+    )
+
+    search_params = (
+        modify_input.search_params.model_dump()
+        if modify_input.search_params
+        else DEFAULT_SEARCH_CONFIG
+    )
+
+    agent = (
+        AgentModel(
+            tools=[
+                AgentToolModel(name=t.name, description=t.description)
+                for t in [
+                    get_tool_by_name(tool_name)
+                    for tool_name in modify_input.agent.tools
+                ]
+            ]
+        )
+        if modify_input.agent
+        else AgentModel(tools=[])
+    )
+
     # if knowledge and embedding_params are not updated, skip embeding process.
     # 'sync_status = "QUEUED"' will execute embeding process and update dynamodb record.
     # 'sync_status= "SUCCEEDED"' will update only dynamodb record.
@@ -222,7 +317,11 @@ def modify_owned_bot(
         embedding_params=EmbeddingParamsModel(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
+            enable_partition_pdf=enable_partition_pdf,
         ),
+        generation_params=GenerationParamsModel(**generation_params),
+        search_params=SearchParamsModel(**search_params),
+        agent=agent,
         knowledge=KnowledgeModel(
             source_urls=source_urls,
             sitemap_urls=sitemap_urls,
@@ -230,6 +329,7 @@ def modify_owned_bot(
         ),
         sync_status=sync_status,
         sync_status_reason="",
+        display_retrieved_chunks=modify_input.display_retrieved_chunks,
     )
 
     return BotModifyOutput(
@@ -240,6 +340,15 @@ def modify_owned_bot(
         embedding_params=EmbeddingParams(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
+            enable_partition_pdf=enable_partition_pdf,
+        ),
+        generation_params=GenerationParams(**generation_params),
+        search_params=SearchParams(**search_params),
+        agent=Agent(
+            tools=[
+                AgentTool(name=tool.name, description=tool.description)
+                for tool in agent.tools
+            ]
         ),
         knowledge=Knowledge(
             source_urls=source_urls,
@@ -390,6 +499,7 @@ def fetch_bot_summary(user_id: str, bot_id: str) -> BotSummaryOutput:
             last_used_time=bot.last_used_time,
             is_pinned=bot.is_pinned,
             is_public=True if bot.public_bot_id else False,
+            has_agent=bot.is_agent_enabled(),
             owned=True,
             sync_status=bot.sync_status,
             has_knowledge=bot.has_knowledge(),
@@ -408,6 +518,7 @@ def fetch_bot_summary(user_id: str, bot_id: str) -> BotSummaryOutput:
             last_used_time=alias.last_used_time,
             is_pinned=alias.is_pinned,
             is_public=True,
+            has_agent=bot.is_agent_enabled(),
             owned=False,
             sync_status=alias.sync_status,
             has_knowledge=alias.has_knowledge,
@@ -442,6 +553,7 @@ def fetch_bot_summary(user_id: str, bot_id: str) -> BotSummaryOutput:
             last_used_time=bot.last_used_time,
             is_pinned=False,  # NOTE: Shared bot is not pinned by default.
             is_public=True,
+            has_agent=bot.is_agent_enabled(),
             owned=False,
             sync_status=bot.sync_status,
             has_knowledge=bot.has_knowledge(),
@@ -509,3 +621,8 @@ def remove_uploaded_file(user_id: str, bot_id: str, filename: str):
         DOCUMENT_BUCKET, compose_upload_temp_s3_path(user_id, bot_id, filename)
     )
     return
+
+
+def fetch_available_agent_tools():
+    """Fetch available tools for bot."""
+    return get_available_tools()

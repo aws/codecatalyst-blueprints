@@ -14,11 +14,20 @@ Add your own instruction and give external knowledge as URL or files (a.k.a [RAG
 ![](https://d107sfil7rheid.cloudfront.net/bot_chat.png)
 ![](https://d107sfil7rheid.cloudfront.net/bot_api_publish_screenshot3.png)
 
+> [!Important]
+> For governance reasons, only allowed users are able to create customized bots. To allow the creation of customized bots, the user must be a member of group called `CreatingBotAllowed`, which can be set up via the management console > Amazon Cognito User pools or aws cli. Note that the user pool id can be referred by accessing CloudFormation > BedrockChatStack > Outputs > `AuthUserPoolIdxxxx`.
+
 ### Administrator dashboard
 
 Analyze usage for each user / bot on administrator dashboard. [detail](./docs/ADMINISTRATOR.md)
 
 ![](https://d107sfil7rheid.cloudfront.net/admin_bot_analytics.png)
+
+### LLM-powered Agent
+
+By using the [Agent functionality](./docs/AGENT.md), your chatbot can automatically handle more complex tasks. For example, to answer a user's question, the Agent can retrieve necessary information from external tools or break down the task into multiple steps for processing.
+
+![](https://d107sfil7rheid.cloudfront.net/chatbot/agent.gif)
 
 ## 📚 Supported Languages
 
@@ -29,12 +38,34 @@ Analyze usage for each user / bot on administrator dashboard. [detail](./docs/AD
 - Français 💬
 - Deutsch 💬
 - Español 💬
+- Italian 💬
 
 ## 🚀 Super-easy Deployment
 
 - In the {{bedrockRegion}} region, open [Bedrock Model access](https://{{bedrockRegion}}.console.aws.amazon.com/bedrock/home?region={{bedrockRegion}}#/modelaccess) > `Manage model access` > Check `Anthropic / Claude 3 Haiku`, `Anthropic / Claude 3 Sonnet` and `Cohere / Embed Multilingual` then `Save changes`.
 
-Run the workflow in CodeCatalyst. After the workflow succeeds, navigate to `Variables` tab under the `CDKDeployAction` action and the frontend URL of the application will be displayed.
+<details>
+<summary>Screenshot</summary>
+
+![](https://d107sfil7rheid.cloudfront.net/model_screenshot.png)
+
+</details>
+
+- Open [CloudShell](https://console.aws.amazon.com/cloudshell/home) at the region where you want to deploy
+- Run deployment via following commands
+
+```sh
+git clone https://github.com/aws-samples/bedrock-claude-chat.git
+cd bedrock-claude-chat
+chmod +x bin.sh
+./bin.sh
+```
+
+- After about 30 minutes, you will get the following output, which you can access from your browser
+
+```
+Frontend URL: https://xxxxxxxxx.cloudfront.net
+```
 
 ![](https://d107sfil7rheid.cloudfront.net/signin.png)
 
@@ -60,72 +91,14 @@ It's an architecture built on AWS managed services, eliminating the need for inf
 
 ![](https://d107sfil7rheid.cloudfront.net/chatbot/arch_202404.png)
 
-## Features and Roadmap
-
-<details>
-<summary>Basic chat features</summary>
-
-- [x] Authentication (Sign-up, Sign-in)
-- [x] Creation, storage, and deletion of conversations
-- [x] Copying of chatbot replies
-- [x] Automatic subject suggestion for conversations
-- [x] Syntax highlighting for code
-- [x] Rendering of Markdown
-- [x] Streaming Response
-- [x] IP address restriction
-- [x] Edit message & re-send
-- [x] I18n
-- [x] Model switch
-</details>
-
-<details>
-<summary>Customized bot features</summary>
-
-- [x] Customized bot creation
-- [x] Customized bot sharing
-- [x] Publish as stand-alone API
-</details>
-
-<details>
-<summary>RAG features</summary>
-
-- [x] Web (html)
-- [x] Text data (txt, csv, markdown and etc)
-- [x] PDF
-- [x] Microsoft office files (pptx, docx, xlsx)
-- [x] Youtube transcript
-- [ ] Import from S3 bucket
-- [ ] Import external existing Kendra / OpenSearch / KnowledgeBase
-</details>
-
-<details>
-<summary>Admin features</summary>
-
-- [x] Tracking usage fees per bot
-- [x] List all published bot
-</details>
-
 ## Others
 
-### Configure Mistral models support
+### Configure default text generation
 
-Update `enableMistral` to `true` in [cdk.json](./cdk/cdk.json), and run `cdk deploy`.
-
-```json
-...
-  "enableMistral": true,
-```
-
-> [!Important]
-> This project focus on Anthropic Claude models, the Mistral models are limited supported. For example, prompt examples are based on Claude models. This is a Mistral-only option, once you toggled to enable Mistral models, you can only use Mistral models for all the chat features, NOT both Claude and Mistral models.
-
-### Configure text generation
-
-Edit [config.py](./backend/app/config.py) and run `cdk deploy`.
+Users can adjust the [text generation parameters](https://docs.anthropic.com/claude/reference/complete_post) from the custom bot creation screen. If the bot is not used, the default parameters set in [config.py](./backend/app/config.py) will be used.
 
 ```py
-# See: https://docs.anthropic.com/claude/reference/complete_post
-GENERATION_CONFIG = {
+DEFAULT_GENERATION_CONFIG = {
     "max_tokens": 2000,
     "top_k": 250,
     "top_p": 0.999,
@@ -172,6 +145,22 @@ This asset automatically detects the language using [i18next-browser-languageDet
 
 This application supports an external identity provider. Currently we support [Google](./docs/idp/SET_UP_GOOGLE.md) and [custom OIDC provider](./docs/idp/SET_UP_CUSTOM_OIDC.md).
 
+### Add new users to groups automatically
+
+This sample has the following groups to give permissions to users:
+
+- [`Admin`](./docs/ADMINISTRATOR.md)
+- [`CreatingBotAllowed`](#bot-personalization)
+- [`PublishAllowed`](./docs/PUBLISH_API.md)
+
+If you want newly created users to automatically join groups, you can specify them in [cdk.json](./cdk/cdk.json).
+
+```json
+"autoJoinUserGroups": ["CreatingBotAllowed"],
+```
+
+By default, newly created users will be joined to the `CreatingBotAllowed` group.
+
 ### Local Development
 
 See [LOCAL DEVELOPMENT](./docs/LOCAL_DEVELOPMENT.md).
@@ -187,10 +176,11 @@ Thank you for considering contribution to this repository! We welcome bug fixes,
 
 See [here](./docs/RAG.md).
 
-## Authors
+## Contacts
 
 - [Takehiro Suzuki](https://github.com/statefb)
 - [Yusuke Wada](https://github.com/wadabee)
+- [Yukinobu Mine](https://github.com/Yukinobu-Mine)
 
 ## License
 

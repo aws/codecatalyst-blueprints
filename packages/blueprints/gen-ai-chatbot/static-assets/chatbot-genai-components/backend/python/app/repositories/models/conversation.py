@@ -1,7 +1,7 @@
 from typing import Literal
 
 from app.routes.schemas.conversation import type_model_name
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ContentModel(BaseModel):
@@ -18,6 +18,7 @@ class FeedbackModel(BaseModel):
 
 class ChunkModel(BaseModel):
     content: str
+    content_type: str
     source: str
     rank: int
 
@@ -31,6 +32,7 @@ class MessageModel(BaseModel):
     create_time: float
     feedback: FeedbackModel | None
     used_chunks: list[ChunkModel] | None
+    thinking_log: str | None = Field(None, description="Only available for agent.")
 
 
 class ConversationModel(BaseModel):

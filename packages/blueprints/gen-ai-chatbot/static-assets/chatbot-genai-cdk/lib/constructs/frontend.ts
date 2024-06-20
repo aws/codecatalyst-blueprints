@@ -13,15 +13,16 @@ import {
 import { NodejsBuild } from "deploy-time-build";
 import { Auth } from "./auth";
 import { Idp } from "../utils/identity-provider";
+import { NagSuppressions } from "cdk-nag";
 
 export interface FrontendProps {
-  readonly accessLogBucket?: IBucket;
   readonly webAclId: string;
-  readonly assetBucket: {
-    prefix: string;
-    removalPolicy: string;
+  readonly enableMistral: boolean;
+  readonly accessLogBucket?: IBucket;
+  readonly env: {
+    account: string;
+    region: string;
   };
-  enableMistral: boolean;
 }
 
 export class Frontend extends Construct {
@@ -31,15 +32,20 @@ export class Frontend extends Construct {
     super(scope, id);
 
     const assetBucket = new Bucket(this, "AssetBucket", {
-      bucketName: props.assetBucket.prefix,
+      bucketName: `${
+        this.node.tryGetContext("bucketNamePrefix") ?? "chatbot-frontend-assets"
+      }-${props.env.account}-${props.env.region}`,
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       removalPolicy:
-        props.assetBucket.removalPolicy === "RETAIN"
+        (this.node.tryGetContext("bucketRemovalPolicy") ?? "DESTROY") ===
+        "RETAIN"
           ? RemovalPolicy.RETAIN
           : RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "AssetBucket",
     });
 
     const originAccessIdentity = new OriginAccessIdentity(
@@ -74,12 +80,22 @@ export class Frontend extends Construct {
           responsePagePath: "/",
         },
       ],
-      loggingConfig: props.accessLogBucket && {
-        bucket: props.accessLogBucket,
-        prefix: "Frontend/",
-      },
+      ...(!this.shouldSkipAccessLogging() && {
+        loggingConfig: {
+          bucket: props.accessLogBucket,
+          prefix: "Frontend/",
+        },
+      }),
       webACLId: props.webAclId,
     });
+
+    NagSuppressions.addResourceSuppressions(distribution, [
+      {
+        id: "AwsPrototyping-CloudFrontDistributionGeoRestrictions",
+        reason: "this asset is being used all over the world",
+      },
+    ]);
+
     this.assetBucket = assetBucket;
     this.cloudFrontWebDistribution = distribution;
   }
@@ -105,7 +121,6 @@ export class Frontend extends Construct {
   }) {
     const region = Stack.of(auth.userPool).region;
     const cognitoDomain = `${userPoolDomainPrefix}.auth.${region}.amazoncognito.com/`;
-
     const buildEnvProps = (() => {
       const defaultProps = {
         VITE_APP_API_ENDPOINT: backendApiEndpoint,
@@ -153,5 +168,26 @@ export class Frontend extends Construct {
         value: idp.getSocialProviders(),
       });
     }
+  }
+
+  /**
+   * CloudFront does not support access log delivery in the following regions
+   * @see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#access-logs-choosing-s3-bucket
+   */
+  private shouldSkipAccessLogging(): boolean {
+    const skipLoggingRegions = [
+      "af-south-1",
+      "ap-east-1",
+      "ap-south-2",
+      "ap-southeast-3",
+      "ap-southeast-4",
+      "ca-west-1",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-central-2",
+      "il-central-1",
+      "me-central-1",
+    ];
+    return skipLoggingRegions.includes(Stack.of(this).region);
   }
 }

@@ -4,13 +4,15 @@ import unittest
 sys.path.append(".")
 
 from app.config import DEFAULT_EMBEDDING_CONFIG
-
-
 from app.repositories.models.custom_bot import (
+    AgentModel,
+    AgentToolModel,
     BotAliasModel,
     BotModel,
     EmbeddingParamsModel,
+    GenerationParamsModel,
     KnowledgeModel,
+    SearchParamsModel,
 )
 
 
@@ -31,6 +33,23 @@ def create_test_private_bot(
         embedding_params=EmbeddingParamsModel(
             chunk_size=DEFAULT_EMBEDDING_CONFIG["chunk_size"],
             chunk_overlap=DEFAULT_EMBEDDING_CONFIG["chunk_overlap"],
+            enable_partition_pdf=DEFAULT_EMBEDDING_CONFIG["enable_partition_pdf"],
+        ),
+        generation_params=GenerationParamsModel(
+            max_tokens=2000,
+            top_k=250,
+            top_p=0.999,
+            temperature=0.6,
+            stop_sequences=["Human: ", "Assistant: "],
+        ),
+        search_params=SearchParamsModel(
+            max_results=20,
+        ),
+        agent=AgentModel(
+            tools=[
+                AgentToolModel(name="tool1", description="tool1 description"),
+                AgentToolModel(name="tool2", description="tool2 description"),
+            ]
         ),
         knowledge=KnowledgeModel(
             source_urls=["https://aws.amazon.com/"],
@@ -66,6 +85,23 @@ def create_test_public_bot(
         embedding_params=EmbeddingParamsModel(
             chunk_size=DEFAULT_EMBEDDING_CONFIG["chunk_size"],
             chunk_overlap=DEFAULT_EMBEDDING_CONFIG["chunk_overlap"],
+            enable_partition_pdf=DEFAULT_EMBEDDING_CONFIG["enable_partition_pdf"],
+        ),
+        generation_params=GenerationParamsModel(
+            max_tokens=2000,
+            top_k=250,
+            top_p=0.999,
+            temperature=0.6,
+            stop_sequences=["Human: ", "Assistant: "],
+        ),
+        search_params=SearchParamsModel(
+            max_results=20,
+        ),
+        agent=AgentModel(
+            tools=[
+                AgentToolModel(name="tool1", description="tool1 description"),
+                AgentToolModel(name="tool2", description="tool2 description"),
+            ]
         ),
         knowledge=KnowledgeModel(
             source_urls=["https://aws.amazon.com/"],

@@ -27,12 +27,19 @@ import StatusSyncBot from '../components/StatusSyncBot';
 import Alert from '../components/Alert';
 import useBotSummary from '../hooks/useBotSummary';
 import useModel from '../hooks/useModel';
+import { TextInputChatContent } from '../features/agent/components/TextInputChatContent';
+import { AgentProcessingIndicator } from '../features/agent/components/AgentProcessingIndicator';
+import { AgentState } from '../features/agent/xstates/agentThinkProgress';
+
+const MISTRAL_ENABLED: boolean =
+  import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
 
 const ChatPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const {
+    agentThinking,
     postingMessage,
     postChat,
     messages,
@@ -106,9 +113,10 @@ const ChatPage: React.FC = () => {
       ? {
           botId: botId,
           hasKnowledge: bot?.hasKnowledge ?? false,
+          hasAgent: bot?.hasAgent ?? false,
         }
       : undefined;
-  }, [bot?.hasKnowledge, botId]);
+  }, [bot?.hasKnowledge, botId, bot?.hasAgent]);
 
   const onSend = useCallback(
     (content: string, base64EncodedImages?: string[]) => {
@@ -296,7 +304,7 @@ const ChatPage: React.FC = () => {
               <SwitchBedrockModel className="mt-3 w-min" />
             )}
             <div className="absolute mx-3 my-20 flex items-center justify-center text-4xl font-bold text-gray">
-              {t('app.name')}
+              {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
             </div>
           </div>
         ) : (
@@ -306,11 +314,21 @@ const ChatPage: React.FC = () => {
               className={`${
                 message.role === 'assistant' ? 'bg-aws-squid-ink/5' : ''
               }`}>
-              <ChatMessage
-                chatContent={message}
-                onChangeMessageId={onChangeCurrentMessageId}
-                onSubmit={onSubmitEditedContent}
-              />
+              {messages.length === idx + 1 &&
+              [AgentState.THINKING, AgentState.LEAVING].some(
+                (v) => v == agentThinking.value
+              ) ? (
+                <AgentProcessingIndicator
+                  processCount={agentThinking.context.count}
+                />
+              ) : (
+                <ChatMessage
+                  chatContent={message}
+                  onChangeMessageId={onChangeCurrentMessageId}
+                  onSubmit={onSubmitEditedContent}
+                />
+              )}
+
               <div className="w-full border-b border-aws-squid-ink/10"></div>
             </div>
           ))
@@ -347,18 +365,33 @@ const ChatPage: React.FC = () => {
             </Alert>
           </div>
         )}
-        <InputChatContent
-          dndMode={dndMode}
-          disabledSend={postingMessage}
-          disabled={disabledInput}
-          placeholder={
-            disabledInput
-              ? t('bot.label.notAvailableBotInputMessage')
-              : undefined
-          }
-          onSend={onSend}
-          onRegenerate={onRegenerate}
-        />
+        {bot?.hasAgent ? (
+          <TextInputChatContent
+            dndMode={dndMode}
+            disabledSend={postingMessage}
+            disabled={disabledInput}
+            placeholder={
+              disabledInput
+                ? t('bot.label.notAvailableBotInputMessage')
+                : undefined
+            }
+            onSend={onSend}
+            onRegenerate={onRegenerate}
+          />
+        ) : (
+          <InputChatContent
+            dndMode={dndMode}
+            disabledSend={postingMessage}
+            disabled={disabledInput}
+            placeholder={
+              disabledInput
+                ? t('bot.label.notAvailableBotInputMessage')
+                : undefined
+            }
+            onSend={onSend}
+            onRegenerate={onRegenerate}
+          />
+        )}
       </div>
     </div>
   );
