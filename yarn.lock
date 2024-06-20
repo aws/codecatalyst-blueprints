@@ -373,6 +373,7 @@ __metadata:
     "@amazon-codecatalyst/blueprint-util.cli": ^0.3.82
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": ^0.3.82
     "@amazon-codecatalyst/blueprints.blueprint": ^0.3.82
+    "@types/mustache": "*"
     "@types/node": ^18
     "@types/yaml": "*"
     "@typescript-eslint/eslint-plugin": ^5
@@ -381,6 +382,7 @@ __metadata:
     eslint-import-resolver-node: ^0.3.7
     eslint-import-resolver-typescript: ^3.5.5
     eslint-plugin-import: ^2.25.4
+    mustache: ^4.2
     npm-check-updates: ^16
     projen: 0.71.112
     standard-version: ^9
@@ -3719,6 +3721,13 @@ __metadata:
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
   checksum: b8da83c66eb4aac0440e64674b19564d9d86c80ae273144db9681e5eeff66f238ade9515f5006ffbfa955ceff8b89ad2bd8ec577d7caee74ba101431fb07045d
+  languageName: node
+  linkType: hard
+
+"@types/mustache@npm:*":
+  version: 4.2.5
+  resolution: "@types/mustache@npm:4.2.5"
+  checksum: 0ff1d52022fd3ab0db1c97964ca0c24b45ad74e81ec62e05d27eab5b66ef1d78ff257f4cfb481c72b8b511f15520ca48717e000dc5fa8c3fdf732790b28f05cb
   languageName: node
   linkType: hard
 
@@ -10515,7 +10524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4":
+"mustache@npm:^4, mustache@npm:^4.2":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
