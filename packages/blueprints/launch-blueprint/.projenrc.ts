@@ -30,6 +30,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-component.workflows',
     '@amazon-codecatalyst/blueprint-component.source-repositories',
     '@amazon-codecatalyst/blueprint-component.environments',
+    'mustache',
   ],
 
   devDeps: [
@@ -38,6 +39,7 @@ const project = new ProjenBlueprint({
     '@amazon-codecatalyst/blueprint-util.projen-blueprint',
     '@amazon-codecatalyst/blueprint-util.cli',
     '@types/yaml',
+    '@types/mustache',
   ],
   keywords: ['project-launcher', 'blueprint'],
   homepage: '',

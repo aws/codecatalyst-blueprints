@@ -9,6 +9,10 @@
       "type": "build"
     },
     {
+      "name": "@types/mustache",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^18",
       "type": "build"
@@ -92,6 +96,10 @@
     },
     {
       "name": "@amazon-codecatalyst/blueprints.blueprint",
+      "type": "runtime"
+    },
+    {
+      "name": "mustache",
       "type": "runtime"
     },
     {
