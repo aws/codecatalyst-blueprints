@@ -166,6 +166,13 @@ export class Blueprint extends ParentBlueprint {
       this.repository.copyStaticFiles({
         from: 'converted-blueprint',
       });
+      this.repository.setResynthStrategies([
+        {
+          identifier: 'inital_conversion',
+          strategy: (_commonAncestorFile, _existingFile, proposedFile) => proposedFile,
+          globs: ['**/**'],
+        },
+      ]);
     } else {
       /**
        * Otherwise use the standard static assets
@@ -174,28 +181,14 @@ export class Blueprint extends ParentBlueprint {
         from: 'standard-static-assets',
         to: 'static-assets',
       });
+      this.setStandardResynthStrategies();
     }
-
-    this.setStandardResynthStrategies();
   }
 
   /**
    * This is the standard way we deal with resynthesis
    */
   setStandardResynthStrategies() {
-    if (this.isBlueprintConversion) {
-      console.log('THIS IS A BLUEPRINT CONVERSION. FORCING OVERWRITE');
-      this.repository.setResynthStrategies([
-        {
-          identifier: 'inital_conversion',
-          strategy: MergeStrategies.alwaysUpdate,
-          globs: ['**/**'],
-        },
-      ]);
-      return;
-    } else {
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const neverUpdateFiles = ['static-assets/**', 'src/**', 'README.md'];
     this.repository.setResynthStrategies([
