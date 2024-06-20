@@ -74,7 +74,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.5.116",
+  "version": "0.5.117",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Launch with CodeCatalyst",
