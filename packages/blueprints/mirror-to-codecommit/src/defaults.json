@@ -1,0 +1,10 @@
+{
+    "account": {
+        "environment": {
+            "name": "CodeCommitMirror",
+            "description": "This Mirrors to Code Commit",
+            "environmentType": "PRODUCTION"
+        },
+        "region": "us-west-2"
+    }
+}
