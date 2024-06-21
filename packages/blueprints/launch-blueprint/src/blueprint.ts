@@ -13,6 +13,7 @@ import {
   Options as ParentOptions,
   Selector,
 } from '@amazon-codecatalyst/blueprints.blueprint';
+import Mustache from 'mustache';
 import * as yaml from 'yaml';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import defaults from './defaults.json';
@@ -153,7 +154,13 @@ export class Blueprint extends ParentBlueprint {
       //load each workflow from the cloned repository
       for (const workflowFile of workflowFiles.filter(name => name.match(/^(.*)(\.yaml|\.yml)$/i))) {
         const workflowFilePath = path.join(workflowPath, workflowFile);
-        const workflowYaml = fs.readFileSync(workflowFilePath).toString('utf-8');
+
+        const substitutions: { [key: string]: any } = {};
+        this.state.options.launchOptions?.forEach(option => {
+          substitutions[option.key] = option.value;
+        });
+        const workflowYaml = Mustache.render(fs.readFileSync(workflowFilePath).toString('utf-8'), substitutions);
+
         const workflow = yaml.parse(workflowYaml) as WorkflowDefinition;
         for (const actionName of Object.keys(workflow.Actions ?? [])) {
           const action = workflow.Actions?.[actionName];
