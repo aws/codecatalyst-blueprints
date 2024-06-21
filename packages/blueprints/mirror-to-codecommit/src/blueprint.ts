@@ -22,6 +22,15 @@ import defaults from './defaults.json';
 
 devEnvPackage.version;
 export interface Options extends ParentOptions {
+  /**
+   * Select the source repository you'd like to mirror.
+   */
+  repositories?: MultiSelect<SourceRepository | string>;
+
+  /**
+   * Configure CodeCommit account and regional configuration
+   * @displayName CodeCommit Configuration
+   */
   account: {
     environment: EnvironmentDefinition<{
       /**
@@ -42,11 +51,6 @@ export interface Options extends ParentOptions {
      */
     region: Region<['*']>;
   };
-
-  /**
-   * Select the source repository you'd like to mirror.
-   */
-  repositories?: MultiSelect<SourceRepository | string>;
 }
 
 export class Blueprint extends ParentBlueprint {

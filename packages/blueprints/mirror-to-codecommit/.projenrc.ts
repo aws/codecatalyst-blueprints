@@ -2,8 +2,8 @@ import { ProjenBlueprint } from '@amazon-codecatalyst/blueprint-util.projen-blue
 
 const project = new ProjenBlueprint({
   authorName: 'amazon-codecatalyst',
-  publishingOrganization: 'amazon-codecatalyst',
-  packageName: '@amazon-codecatalyst/amazon-codecatalyst.code-commit-mirroring',
+  publishingOrganization: 'blueprints',
+  packageName: '@amazon-codecatalyst/blueprints.code-commit-mirroring',
   name: 'code-commit-mirroring',
   displayName: 'Mirror to CodeCommit',
   description: 'This blueprint adds a CodeCommit mirroring workflow',

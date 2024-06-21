@@ -1,4 +1,4 @@
-# About this blueprint
+# Mirror to CodeCommit
 
 This blueprint provides a workflow to automatically sync your Amazon CodeCatalyst source repositories to CodeCommit. To use this, add the blueprint to
 your project and specify which branch to sync.

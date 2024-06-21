@@ -1,4 +1,5 @@
 {
+    "repositories": ["default-repository"],
     "account": {
         "environment": {
             "name": "CodeCommitMirror",
