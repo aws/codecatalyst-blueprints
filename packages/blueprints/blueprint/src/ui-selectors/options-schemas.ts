@@ -28,9 +28,7 @@ export type OptionsSchemaDefinition<
  * This component can be used to define a schema with a given identifier.
  */
 export class OptionsSchema<T extends OptionsSchemaType> {
-  constructor(protected readonly blueprint: Blueprint, protected readonly identifier: string, protected readonly schema: T) {}
-
-  synthesize(): void {
+  constructor(protected readonly blueprint: Blueprint, protected readonly identifier: string, protected readonly schema: T) {
     if (!fs.existsSync(this.blueprint.context.wizardOptionsPath)) {
       fs.mkdirSync(this.blueprint.context.wizardOptionsPath);
     }
