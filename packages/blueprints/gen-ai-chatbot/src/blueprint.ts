@@ -215,7 +215,7 @@ export class Blueprint extends ParentBlueprint {
 
     new SourceFile(
       repository,
-      'cdk.json',
+      'cdk/cdk.json',
       new SubstitionAsset('chatbot-genai-cdk/cdk.json').substitute({
         allowedSignUpEmailDomains: this.toCsv(options.allowedSignUpEmailDomains),
         allowedIpV4AddressRanges: this.toCsv(options.code.allowedIpV4AddressRanges),
@@ -341,6 +341,7 @@ export class Blueprint extends ParentBlueprint {
   private seedRepository(repository: SourceRepository, options: Options) {
     repository.copyStaticFiles({
       from: 'chatbot-genai-cdk',
+      to: 'cdk',
     });
     repository.copyStaticFiles({
       from: 'chatbot-genai',

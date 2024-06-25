@@ -95,6 +95,7 @@ export const getDeploymentWorkflow = (blueprint: ParentBlueprint, options: Optio
         StackName: options.code.stackName as string,
         CfnOutputVariables: ['FrontendURL'],
         CdkCliVersion: cdkVersion,
+        CdkRootPath: 'cdk',
       },
       dependsOn: [...bootstrapActions, 'BuildFrontend'],
       computeName: {

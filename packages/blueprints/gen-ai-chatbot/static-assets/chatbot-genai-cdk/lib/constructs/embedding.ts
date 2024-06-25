@@ -75,7 +75,7 @@ export class Embedding extends Construct {
     });
 
     const asset = new DockerImageAsset(this, "Image", {
-      directory: path.join(__dirname, "../../backend"),
+      directory: path.join(__dirname, "../../../backend"),
       file: "embedding.Dockerfile",
       platform: Platform.LINUX_AMD64,
     });
@@ -243,7 +243,7 @@ export class Embedding extends Construct {
     props.documentBucket.grantReadWrite(removeHandlerRole);
     const removalHandler = new DockerImageFunction(this, "BotRemovalHandler", {
       code: DockerImageCode.fromImageAsset(
-        path.join(__dirname, "../../backend"),
+        path.join(__dirname, "../../../backend"),
         {
           platform: Platform.LINUX_AMD64,
           file: "websocket.Dockerfile",
