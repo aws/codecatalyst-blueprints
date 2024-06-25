@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Component } from 'projen';
 import { DynamicKVInput } from './dynamic-kv-input';
 import { Blueprint } from '../blueprint';
 
