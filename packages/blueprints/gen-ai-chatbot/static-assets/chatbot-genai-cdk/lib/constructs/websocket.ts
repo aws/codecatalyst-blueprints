@@ -86,7 +86,7 @@ export class WebSocket extends Construct {
 
     const handler = new DockerImageFunction(this, "Handler", {
       code: DockerImageCode.fromImageAsset(
-        path.join(__dirname, "../../backend"),
+        path.join(__dirname, "../../../backend"),
         {
           platform: Platform.LINUX_AMD64,
           file: "websocket.Dockerfile",
