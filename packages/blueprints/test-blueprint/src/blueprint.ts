@@ -285,10 +285,13 @@ export class Blueprint extends ParentBlueprint {
     };
     const options = Object.assign(typeCheck, options_);
 
+    if (!this.durableState.exists('inital-options')) {
+      this.durableState.set('inital-options', options);
+    }
+
     options.thisIsMyEnvironment.thisIsMyFirstAccountConnection;
 
     new OptionsSchema(this, 'optionsIdentifier', myOptions);
-
 
     // add a repository
     const repo = new SourceRepository(this, { title: 'code' });
@@ -348,6 +351,9 @@ export class Blueprint extends ParentBlueprint {
     const asyncRepo = new SourceRepository(this, { title: 'async-repo' });
     new SourceFile(asyncRepo, 'async-env.json', JSON.stringify(process.env, null, 2));
     console.log('finished async thing');
+
+    console.log('Durable state, this should always be set to the inital options, regardless of what the current options are');
+    console.log(JSON.stringify(this.durableState.get('inital-options'), null, 2));
 
     // make sure you call super.synth() at the end!
     super.synth();
