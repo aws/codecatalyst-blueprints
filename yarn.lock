@@ -335,6 +335,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@amazon-codecatalyst/blueprints.code-commit-mirroring@workspace:packages/blueprints/mirror-to-codecommit":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.code-commit-mirroring@workspace:packages/blueprints/mirror-to-codecommit"
+  dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
+    "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
+    "@amazon-codecatalyst/blueprint-component.workflows": "*"
+    "@amazon-codecatalyst/blueprint-util.cli": "*"
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    fast-xml-parser: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  languageName: unknown
+  linkType: soft
+
 "@amazon-codecatalyst/blueprints.gen-ai-chatbot@workspace:packages/blueprints/gen-ai-chatbot":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.gen-ai-chatbot@workspace:packages/blueprints/gen-ai-chatbot"
@@ -7157,6 +7185,17 @@ __metadata:
   version: 2.1.1
   resolution: "fast-safe-stringify@npm:2.1.1"
   checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
+  languageName: node
+  linkType: hard
+
+"fast-xml-parser@npm:*":
+  version: 4.4.0
+  resolution: "fast-xml-parser@npm:4.4.0"
+  dependencies:
+    strnum: ^1.0.5
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: ad33a4b5165a0ffcb6e17ae78825bd4619a8298844a8a8408f2ea141a0d2d9439d18865dc5254162f09fe54d510ff18e5d5c0a190869cab21fc745ee66be816b
   languageName: node
   linkType: hard
 
