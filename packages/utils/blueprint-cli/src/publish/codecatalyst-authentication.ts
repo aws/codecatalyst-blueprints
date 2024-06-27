@@ -20,9 +20,13 @@ export function generateHeaders(authentication: CodeCatalystAuthentication, iden
     }
     return headers;
   } else {
-    return {
+    const headers = {
       authorization: authentication.token,
     };
+    if (authentication.type == 'workflowtoken') {
+      headers['Access-Token-Type'] = 'acsm';
+    }
+    return headers;
   }
 }
 
