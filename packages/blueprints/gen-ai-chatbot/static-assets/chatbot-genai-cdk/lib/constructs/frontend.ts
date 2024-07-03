@@ -150,7 +150,7 @@ export class Frontend extends Construct {
     new NodejsBuild(this, "ReactBuild", {
       assets: [
         {
-          path: "./frontend",
+          path: "../frontend",
           exclude: ["node_modules", "dist"],
           commands: ["npm ci"],
         },
