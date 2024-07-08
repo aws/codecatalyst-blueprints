@@ -1,6 +1,6 @@
 {
   "name": "@amazon-codecatalyst/blueprints.gen-ai-chatbot",
-  "description": "Builds a secure, log-in protected LLM playground that can be customized to your data. Use this blueprint to build and deploy your own chatbot.",
+  "description": "Create your own private LLM playground in minutes with code you can instantly customize and deploy.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -69,7 +69,9 @@
     "blueprint-publisher",
     "chatbot",
     "external-blueprint",
-    "genai"
+    "genai",
+    "log-in-protected",
+    "private"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
@@ -77,10 +79,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.121",
+  "version": "0.4.9",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
-  "displayName": "Bedrock GenAI Chatbot",
+  "displayName": "LLM Playground",
   "files": [
     "static-assets",
     "lib"

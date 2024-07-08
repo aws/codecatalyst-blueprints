@@ -18,10 +18,11 @@ export async function uploadBlueprint(
       publishingSpace: string;
       targetSpace: string;
       targetProject?: string;
+      targetInstance?: string;
       packageName: string;
       version: string;
       authentication: CodeCatalystAuthentication;
-      identity: IdentityResponse;
+      identity: IdentityResponse | undefined;
     };
   },
 ) {
@@ -140,6 +141,7 @@ export async function uploadBlueprint(
         publishingSpace: blueprint.publishingSpace,
         targetSpace: blueprint.targetSpace,
         targetProject: blueprint.targetProject,
+        targetInstance: blueprint.targetInstance,
         http: {
           endpoint: endpoint,
           headers: generateHeaders(blueprint.authentication, blueprint.identity),
@@ -252,6 +254,7 @@ async function generatePreviewLink(
     publishingSpace: string;
     targetSpace: string;
     targetProject?: string;
+    targetInstance?: string;
     http: {
       endpoint;
       headers: { [key: string]: string };
@@ -280,10 +283,28 @@ async function generatePreviewLink(
     },
   );
 
-  /**
-   * generate a url to a project instead
-   */
-  if (options.targetProject) {
+  if (options.targetProject && options.targetInstance) {
+    /**
+     * generate a url to preview against an existing instance
+     */
+    return [
+      resolveStageUrl(options.http.endpoint),
+      'spaces',
+      querystring.escape(options.targetSpace),
+      'projects',
+      querystring.escape(options.targetProject),
+      'blueprints',
+      querystring.escape(options.blueprintPackage),
+      'publishers',
+      querystring.escape(publishingSpaceIdResponse.data?.data?.getSpace?.id),
+      'versions',
+      querystring.escape(options.version),
+      `edit?instantiationId=${options.targetInstance}`,
+    ].join('/');
+  } else if (options.targetProject) {
+    /**
+     * generate a url to add project
+     */
     return [
       resolveStageUrl(options.http.endpoint),
       'spaces',

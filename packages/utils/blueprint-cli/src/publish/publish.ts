@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as pino from 'pino';
 import * as yargs from 'yargs';
 import { codecatalystAuthentication } from './codecatalyst-authentication';
+import { setCatalogVersion } from './set-catalog-version';
 import { uploadBlueprint } from './upload-blueprint';
 import { IdentityResponse, verifyIdentity } from './verify-identity';
 
@@ -13,6 +14,8 @@ export interface PublishOptions extends yargs.Arguments {
   endpoint: string;
   region?: string;
   project?: string;
+  instance?: string;
+  updateCatalog?: boolean;
 }
 
 export async function publish(
@@ -22,9 +25,11 @@ export async function publish(
     blueprintPath: string;
     publishingSpace: string;
     targetProject?: string;
+    targetInstance?: string;
     cookie?: string;
     region: string;
     force?: boolean;
+    setToCatalog?: boolean;
   },
 ): Promise<void> {
   if (!fs.existsSync(options.blueprintPath)) {
@@ -44,12 +49,14 @@ export async function publish(
     region: options.region,
   });
 
-  let identity: IdentityResponse;
+  let identity: IdentityResponse | undefined;
   if (authentication) {
-    log.info('Verifying identity...');
-    identity = await verifyIdentity(endpoint, { authentication });
-    log.info(`Publishing as ${identity.name} at ${identity.email}`);
-    log.info('Against endpoint: %s', endpoint);
+    if (authentication.type != 'workflowtoken') {
+      log.info('Verifying identity...');
+      identity = await verifyIdentity(endpoint, { authentication });
+      log.info(`Publishing as ${identity.name} at ${identity.email}`);
+      log.info('Against endpoint: %s', endpoint);
+    }
   } else {
     log.error('Could not authenticate');
     process.exit(255);
@@ -93,10 +100,25 @@ export async function publish(
       publishingSpace: options.publishingSpace,
       targetSpace: options.publishingSpace,
       targetProject: options.targetProject,
+      targetInstance: options.targetInstance,
       packageName,
       version,
       authentication,
       identity,
     },
   });
+
+  if (options.setToCatalog) {
+    await setCatalogVersion(log, endpoint, {
+      blueprint: {
+        space: options.publishingSpace,
+        version,
+        package: packageName,
+      },
+      auth: {
+        authentication,
+        identity,
+      },
+    });
+  }
 }

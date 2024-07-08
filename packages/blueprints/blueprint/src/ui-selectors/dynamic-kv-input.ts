@@ -20,12 +20,12 @@
 
 */
 export type DISPLAY_COMPONENT_TYPE =
-    'string' | 'number' | 'checkbox' | 'dropdown' | 'textarea' | 'label' | 'region'
+    'string' | 'number' | 'checkbox' | 'dropdown' | 'textarea' | 'label' | 'region' | 'environment'
 
 
 export type DynamicKVInput = {
   key: string;
-  value: string | number | boolean | string[] | null;
+  value: string | number | boolean | string[] | any | null;
   /** The type of component to display in the wizard.
     * default: 'string'
     */
@@ -82,4 +82,53 @@ export type DynamicKVInput = {
    * If true, field will be collapsed by default in wizard.
    */
   collapsed?: boolean;
+
+  /**
+   * Options for 'environment' display type
+  */
+  environmentOptions?: {
+  /**
+ * Configure account connections for 'environment' display type
+ */
+    accountConnections?: AccountConnectionInput[];
+    /**
+   * if true, display environment name input in wizard
+   */
+    showName?: boolean;
+
+    /**
+   * if true, environment name in wizard will be read only
+   */
+    readOnlyName?: boolean;
+    /**
+   * if true, show environment type chooser dropdown in wizard
+   */
+    showEnvironmentType?: boolean;
+  };
+
+
+};
+
+type AccountConnectionInput = {
+  name: string;
+  description?: string;
+  roles?: RoleInput[];
+};
+
+type RoleInput = {
+  name: string;
+  displayName?: string;
+  description?: string;
+  /**
+   * Display required role capabilites in wizard
+   */
+  capabilities: string[];
+  /**
+   * Display required  trust policy
+   */
+  trustPolicy?: string;
+  /**
+   * Display required trust policy
+   */
+  inlinePolicy?: string;
 };

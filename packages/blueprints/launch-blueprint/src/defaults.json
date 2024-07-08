@@ -2,6 +2,6 @@
   "sourceRepository": "https://github.com/aws-solutions/qnabot-on-aws",
   "destinationRepositoryName": "launch-with-codecatalyst",
   "environments": [],
-  "options": [],
-  "parameters": []
+  "parameters": [],
+  "launchOptions": []
 }

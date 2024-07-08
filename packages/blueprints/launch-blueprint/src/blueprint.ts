@@ -1,10 +1,19 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import path from 'path';
-import { EnvironmentDefinition, AccountConnection, Role, Environment } from '@amazon-codecatalyst/blueprint-component.environments';
+import { EnvironmentDefinition, Environment, AccountConnection, Role } from '@amazon-codecatalyst/blueprint-component.environments';
 import { SourceRepository } from '@amazon-codecatalyst/blueprint-component.source-repositories';
 import { ConnectionDefinition, InputVariable, WorkflowDefinition, WorkflowEnvironment } from '@amazon-codecatalyst/blueprint-component.workflows';
-import { DynamicKVInput, Blueprint as ParentBlueprint, Options as ParentOptions, Selector, Tuple } from '@amazon-codecatalyst/blueprints.blueprint';
+import {
+  DynamicKVInput,
+  KVSchema,
+  OptionsSchema,
+  OptionsSchemaDefinition,
+  Blueprint as ParentBlueprint,
+  Options as ParentOptions,
+  Selector,
+} from '@amazon-codecatalyst/blueprints.blueprint';
+import Mustache from 'mustache';
 import * as yaml from 'yaml';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import defaults from './defaults.json';
@@ -32,6 +41,7 @@ export interface Options extends ParentOptions {
 
   /**
    * @showName readOnly
+   * @deprecated due to URL size limitations, use embedded ".codecatalyst/launch-options.yaml" to specify environments
    */
   environments: EnvironmentDefinition<{
     /**
@@ -52,14 +62,14 @@ export interface Options extends ParentOptions {
 
   /**
    * @readOnly
-   * @deprecated use `paremeters` property instead
+   * @deprecated due to URL size limitations, use embedded ".codecatalyst/launch-options.yaml" to specify options
    */
-  options: Tuple<[string, string]>[];
+  parameters: DynamicKVInput[];
 
   /**
    * @readOnly
    */
-  parameters: DynamicKVInput[];
+  launchOptions: OptionsSchemaDefinition<'launch-options', KVSchema, KVSchema>;
 }
 
 const OPTIONS_PREFIX = 'LAUNCH_OPTIONS_';
@@ -86,12 +96,17 @@ export class Blueprint extends ParentBlueprint {
     };
 
     const options = Object.assign(typeCheck, options_);
-
     const repository = new SourceRepository(this, {
       title: options.destinationRepositoryName,
     });
 
-    // create environments
+    // create environments from launch options file
+    for (const environment of options.launchOptions?.filter(param => param.displayType == 'environment') ?? []) {
+      const definition = environment.value as EnvironmentDefinition<any>;
+      new Environment(this, definition);
+    }
+
+    //create environments passed on URL
     for (const environment of options.environments) {
       new Environment(this, environment);
     }
@@ -124,6 +139,13 @@ export class Blueprint extends ParentBlueprint {
 
     fs.cpSync(pathToRepository, this.state.repository.path, { recursive: true });
 
+    //register options to blueprint
+    const embeddedOptionsPath = path.join(this.state.repository.path, '.codecatalyst', 'launch-options.yaml');
+    if (fs.existsSync(embeddedOptionsPath)) {
+      const embeddedOptions = yaml.parse(fs.readFileSync(embeddedOptionsPath).toString()) as { options: KVSchema };
+      new OptionsSchema(this, 'launch-options', embeddedOptions.options);
+    }
+
     //map options and environments to workflows
     const workflowPath = path.join(this.state.repository.path, '.codecatalyst', 'workflows');
     if (fs.existsSync(workflowPath)) {
@@ -132,7 +154,13 @@ export class Blueprint extends ParentBlueprint {
       //load each workflow from the cloned repository
       for (const workflowFile of workflowFiles.filter(name => name.match(/^(.*)(\.yaml|\.yml)$/i))) {
         const workflowFilePath = path.join(workflowPath, workflowFile);
-        const workflowYaml = fs.readFileSync(workflowFilePath).toString('utf-8');
+
+        const substitutions: { [key: string]: any } = {};
+        this.state.options.launchOptions?.forEach(option => {
+          substitutions[option.key] = option.value;
+        });
+        const workflowYaml = Mustache.render(fs.readFileSync(workflowFilePath).toString('utf-8'), substitutions);
+
         const workflow = yaml.parse(workflowYaml) as WorkflowDefinition;
         for (const actionName of Object.keys(workflow.Actions ?? [])) {
           const action = workflow.Actions?.[actionName];
@@ -156,32 +184,58 @@ export class Blueprint extends ParentBlueprint {
     //set variables with options where applicable
     const variables = action.Inputs?.Variables as InputVariable[] | undefined;
     for (const variable of variables ?? []) {
-      if (variable?.Name?.startsWith(OPTIONS_PREFIX)) {
-        const optionName = (variable.Name as string).replace(OPTIONS_PREFIX, '');
-        const specifiedValue =
-          this.state.options.parameters.find(parameter => parameter.key == optionName)?.value ??
-          this.state.options.options.find(option => option[0] == optionName)?.[1];
-        if (specifiedValue) {
-          variable.Value = specifiedValue.toString();
-        }
+      const optionName = variable.Name as string;
+      const specifiedValue =
+        this.state.options.launchOptions?.find(option => option.key == optionName)?.value ??
+        this.state.options.parameters.find(parameter => `${OPTIONS_PREFIX}${parameter.key}` == optionName)?.value;
+      if (specifiedValue) {
+        variable.Value = specifiedValue.toString();
       }
     }
 
     //set action environments from options where applicable
     const actionEnvironment = action.Environment as WorkflowEnvironment | undefined;
     if (actionEnvironment?.Name) {
-      const environment = this.state.options.environments.find(env => env.name == actionEnvironment.Name) as EnvironmentDefinition<{
+      const launchEnvironment = (this.state.options.launchOptions?.find(
+        option => option.displayType == 'environment' && option.value?.name == actionEnvironment.Name,
+      )?.value ?? this.state.options.environments?.find(env => env.name == actionEnvironment.Name)) as EnvironmentDefinition<{
         awsAccountConnection: AccountConnection<{
           launchRole: Role<['codecatalyst*']>;
         }>;
       }>;
-      if (environment?.awsAccountConnection?.name) {
+
+      if (launchEnvironment?.awsAccountConnection?.name) {
+        const connection = launchEnvironment.awsAccountConnection;
         actionEnvironment.Connections = [
           {
-            Name: environment.awsAccountConnection.name,
-            Role: environment.awsAccountConnection.launchRole?.name ?? 'No role selected',
+            Name: connection.name,
+            Role: connection.launchRole?.name ?? 'No role selected',
           } as ConnectionDefinition,
         ];
+      }
+    }
+
+    //set parameter overrides
+    if (action.Identifier?.startsWith('aws/cfn-deploy@')) {
+      const overrides = action.Configuration?.['parameter-overrides'];
+      if (overrides) {
+        const parameters: { key: string; value: string }[] = overrides.split(',').map((p: string) => {
+          const tuple = p.split('=');
+          return { key: tuple[0], value: tuple[1] };
+        });
+
+        let newOverrides = '';
+        for (const parameter of parameters) {
+          const override =
+            this.state.options.launchOptions?.find(option => option.key == parameter.key)?.value ??
+            this.state.options.parameters?.find(option => `${OPTIONS_PREFIX}${option.key}` == parameter.key);
+          newOverrides += `${parameter.key}=${override ?? parameter.value},`;
+        }
+
+        //remove trailing comma and overwrite
+        if (newOverrides) {
+          action.Configuration['parameter-overrides'] = newOverrides.substring(0, newOverrides.length - 1);
+        }
       }
     }
   }

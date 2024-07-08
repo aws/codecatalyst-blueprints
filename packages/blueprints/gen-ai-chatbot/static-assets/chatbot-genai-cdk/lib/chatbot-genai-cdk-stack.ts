@@ -3,8 +3,8 @@ import {
   BlockPublicAccess,
   Bucket,
   BucketEncryption,
-  HttpMethods,
   IBucket,
+  HttpMethods,
   ObjectOwnership,
 } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
@@ -15,15 +15,14 @@ import { Frontend } from "./constructs/frontend";
 import { WebSocket } from "./constructs/websocket";
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { DbConfig, Embedding } from "./constructs/embedding";
+import { Embedding } from "./constructs/embedding";
 import { VectorStore } from "./constructs/vectorstore";
 import { UsageAnalysis } from "./constructs/usage-analysis";
 import { TIdentityProvider, identityProvider } from "./utils/identity-provider";
 import { ApiPublishCodebuild } from "./constructs/api-publish-codebuild";
 import { WebAclForPublishedApi } from "./constructs/webacl-for-published-api";
-import { VpcConfig } from "./api-publishment-stack";
 import { CronScheduleProps, createCronSchedule } from "./utils/cron-schedule";
-import { CF_SKIP_ACCESS_LOGGING_REGIONS } from "./utils/constants";
+import { NagSuppressions } from "cdk-nag";
 
 export interface ChatbotGenAiCdkStackProps extends StackProps {
   readonly bedrockRegion: string;
@@ -33,8 +32,12 @@ export interface ChatbotGenAiCdkStackProps extends StackProps {
   readonly publishedApiAllowedIpV4AddressRanges: string[];
   readonly publishedApiAllowedIpV6AddressRanges: string[];
   readonly allowedSignUpEmailDomains: string[];
+  readonly autoJoinUserGroups: string[];
   readonly rdsSchedules: CronScheduleProps;
   readonly enableMistral: boolean;
+  readonly embeddingContainerVcpu: number;
+  readonly embeddingContainerMemory: number;
+  readonly selfSignUpEnabled: boolean;
 }
 
 export class ChatbotGenAiCdkStack extends cdk.Stack {
@@ -46,53 +49,41 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
     const cronSchedule = createCronSchedule(props.rdsSchedules);
 
     const vpc = new ec2.Vpc(this, "VPC", {});
+    vpc.publicSubnets.forEach((subnet) => {
+      (subnet.node.defaultChild as ec2.CfnSubnet).mapPublicIpOnLaunch = false;
+    });
+
     const vectorStore = new VectorStore(this, "VectorStore", {
       vpc: vpc,
       rdsSchedule: cronSchedule,
     });
     const idp = identityProvider(props.identityProviders);
+
+    const accessLogBucket = new Bucket(this, "AccessLogBucket", {
+      encryption: BucketEncryption.S3_MANAGED,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+      objectOwnership: ObjectOwnership.OBJECT_WRITER,
+      autoDeleteObjects: true,
+    });
+
     // CodeBuild is used for api publication
     const apiPublishCodebuild = new ApiPublishCodebuild(
       this,
       "ApiPublishCodebuild",
-      { dbSecret: vectorStore.secret }
+      {
+        accessLogBucket,
+        dbSecret: vectorStore.secret,
+      }
     );
-
-    const dbConfig = {
-      host: vectorStore.cluster.clusterEndpoint.hostname,
-      username: vectorStore.secret
-        .secretValueFromJson("username")
-        .unsafeUnwrap()
-        .toString(),
-      password: vectorStore.secret
-        .secretValueFromJson("password")
-        .unsafeUnwrap()
-        .toString(),
-      port: vectorStore.cluster.clusterEndpoint.port,
-      database: vectorStore.secret
-        .secretValueFromJson("dbname")
-        .unsafeUnwrap()
-        .toString(),
-    };
-
-    const accessLogBucket: IBucket | undefined =
-      CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
-        ? undefined
-        : new Bucket(this, "AccessLogBucket", {
-            encryption: BucketEncryption.S3_MANAGED,
-            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-            enforceSSL: true,
-            removalPolicy: RemovalPolicy.DESTROY,
-            objectOwnership: ObjectOwnership.OBJECT_WRITER,
-            autoDeleteObjects: true,
-          });
 
     const frontend = new Frontend(this, "Frontend", {
       accessLogBucket,
       webAclId: props.webAclId,
-      assetBucket: {
-        prefix: `${this.node.tryGetContext('bucketNamePrefix') ?? 'chatbot-frontend-assets'}-${this.account}-${this.region}`,
-        removalPolicy: this.node.tryGetContext('bucketRemovalPolicy') ?? 'DESTROY',
+      env: {
+        account: this.account,
+        region: this.region,
       },
       enableMistral: props.enableMistral,
     });
@@ -102,6 +93,8 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       userPoolDomainPrefixKey: props.userPoolDomainPrefix,
       idp,
       allowedSignUpEmailDomains: props.allowedSignUpEmailDomains,
+      autoJoinUserGroups: props.autoJoinUserGroups,
+      selfSignUpEnabled: props.selfSignUpEnabled,
     });
     const largeMessageBucket = new Bucket(this, "LargeMessageBucket", {
       encryption: BucketEncryption.S3_MANAGED,
@@ -120,23 +113,22 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       objectOwnership: ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      serverAccessLogsBucket: CF_SKIP_ACCESS_LOGGING_REGIONS.includes(this.region)
-        ? undefined
-        : new Bucket(this, "DdbBucketLogs", {
-            encryption: BucketEncryption.S3_MANAGED,
-            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-            enforceSSL: true,
-            removalPolicy: RemovalPolicy.DESTROY,
-            lifecycleRules: [
-              {
-                enabled: true,
-                expiration: Duration.days(3653),
-                id: "ExpireAfterTenYears",
-              },
-            ],
-            versioned: true,
-            serverAccessLogsPrefix: "self/",
-          }),
+      serverAccessLogsBucket: new Bucket(this, "DdbBucketLogs", {
+        encryption: BucketEncryption.S3_MANAGED,
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+        enforceSSL: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+        lifecycleRules: [
+          {
+            enabled: true,
+            expiration: Duration.days(3653),
+            id: "ExpireAfterTenYears",
+          },
+        ],
+        versioned: true,
+        serverAccessLogsPrefix: "self/",
+      }),
+      serverAccessLogsPrefix: "DocumentBucket",
     });
 
     const database = new Database(this, "Database", {
@@ -145,6 +137,7 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
     });
 
     const usageAnalysis = new UsageAnalysis(this, "UsageAnalysis", {
+      accessLogBucket,
       sourceDatabase: database,
     });
 
@@ -154,18 +147,20 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       auth,
       bedrockRegion: props.bedrockRegion,
       tableAccessRole: database.tableAccessRole,
-      dbConfig,
+      dbSecrets: vectorStore.secret,
       documentBucket,
       apiPublishProject: apiPublishCodebuild.project,
       usageAnalysis,
       largeMessageBucket,
+      enableMistral: props.enableMistral,
     });
     documentBucket.grantReadWrite(backendApi.handler);
 
     // For streaming response
     const websocket = new WebSocket(this, "WebSocket", {
+      accessLogBucket,
       vpc,
-      dbConfig,
+      dbSecrets: vectorStore.secret,
       database: database.table,
       tableAccessRole: database.tableAccessRole,
       websocketSessionTable: database.websocketSessionTable,
@@ -194,9 +189,11 @@ export class ChatbotGenAiCdkStack extends cdk.Stack {
       vpc,
       bedrockRegion: props.bedrockRegion,
       database: database.table,
-      dbConfig,
+      dbSecrets: vectorStore.secret,
       tableAccessRole: database.tableAccessRole,
       documentBucket,
+      embeddingContainerVcpu: props.embeddingContainerVcpu,
+      embeddingContainerMemory: props.embeddingContainerMemory,
     });
     documentBucket.grantRead(embedding.container.taskDefinition.taskRole);
 

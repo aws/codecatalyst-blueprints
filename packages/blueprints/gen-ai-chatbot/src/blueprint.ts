@@ -215,7 +215,7 @@ export class Blueprint extends ParentBlueprint {
 
     new SourceFile(
       repository,
-      'cdk.json',
+      'cdk/cdk.json',
       new SubstitionAsset('chatbot-genai-cdk/cdk.json').substitute({
         allowedSignUpEmailDomains: this.toCsv(options.allowedSignUpEmailDomains),
         allowedIpV4AddressRanges: this.toCsv(options.code.allowedIpV4AddressRanges),
@@ -226,7 +226,7 @@ export class Blueprint extends ParentBlueprint {
         webAclName: options.code.webAclName,
         bucketRemovalPolicy: options.code.bucketRemovalPolicy.toUpperCase(),
         bucketNamePrefix: options.code.bucketNamePrefix,
-        enableSelfRegistration: options.enableSelfRegistration === 'Enabled',
+        selfSignUpEnabled: options.enableSelfRegistration === 'Enabled',
         stackDisambiguator: options.code.stackDisambiguator,
         enableMistral: options.code.enableMistral ?? false,
       }),
@@ -341,6 +341,7 @@ export class Blueprint extends ParentBlueprint {
   private seedRepository(repository: SourceRepository, options: Options) {
     repository.copyStaticFiles({
       from: 'chatbot-genai-cdk',
+      to: 'cdk',
     });
     repository.copyStaticFiles({
       from: 'chatbot-genai',
@@ -355,6 +356,7 @@ export class Blueprint extends ParentBlueprint {
         bedrockRegion: options.code.bedrockRegion as string,
       },
     });
+    repository.copyStaticFiles({ from: 'examples', to: 'examples' });
     repository.copyStaticFiles({
       from: 'chatbot-genai-components/frontend',
       to: 'frontend',

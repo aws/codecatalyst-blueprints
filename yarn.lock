@@ -281,6 +281,7 @@ __metadata:
   dependencies:
     "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
     "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
     "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
     "@amazon-codecatalyst/blueprint-component.workflows": "*"
     "@amazon-codecatalyst/blueprint-util.cli": "*"
@@ -334,6 +335,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@amazon-codecatalyst/blueprints.code-commit-mirroring@workspace:packages/blueprints/mirror-to-codecommit":
+  version: 0.0.0-use.local
+  resolution: "@amazon-codecatalyst/blueprints.code-commit-mirroring@workspace:packages/blueprints/mirror-to-codecommit"
+  dependencies:
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
+    "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
+    "@amazon-codecatalyst/blueprint-component.workflows": "*"
+    "@amazon-codecatalyst/blueprint-util.cli": "*"
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
+    "@types/node": ^18
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    eslint: ^8
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    fast-xml-parser: "*"
+    npm-check-updates: ^16
+    projen: 0.71.112
+    standard-version: ^9
+    ts-node: ^10
+    typescript: ^4.x
+  languageName: unknown
+  linkType: soft
+
 "@amazon-codecatalyst/blueprints.gen-ai-chatbot@workspace:packages/blueprints/gen-ai-chatbot":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.gen-ai-chatbot@workspace:packages/blueprints/gen-ai-chatbot"
@@ -372,6 +401,7 @@ __metadata:
     "@amazon-codecatalyst/blueprint-util.cli": ^0.3.82
     "@amazon-codecatalyst/blueprint-util.projen-blueprint": ^0.3.82
     "@amazon-codecatalyst/blueprints.blueprint": ^0.3.82
+    "@types/mustache": "*"
     "@types/node": ^18
     "@types/yaml": "*"
     "@typescript-eslint/eslint-plugin": ^5
@@ -380,6 +410,7 @@ __metadata:
     eslint-import-resolver-node: ^0.3.7
     eslint-import-resolver-typescript: ^3.5.5
     eslint-plugin-import: ^2.25.4
+    mustache: ^4.2
     npm-check-updates: ^16
     projen: 0.71.112
     standard-version: ^9
@@ -3718,6 +3749,13 @@ __metadata:
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
   checksum: b8da83c66eb4aac0440e64674b19564d9d86c80ae273144db9681e5eeff66f238ade9515f5006ffbfa955ceff8b89ad2bd8ec577d7caee74ba101431fb07045d
+  languageName: node
+  linkType: hard
+
+"@types/mustache@npm:*":
+  version: 4.2.5
+  resolution: "@types/mustache@npm:4.2.5"
+  checksum: 0ff1d52022fd3ab0db1c97964ca0c24b45ad74e81ec62e05d27eab5b66ef1d78ff257f4cfb481c72b8b511f15520ca48717e000dc5fa8c3fdf732790b28f05cb
   languageName: node
   linkType: hard
 
@@ -7150,6 +7188,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-xml-parser@npm:*":
+  version: 4.4.0
+  resolution: "fast-xml-parser@npm:4.4.0"
+  dependencies:
+    strnum: ^1.0.5
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: ad33a4b5165a0ffcb6e17ae78825bd4619a8298844a8a8408f2ea141a0d2d9439d18865dc5254162f09fe54d510ff18e5d5c0a190869cab21fc745ee66be816b
+  languageName: node
+  linkType: hard
+
 "fast-xml-parser@npm:4.2.5":
   version: 4.2.5
   resolution: "fast-xml-parser@npm:4.2.5"
@@ -10514,7 +10563,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4":
+"mustache@npm:^4, mustache@npm:^4.2":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:

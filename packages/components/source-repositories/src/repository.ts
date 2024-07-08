@@ -13,6 +13,11 @@ export const sourceRepositoryRootDirectory = 'src';
 export interface SourceRepositoryDefinition {
   title: string;
 }
+export interface BasicFile {
+  path: string;
+  content: any;
+}
+const NoOpFileMap = (file: BasicFile) => file;
 
 export class SourceRepository extends Component {
   public static BUNDLE_PATH = sourceRepositoryRootDirectory;
@@ -59,8 +64,16 @@ export class SourceRepository extends Component {
      * @param subsitution
      * @returns
      */
-    substitute?: { [key: string]: string };
+    substitute?: { [key: string]: string | object };
+
+    /**
+     * Allows iteration across all copied files. This is run after substitutions and final path resolution and prior to initializing the file object.
+     * @param file
+     * @returns file
+     */
+    map?: (file: BasicFile) => BasicFile;
   }) {
+    const fileMapper = options?.map || NoOpFileMap;
     let from = options?.from ? path.join('', options?.from) : '';
     if (from === '.') {
       from = '';
@@ -75,9 +88,17 @@ export class SourceRepository extends Component {
     for (const asset of SubstitionAsset.findAll(fromGlob)) {
       const relativeLocation = asset.path().replace(from, '');
       if (isBinary(asset.content())) {
-        new File(this, path.join(to, relativeLocation), asset.content());
+        const mapped = fileMapper({
+          path: path.join(to, relativeLocation),
+          content: asset.content(),
+        });
+        new File(this, mapped.path, mapped.content);
       } else {
-        new SourceFile(this, path.join(to, relativeLocation), options?.substitute ? asset.substitute(options.substitute) : asset.toString());
+        const mapped = fileMapper({
+          path: path.join(to, relativeLocation),
+          content: options?.substitute ? asset.substitute(options.substitute) : asset.toString(),
+        });
+        new SourceFile(this, mapped.path, mapped.content);
       }
     }
   }

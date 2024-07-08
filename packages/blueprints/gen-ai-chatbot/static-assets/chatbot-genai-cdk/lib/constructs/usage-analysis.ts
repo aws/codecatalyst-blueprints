@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as athena from "aws-cdk-lib/aws-athena";
-import { CfnOutput, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CfnOutput, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as glue from "@aws-cdk/aws-glue-alpha";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
@@ -11,10 +11,10 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { aws_glue } from "aws-cdk-lib";
 import { Database } from "./database";
 import * as iam from "aws-cdk-lib/aws-iam";
-import { CF_SKIP_ACCESS_LOGGING_REGIONS } from "../utils/constants";
 
 export interface UsageAnalysisProps {
   sourceDatabase: Database;
+  accessLogBucket?: s3.Bucket;
 }
 
 export class UsageAnalysis extends Construct {
@@ -41,21 +41,8 @@ export class UsageAnalysis extends Construct {
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
       versioned: true,
-      serverAccessLogsBucket: new s3.Bucket(this, 'DdbBucketLogs', {
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        enforceSSL: true,
-        removalPolicy: RemovalPolicy.DESTROY,
-        lifecycleRules: [
-          {
-            enabled: true,
-            expiration: Duration.days(3653),
-            id: 'ExpireAfterTenYears',
-          },
-        ],
-        versioned: true,
-        serverAccessLogsPrefix: 'self/',
-      }),
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "DdbBucket",
     });
 
     // Bucket for Athena query results
@@ -66,6 +53,8 @@ export class UsageAnalysis extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       autoDeleteObjects: true,
+      serverAccessLogsBucket: props.accessLogBucket,
+      serverAccessLogsPrefix: "QueryResultBucket",
     });
 
     // Workgroup for Athena
@@ -245,7 +234,7 @@ export class UsageAnalysis extends Construct {
     });
 
     const exportHandler = new python.PythonFunction(this, "ExportHandler", {
-      entry: path.join(__dirname, "../../backend/s3_exporter/"),
+      entry: path.join(__dirname, "../../../backend/s3_exporter/"),
       runtime: Runtime.PYTHON_3_11,
       environment: {
         BUCKET_NAME: ddbBucket.bucketName,
