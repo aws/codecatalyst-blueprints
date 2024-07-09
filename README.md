@@ -1,4 +1,4 @@
-![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg) 
+![Build](https://github.com/aws/codecatalyst-blueprints/actions/workflows/build-action.yml/badge.svg)
 
 [AWS official Blueprints documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/custom-blueprints.html) and
 [Wiki](https://github.com/aws/codecatalyst-blueprints/wiki)
@@ -100,6 +100,63 @@ yarn blueprint:preview --space my-awesome-space --project my-project # previews 
 
 This will publish a private verision of your blueprint into `my-awesome-space`. It will only be available for that space. You may run the command
 multiple times to publish to multiple spaces.
+
+### Publish a blueprint into CodeCatalyst Gamma stage
+
+Add gamma SSO profile into ~/.aws/config
+```
+[profile codecatalyst-gamma]
+region=us-west-2
+sso_session=codecatalyst-gamma
+
+[sso-session codecatalyst-gamma]
+sso_region=us-east-1
+sso_start_url=https://view.awsapps.com/start
+sso_registration_scopes=codeaws:read_write
+```
+
+Then run command
+```
+aws sso login --profile codecatalyst-gamma && export AWS_PROFILE=codecatalyst-gamma
+```
+
+### Publish a blueprint into CodeCatalyst Prod stage
+
+Add prod SSO profile into ~/.aws/config
+```
+[profile codecatalyst]
+region=us-west-2
+sso_session=codecatalyst
+
+[sso-session codecatalyst]
+sso_region=us-east-1
+sso_start_url=https://view.awsapps.com/start
+sso_registration_scopes=codecatalyst:read_write
+```
+
+Then run command
+```
+aws sso login --profile codecatalyst && export AWS_PROFILE=codecatalyst
+```
+
+### Publish a blueprint into CodeCatalyst Prod stage SSO space
+
+Add prod SSO profile into ~/.aws/config
+```
+[profile codecatalyst-sso]
+region = us-west-2
+sso_session = codecatalyst-sso
+
+[sso-session codecatalyst-sso]
+sso_region = us-east-1
+sso_start_url = https://amzn.awsapps.com/start
+sso_registration_scopes = codecatalyst:read_write
+```
+
+Then run command
+```
+aws sso login --profile codecatalyst-sso && export AWS_PROFILE=codecatalyst-sso
+```
 
 ### Test a blueprint locally
 
