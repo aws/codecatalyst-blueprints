@@ -34,6 +34,7 @@ export function buildBlueprintPackage(
   });
 
   const newBlueprintOptions: ProjenBlueprintOptions = {
+    homepage: options.bpOptions.homepage,
     authorName: options.bpOptions.authorName,
     publishingOrganization: options.space,
     packageName: options.packageName,
@@ -72,7 +73,6 @@ export function buildBlueprintPackage(
       'fast-xml-parser',
     ],
     keywords: [...(options.bpOptions.advancedSettings?.tags || ['<<tag>>'])],
-    homepage: '',
   };
   console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
 

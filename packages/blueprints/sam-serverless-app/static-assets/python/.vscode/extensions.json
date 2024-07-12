@@ -1,7 +1,0 @@
-{
-    "recommendations": [
-        "ms-python.python",
-        "redhat.vscode-yaml",
-        "AmazonWebServices.aws-toolkit-vscode"
-    ]
-}

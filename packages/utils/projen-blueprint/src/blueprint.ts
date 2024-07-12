@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript, javascript } from 'projen';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
+// import { hostname } from 'os';
 
 export interface BlueprintSnapshotConfiguration {
   /**
@@ -101,6 +102,10 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
       ...options,
     };
     super(finalOpts);
+
+    this.addFields({
+      homepage: 'https//aws.amazon.com',
+    });
 
     const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve(this.outdir, 'package.json'), 'utf-8')).version;
     this.package.addVersion(version || '0.0.0');

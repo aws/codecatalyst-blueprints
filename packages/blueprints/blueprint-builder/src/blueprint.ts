@@ -26,6 +26,12 @@ export interface Options extends ParentOptions {
   description?: string;
 
   /**
+   * Homepage url for your new blueprint.
+   * @validationRegex .*
+   */
+  homepage?: string;
+
+  /**
    * Who is the author of the blueprint?
    * @validationRegex /^[a-zA-Z0-9_-\s]+$/
    * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes

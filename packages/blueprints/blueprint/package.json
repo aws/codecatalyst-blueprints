@@ -74,7 +74,7 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "https://aws.amazon.com/",
+  "homepage": "https//aws.amazon.com",
   "version": "0.3.147",
   "jest": {
     "testMatch": [

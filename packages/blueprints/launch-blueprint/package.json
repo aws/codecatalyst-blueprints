@@ -70,7 +70,7 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https//aws.amazon.com",
   "publishConfig": {
     "access": "public"
   },
