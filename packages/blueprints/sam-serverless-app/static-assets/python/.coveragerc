@@ -1,0 +1,2 @@
+[run]
+omit = {{lambdaFunctionName}}/tests/integration/*

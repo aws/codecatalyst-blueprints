@@ -62,6 +62,11 @@ export interface ProjenBlueprintOptions extends typescript.TypeScriptProjectOpti
    * @deprecated
    */
   gettingStarted?: boolean;
+
+  /**
+   * Homepage url
+   */
+  homepage?: string;
 }
 
 const DEFAULT_OPTS = {
@@ -104,7 +109,7 @@ export class ProjenBlueprint extends typescript.TypeScriptProject {
     super(finalOpts);
 
     this.addFields({
-      homepage: 'https//aws.amazon.com',
+      homepage: 'https://codecatalyst.aws/',
     });
 
     const version = options.overridePackageVersion || JSON.parse(fs.readFileSync(path.resolve(this.outdir, 'package.json'), 'utf-8')).version;

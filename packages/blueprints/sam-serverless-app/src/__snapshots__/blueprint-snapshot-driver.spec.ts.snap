@@ -1,0 +1,3551 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 1`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Java 11 Gradle",
+  "code": {
+    "sourceRepositoryName": "gradle-src-repo-name",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "gradle-test-fn-name"
+  },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
+  "outdir": "synth/01.snapshot.java11gradle.json/proposed-bundle"
+}"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 2`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "sam build"
+  ],
+  "info": "This runner builds the Serverless Application Model (SAM) Project."
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 3`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "for directory in \\"$REPOSITORY_DIR\\"/* ; do",
+    "  if [ -d \\"$directory/HelloWorldFunction\\" ]; then",
+    "    TESTS_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $TESTS_DIR/HelloWorldFunction",
+    "pwd",
+    "gradle test"
+  ],
+  "info": "This runner executes the unit tests inside HelloWorldFunction directory."
+}"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 4`] = `
+"#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+echo "Running unit tests..."
+GRADLE_DIR=gradle-test-fn-name/HelloWorldFunction
+./$GRADLE_DIR/gradlew test -p $GRADLE_DIR
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 5`] = `
+"Name: build-and-release
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Compute:
+  Type: Lambda
+  Fleet: Linux.x86-64.Large
+Actions:
+  build_for_default_environment:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+      Artifacts:
+        - Name: build_result
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: . ./.codecatalyst/scripts/run-tests.sh
+        - Run: sam build --template-file template.yaml
+        - Run: cd .aws-sam/build/
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+  deploy_to_default_environment:
+    Identifier: aws/cfn-deploy@v1
+    Inputs:
+      Artifacts:
+        - build_result
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+    Configuration:
+      Parameters:
+        region: us-west-2
+        name: sam-stack-
+        template: .aws-sam/build/packaged.yaml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 6`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ExternalDependencies">
+        <plugin id="com.intellij.java" />
+        <plugin id="org.jetbrains.plugins.gradle.maven" />
+        <plugin id="aws.toolkit" />
+    </component>
+</project>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 7`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="run tests" type="GradleRunConfiguration" factoryName="Gradle">
+        <ExternalSystemSettings>
+            <option name="executionName" />
+            <option name="externalProjectPath" value="$PROJECT_DIR$/gradle-test-fn-name/HelloWorldFunction" />
+            <option name="externalSystemIdString" value="GRADLE" />
+            <option name="scriptParameters" value="" />
+            <option name="taskDescriptions">
+                <list />
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value="test" />
+                </list>
+            </option>
+            <option name="vmOptions" />
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+        <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+        <DebugAllEnabled>false</DebugAllEnabled>
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 8`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam build" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam build" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 9`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam local invoke" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local invoke gradle-test-fn-nameFunction --event gradle-test-fn-name/events/event.json" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 10`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam start local api" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local start-api" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 11`] = `
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 12`] = `
+"{
+    "recommendations": [
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-gradle",
+        "vscjava.vscode-java-dependency",
+        "redhat.vscode-yaml",
+        "AmazonWebServices.aws-toolkit-vscode"
+    ],
+    "unwantedRecommendations": [
+        "vscjava.vscode-java-pack"
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 13`] = `
+"{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch local sam API",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "\${workspaceFolder}/gradle-test-fn-name/HelloWorldFunction",
+            "preLaunchTask": "sam: start api"
+        },
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 14`] = `
+"{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gradle: test",
+            "detail": "gradle test",
+            "type": "shell",
+            "command": "./gradlew test",
+            "group": "test",
+            "options": {
+                "cwd": "\${workspaceFolder}/gradle-test-fn-name/HelloWorldFunction"
+            }
+        },
+        {
+            "type": "shell",
+            "command": "sam build",
+            "label": "sam: build",
+            "detail": "sam build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local invoke gradle-test-fn-nameFunction --event gradle-test-fn-name/events/event.json",
+            "label": "sam: invoke",
+            "detail": "sam invoke",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local start-api",
+            "label": "sam: start api",
+            "detail": "sam start api",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Running on"
+                }
+            }
+        }
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 15`] = `
+"schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:3.0
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
+        template.yaml
+      workingDir: $PROJECT_SOURCE
+      component: aws-runtime
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 16`] = `
+"{
+    "body": "{\\"message\\": \\"hello world\\"}",
+    "resource": "/{proxy+}",
+    "path": "/path/to/resource",
+    "httpMethod": "POST",
+    "isBase64Encoded": false,
+    "queryStringParameters": {
+      "foo": "bar"
+    },
+    "pathParameters": {
+      "proxy": "/path/to/resource"
+    },
+    "stageVariables": {
+      "baz": "qux"
+    },
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, sdch",
+      "Accept-Language": "en-US,en;q=0.8",
+      "Cache-Control": "max-age=0",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "US",
+      "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Custom User Agent String",
+      "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+      "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+    },
+    "requestContext": {
+      "accountId": "123456789012",
+      "resourceId": "123456",
+      "stage": "prod",
+      "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+      "requestTime": "09/Apr/2015:12:34:56 +0000",
+      "requestTimeEpoch": 1428582896000,
+      "identity": {
+        "cognitoIdentityPoolId": null,
+        "accountId": null,
+        "cognitoIdentityId": null,
+        "caller": null,
+        "accessKey": null,
+        "sourceIp": "127.0.0.1",
+        "cognitoAuthenticationType": null,
+        "cognitoAuthenticationProvider": null,
+        "userArn": null,
+        "userAgent": "Custom User Agent String",
+        "user": null
+      },
+      "path": "/prod/path/to/resource",
+      "resourcePath": "/{proxy+}",
+      "httpMethod": "POST",
+      "apiId": "1234567890",
+      "protocol": "HTTP/1.1"
+    }
+  }
+  "
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 17`] = `
+"plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+
+    reports {
+        xml.required = true
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory = layout.buildDirectory.dir('coverage-reports')
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 18`] = `
+"PK
+     A            	   META-INF/ PK
+     A m�>=@   ?      META-INF/MANIFEST.MF�M��LK-.�
+K-*��ϳR0�3����-�I�M�+I,
+�d��Z)�%��*�%��r�r PK
+     A               org/ PK
+     A               org/gradle/ PK
+     A               org/gradle/wrapper/ PK
+     A �%Ӧ�    /   org/gradle/wrapper/BootstrapMainStarter$1.class�R�n�@=Ӹu1���Ey�@_Iik�6�U�@.,Ru��L�!��G�	�6 ���(ı	]t1ss�չ���_� x�� 󸳈��ᾏM|4�i��s�Z�}.���k�ތ�=e�d/c���Υ�e<Mzn���1�g�(��qn�Q��4S�'+G#e�y�
+��Tj�u�:e��t(@&�9��V|!?�H��K���$ʤ�G]g��w��(3�V\`�_(�9�T�G���&�D
+l\\&�d���dyA֩r�<��0�#l��(�>i�0�c��=<�O���b��+7.P���m�B%����M�
+�-�wźl�6i<�Z2�93�����#��ұ w�ںl
+h�������x8F��E��v~�ė�9�P%p�w8�.�R3�S�	ѵ��Ac�+j�g�QEoN Sz��B�z������j�\\�:�����
+zQ^��oPK
+     A i,�  $
+  -   org/gradle/wrapper/BootstrapMainStarter.class�V�SW�sٰ,�1*���BI /�V�V�(�-m��.�!�nv�f��jﭽ<����	�%�2�ӗv����;�IIb���ٳ���]7�>��1���IF 2^�	C��0%c���A�0#aVF�d\\�{2�Ǽ�d\\�Uq�BNP��p]�R2"�!c7%|؉^|$AaQ�ʋ� .aI�~ ���ee�4��1�r����tSwN3��+��U��U�䳕�"��E�(a��k����{��w�u��T-��.�Z��黶�����9�r���h��u4���8C�,����-펖64���:�n�=�n�/�w�hv�<�l#� {.'�a�nVf��ӚM����U�
+[��'b��0��^�SXB�D�]Î�.I���,[�X��͗�w��$w7'nm���H��SçI��r��=���btr6���+�n�e	��:K�YP���_�_�%u��P�-q
+i��g���M�-{�\\f����I�jW˔0�\` �
+N���V8s��K���b���
+ʇ���2�_t+�c�O����f�\\�ɧ�X�C��Cϖ�K�����
+���9%� 9
+,�H�X�
+ʩ���;
+�c ��|�O��}�.�w��Tk�)��3|N�*Z�R�RU_�K_�k�z�3�U梾
+��\`\\�4�T�[�၂����l����#��+*0�>�i�X
+��i�FZ$K�]�h�O&�������Vo����FW���c-�M��D�qh�ƛ�:U�T��T����;#R�Nv���R�zH$['tk=��e��&ś�o����h�8�6�ls�ܕ���P�=��֣
+�e�d�,�X��:�׶�\`�Զ�l"�z�ϼ���N�E�/��w�ۼ�-j=𒶨���y1/[�\\�f	�U�e��v��S/7,��xBY|��͙ZI,<�J��G�x ��&����[������
+�_�
+Ct]b	:O Iӓa�$E��$��>¶�C��w�\\�����o4��
+Hn"�#RG�w�
+��Nb(Utm�{��ۣ�*z����*�c�h ���#9_xW���c�h�yG�}�ը�/��C��C�A����S�s/A݇���~8�#�E�R�7q%��B��#
+ܤ@-8q;Dv�{K�0�*���G����c�M%�8N����M����UK��;I�1�D��	�%Ğↄ���DvN��ަ�D�����g���y|��px���#U��c���������U��]����@�}���i�P8�T�(�j�@�	�1*B��� �qg)<r�
+�� <��8�dܾ8O�d��wS�� PK
+     A hQ�}�   �   #   org/gradle/wrapper/Download$1.class}�M
+�0��h5�*v/����?�B\\x�؆���T{7�C�)���
+��^���C�0 $g{s��Z�[�mE�,�]&;�i�����ڜ!!̬S\\9�k�'�J:��-V����6Zx/=!m��F�ӥ�YM��iH� t�nX�~�~�8\\j�4� PK
+     A y�[�4  �  A   org/gradle/wrapper/Download$DefaultDownloadProgressListener.class�U�SU�n6��eRH(Z@�%U+
+ik[ J%D��%�
+�.���@��>�ԗ���_:#Bu�}ә�#�z���qF=�~t
+8�ɹ7��s�����'��+��Do4��ҌH�5ɜm�9��f�� W.����&�a�@��[&�x;ra�c"�	i.�4p��C��*�3t<������̪ϗ���)(g���,Q�\`8���1o�u<^��{_T��W�^�Ŋ�ժ�{�_n����v��<�����o�!<ꕉks�vŕ�҂�g��C+-�ĝY���}1,�U��1q�ל\`��Vޥq��ժ��s�:���h�庯�V]�nE�ZS��|�g\\d�M�R���e��!���!Z�\\J�[	�d'̭�2c�J�&�r]qRru�J�+���8	�S�Xm����ٚ��Mx����o��r\`{.�h��-��g�T^*wS��٢ߡ��d���l�2��gPZ��Um8l�����)�A�X�F��	���y����k�50'=�ұ�A��Zu��3�57��ĶS"�x����n�\\7�!C�T�D��M-�%:���ho-%+Ա��B�fuN�I�Q{�E�qM�%���帨v���>E���[��[�NMLݠʧ�77PPb�d�15�/N�nj3����RZl�1�eShK���|^���dS�:83��m� ��1t��Ȧ�1$���0��p��1��@����:X�
+���������M�
+:��)�4�G��!�Lx���G/���6�p��I�ͩ7�x�#B_\`����8���w0�=m�u�d��C�C-��\`�I���ˡ����d�)V�\`���.�_	�7R�;!����a��إ�3�m��KH)v#�#oH��վ����VZ��N�I�r.n��{��7��!=���IbN����7\`����h
+a.����yD���}�����2^@�#G��e!��YY�c�J�"#��#K��xY&�-/�D15��4%���%V���k�T��D������%�|�
+�@�ۥ��l�ܧ�g�h	��Ј��|/�7/]>(�B�_PK
+     A ���ۡ  ~  4   org/gradle/wrapper/Download$ProxyAuthenticator.class�U�sSE��M�Mn74�J�X�1I�$E��E���\`�a���ۛ�����xsc�?�3:���8>��8�:>�W����۴���;��9��s���9����~p%G1�ᴁ>���3Q�����q���u�3U�(>�༚/t�"&t\\������zp�@+o�踪�C��nU�y����seO�l���D�"�ܤ��خ(���X�y��TGdz�!\\pK���h9r����ĚM+��k
+{Ix���a��z�͉��.�2��z���H�\`�jU&����^wY��d��z��=�uN��Ż�k�s���Db�wg[%���)��}�r���wM�f��Ū��c�0��� W�2\\��_�Gz�{y5�2�8 �\`̻5ϔW,�tlg+�2�x
+�9��_IE�)����s�Xбȱ��:np,�&C_{�j�]��
+V��n��+�[�q�!�n�p8��+(���!���59N"ɐ���pt������L2�R��8uӜ��&�d��YQ����j9$ق��$_�phvn��2é���%Q�8W���h�P�Yg�Ve��{w�m~�KTa��ZM��A����k�e��~�F!r3��{��h�����4U��)U��"�άݕ��ⰱD�na]x�'6�aJ�W
+�����RH/a���>z�Y<�nI!h�RQ'�N��4�����2[}K���<�4�@6po�V����/ia�k�:����7�H�C/f��� ���.o���;�i�#�#k�=SÿblX�6=��G�"�<<R�+[�O��z?HH{��(�����<�o�3��Xş���\`�oT�O�L�^E/�&��o��ٌ#E�"��H5M�G�=���g��x��P��I2)�2C[\`��7��h8U�0U���Ar�eoByQ���N�p�/���0}��PK
+     A �pO�)  �&  !   org/gradle/wrapper/Download.class�Y	x[Օ>�Z޳��J�DI�8^I	�\`�+�Xv�Bx��m%�$��,�%��{X
+�,�t�����9�@�-	{�lt�鴝)3̾vh����'Y��I��|�}��{���s�_��s/�*�Q)��x�?�<���h~���x�Ex�q���~M���c4��Ia���K<d�C��^:�.��b�hѨ
+�zh{�����\\&�g�\\�p��r��}<�C����lU������_�Z�=t/��[|��^,�sUx�
+>O�����,�R�,�Л���ռB45
+ת\\��\\�"񯂠7z�u�P�^��E�e��+��CW�*�ŗ/ͥ*7��CHjV�2���i���R4�D�*�6��+ܮ�m�f��U*wx(�A�7��I�NA�f���uܣ�f����ܫpH��T�Wy�B'���y@��B���Qx��ת�K��T�U�-t��U6TRyX��#*�Qy�XUxT���Ōd[TO��ӹ�!=5���Ǣq=�9N�Tg$e\`d�t�ິ9b��Ƞn�A,����ݳ�{����P��l�{�}zcT�
+7��d$6��T���L=fnգihg��o��޻+����AQ51����sUo{(�����cЮ������;��v������
+vvC�Y���L���u�20����aq�����p�pRG���I=�0���r�*w����F2��Z�i��/&�������b�fD�ܲUڌD���JC��n��P����˦v:�2ܗEb����z�����[��m�!T�Č���n#٧����A=�UOF��&:͑v�L�����}�Bh�I�W�zr�y�4S� ��A|ۭ��B�%�>O"O|Uq�0����cLd��\\L~�Szv�1���ᔲ����:)M���+u�݁���7�����g����<����YZI���#Ҧ�5��j���mݐ�l?����7hˍ�7D�������I���.l��H̖=�p- �~\`�H�I,�����F2�G� �2��
+;���CC"	��h�Ʊ�h�!���qS�v�as$O�Βx#B9����i����^����Dʎ�P
+26=or:�k�}�Q#�6sʃρq.�p����H�0���b�$�*f���I%�����u��6N+�O��
+�1G�Oq̊��?��:3�:���*x�UOE�"aEQ�O7���g07x�ׂ�!;m��2֬n�
+�d���H�-V7+�
+�Z��2̑8\\� �/iE�[�5~͐�Y^�&����\`fA��'ٮ'��57�+�B�qm�[�
+�yy+�]�SN�e�ȕH���n�9K�_�[�ǖ���*�& t<���
+��p\`�S]T�Gж����x��]�+'�r4w<e��x*��.98"n���%+/����hz�ն�u�� VyB�tr��Z��n��E_P��?�7j�ezH�{�I[QKR���41��7��
+ߢ�!�U��m�3�.R�4�$��S��Ɵ���g5�}^�#tH���*�Z��B�ğ���S���i\`e�4
+	�S��4�<A���$v�i��WM���
+ߡ�|��_�5�G��������ֳ��UfH#������3o����%�ܧ����F�O��/�=�N(\\/���e\\!g�]��+?,����4�:C�G��
+?��Q~L������D�Ʌn�Y1��z*�9�N�F�A����Oj�-~J���Lx���~B��۟�	�:5VZӑ������ ���р���gEs�(0��bᦀi��d�p�Y�1���9)N��荋�y4X�l7C2Fv�ԯ�	{�M�� u��@BO���ؓ~F?�%P�K����m�z���W�S�0}}�2�
+s{ �;h@���)c7��d��d�g �WIw��}2�;-x���X�����tn�P�\\lOFn�+��RB�w����/k�=�>�+� ��U�	��� x��4%�j|��؀�_�$�b����▧�}�k�¯j�����m��D�7������E
+S@P4�6���
+�uS7qcn�n�V	0-�Zq7���P+b�T\`���o�T 7�t"�6� h�\`�v��>+4�д�MU!q�]V����m�N4쳫�f��jPn
+G')J<�\`)zd]֍�KS�KS�ꥩf�E^W��;HWE2Ip}��y�LIr%�e(-ei����>��#�v:�rM���t�o<�9,�Ǟ�:��7���^Ss��
+�'�8 � _����E����7a��Š����SI5�3PU{�p�V:�����|l�]9&���ܕ�
+]7��j��N;�;�z|I����)E�o�?{\\��cXXaYu�n~��W��&���N"i��<)ôo���;b��!�'A�@[����{�=�7I*.3.1���>)>����������������\`�̂����5�O��g����6>��.�Xn˳k8�W�zH�z8G�{�߼<����sb 3� ������GW��V1�(Y9U��(l��ߢ�������y��NQ�;@R��8���N��@��>{�cb�F!۵?��F��4Ai3����#F]��xJ<��d����fߞ���	���53c!�)��J����!j��~G<eZ�ͨvO��fK�U֋><*�I����tJ��Lh���hj
+���n)+���d��$�قvAu�Og��0� �-n�Gx/��0l��|e�5;��ɗ2��=���\`�Hl_|/�wic�;�,�zД��,vB�ˠE�m3�N�b�5��'Gus�VE���n��b��<�[���Q	}��m���0Ɵ�
+�O�?��g�>�TE�'^��{��ŃS~�v�ݒ��п����K�� 79�-����Tr�c�|F2߇փ/�E4�V����X�� =(�ZT.�g�
+�ȞP���x����؁�X�y�\\c��ɐr�T����T���K����?I��Z��,�3x�%��z�����ę�c�锚V����ZR�ZJ��&j�nj�Z��RZF_���-�k�u|U�oH�<"%��\\��5w��\\9M>��*��� �B�[#��T"��	,*�pX��K�Y>xBz�I�08�> �������TYS�|5~�q�]�w'��9�uc4�8U�m�p�C�|H%j�	��R�nZGs�(i�崞j�]���#綺���$NJd�t��	:eO��%ͣ��w�(.�,���S���&kϊ�g�}�O������rt���i�@
+���N�9��%7�E����S*mm��V�Q��E^P�M�l���C�,�������F*0	\`Kp��-98����
+��ҳXy\\nƴ�Lv3�XQ��mws���������t��8-��K�hY�ߝ��MΚZ�s���M��	�*�ryE���o�ߙ��&We5=�6�bt�O�Zo��2�˯fh���Ғ�i�	Z���qZ=�x�֜���-=���V��oYU�Z;Zz�C�a�s��h��k����ZЪ�'�R7�WsK3�tt�ALU��3t��u�T�+C�ן������&El8NW"l��Z3�&η�׎^�6��1��TSyq!��/?�,>�ަ��S|��}�g˯�x%�
+�\\�i1�D@�殣U�#�w׃�0�m4��P"4_���n�(�f�N�gI�Y
+>5�{���H����f�	�sd��� �#� Mn�Et�G7�2:�5t+7�m��V\`�>\`c��)�9M'��\\Kρ���h=��K����!h�"ze8�:����n���GH�b=��Y,����r@�׺��^A���@�@��w�;����S�C��z]�7zS��d
+;� �L\\,�.����JQ>��	��\`��)V芰BoO 	Uc�����a{�E�*~wig��\`g���ǩc %$�h6�g~DM��O����-���1
+���@�\\�mn���;��E�?�~�~$�����+︉u�K��<���� RdK
+���?���믅N�� i2 �! �|Wg�g 1SS?Fۭ�A:�̀� P�(����V� � @w9��d�m�%��\\�j�?@J���#�ƅ�0֯�����s5�ޥ[��(6��̶#C�t��vf�Z�.�t]���:�n1tb<���C 69��F���\\~�߅Ic�Q����^��1��+VFW��\\���)�5*2&�U"��8��z���j\`BH���|��T�K�������-8�H��^�������'�Ѐ��S����G�sxp6�h�����%z�H4���ȑ���H�↉K�O诡��p-�L\`{��1�"�L =�	IŒ�!�XH�S8�MVǘ���D�Ƴ���t.��BA�rmMJ�[:�],�!��<R��ӋH������Ӗ;O��7�w5����-F���vPgM-������l�Tbջ��ɬ��r�*<��;���CTG1ޗ��xn���P%P0�
+�١�-4���B��PkC�:4J}�<�+�V4��ӝF���*��5�B.�IoH�tXǰ-R���w�Ë���^Z�9�}i��i+���u���C0�NZC����B���ۈ��Hy�I�ܒ�4�b���п���Q�č�I���9�|7��^:J�KPK
+     A y�L��   �   1   org/gradle/wrapper/DownloadProgressListener.classu��
+�@E�+�jD��E�@ۖE�ER�I��#3c�[�>���4�v��9���������O�Ī.r%��J[��M	Ǆ�,��]���8��kߟ_�PU:�]�3a���G�����\\�^�&a�t"-�E�eY����˛�8\\3��K tЎBN��k؁�PK
+     A !9|�  �  3   org/gradle/wrapper/ExclusiveFileAccessManager.class�W�sW�Y�ګu|i�V�MNZ*;��J�lB�N�K�Ǝ[��t-���v�j��S�B[(���P\`x�3�L�$x����0��}�0��+9�%L=��s��ݿ����O��� ��t<�gZ��Y��jxNG_�pNGϨ×��x^mME�SKA-E�H
+�1��::\`��vI�b3lIŞDIG��qu���fxJ_�~O��c�u,�J������
+_��5���ɡ�#���SgGF��
+t�_2/�Y�t�S�g9���C�S�Mǟ1��h�t��DE@�v�]��;��.��"�,��	�2�|��@t�-R�m�r�jiNz��-�=�\`�3�g�s��,jɎ��|v�3���.yf�,���]�X��e��BAV*�c�K���̀ 0�	�ܬ��OU߲��)T=O:~vȴme��{]ԓs�d�W�䕲�-3�Q�d��E��!�C���q�]	0�E�(��;&f�*2�B5���?��^����}��虫\\j�L����C���l��tGuZ��5�["
+�Mn,�r�Q�������t�1��)�,,N��@L��5|C�75|K@g�dٷ�'�hʚwL��Q���tnk�}�2�ts��ҟ&J',�VXj�t��%syN�nE>]��o3��;6���lK�q�oF3�V�B�����>%l�W
+�!�8$\`���������Dղ��3�"�x	���D]A��مE�U
+��W����x���c�L�Q��V$��Cn�.��O<i�2]6U����]/� ��H�i���~\`\`��,"ޒ��G~��xg4�n�
+�)��gLڽ�V���� M
+��^2-��	L��\\:l�����(�3�e�:�j����qZ�/�WY�;A���}3��r����S#���
+^L/x�R��X�	|:�u���L��i���Y���L�v�;��������u����!I���=�A������ўf�U�yLX�uc���U\\���Ӧ� p�v�Q�Nεv5�����|o9L�޻rקt���K���Ul)��̨��;��Wv����椯�74O�Ҭ�
+���+�,1���
+�F[F
+�f��>#�&��A7zx� �N5@��T3��(����z��Y�4�}�
+��] ҳ�4�?�E�vqݏ�<̏ ����L����N�p�8>K.���1��Dg�[A|�4n�kh�Lp�����S���ES�v\\�c�����~]+蘭�vvR���5dw�������=�#r�<��\\K��T�����8���lo�7�\`.��Ր��S�
+W����ĮT�U4]����~�T��7��6���v����7�BZ ��H�
+ҫ@'�c ���Klϓ��3�1�����c�����DQDDwp>���P�z�p}���@8B gmγ*&_$W��
+��+�k��r�}�F�A?~��(��AZ��8�����:�ư�q���8�
+ӛ�"��؅Q�c� �?�	z5)��qj��sDP�h�	h��F�9҈����u�>�c��~��iMȈvz5�HM���� �����$?b�)n�I�P�$)S������ݳ��hѠǧB����<���q���0��.Ҷ���x��d�(���WW���w@�M�߉�߭5S<��
+�a�<��u�.�˟�3��Gh���G�At�=��dl�٦@]�������ys����:�m��O�	
+�	���8x4�?PK
+     A ��,y  �  -   org/gradle/wrapper/GradleUserHomeLookup.class�S�N�@=$v��ԔK
+J)$����E�\`@"\\�@�<E&Y��#ǡ�_Ջ�H}�C���:�K �af����9��?�~�0�Q�Ix&c\\��
+B���\\�_DЂ)	I
+�d�"��1-�Y��eceq7��_M/.���n�H�׶6-u\`��m:%=�{�S��0t���Nom�\\~��1t,�N�7?k�UN�����l����_\`h�'�mKn�6t�,�oV����c��\\�p��5=K��\`��oU)�+�%�,�\\���2���\`�[�ޚ{�S�{X-���R��'j-W_�lN���o7�r0F�+y�\`ׅ*����2Ě�I�~*z��0qOi$��JV	O��^�x�9��@��-�o���w�S� C����j�E�1D�ګx2+���\`��H}��n���� պ5B'�1������d�?a�߽8�fw���nB��q�
+qhN�a�^-�N�3߽��0�d6��È�jELU1tS&>�-�sc-��g��O�N�QM��}(1�� ��#�j��R�\`�뛿̀i��m���P/�Q��WM:����;"��+)	Q�g<D��)�\`�W�%L&|
+�[��[��_��%��7p%w�vM%9���:)���"��a���h\`��PK
+     A Pr���	  -  *   org/gradle/wrapper/GradleWrapperMain.class�Xx�����բr��"�E;�"L1X�!	$| @D� ����n��%N�t��F��'q
+N����Nwz��齓�8�g�t�� }�>4����+�{���>��e k�"�T��R���rx����y*J$��Wp����B?^$	/V��ԏs~�L��UTI�*�B.�Rūp^��U�qɯQ�Z�N��[����*���я7��foQ�Vux��Z�]�;T,���;��ǻT��n�����rx����������U|��0R*F1��"R0��#*6ᒊ;pُ+r�G�xX�#��cr��*>�O��S����H�G�H�?�����*��/�����+*v�sw�ki���n�w��kW���==�]����)�1�Ǉ�m+j��j�����Ѥ!,������no�ȩN����l��P�P6�l��#���P�~_�9@m�H�؝�3��XԐF��zt�nE�<M��Ñ����i
+5Y�@�h<m�##�ոÙpg��H�N�b��:T貣]��(��cY@MKީ[�.G�l��\\-�L.�#!)�e�v[��%#��0�Q�mg4��j�bz|@:��ᡠ�~3~���
+���&l#�'�*K@��6�P�;��y�t�d�#{e"O,!r�Kڑh�$]���ꥱf�~�D͡!i��(��E�HS���I�$�/��\\��3��뎂�18��@>D*�mpn�rg2ⵡ<Z~\\�Җe+����LOid&5��ػ��k�(-�!v������c�	fe�n�5�'m��v3h�,��ݶ�b�>�$����
+M�S�Nk��b�v�I��p�|N�A[-2<D����QSа��[C���\`F�:��o����d�N\`(�Z鲭JR�a氆o��
+����yN
+�LF[\`��q�4|?��C�H��5��1�&��CO3�~��)���_��"x����pOW�+
+��o�{��)�r4�S�.���k$���Ep��n�$F�YcI������=���h%lN$^L8ס?��Zv�%w��ɺ'��I��5���7ܿ㪆�*����k�@YΖ�_r߿<��?xB�5:$1CE§�bM�p��9ADj2'�%�v$fd)_�5Q*��
+�xM��L\`K���vp���1�0�/���
+�V0�I�?8h��\`?{�1=a�/M,_���]ǎ��&41S�+WD�&*E�"��S���\\�pU�51G�eF�y����|I\\ �"j�y(�΅���:��Ѳ��45O��O�y�&ŒP�t�S���ѳ�^GDW��M���-�P2f���L�ȕ�s02����Kj\\�3��;�y��x�άmNq\`�2��v1o�]vS%���M�*gIai�ϛ��R#/ I�EV�@(_1���
+�����-�Z��z��y=�0��BS5���U�U^'z��jN1u(���8�D�*�
+��U�=�=]���Cd~��\`>E卭��Zx��Ǵ0͜�-N7J3s��D��^�����}Q����.oV���Bӊ������JT*&�N�u]��6�6�G��>�&�O0�V�>ۘ��<Qȯ���#�1�-�/�����7�Zk����\\,3�N����sK{���6���)/���������#���?l8�y�dR�����nwk�?H�������!�=^����WZ���83O�i�є�!���.Mx��LсB*�������TI��BՖ��Mt$O�	�f/���<ӳ�M����~�{]�v�<�¦y"9��N�\`�~���'�5cvs6e�we�5��d�+8ߛ5���߼�s�!������
+�����˱�!����2� ���R�� ��Y��Qe�=2����1�vq(�=���Q(M�_
+�5��K(�+
+�u��Zw
+3S(�$WHr�$Gw��k����_C
+��J�0�I�QH-���Ma^
+55\\�������¦ҕcXԤ֨
+���)���!ō��#�(�b�8�Rֲ�Oz���	t��֣+0+����с5�&b���
+0p3�\`�D��f�c��c+F��ވ��v'|��^:LDKqG�5����(��������$�1@ԏrn\`�1�s�P���w���9�t'(�<m�"ƈ�=&��I:BYE�]LTB}+��h�
+��Vd&�(w��@ݮC��P���+�8$��:��!�V�!�_e�J�߅�,geY��("�ђ�+���U�[h�I�Q���'K�܌8>R��#�3��PSX���6�p�m�afx��V��+T�hNa�=�'��[}������{[G�+���"�	\\��jE�GrSh#n�v"�J��m�"в
+� �R5h!R��q+m��d� n�������8�Y5w�f�	�k�:˯�L8w�����o�����T��N�JU�M;��dP�(Ka�ݘ�X,';R�f��S�X�t�j1�A�����DWi��Q�C7�fSZM�8vRzU����D�ĕ��	<���PK
+     A ���   �   "   org/gradle/wrapper/IDownload.classE��
+�0������
+^�b��*A�{���(����l| J�Tf $_����u X���! �����<!L���_9S�d�]~)�l�IΎ�\`u�EQfZ�=�,���Ģ���g5�	cmR��H�*ËB�hÏ��*e�S.�0���O�A�Zp-�-յcӳ��
+PK
+     A 9l�V  �  "   org/gradle/wrapper/Install$1.class�Xy|w����,��PBh�Zls/�*��BB1m !�����!�3��,�zPm�G��z�XE��lB���@k�o�V�G=��SE}of7��,)1����w������M��硇��?�a,n�ܼ���7���%���2d�yr�G���"�_�+/�����	�LF7^�͝�p^���e��b�W�x
+�	�L��^ϲ� �x�����-L�V���Q��1�������w�x�-c��H�=ܼW��Bx�!|HF>�ai'$|T�:�/�	?&��NJ��@��XaXQ�Г7�&���zD��V��ʙ&���6�X����\`��-��6��L͉�v��eL��Cz<m�L'P�a��H�Vc���dR�#}^ߚOJ��b5=Cꪵ�z�	�JO����H�qb:Czj�J�奴��)G5�ۤ���Eச��Pj�;�%j�յ{��V����C7��tbP�������^��y�]��)�v�$�Ji4�j���h�C�IE����8��i�a	�teO�\\$h9���$Lv�)�bA��SJ�wn?Ւ��	��l�|��i�T�5b�#��ZJ=��cMq�d�vD3�t�
+O:���%�U��;�̹���vS�;���G�w�I�E§$��� Y;ezJ�i��s�t#�s�e��z���:i��m�I�g eG4mۚ�DZɉ���=r������\\l���@�݌V��ԩ9CVL§<�1�q��Mج\`7�Í
+�b��V�)؁��W�\`��Ct[Z7b��\`g<���&kX�gx��U�0&|������E_|_��5_�9��7%<��[xT��1)�;
+���	����(�>~@F� @��Y�%�H����'����)�9~��<~��WxL�����߰��"N�i��av�yܲ���'�;	�W��Q�����?�/D\\���V+mĪM˩N����jJ�jǢN4	��55e�-$��|���
+�¤��i�u�MGOhSB�Wt�����%+i/ƌ����F��KL�\\г���va:Pљ^hw4*\\���kQ���^\\)�6jk��������d��Q�|5\\$��5g�ʧ��@�y��Њ�p�6\`�&��ƚew�R��r,oI�ښRe��~�멶�\\s�n��g�B�s�\`�2Ҏ�Ku��1j4���ZIWU|�WP�1�P��j�Ym�lj9�49�U�[:��y�c���c)G��ܧ�v���N���45�g�jּyΚ!���BR�g�yq)�P��1.(�e%�O�W�U��N�qM����m�;֚guh�wX��pg/�����0��aŧM[˦m��i�9�l�H��vX(65���c��� �(�)��X��,J�|��{v���g>B�T᫪���D����T�v�j��t��7��s1\`�t�.U�z���{�̈́�z�e�%ؒ��K)y9X����튢u�,5N	V>]���E�#�+�K�%TӗN�>+*�)P�%�Ӄ���M���,r{z7�7��~;�|�n�� � Q]]�D]�������������� Q��fj����-�V�I@� wĚ�A�O�#=�[\`=e�Y���DY��B�G�7S2�_����ӻ�V}\\6���T���/z�&pyg��"D]թ�XB���~i�'��>H���6��?�e]�G1<�	˧Lh��YQbWfI+�"���&����kX|���!���]ۗ�x+Z���
+�3�N\`�yt���e�%X������tLϚ��pp�}'�;��Ƞ.�z�G?�l�n�yjOඖ@����,d�+��/;m.P�Ƕ�-"����>�G=��d�k-��&��ⱶϝ�:�u�<�b7LB��"!��1�w1u7�q��Q�Մ�5�����}4$��	�#����;	�'	ߧ	ݏ�#�=I�~�b	n�q�؆�]� v����na�G܏=�z�#�'Σ_<����‸�[]L�L��a7��ORN��v?ɮ�^I�~��mFu�5�q�Ӯ����rk?��� Y��Ӣ/�A�r
+�� i���n#O�����II�~��Hv9B��,��{��%4���QA#6?	:T���.�"n�r8���Jf��dO0%��!�^�a����%\`��F����_7��@�PK
+     A �gh�|    -   org/gradle/wrapper/Install$InstallCheck.class��]OA��i�]�l��T)��	Q���hR���ۡ,,-�m��
+�H4�x�?�xfv�I
+m����;�s޳3����\`�đ�a9AaE�2]�Q�㚁�ul0U�W\\�~"R�#��[N�z��1]8����Į�}^��\`��kUk��9�*���U櫚�஻s(�c�ք��r�>�v�z�X��V\`�����S�Y!%�M�:�N�BE&�NM�n������]�ns��=G��E��eZ���M	�V���Q�ǟ85��a�2���m:Tq�
+�㗄�8���-�cH�5�}��Oæ�:ɮ
++����X� �%\`k@��h�6$h{dP�	o���jgʤ�Woz��e;lUBL������0�4a\`��m�ѱɰ8�#7qK���oo�G�n0L��6���Q	z�"HK4KK;4&('w�J�&4��O��Y���Ju�b\\�aS�Fs3X��a�&�l a�����C�>eQ'��X~�Z~��/mL�J��BcsH�Rl^!3�Ә�L��f#��'�yN��������	Z�.D��f��&C�,�c��?c�c����
+y1�;��9�ŉa^rH|�d���
+gqo�8:��~{�;��\\&N*�b{����2q��9�0�v�>Y���PK
+     A ^�,�  C-      org/gradle/wrapper/Install.class�Y	|T��?'�����"!�#�Jؗ@�I��Z�%yIFf����E[����Ҋ]l�����ME��Z��nv��}�n_[Z�?��L&�C���/��޽�{��9��;O���cD�����\\$�Y�L��X���hJ��&�� ��t�gx���H��<S�fI3;�gsX�s�<��
+��+M���4��}����ҽ\\�qU��su���2R#O�i�Ƌ���A^�K�����u�4+�Y9��� �j�Z����&\\��s��>�
+2�N�o��A*���A�&�7i_�qs�Va;n��E���g�,}K���H���4���)o
+R=�I�+H?���M���A��/
+�F�Xc#H���Fnp��tJ�Rc3H۹K�� �pD�K��SF�i7OpT��4+��D��A���BN�-*�|���"P���A�����q�7~�4���]A��fi�-��k|���	�%���{e����UA����G�������&�)���h����أ^��5R)3�Z׸�n{��5�n��T�}[�斋��m��T�|�q�Q5��5���w�fߐ~q{�M����Mtw�ӌ��]�m�Q���2�IӪiV�X�L�ƣ	��i�aӺ̼�4�:�k�
+�9n���\`�t��#�NE.3�G�f]G��Jm2→�ƍC�I��M$��2]X�:z��&��|��!�i2Ml��͖t�ݴ��$:��Ê�{f�k�D๙�;;�����4ls]$e3�r�\`��á]��eؑD|u���H�Fl"��ȟg*?mVШ�[����o��L�qӮپ�	$��$�=��e�[�1��QQ}]ޤ��a�y�0��SZy�U�Y���E��P�:�j�]���Ö����e)���[0ّ�¼y�)ɥ�-z�	�����tW���\`w=�����x��R�$�)�#mE���M@'��.�m�l��t	�s�6œi;�FL����7l���	�����^I"�n���=��������ݡ���^fZ���|nM$��Fi=ViW�dp:7?7A��|0�3SV$�������$�?�5�e���zC"�M0��lЄG-\\3R쵫5�aX�L�*�R��eec;��l-�8
+N0:�UP)L%�V��b�ٗ4;l�S��&�j�O���- ��{$�FOb��Hwܰ�6_x
+^c���L��سŀ[L+I�$���A���ܸ*�s�it:�4ew&�v�j��	+fض"�F���'َD�g�-VB�r}:u8q�鬱2c��͹�]��Z�ǖV:	�瓌w�Ԑ�Ō8�OQ��D���I#���8�1��)+���C�W�iFMI���}@����x��xt�@�����'<��F�����h|�k��{�g�m�?�e\`,�Ak�Ik�@.GH�d�l���(�"���<f��t�̥v���i����ͦʒ��gr�bwVk*O&�����H$���ӂas�=w�|���@OT�4�?�.\\�����|������o�4��Y<,�R�����J�K���2Z&�֜9���+�k��y�2Eey�^�g�k��╲�-���L�sAߒ�]V�.��	�18.�j��3V����Xp)[�/2���gu�
+�V����~J/��8=��Ut�N�+u�A���c�3*ue�M:]K�鴏���#:����1�Y��r���O��I�
+��A�"a�)�o�OC�|
+�$Z7�U�Z��3|2E�l^�t����:���� X������k����|H��n����HsX�{�f���.>_�ί/��KS�Ý	3�'�0�\\ۈ��F�d���������.���ه�<�^���_��dX���\`X�����<��Q����'"�w
+[$±7&������e~�i�5��0��vY���a�>C���?��W\`R��!�R�Ce�p��mi�ˀs;�)���� nW����1.3����F,)�C�7b�,(��O
++�{�����0?��Xh���G���@�:��y4,eS8��ږX.�%aÂh�<t��2��]V"��V:%�p*��X8�*���
+��J�ل��T���/;2�e��
+؄�T�8fB���fE��ښ�ۑ��+^$辊Rb8��Y��/)X���E������<}��HL�#�L��P:�����진��'�@��Y�l��O#�������t�� ~�{9�r9��9�����oI��J��E��#�=%ʾ�%Y���=!������/��}���?��Y26�dLPѐHG;U�6Ff��pr�:w%�ڰ�i�c�"���q���/�O5~Y���u����z��R�_�u�
+�u�k�ӫ�;�/�������I�W%��Q�<s�6�(����)�������O���w �'O�L�O�B����\`F���̿�>W��y�i��|5��$���㴭�J�:ߌFV3(����G�U�LS�JQ�� �zYS��ns�JA	�m�#��TV>�.e�(��ۉ)e���Sٝ�3�;zC1E��VQ9��oe�����\\����V;m��+H�����s�@S���
+0�kϮi�p��CN� �AA�A�.r�s(?ŝ�(�|��/�k�t�Ӱ��9_G4��3޲r���<2K�;�qvb���QqY�+�����{�eO��|?�(kK��m�:�vn�;��C��cI���.u"�/�1�v�������}���or���Ｉ�^X�O��X��na_�H�#�	�X�mX�x\`��{�F:����h\`d��U�p���Y���E~����KQ�H�+s���~8�Nv�kO%�i۔x�$?^�>'��M�z��j2 8F�Hj]���=�N ��S_6b�I���'�M��4S�\\nYT4���"n������^#b���a�b3/���%��W���/'d����2Wc2��mV�_k��cn�$En�^9��l8�Tb�ID���ǂ3�Z.������=�@��υNzM!W/�d?�阓��d
+x�y����,'焖�E.���~�ʛX��Ys�iݐ���#��u
+h�m�:	����e����]^�,�[#o�&��M	�l��1��0.n�ٙ����%
+�r���=��xhYc.�j�uq�v2�zq��t��r"�Q��M��x+��P��9�H. T���Q��t��@{=����v8x�ϭ�!
+���LO�~��WT!����+��Є�j���N~�s�2LS�\\�0�fS)���
+��px��F"�$2�z�
+ԓ������i�R�4�k+h�&4�Z*�	x�\\�
+y���'�Y�~����hJ[E��UUVR� M}�J�%g9t� �*�ZM3h$_����얓s-�D�D>ZE������1�׃�t3}�̀���O�jͤO��O�b�+?�5�w���0����iG)�i���UҌ�r��I��@���[p+ͬ�h�ro��S'�T�y��䬃'~Q=@��^뗇���:��;D�A:���Y�/����n����D�[�_��4�Vit���4.䛴p����d�t�U~>x�9�n�=r"��� �yT�z�2�*F���At.��������!�Xg�Ja�E��7P�Z��vR�S?%�~z �.��&�B��&-L>K��8!���S&�|��h-��cV\\�?���a��/ҝJ�}t���-t>�
+.^쾖�D����u)i'�֯�^�J4�W��X���^���5:�/MƻFa>N�4jx�Əp� 
+f�y<}"<�k�~��3�)Eeއ���S�z�*�R�=��B�Sգ�<ЂD�G��k Z8�H&ݣd_̣B�WC�}���u �����â�a��B7(}��9�u)��z:
+����� =���a�K_Ƽ�,+saNl7�<�)�ѱ��i.�7�,C�,OaKqTC�TWQ5H�k���Kn�E@�ҝE�4�\`ek��[�|խm@�(\\��m!� �|�p������h�n
+�[j��_	��#7����=H�B?�W�W�$�!g�zL�Hy�p-PO_Ua}X%Q�7�k�8=�s|���C�
+QW+ii�Z�nM�^R-�<��	�b�mt��b'�t����� �- '�^���;��~����� �U�� ¬s�d(����I( �r�n�8<���悜s���0"
+W�����
+�c}��{r�ŒN���g�Y�؀�J��pl�w���������̓T��[�����5�y����E��9\\��u��w���q䠦�~�6�
+�m��<H���y}3l�6��[�jOPIH+���J(�:@�;����Z�L��<�8Jo�6�%
+�Іh78����t��� ]4@�6��ki��oBq\`����}�����y� ��R-\`VX��.V����ױ����4�����,��΍o�\\x��V~Gy4	���i��$�JA�<v�Y��{.���mP{���]�|s=h_��cl?<��@���Sa����{1P���)8�}Y�A�z�~��F
+	���l�	��D$D�A�s|lB/f���ILM/2�R���1@�͕E� u�N>�!ϡ\\l)q_��߇y ��Hc��!��N�%�"r�������Jfף0���*�����Y;�
+��9
+�U���䕣��y]�A�ҥ�"�Q��,�Sl�2b�g��ϑf���eZL��E\`)�~�9/���)���/�+r~XA�R~Ɠ�?4A�_����@~/ʔ���DҍC�#�A�G�%�h��0y�2ps�&~�JD�*yI@�J"��KHVۈ�AJ
+��rI���.���=H���
+i<qv�J# � ���.ĹoA6�l��#������X�F�*f��$�d��LC��wd����8��R��Bߏ���6�s]�ڇ���?��\\aV
+���~{]����
+�=A�*�Qa�Ɯ�o���9w#�YA�'�_ �'� ������դ��&"�4��qZ�Q�JB-�2�a
+J�d8���
+T͐;'�c��?3�����8R-���̶�ޏӄ�jU��<�
+�7٧w��S%*v�s�&�8��P�L��<)�L/��Z���.�k)���:ӝ�H�пU]uXi]p\\j���S1=) _�'#t#V��UT��W�~��%B�!��48�1�&.Ċ��9)�W:Z�^�|��Y����=�uY�?��>�g�f�_k���i�w��n|��ΐO!\\�y�#�
+���N�v��|5r���-�L� D$��[\\���,p������<w+<Xt1��>�1� h=O�׀\`ރ/���N�mS��w�砲+�PK
+     A �:�o  4     org/gradle/wrapper/Logger.class��ko�\`���Unc��@�&s*]7��11$KH�\`�w�ʓ�����_�O�Fg�?��x�R�5K���r��w.��??h�G�b���1TP����4w��+ͶU���]����.;\`XxfX���!R9���Ӳ��!�1,�j<8�>?4�d�ck��qǐ{�0�#�b�vtUwx�����Q;����6m�!W���\\5���]�1,�)��@�F\\�s��˵w/��'.Hq�ϰ3��:�NW�����fu���-Ce"��!���l�U�#�;��m"x�*�@o���b�w����=C���j[�$�B#��
+�%q<L�rI�X�'�<%N\`�������F	�\\��\\�c���~�b@���r�J[}C#qi0�����4͡ܙ�z�|�w/��\\L~��sW(��5��e�N�S��Na�l�v{��k?�j��}�]Kd&{��Jo�y�Z�VR�Ɖ�|�}_3]���'Ŀ"\\?ED
+�g��PP����pz*���U�{QL�[�5���	�	!1!D��>�c���I![3�̔��Jg���X�&��ov�HIFi��
+Q��V�(�Iؔ��)r��
+/�,��*�������ꊧP�*qw(�P�&n�_ݖ7ۛPK
+     A �\`��  �  8   org/gradle/wrapper/PathAssembler$LocalDistribution.class�Q�J�@=������x�+�P��AA(*(��mۥ���M��RP� ?J���*�/3sf�̜�}{y���,R����6�.�]�0�U�J.d�a���7<�q�/C��-�IŐޒ�L���M�h���ٍ��!W��8l_��:��2~)����+�q7�$u�b2�=Z�d���8b��H�ݐ�Z�Z6J��5ū�no6�
+�yRߡ�
+SK?��
+~M$_S�|a���Y�WЈ�I�V�~ϒ5�����>��p]�1��_	1*BՂ�rCT��_q�iX�OL��Z��|-��
+F��d�	�S�M>W|+�<�*�>�~0T���u��h
+��Y��&�㙉�B�b��5y]Ka�O���u�F~%���w��-�;�<y}��)ҕ� PK
+     A ��;  +  &   org/gradle/wrapper/PathAssembler.class�V��=c-#���I���	�,�I	�8�D��,;�F� �H˓H3b���N	k-�RJ���%R�|�����3c�6r�/o�{s�=�w�����~�8>
+�VZG���0T\\�u��e/�<��x<�6�������O;����5�D\\���[�v�a�8�����>��~�֓"n��0��4ψxV�s!<� ~��^�@?f�'"^
+�e6_	��^�u�Cěn���ri\\5-C�ٖ�k���)�XI6M������兹���ə�����lf�����e���*�Z15G�⨀�1]3-Y�咭�8?;snbl����hȅ��\`*Ƥ^f7���TK
+���e%o����q]@𔪩�ic۽�φ���E�R5e�.�c^Ε�˹.ʆ�so�o������nS.��5C�T#u^�Vϐe�4�WgQ��K�k��a�IB��Eې�wt�s�|�,X���(��i
+( ��MeZf�C
+�m�����L�4�jE�L��%�lR�m�&es�,�е�6Ai������\\T�բbZ�]'S�ۆj]Oe��&�@�Ņ�r1-@��n�:��W*�>AӁ �9K�_���(:
+��_U&�,E3�����@��ЫW�/M�R��]$\`y�R��7�)x��@�[�7M�����5�?�1m��m#��"����F񶄯�>	'q���JH�	񈄇1-aѷ�5����]	2r�vRI�j��~�>��/I���_�l����~�w���1N������=��Ŵ _v���?J��,�/����a]@�îL1Si���,����g�Q��i�C��&e ���:kk�ZV�����R!��Vt��6�jۊ�u3±?��ɸ���nI�'�]c���M�ngo��!6�X��I5��p2J%Uͨ�]��k�:���
+�39n�ۖ���Ÿ+~��BĆv��/��\\w�i��t�)��
+���g�U71K���p�޿-Т�
+Qs9z��M4'9K�L�DS^QU����sCi����~�����K��c���kCqWp{�?6�]-hW
+�E���iN:X�Ђ����7�iz<�fͽ�2�j�׸:Z��%�����ل;��jڹ�V�/�i�ˍ�+�q[.�;�<:ta�E�{�1���у�q�Y4�w�|ntdG���S�w�Oh��fK��gg�!����x�&|�;�O;��4�� ZEA�V��6<�3�c1��X�Bvc̧0p#���_C O���'jO�7Z�W�5�7жT�D��*:"�4��i�����N6}#�|�l�u�dcSp�K=��\`
+{���"H� �#�C�O����kH:9N���9��8&(�V��>H"��.g����2�� ���;C
+(��sdɓ�(�&�X��8��¾*��p�t#���K�A7LO�.=�Ћ�a��*�c1Q�w;�z-����G�x�H��z�x�t���6п�'Rj8�u���zvK��tVG>q"���!�א���]>�.J}��6�$�38O�m$��1K{�=�y'��:�,8��Bȉ���c��e��%ם��Y�����A ����U1�����9:��e
+���Q��u�n|�A�c	������W�	��1{I�X6�Gs�t?�'ד��KU5��QƠ��DvQNʡqZ�u�x�F {���Ds�9\\Z!���];<:�S�T"B��o!� -��p}�[�S��)2Be��Tj�s���/�#�(�ct\`���\\�:�S���8t����S�
+��'�)��h�PK
+     A ����  |	  0   org/gradle/wrapper/SystemPropertiesHandler.class�V�SU�]��!,-�
+��-�3��TR����%A(��.a�,�ݸٔ�W�~��L}���Ǚ��2c�W��ڱ��&
+$��9��s~��s�ޛ���?��"��Q� ��P0�Oc(xSNޒڔ�i3
+fh@ԏ99�-ż� T,H�;�X�R=.��r����~��{x_���&��c�����r|!:}mn~v�":�B�ԚvC�53�;�a&#
+㖙u4�Y��9]���aΘ�'Գ(��Vi=<e��LncE����.�Y	-��ن��^'ed��,;N��jZo�Z&����V��7�l��г��I���$u��+p2T(װ�FZ���9�H�������m�چ@�339��"L����?6���3�a��y��-&��dnC7�r�fW��CԡL�.�����ꋈ-V&٪,5�ٷ��}�G���ӭ�c^��^8�ȃ�1�ܸ�%���Q�P����u����45'g3��\\?�z����z���'t|P��x���֙Բ)��"����j	�=��2��b
+�*�2�*�h߫z>g:Ɔ���V��K9#���]Q۶��͔nv�-m��ν�v^g-�*6\`Ja���#Y��"GAN�
+l�����-|,�����g+[�*�Dŧ�L�縥�|��+|��|+�Xyvy�)��'�1Mn�Bʶ6�w{/(���X,��(~>Wٹ�##I���=���(�D���WF��$v t�$�0;��/���~�*�x�B�D�V�\`�
+-n��|/�#�����)�����y�e�Ǥ2FIi��&�^�ʫ,=A��5��ٶ����T�m�M�fRص/}6��-Ʒ�bU	�$e�g���RevX�|�3%���_
+๡~�cg5h�O�W��-a�������.����5�T ���c��O��_�	�����{�L����������P;�e���3�y��؆:�J�{�3�P�w�@����y42ES��p�~Gw�"03��V�;�L�M\`���q��=��4�����/��Z��>�u����\`i��N�]x�G7Y� κc�A=�#7?������	�I4�lv1�4��$ Ĩn��q��R!9K�M�-�z���9�Bԯr���W�)�5�"� �,����9z|�~�_=/����!�~�L�0���8�WI�H�-_���{��M
+F1�W�U>��
+�=��������Sp�L<\`��ݖ_b�qW��PK
+     A �=��  ?  -   org/gradle/wrapper/WrapperConfiguration.class��mOA�g����JK�|i�
+
+"	HULCߐ-��H����&~*M$&�����3w�e��&3�3�������_���:����a�\`@E�G	xL�<�2O�<%������xN�8m��P��k����3��5���QO��M��5�)����!�Bw�~�+���1��sM�(�/;��0�/�w�^����9���sܰ���
+�n����Z�d,8t|�Z�kZM��l��ONl�ڍ�����iv<N,��n�����gJe��i_n.]�!֜4*:Z�l��k����B�j�jttW�(;"�v]��߳�����s�~�"�D�EE,�펷o�t��GU<K�1���+����}����տ�Z]�U���խ�כo�d\`���B���o���2���da؀<��!H��)S��U ��#l6��� &���W�h"F}����9���B�F�G;��]�3�7͟��l�)��l��0N�q�{(E[��y�a��f�0�?@�p\\��F��&z�
+�?@�v>,.�s�m���ns��=�N��N8�u�	ѽ���q$&�L*A��=HL)���BCO*A4dF	r_
+�� s��� �
+�)%Ƞ2�)�Ae�E�,� �	��$!�<W��j������ y2�I� U%�5HR�@͛ 2jf�PK
+     A G��	    (   org/gradle/wrapper/WrapperExecutor.class�W����-���X2lƀ�l+�ؘ��C�l�!�9Kg�@�)�����t�+m���tЙ�l7��t��g���y�;��8(�A�z�����=���_����GCxLA�*�m
+�8�@����q��2ޥ�ޭ�O(��s2ޣ\`!���{yx����I�~0����|�WO����yx6����Q&�W�<��O��ϟ��32>��X���yw���y�%^}9�����3�2�y~��Oȸ�\`;���)H��^V0�YW��^�а�;98��14���724�3��Ot
+K��Nj�-;ޞ�-#;�[��N3����}H�t	�e ��]�rbb��Aqy1yp�Ȗm�G�C���N�$��*=�
+8%g�9ݲ
+=/a��z�62��9����u�Ȑ�N�l�=qԤ��1.aC�i���[Z:������k?�̝��\`i�af�Rݘi���z��oX4�֔���r��!v��S�F\`�N3M�-�1�z_arT��Q�5�c���!�2x��ݮ\\�)��&*����ԉ^-�ޫ�cd
+{���Z��n�!	]��$E�锞s=�'r|˝��4g�9���yJ���Y��E�
+���n�
+ts@�f�J�BU�(E�2��DK����2t!cj�'-BF�Y�&�v����\\�v�w�����d�L��m�z���^B<��d���)G�Go..?�n.�LƗ�a�6��z5�K�l�q
+h�8Y[�#��0H	M�(aɨ�-��W
+��vМ$����\`Pm��ެ�?}U�b��4F��s�N����V���\\;��/T��,P���(�H�dHW)�(�M��5�yb-٫$E;����"6�	���v�
+o�J�V�;�6w����T�$گ���-�T|ߡ�]�y����I�XjZ]�"%��)Y�6�>�6i�5�~��g#�M	��;����{,�5�;����U�kUD�
+�u=��*���$$�)�-���^Q��I?dIe	͞P�#��1���F/Q�0��'�i?e6�!#��(莄�1��e�L�%�|�%y��,d��Kܢ"�|j��¡�S�Rq�m�5��U�;^�G�Q�˚h�&��}#Y܎I��7w<}�E�A��'�L�QQ�W�M��U�����ό�D��2��	}ʉx>���1COG���)7r��a�W��T��N{�R�ӓ�|88a��������AXTY����oe݂zfu����y������tR��{���:���v��:�Z��|\`G�_8檫x�8󨊣����~̕��7�:��+x��@��-I
+�:b�qJ޻q(�Kq6�۷�b��j	&�������};dm�?J�p�E����)�@aڦ��ŕf�hr%��Q���2&��x�g�lL�->lD�����M6�uF�g����ºߏ�
+C���!̣B�h�^�G��Ю
+�h�ϳ_F��~�;=�U����7Ӿ˳_�0�kZ��c��z8��Ivz���v����0ixUñp�,sϢf���a\\���s	oе(�C���B�b�j��J�%���%�@����,,V.�Z�X@3#�8����ꚑ�RM�\`:B���B�N�c�X@�	x�e,��^F8���8isO�[�\`I�QfQ?��b^���Ϣa���
+�I��t�V9gw��"3X�6;�kc�s��9['��_@c�p��
+qvC�,bW/��<�guЁE4n"k�����XB���e�(�ۉr�}��NLb�n�����<����pa��Kq��K���0 V�HI�8C��K���?RM��Q%ӿV��tʯ<�Z�0�hn!��{ȣ��9o(g.�nmt��rg���RH�"2����	�L��D�r�
+�.<�7�^�Mҫh���7�.@�#�}����"��l�%�4�-��p��Xn�Ŷ���%�PG
+�2k����Yu�
+�2�&"[�rۇ����[g��~;/@��M��d�客��T��P, Ia�UOs#�M�\\�#"t[�f8�80���HyCT�!���Hs�����c��/����օ�T�UY��<��0ý�������������8��*C9����ݻm�ʌ=�HN@N��3XL�̈[�[�\\
+mRH	#SdL9<HwR�"����>�\\����ť l�
+9O��C(�.�H']��T� ��!ٞ ތīS����]��h�DL��yW�!p
+5
+���k�N�<��X�zZ*%q3a�0LQwx�|q�,8��x����?��cKQ���.-�.��"�c#�Lg�d
+�_EXƙ\`-q�-z3Ai̷�D#�7�6�� ����^��=n*����"�-����PK
+     A �e�      #   gradle-wrapper-classpath.properties+(��JM.)�M/JL�I�M���**�+��M�� PK
+     A            )   gradle-wrapper-parameter-names.properties PK
+     A               org/gradle/cli/ PK
+     A ��?�<  S  1   org/gradle/cli/AbstractCommandLineConverter.class�T]oA=���"��~C?��R*O��h4!����aY�m\`�C��ߢ/4����2��P���a��9{�s���?�PF�@;:v
+D�c@���{xY9y�x��\\Yc�fs�ڑ߱V�g{m[�x�KH��[�{ʅ�'�&?��b�N��ӵKV�-��)�%��^�{������m!mQaظ������|�j�U��n���l㌟�R�{N�����}f[��C�����-��k��ږ�=,ȍ��؂ak^���߫�^t��֔���-J��_,�/]���c��t�ˡ�+;X���r��C�uVQCW�	u�h�Ca�oܠ������1a�6C���2Qľ�L��K��
+&�!9��a{	Q�23Qu�{�'�M���~rՐ���3|i153�mn�Devf���߆J����~-C�H�;"d�9�����edc���Dq�ָSX��\`I�w/!)��:�Fy�7���_�|�@�8_A�#��F��VX!�K\`���R~�;�x��)�>=�N�Rnp���؜�c�h��⟐��ϔ�4=c/�-e��PK
+     A ׃��X  �
+  ;   org/gradle/cli/AbstractPropertiesCommandLineConverter.class�V[WU�N2��0�	H��Ԅ��KK�IQJ�������;L�0f���O��Z��Z_�t������A��}N.i�2Y9��}���;�v���O�6�Q0��e|�\`�|��\`w,�'?��
+��H����\`	�=��
+V���>�B��x�����&c��.cC���i���?]c���З1-c���i8��"qB[׊k�cr�Ɣ�m�e����B��h���Ћfb~��M�V�d8�i��ޞf����'��$
+F]�p�䙶�0�fv�}-QԬB"�9�U ёѻ���E#�0�f���f�[��-�Pv�T�4��V5�%\\���X3L�X����QgIW����W]�p��0�?���:���ĒVJFO���MA\`i
+Үq�����A�1\\W@
+��\\�A܊�A)5"ɓ�4����8,��F�h�J+g�^�z��K��a�@7��e<��f͂�y"�߾�;D='���+�;��%��,��W��J�/G�d����L�Xg<�m�x#����x
+�*&0.�Ko '�+�A�|g��<ߡ o�(\`[��b�*��Sa�����������C���%M�U�4�ܹz��%�LEu|t��g�1qBu�)���k$1����
+5����xE;i1g��Yu[s밨��D:2�KZM�u6�?Al��T'�[�'\\�L�z	��o�B��E�1]^����.���&�z6�K�Z6<��S+Y�h~�u.�V�8X�b��u���2��i�t�e��d��N�۾��H;�4A��?2/y/���j���~���43�1���ˀ$� ��<�g�yWjFK$���j,��
+�t��D��� �� �'R��k���$G	�}/a�N�ƫ֪�j�~�����DH���AR����� ͹?���
+�#�0,_;���iq��9|��)�[A�l �q"��0���%�T���q�Զ��9��N����R�7��3�w��o��="\\��	�b��j��kD�����Q0����-��#Ku�s�u��Q��Ā�ٿ���c�c�ں) Q��=��[��tx�V �p�2�?�\`�'g[��:��YMᶘ��PK
+     A }��yG  K  1   org/gradle/cli/CommandLineArgumentException.class���J1�O�3���Zm+���U�V
+"
+����i�Ff�̨������$-U�fq�{r�wO�����34K(\`˄mu
+�����=}�^DE��S�E�=.�T}.�m���Q���/
+��&���t��_��G�"�]�8�bl *�b&ҫ�=�\\�.��$����rA�^��2�(�d�[�ŀf�&՗V��2S���o�/c�PF�	��?^E��5�.)���-��/��1ttu��yN�N�3y��+:���ԕ;XէƬJ�k�⠌u�0�ʜu�g���;�S�~��tӾ���0w3�*6��M�]�PK
+     A ����  g  )   org/gradle/cli/CommandLineConverter.class�QMK�@}���ԯ�'�"4
+F<6� EQ($xߦ�%��vS��<��Q�6�L
+]Xv�;����߯o �8w�upJp�L-�6�~/���S���b�f�%�u<�	�*D�<.�id���n$�b&לpW'<(a��R�\`�q��Kx��l�r?I�����OF�l��$�j�ήw����vRm_U�%J��������vJQ��?���_��F�%p}�b.�;o���-7ۉZ�3��fSm���i�M�l�g����pl��~Qqk*[9�a��#��PK
+     A Sf
+�  g  &   org/gradle/cli/CommandLineOption.class�V[wUݓ��4�^��i�\\�"iB�����Z.�^����dL��0�p�w������ .�UY�����.���d:�ܤˇ��s�����N��~����&�m8'�|�kE�Zqo�މ�.E�
+.�A��A��w�h/��
+iEHzW���ª8ɉ�C^ܾ&KFA�-A6�n�
+:�����T�֍Ԝf�Jh�ӳ9�.Z��ݕ�c���沩9��s��ü��V������[y^���7�B�*�����f$�Җ�8#!Z/!����e��J��D���Y�/�����j�L+��Zj��RiCO����j.3��Yǈ�o8��--��ZFB˘����bq��I[��eC�_�73�Haf��˚5/΄�fZ5TKkw��t�	�+:3���NU�ǳ-��� ����k����j�괚w��(ʸ.!�a��pV�g�)�)�_C���{
+�����c.[$�k�ҿ�l��'贡�{�RS|~2�v�?����x+��bi����zkN�u#�Y� j>��2�Z��fY�T���R�Q���xu��Wx8R���E�1�0o���g�m���74���Ӂr_q9��\\�WO�w��/j�h��z"#�����z�,Zi��.Z��FkP�*؏$}��i��B+
+�c���
+na��]b���ᶂ�1��|(���2>R�1>a�ʠSz���5 ���xA�$>U�D��P~�.*8��
+����%>Ä��������;���g������+Z��Ekߌ�M'
+g�6-�0�:��NV�ϟ=!!�{��LX\`�e2zF�I���3U�\\�%�N��e5CC]�Z]AၺmѸYC�Y�b�Z.+���&%�����b�\`��)�s�4�"((��{�j^��<�����Q�*�>\\����{�#�������%��N��� ׃\\��&9�I<��x����hz�\`�G4?DKyGN�!$az�Z%��V
+a	�"2��	��5(,�{�����!�۹��=��V�����$�Ij�H���a�D���/�i;��a�
+�������xʐ�d��8$���TŘf�+q�Y�����r�*6�:^��]�%�׸wG\\�788ˉ�H��ir\`��v?/'��얪�����c�Gaf�;B'��F��|v�v��rȵ#�x=��zC�8Pc.���}�vr�c����
+JȐ�i1!�h�����]�n��G��S�����������0��� �.�j�5"GO���� �����n��J0���.b4��-��Ν�л�n=��w�"\`<A�F%H)$'J ^�z]�B�$��tơ�A�ҁh3�_ǔ��?:kR<M�3
+� :Ur�%�n�:����w���l��S�꛾�u���ڏ
+�Yr��Ѷ� .�;*�ĤǪaQN"Z��\\����Շ誁�D��u!�zq�{9z���3uzYb�ֻ�U}y��e��z��\\��
+_�9�q�wA4�61�Gu�M!&ְ�b����c�'s��B��J1Ϸ���P~Y�N�{Yޢ��H��PK
+     A �튯�   �   (   org/gradle/cli/CommandLineParser$1.class��A
+�0E�h��
+v庈k�^�(��'��P[����\\x %��t���������8DbD���fs�V�	��4��ž�|�ֱ]��.	ӍΕq�.�^M"&̍-Eie�X�?�Ŋ0�i�6S�9v���J�R/5�-!�W�� ��_x\`�����_��$� PK
+     A $f{K  �	  ;   org/gradle/cli/CommandLineParser$AfterFirstSubCommand.class�V�NQ�N)=�-PP��-���B��
+AI�߶]�B�%�E|��W�D�Jb���q�n�b[����̜o�9;3{~���� V$4#�HCTB"b�b�8�9�ͨ�1����� �!�#�)��J-��I��Er���+�L^�$��-Y�&UMY���b��z\\�Ts�a����oK�-����1�zVah�����b<��y��%���_�
+U�B���pqꥩ3�Q0Ww�EH߼�)F"/
+
+Y�8rT¡8��c�
+WS	C�����a��MU�8���vEJ��^�&7��r$/k�Ȫi�Z.^.�sf^�M�d#'.����n����RE�i�޶���梼m}
+����αƬLq���!&�A�@-��U}��(3�H��2�qW>��~�r<�a�s>��)C���0�9y�mj��V!:��|��k��"%����*���5&��@TZ�[AkI)����Zb�=N�ʆr2�j���
+�s���噜�(�B\`4JY:TCa��e�c��U���*�b2��v�TzCɘ�gKE�ԷN���R�9�r,m:��BM}�V���{"O.6��u1᳠��~�-��g~�hW���Kt/�O�vs����}�+
+��=�]h��Y��,���l$� ��� ֊����7�� �4O?��	��gԻ�
+����h; _��!��Ѹw i� ��P����CEӞEV�h\`l�l	�,� [��m'GT&p�DA�n��E����!i�/8<~��[$�"���V��8z��b3%���+�>g�*h�/V!r'����e���m3=�:Ir��n	w���N�0�!�؊u�2�a����I��PK
+     A �D��  &  3   org/gradle/cli/CommandLineParser$AfterOptions.class��mOA��{-�r-�� >W�+p��"�D�!$M�Fxa��g9������.��D%����2�^�rҒc������ffwn��׷ fqۀ�Qi�u�4��h �IS�tL�a�T�z��j�6�Pɓ5�&yյ���XO�l�ե}���G8�]���x��2Crɫ<�+��M[>�.YN��
+w�\\:J�I�i0d��m���xB��B�r�卆M�u0r$f����u�~�^����F����+��[.5k՗��-�o0$�����z<A�e�k�ͨ��S
+�b���V���g<��?�d��\`�Sm��t\\cX>��cg�>�v��@]7|�-ƪ�-+�CG��@�ϔ�0��j��E77�c�k��މW7xؒ�1��f�0�0y�d�8��3��5��?U�Ѷ=�
+q~:5�h�h�k�mq�����_�2w��C^�2
+�\\��
+�G@�I]�T�����G�i4gL��,~Ab�T
+�4�"A;�����\`ȑm��<N����~��B�hV^Z�c��"؋Ck14���82����w$׋�g$T�]� +��tms!PI�I�H��K!z1��P��W��}��V��̉�j��F��W�_y��G�O��=���E2L�8)Ǧ�+2	v^��L�'��>�:C�٤��3q�����hb�oPK
+     A ��M�  u  <   org/gradle/cli/CommandLineParser$BeforeFirstSubCommand.class�V�r�T���串�:�I ��I|�sk��iK�^���r�ը���,Ӿ��[��2����x�Hnb�N�0��Ϲ�ٳ���=���_~0��2Nc�
+K2��ȑ�!aYF�ø����
+ǪP�&C�u�!��%�6>�1�u���(68
+w��o�z|�a,oٕL�V��zF��5�VS���a�wU���9�^6Lù�ps�_�u
+W�ݢ���d�֬m��l4jeݾ���$��-M�n��!�M�$�2��-[�a�u��(7m2(�MS�תj���ڢ/�xWCiX;P�BNg,�YtT�)<v����a�[{���![[��G�j����Lѱ
+���L�C�M��]�uأog��D���h[h�fzu�ox���B��Q������sG}�~\\�"���+�f��<�ì���c��V��(gDBw�L��ň�a��ǐ>���}����3%l1���T� �3,�z�o���Kf�=�H�9�	T_1$w�bW5�t�?��f�k��5s$]%���������4C� Y�G��p|�@EYx�.���~H@���]*�[q���r�j��;�;�k�G柮G&��İ�SE��Qɪ���z|q��|�y���p�j���(m�j�a8�
+�˔Ww[E���^lq��6v����(=��WN#�#�rN�YS���.8��~��rW��ß��������K�*b�;
+Q��"Q�iD@�r0�M�[�Ҭ$�?!�H�v����C�Iq����f�.Ɇ��1J�ᮨ�����oZ�}4�{�J��E�F�G��?�3x /�J#����'�Gtr)I�p���g{(EOJ��T)�.>Gd�/�-�G�WZo=sP�#�\`K3�Q��[F�]F�]��pՅ���ڇ�b�Y��h@�~R	���(�!�ijJ3n�����8B�# g��HW���ܱ���a6�:Nx*��9��g\\��.{b���׹�ڸ��i^E��\`�� N�$��,���S�D���gq����c)�/h�R��PK
+     A �*�ZM  �  F   org/gradle/cli/CommandLineParser$CaseInsensitiveStringComparator.class�S]OA=w��P�Rˇ�"�UhAx1���ML�ԏ������v��n�����/��\`|������Ek�C���9��{Ng?���&6�Q)\`�,9�5�=K&�l�fc��*!��|m2��]B�t%a��|�|�ߓzG�y�)����v�V�&��+�"�M?�~�"u$ۑV~���Q�	N���nx"%<i�����z��x�el_�]���Сԕ�u�݉O<��r�@	�~�M���L��5�a����]o�����'�ۑ�~&S�纽�;���>��6m܏�#�nԍ�֛uB�_Є���"�[�f)����ְ�m�*����ȧ�H�j�f�p��\\�p	�ߩLb������s� ��E����"L��d'h��@Kӟ0}��1/d�MXE�n���qsYX�'>9|r9�\\�=�w��P�5o���y�$ L�̑��i�ft�cye��������}������l�y:E����1k-�LY�n3q�2����\\�u�M&:���c�#����2���Oȭ���㿈(&�J\`�R�����؁�p6k�0��,���X��\\����*w��M/��PK
+     A |�R��  &  =   org/gradle/cli/CommandLineParser$KnownOptionParserState.class�X�wU��6ͤ�K�*EqD�t��;VkE��E�+.ɐ�3uf҂�HQpCq<R��z�����7x8�3��mi�����w��%���� Z�z�%�wK�GF)6�D�e#/q^�茺IB2�	��E�,�[���\`�&,F�Q�{�Ӗ�ʨ�p#2b�*c���e܌��b��
+܂�yyD£|�_?^�'�]L����%<#�XC�a���m�I	�d�}v��nw�4����.�N�$m-��[�)�����D�a�7i��ۋ'�_)�%,:
+�OC��� �'"1��H�Wsu	���B/���:�U�Ri���k�6���]#��e8.ݕ�ISs�61^<�z�����dK\`w�[i���&p�~�^+�⎙��
+}�+A֝�(=����}��1E��.+���4��� rrU��1}�&y���
+&%�ɖ�n'Ӄ��
+\\[��ކ��6�e�U��E��-��P\`�l��f�=�V�TXZ?c����{���,)�o��3�(�R:{��K9�\\����A�(C^83�y�� +$� a��~���\\q�e^^�l]��2^ZyY��
+��ip ��Zi;�_op\`��p�9\\��������v�ֶq���K
+.�e
+�hVЂ�
+��U�r\\��F���Z�L��׃�.��Rt��]R�[�ԩ	KwT�rUWۢ���f���ZS.y�nܬ�I���
+��K���-���T��!w[�L�uȶ����P7Y�?��f	�)؃Q]�T�k��5������
+ǡ\\��LZ���p�yq���DQ�񦄷��w���
+�=�s$ں�)נ˲v��֧�� >P�![�>��u�\\|���I�\\@-V<
+���g�Z�Y͓���5ͨ-4Τ�j�ת�
+窬��m͵l��Z�n����pi
+S�5꿗�$뻦
+�b^�)��S��t<Y���'��%S�3bhTшhO���씠�*�*��Ӧ�o���i��3i�Z<�;��e+�R��L)�ɩF�e=��i�<����Ϫ�a}��IǸ�eR(���_U}C��&�Ls�������Ię�&Ҁ��{�D��vv}C~Z���ܣA!��m+=���4�3�{���&�����l�-9]�2��J�8��L�x�ѩ����Ӡ�v�u�NsTOt.��J� Wd'��)��6*��$z��G:��h����#��MG��'\`�a�G�!b/��T��1O�����X"��Մ���kp-��XS�X���ږz'�7D��.��-��X=�1�{��*����7��_��ޯ0�(��.6������k:���QU�u�h�!�X�YQCހx�8@���Zqm�Ct��<�}�Yz�
+דn��B��|:m7x�KH�4��G1�%��s0�Y�P��^>��d%f���sT�CP��\`�g^��
+���t	����H�@�'�؄N�r�"#��^h���N�oGQ7AUߑ�t$��YFRk�|����y�aC�@��g���pP����n'�I�<:\\(�=�Ě�p�����,���᝛���a����ұ<��V��8�o�ST�=�G����K��Q���~�q�;~�Wq��W�|����\\����T���۰kqS����'��'Q.ᖿQs�w8�Th���DL)� Gc�M�CG!O	�+�m>V6�d�����hd��F��^��w�����މ&�
+a�ࠑ�W�~q���p�N߽̾2BI� 
+�7���!�?PK
+     A $ľ��  �  <   org/gradle/cli/CommandLineParser$MissingOptionArgState.class��mO�P��w��*��LD��
+�!�	·'�\`0�W�̚�o;��o���B��~ ?��ܶ�K˒��s~�퟿�~�Œ�r:��'I*(uZG
+7�ٌ��q��eМ-�rD��_��K.]S�z�3��B��js�5]���#ņ�u�,n�V��4�\\�k�0��#�%�r��w�����[c�U�:�3�WZ�
+S��6���9��^��Rzx��Z���s�u-��˲V��;���TJ��?n��I/�GQ��w|�m.�UO��Rn�!�eC�w�&à# ֻ �@��~�+���:0��r��\`��#:L�:՞ͭ�1�𦯉��)�[�PR�2��q\\�U�%7�ǖڒ�#63���V��t�20�1,��K�\`<�E�����a�$�e�=y&z��a��	������io٦
+Sʞx[t���)<�L/gd�핤�=Ij$i��	��0iOH��*���~"�Cj��A�Q��� {�I�����gI�/),��9��������}k�4������
+�q��Ж��g�2�\`���(L�B�~���e�6n0�)I')B�e���{a�I�㇡�;rL���v�\\
+Q_Q�����ӕ;������0��AS�B�e4h��Ρd�v6l�o����_є��	�h8%1�+a��U��' ��PK
+     A TK>�  �  =   org/gradle/cli/CommandLineParser$OptionAwareParserState.class�U�n�@=��q�$�6\\�%�)M�K�@)�p)E� E*o��Į��O�x�$
+�J| ��Mݒ*A./ޝ���gf퟿�� PĽ8ȩ�0*w�Tz���c\\��	�*L+(��cVAQ�u���4�ܮ�,�dȖQ/��5̂Ѱ
+O�p����C�{i����\\����e˶�;���\`��
+CdթQ�I��h5��xƫ
+���7*\\X����.C�ɶg9���Z��ŵu�6�j���I���,s���]SM��j�%�}�P����녲',��4��!�E]&���8��c$�\${�]p�G�짍���o�R�NK�%�t��i��!���Ә�ЏSnbX���[XP��a	�s�����L�f	�+��~�a��[��f�:�~���Z�)9h��O�S������c�s��m�q�r��	|�������F���dU���ԩ��0L�����-=ƽ���_��qk�ޥvr�l0.��ϥF��|���x��! ��J�Ӛ�'v�t�!}r�O�Y�Y��,T6�$�a�|i��Z�����̋dKTT���ȇC�(���<�C�(.��.#��젯�*�&�>Z�7D�!�eSZ2B���#����o��o+5U���c���Cݢ�{��
+B��*^�v�#8G�Ni$�y6���+���1E�8�3$r�]��oPK
+     A �%�̻  �  7   org/gradle/cli/CommandLineParser$OptionComparator.class�TmO�P~���Q:�
+���
+�2@�.�,Y�d�ďe4��kI��?�/~#���ƨ_��
+N6).]��}�s�=��~����E�%d0#����0+bN� U�J"E,IHs;�'"V8|U�Sk"�z6L��7�e�A(;í�i;�����-�V��n�����)��L�!�{䛎]v�G����� Wl�p˖�y!����P�~\`j�2U�6u���y����N_���z\`Q�W�k�H-�T��	��T|�%|���4y�\`�P?�UK�j�wM���k��w����uz��- �֤��$�/0L���[3��xѪ��M�7-�O�7��I�R�i�u��;?ڑ~�S��b@�����Z�a��B���h�Ο�\\��i���a+6eY�����g��љ{"!c/&��q�����v�a�[�h��ǂZ�0�0	}��mj��]{���a�=�eўB�$�>��P���}�4�s2�|=ѧ��Q*t�e躣K�.@	>rd
+���d$S3gH|$%�!z�p'��a����!�x���D�"�2{��9����O蹀�S�p��Hs�wnL8�tr��I"��!�y�3Ⱥ2GY�v�����>i<2����<l�4!�M�{�n�V������
+��#f�dY��"�5���>�{}FC��NS��#ZO�q�ϣH�INQ�2(R�8��˦�S�<�i���
+PK
+     A �fC��  �  8   org/gradle/cli/CommandLineParser$OptionParserState.class���JAƿ�Y����4ն֨��JoJ�P����H.��$�:���ى�
+}�/� }��3����4�ߙ���Μ�����#�B���F�� UB�Xie?
+���o�}IXl)-O���4碛pf���D�F��8��K��ή�J�a2i�VX�T���4�Dd�d��Vj�(6��Ȩ����B�]�Q]��AXH5�ƞ�[�����O���&��B�T3k8��N�+q#�D�8j[�tܘ��K�Md�T�̋�W^'�� ۄ��d���[�w{H������ӡ�ɯ�m���s��+a� ;����@(?^�Y�J�x���\\a{�(��$�_��ׇ{���L |�X�uf��fs'�'�8.���ygX�u+���e��/;�����������0���:^�eor�[n��}�y?�"k�����g�PK
+     A ���E�  �  3   org/gradle/cli/CommandLineParser$OptionString.class�T�NA��z��q�ZDQ��G�Qğ kL�&(�[��rx�k�����/$�&>��qv[l�B�����|��������'�9<�E?L�Ĵ�4�B-�0��,
+�:4�(1��m�;�ᮆ{	�����#�<�׬�8t��COЈ���͢���T�ݯ�RXgP+A�aXv}ge���o���L�ͽu�Bo�xˍ�U��	C��wǣȡSk9kV-�Uϱlϵ*A����H񚇑�N�S�?s���?��:幘/t*�-���W�!�h�ϐ��汆/�Tww~e��Ӭe!�rg�c���DQ�<?K��9�ѱp}-�	m�+�0܆0#B\\@�@�B<40�1/�,\`�a�ܧ;�WuB��d�:�9_�����s�f���_��v�����k�{��E��(�a�s�-���-��+�
+ǯ�Nm�V����nD0N�/MOW�vR/i�-�5)m���J�i	Z�C$��}�fqlO��0\`�z��^�@��&�x3#�ȝH��N$RhO�h���,�ߠf������6�j/�-пb�����.�'$���4��h�x\\��e�F&&�E��E�pL�0v��k"'��M����F+x��ٜ.B�;��2�l�7D�D�!nʆ�]�HdR���6fT�nG�#fZA^�F�|�\\�N3�_&�PK
+     A gAq��  x  =   org/gradle/cli/CommandLineParser$OptionStringComparator.class�T�OA�fvۅe�*Z@��Rd) ��H�&ULjH�6�MY\\v�����ɛ�^�@��ѫ�1�ٮ(���y?����uf�|{��"Vt�cF�.
+y
+�:T��呆y�M�԰��Đ\\�];�\`P�]���[C5۵����,���s(3\\����-�8��v���9mϭ���6+�ѱ�E��F�u-�� ��V�����žc�
+�6	{$�}�����]_�̠5�����k��D��p�fY���tƋ��$�.���"�x~H8��G@�T=�WO�q<��;{�V#,wg
+U
+��簥����^\`�����n7]���b�
+m��)�z��TJ�{-�am�r�LW�yyȀ���%,kx̰ٓcEV�
+,7�C���=�㤁Qdҿ�fX��t�XG,����b���O�%q,�Dφn�d�3X�w��a�^�
+.��h�"�,#��� G��I��
+�� n\`�,��ć?C�<�U<��������l�����S����=��)j����"��m*�D����� O"�5L�>乎�OE��;McBһ���-�!��%��.��"�{��N'�M��zz����Y%�B65[�m�~��k�E�T�BZƓq�5�<�]/h����}LѾ�>�����M�c��G��MHx���)����PK
+     A \`M~U  �  2   org/gradle/cli/CommandLineParser$ParserState.class�S�o�P�N)s���97ս�&ML�f����.а.���vF�'_|��� �(�-�� A���G����������mdQ��C-��6�xba�B��{�I/zI�4����\\�jϓ���d�b�s����?���4iF�^H(�*tU?'��tU�a���v/Pcg���w���9�\`2r�;$u�Ty�P��/�#}��@��3�I8��c�)O�;�B�/ ��Z������&���Wt��i2���qf�YC!�����z�<K�)�)�9��K�i,�y��Gm|~J���\`��s5t�z��7f0m=M���*l�[ZE�la����l<ڿ�
+��aD8X~����4K��g��hx����"�ʿV��\`��p�#�-������6?s:I%�/& ����JP��*l�W��U�|����ZL��@�ػ�5��NL|��'ܻT׊c��+�J)����)�O��5�c��Rz��z�x��qY5�?�M����m��6Wl�6�-
+/��PK
+     A p�X
+�  k  ?   org/gradle/cli/CommandLineParser$UnknownOptionParserState.class�U�RQ=w�I�0@�(I������*
+�BY��$Sqt2CM&�/�/.��G�?��_7n��/XvO�B�P!.�t�۷�龧o&��}\`
+�5Đ�І�6Z��ɱ���I�R����5��Iψ�@�#�
+w���6�%K��FY\`|�q���+���[fn�)��]X6m�����	��[H,?�/dΒv1�깦]����V\`�0��S��'Hd޴MoA�HelN�Z��5��S��8e�R�0��r�2�FN^Zk�5y��S�D�b?�����M�t��<Aǁ���Eû/ˋn�R2l��M��)�ؔ�z+Ɩ��rO�ҭ�Is��;
+�m�1&k|DNٛ��OlV���^��I����I6Sl��O�k�:7o�3y��#9�|G=�esSG�:��С�S����1�[QЛ���!0�� �� �mEd��6J\`$u�a6{�P���rMZ��5z�
+���� }��KB�B����4%�(<>Pڕh&ߗ�P2��e��g�v�nӁ�$�$T@|�*>A��%��W|�):�T	Џ3����_qI�_q3!��Ź�t�<g)�׵:��o>�^=
+x�c @����C��!��:�Z_ e��Y��q�>8YM��H�E�F��w@�@9\\"��!�v�C��z��1���v񫮥x��&҃�k�$}ˌf��!�u����Tsj]�p9�9�+��1��:�*�4�*4fE�!�������./1Y������?PK
+     A �=  l)  &   org/gradle/cli/CommandLineParser.class�Yi\`\\ő�J��7zz�eٲ=\`l��1���S> K6����Xz�Fψ��8B����\`�\`���d��M�����Ͳaك=�
+!l ��~�ޛ�����PwOwUuUu���O�{��Y�T:�j�W5�ױ�h��/>��)��s�3
+���O��
+>ס�y�R�a#��|��|��1�ׄW��%G���ģc�x��S�5��E��]��%_���fF�eu���֤P�t|e�&cu�����q��8&�&���䞬��JO��|</���&�u�H�&��+S4���4�e��Z9MQ�ФD�bzAJuԩ�)Ӥ\\�r%�m��
+zE*�J�_��.3Us�.��5��ɜ|������\\5������|���,T�i�XG3��H�xʬf��R�,Sv-ױUV��Y~9[y�]�e�.��*�4P��4�Z���<��V�&�Q���e�\`<n��Vw%B�HS"��/���
+Ƃ�hL�u��˂q�>7#�P"t��M$(�����L8?�=���cq3֔&LM�s�sO��A0�e�AQC(���j]��Z�-um	3f��5i��f�
+�≦�m�kG0�JKͶh�̚�dc�u;�13c�M������0�[�1�׬�_ݸ���a��5u�֭X�(��^��N���1���U�&��V���QQ[٥=I�Ҩ�]��k
+�G���-\\�����Fګm�WEc����\`kجn	���V�"����E�9:Gw6�v������1�|�yqe�41���P<�-l҉��H(�H�[R�s�,���J��ؽc�[����-���\`,�~;��DG���|�������K�g�lloi���5M%���9.b�I+v�����"�[�FU��R�o;�R��\`��FN��3#��mL=� ��4�P�%$�l���u��
+*	c�Late+�r"n���uUC��iظ̀��J���]B\\�
+k���X5�P�j���:��)B�p(^H�i%����n	Z��kn��ݒ��_�>N����
+��&3A�32gR4��d��Z�8?l�y�O����m'�f@��h�Ռ%sƞU�u��6��3iʭ
+ŕ������%�p77���DL�^a�E��9͚V\\�EW
+�p� vX8�)��4iFf(M�a��}��.��l?�F�,�N@6��7�w�3���§�E�5�F�pJ�-���f� n1�R^��:�t[���B�Y��ԙd��3���R÷���M΄A-�V�vm�ϼ�.(S�Y�n�Z�Q_;�S��[Z�x|ڜ�3�K�F�R^�9�fp�U�g�sPY�1O��/ �}��M��Xk#���I�Rr܊[܀
+ܬF���D��-�	�;��&-���i�{�OP<����1�Mڹ�t���\\͐׍ku��;5�nHXv��!]r1%���	�0��Ґ�t*��1��T]Bح��t��-�씸!��ǐK�2C.�+%���ª2C�!W*�or�\\Mx��ղZ�m��U�3W����q�\\��lE,�r�Rz���[U���V�3�[r�!7(G�(Wr�|ې��jCn���*��%*��Ų!��wYX�����2�u]�4y��ӇY
+<'�k�P͝��%w'�t�3��lu�Y9L�ُC�'�d�R�{23$*�
+��0d�\\/�!{�^C�/�hr��7��ܟŞkCP���Ɉ:
+��\\lȃ���nяE��b�\`��*�ƹc�&{�>Vi%��=f	ٽ�wb��eic�^<cz|Fq(^��\`kOq+�ڈ�Z����r�#��D�B��\`$M[[��i�A�F�3-6M<�%�w��3*gT���䧆<*�i�3�Q��aJ,�F�=�-�H"�PѮ�\`���B-�-<��X������3��2\`����qC�+E&�l^|����{ŦԨr떲RC��'��!c�%��!��|>�Rĉ^�Éw�w�\`����O�F�3<,�dn>g?�_�y2��|�����%�
+��z�X�>"�Nd1�V�f�Y72�pLb� h1s}���6=�Jq����Ŵ�*��9���DuX�U���ǻ?���}e������[�ւeN(��q�%�B=�:��FsW����z��~�-)u+Zv{���p,�|������{���\`8�E�<	�r�_n��۷�C�c^�{[܉բ�z�v�
+�46���<[]�k�t6SN��o��;:������ԃ�C���qֻ��[�c��\`���|ݽ��(~�zv��V�7\\e���"�z����>��L��P_�k���p�6#�+L��h�1I\`�E�4c��/�]A�in��ع��<��hw׆�ڧ0=�՗g3�Nj'"�@#y�Yk>nV�0=t�zi��H_�����r3�%?~u�'�\\����v��B��
+A���7��o}m�h��~��
+�ǡ�W���s�	��_&�%�@,y�����ő�<ހ�M��<�k�����֭�0nGRZ՞�A<[1�Q; hK�&§i13|d�7�L�]$7$�J����A�h5㡘ٚz=�����贞�_��.��q*:��'�����F��&k�m��l�oU}���������w�kr9�r�x���m> �3�y�⼃�����N��w�n�W�})����m^Y�Ah���O	�YL+,�l"G�����˱�����7<���7hb>�x�������i��!_p ��h����
+9�Q��}(����a�\`���F���Zoe�ۋ��局����v�����}r��8i7N"e�K�{1�����\\N�IAU�[���k|6e)�������=�Lg�i��t�E��:���Rt����=("�4R�A~?��(N{�,$��)��>�ȡ��)Y>gGK;��Ȯ�,J͡���%TZX֋rE\\ދ
+�O�����܍?i.U�Mj���[�W��\\V� ��*�Rv��"uG��Y�xm��;��>,�.�����Ӈ�K�֑�l�wlfe/N��oE���'Q��<L\`LE�+q>��b����Wb#�\`cm3�<���؊_�"�K���
+����*#\`�x��)h�btH):�Ll�&�evH'�҅.��M��^��Q�~;�9��˸T��7�C\\)�5���?�z9�sr��*��h���p?ۻ0��=�Q֜F�{���tw���t�c1~D�<j��Z�s�<gT�W)�!r|���i٧��9��Y��ȫ�)�}�Ə�q�#<��07����)5��c�t��~���Y��c(א��j
+��\`��1ųg�?�������]G��a,:�h�����ô,���	���S��B
+���r��g�ЭT��4�3�+�"d��;(�NW16��E���k�۬�� f5�7V����x��E���E�Y���dN���>����k����U�a����!��t0�F!SE/��w����X��S��'�M��d_ø8�缁羑g���M�'��9����K�(=SX�-,�3��,-N��=��u�S�9�P�i�����
+���Q��c"���%��p;°��s��\`q��x<���� 6V�����~,���z*-w�����F�G|��:%f)�XJ�X���BV4[J^ ϑ�^�l��T{����
+��p�����������g�9܅*�+�/#ߒ�Z�JNxy���*���uìR6+�|*,�&����V�U�V}
+5^Ƈbi�ҕbY��Ї5������y����\\��$h��:4�"i��4��h��p�m�7����H����8���T^��R��x	0�K%��k��A�g�鵓r7s�~��!��o_������ǜ9�\`9����_K_��$��,�+��J;~);�܆��%�!��My�xw���#){9�%�q�G���2wR�����0
+/r5�{���,�5����q�BH��\\�����
+�d^p�K��PΓ�7x�Y���+��b�܋7X:y���x�Y絲F园ɯS��-1����8g��O��{zSe�
+y�Nv��a��\`�aZ�x���
+5��m��C�d"�QL��tL�q:ɛ�
+e�c%,3w����]}s����S�}���~e?�2<��_��p媲>lJ��0ݩ�j���A^�i�
+uoQ��E������p ê8�~?��oS�w/��-�Oĳw�g��޶K�/����U��G�y�^�}�B�����,�ZJ��,;����;ɢ����x�b��f9�r���K�a�2�J|ߋs�=ĳS�8T�PqhQn���sʃ�YQ�U�@��O�~lm.��I=o�A\`�2/-�����'a*o���}�CӑMs��wō��iV���*,�K�:&U�@�c��Hb�{V5�ky��E=�!��#�&�P�==�	k�Oц?�r�]�?1�>g�A���y{8u
+c�a�*^����H�*�R��!�V��g��-y�h��.�#�f�N>��_�{EV43$������f�f�N�8�Ѭ����;��l��d�O��sN����]w�a������i��
+;{���g<�Oaja� v<s�[��G�%.�X"���"�QkGOa�X�g\\�p�����>�>����.a���.�=������ǳ����A�#�_�������;q
+�e�V)^���?PK
+     A ��>�     &   org/gradle/cli/ParsedCommandLine.class�Wiwg~F���ċ�%v�TMc[��� �R����8�S���)-L���T�(����.Ph١li�7	��\`rX���;��Ɵ�����}g$Kָ1G�����}����.3�ǽ?���.�v�*��\`�!��*��΢ .��bu�f��T���,.+*�W�BM0#h�'��".��T=^��a�����}:�|F�kt�����0^�7�����/�㋸$�_ _V�0�A�V���Ma�
+q������[
+ͼ�1s�#+3��ɥ����/�E;�����
+�f2�n-C���#�2�����i�Җ�������U0R��Ғ�KMfr�)y��(��Q0r��*T>c�4y�Z�q���%s�H���˶��Y���h������M�-�C#�\\�U��08a�~.k��*��)Cx��K��)�LAt�\\г���kWY�p�#�A͙
+����	FA|���W�ݳw�/뀽�)x����V5KԶx����:ԕ|)���#�wOP�c���c�I(�V��^y���U�6K������bѴ��\\j������3Tp�UG(���|�V�Q��H1�M� 7S8��
+�RΊ|{��Y�#۶���nQ/���5^k�Ko�u�O;=F��m,�R���h�q3�5$�bwc�LO�F�ܙm��
+�����L���n"�����9m�G7M�h�z*gJw�r� v詔D�ճEc�Y��e�y�K�?�a{���?�՜qZ:��fy���ȌY��c��m5�����
+	� �^Xd�k�����ޏဂ6��Y��"��|P�[x[�w�=
+�����1s�=>4�?R�c��f�U�D�O�3��8�*$c�/GW���*�S�.��5�~�U�n��
+|ɘ�_��=�0�a�4�
+WU\\�0��~��p�WL�HZϖ�:zy�py�����*��r�K�}j��c���븪�����֒[���v.��2}Ri����c9SV�U�P�P�IΝir+���9�������g�S��
+����Q��Z�y��ۇ��OB�MkI'ƠG�>�� �=�7r���W=¶~��̜�gD��1[�f(O:��6y��P=𸟳J8�J�e������2m�s Q��P0����-^^��Ц5[����y?�A�C�2?Tj�H܆����m�o"@1H1t��XG1r�}k�L%װC���Р�h���&�4�o!��;��]LHҰe(��=���Z��[]����;7d���?��k'W���o������A�؅속=x�5��:I�C�a��b!Z�cx�(D��p1�' )�1��a���8���!�N��*�*&T���=t�hT�����_�P;�=�'��X����/�����	F���Ι���bX�@�u	#Bw�v�p��\\�}b�9�û��x?}�d����������T�}HH.���o!���s��y�V�����O��C��I�/�a$�q�a�x�A1c���x��)R_J@{�& (�+�}�?Av��3x��G��f����97���CTE�B��"���]t���F��.�'���ޜ軅؜��t<�õ2�i ��1�i����_3�%����6�
+;Aؓ����q��6�A-��V4Rg��Z�l�G� ����o��rN�$�g��dy�E:��+����N:$��̕��ų�xU��'\\�5��B%ǻ6
+Z�3�]^ᜐ��k��>�l�J�
+;�k>��e�'*�6z��E�Ge�)��A�<�],;[���S;\\��O��r=l8>Y ��߀��^��9ي�	��NL��vcz�ͭ&@S܇��Қg\\�H�VvWc��.��97�{�X�Ř�㰗G�o�� )�ȑ�,�I8�s��Q�HI0��$Ab�s��9��{�\`_i�*^QUt�
+	�
+���������9%�<'�t�E�B^�K��r�vs?��\`��A�^EAEXP	QP
+�dȹ�PK
+     A y�t�  E  ,   org/gradle/cli/ParsedCommandLineOption.class�S]O�@=ݯ�G�e�Pa�eQ���"�hHV1Y���awR������l���I�g��N[\`Y$�ә�{�=����?� �4�(��H#�b
+���冊�$�4���-L%q[�器+��r��⾊
+[�lpWA��ɶ���������(H��a1��p#-�g���,C/{����9*I�
+Kxs
+���U�E�J�%a��:w^�u�"��]a�*s�<����!�I�d;�n8�jr�b
+�s\\^]�k5fU%�J��E��V� ݅���=Vy������
+j�;*i=z&x���V�Q㖧��p6K:�d�)��Kn07T@��U�.�
+�	�v��ICzt��]p�-)k�DN�(��t]6Mn0�,����
+��(# �Wm��-��o�-�g�v޿��Ѱ��f0��?L'��Z��D��A�K��@�϶*���$����)���M^!�O���+v�i���Q,7_�������Z~����]�սm\\�(K?
+L�H�.:EЍ8��rZ/PdQ���>��!"k��~E쳟}�V�_�*bT�G;-��%����b�X��o�������������"��p�(=@&�_���2�w�%��^*��$�A�P�PS��� =1D:��!䉩��If�%�ޱ��n���0�5W(v��b�RD
+�$���"x�j�2D�ϧ��xr7�k>
+��!��V.p�]�.��G��ӱ��D�\\��8"�y	R����PK
+     A \\v�B|    :   org/gradle/cli/ProjectPropertiesCommandLineConverter.class��KO�@��D|?Pâ���u�#Q�+�$�C;�1m�	�JW&.��(��1�D�,��9��v�o�/� ��[@yl汕G)��v�
+}FHWkw�LS����!�]�nY�7�ZK:̿cJD�����ZRy����s���V�;�H�+-��)���n�kS�#cruLX��gh|��B���j���F��Y���D��Ώ�%�L��%���񎅎*�_���?�ֈ:("�<�ڄbJՍ�	��؊t�f�^*K���
+ߵ�
+XU��V����i01�k
+���p8��wZ��8T0g�?P�a�Λ�m����=���C
+S�s����|	�1\\���Z�q-}C�_�J��Eˉ�j��E+	��w'��PK
+     A 
+�8=|  �  9   org/gradle/cli/SystemPropertiesCommandLineConverter.class���J�@��ثm���j�E�5BPą�R/P�~�ӑ$&�B�JW���'i�A�Y�3���͜�����l� �"l�Y��l�E �<&�	d���@���H��g�L��{:r�R�s�:C*X4NĬ����Q�۴;hZ3a ѽ�G!]��G�v�7S"�5eb
+o}ɸG�����tFM�z�9��y���~X{()spL\`7e.�KV,
+�TXxɢ����fDT� E�G��P�W��Jm�h~���49A�jx��Ѱ
+��s�h��
+gԙ�n8��5��]�.F�Ԓ�s�9��Q��΢��*�s�/@�Ug	J*�c�e+s��+1�
+��$p�����6���/t-�,�;�h-�.�Z
+�>k�Z�PK
+     A            	          �A    META-INF/PK
+     A m�>=@   ?              ��)   META-INF/MANIFEST.MFPK
+     A                      �A�   org/PK
+     A                      �A�   org/gradle/PK
+     A                      �A�   org/gradle/wrapper/PK
+     A �%Ӧ�    /           ��  org/gradle/wrapper/BootstrapMainStarter$1.classPK
+     A i,�  $
+  -           ��#  org/gradle/wrapper/BootstrapMainStarter.classPK
+     A hQ�}�   �   #           ���  org/gradle/wrapper/Download$1.classPK
+     A y�[�4  �  A           ��p	  org/gradle/wrapper/Download$DefaultDownloadProgressListener.classPK
+     A ���ۡ  ~  4           ��  org/gradle/wrapper/Download$ProxyAuthenticator.classPK
+     A �pO�)  �&  !           ���  org/gradle/wrapper/Download.classPK
+     A y�L��   �   1           ��^$  org/gradle/wrapper/DownloadProgressListener.classPK
+     A !9|�  �  3           ��N%  org/gradle/wrapper/ExclusiveFileAccessManager.classPK
+     A ��,y  �  -           ��U,  org/gradle/wrapper/GradleUserHomeLookup.classPK
+     A Pr���	  -  *           ��/  org/gradle/wrapper/GradleWrapperMain.classPK
+     A ���   �   "           ��9  org/gradle/wrapper/IDownload.classPK
+     A 9l�V  �  "           ���9  org/gradle/wrapper/Install$1.classPK
+     A �gh�|    -           ���B  org/gradle/wrapper/Install$InstallCheck.classPK
+     A ^�,�  C-              ��SE  org/gradle/wrapper/Install.classPK
+     A �:�o  4             ��2Z  org/gradle/wrapper/Logger.classPK
+     A �\`��  �  8           ���\\  org/gradle/wrapper/PathAssembler$LocalDistribution.classPK
+     A ��;  +  &           ���^  org/gradle/wrapper/PathAssembler.classPK
+     A ����  |	  0           ��
+f  org/gradle/wrapper/SystemPropertiesHandler.classPK
+     A �=��  ?  -           ��k  org/gradle/wrapper/WrapperConfiguration.classPK
+     A G��	    (           ��n  org/gradle/wrapper/WrapperExecutor.classPK
+     A �e�      #           ��pw  gradle-wrapper-classpath.propertiesPK
+     A            )           ���w  gradle-wrapper-parameter-names.propertiesPK
+     A                      �Ax  org/gradle/cli/PK
+     A ��?�<  S  1           ��Hx  org/gradle/cli/AbstractCommandLineConverter.classPK
+     A ׃��X  �
+  ;           ���z  org/gradle/cli/AbstractPropertiesCommandLineConverter.classPK
+     A }��yG  K  1           ���  org/gradle/cli/CommandLineArgumentException.classPK
+     A ����  g  )           ���  org/gradle/cli/CommandLineConverter.classPK
+     A Sf
+�  g  &           ��z�  org/gradle/cli/CommandLineOption.classPK
+     A �튯�   �   (           ����  org/gradle/cli/CommandLineParser$1.classPK
+     A $f{K  �	  ;           ����  org/gradle/cli/CommandLineParser$AfterFirstSubCommand.classPK
+     A �D��  &  3           ��O�  org/gradle/cli/CommandLineParser$AfterOptions.classPK
+     A ��M�  u  <           ��B�  org/gradle/cli/CommandLineParser$BeforeFirstSubCommand.classPK
+     A �*�ZM  �  F           ����  org/gradle/cli/CommandLineParser$CaseInsensitiveStringComparator.classPK
+     A |�R��  &  =           ��I�  org/gradle/cli/CommandLineParser$KnownOptionParserState.classPK
+     A $ľ��  �  <           ��t�  org/gradle/cli/CommandLineParser$MissingOptionArgState.classPK
+     A TK>�  �  =           ��s�  org/gradle/cli/CommandLineParser$OptionAwareParserState.classPK
+     A �%�̻  �  7           ��x�  org/gradle/cli/CommandLineParser$OptionComparator.classPK
+     A �fC��  �  8           ����  org/gradle/cli/CommandLineParser$OptionParserState.classPK
+     A ���E�  �  3           ����  org/gradle/cli/CommandLineParser$OptionString.classPK
+     A gAq��  x  =           ����  org/gradle/cli/CommandLineParser$OptionStringComparator.classPK
+     A \`M~U  �  2           ��p�  org/gradle/cli/CommandLineParser$ParserState.classPK
+     A p�X
+�  k  ?           ��ı  org/gradle/cli/CommandLineParser$UnknownOptionParserState.classPK
+     A �=  l)  &           ����  org/gradle/cli/CommandLineParser.classPK
+     A ��>�     &           ��X�  org/gradle/cli/ParsedCommandLine.classPK
+     A y�t�  E  ,           ��e�  org/gradle/cli/ParsedCommandLineOption.classPK
+     A \\v�B|    :           ����  org/gradle/cli/ProjectPropertiesCommandLineConverter.classPK
+     A 
+�8=|  �  9           ��]�  org/gradle/cli/SystemPropertiesCommandLineConverter.classPK    4 4 J  0�    "
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 19`] = `
+"distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\\://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 20`] = `
+"#!/bin/sh
+
+#
+# Copyright © 2015-2021 the original authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+##############################################################################
+#
+#   Gradle start up script for POSIX generated by Gradle.
+#
+#   Important for running:
+#
+#   (1) You need a POSIX-compliant shell to run this script. If your /bin/sh is
+#       noncompliant, but you have some other compliant shell such as ksh or
+#       bash, then to run this script, type that shell name before the whole
+#       command line, like:
+#
+#           ksh Gradle
+#
+#       Busybox and similar reduced shells will NOT work, because this script
+#       requires all of these POSIX shell features:
+#         * functions;
+#         * expansions «$var», «\${var}», «\${var:-default}», «\${var+SET}»,
+#           «\${var#prefix}», «\${var%suffix}», and «$( cmd )»;
+#         * compound commands having a testable exit status, especially «case»;
+#         * various built-in commands including «command», «set», and «ulimit».
+#
+#   Important for patching:
+#
+#   (2) This script targets any POSIX shell, so it avoids extensions provided
+#       by Bash, Ksh, etc; in particular arrays are avoided.
+#
+#       The "traditional" practice of packing multiple parameters into a
+#       space-separated string is a well documented source of bugs and security
+#       problems, so this is (mostly) avoided, by progressively accumulating
+#       options in "$@", and eventually passing that to Java.
+#
+#       Where the inherited environment variables (DEFAULT_JVM_OPTS, JAVA_OPTS,
+#       and GRADLE_OPTS) rely on word-splitting, this is performed explicitly;
+#       see the in-line comments for details.
+#
+#       There are tweaks for specific operating systems such as AIX, CygWin,
+#       Darwin, MinGW, and NonStop.
+#
+#   (3) This script is generated from the Groovy template
+#       https://github.com/gradle/gradle/blob/master/subprojects/plugins/src/main/resources/org/gradle/api/internal/plugins/unixStartScript.txt
+#       within the Gradle project.
+#
+#       You can find Gradle at https://github.com/gradle/gradle/.
+#
+##############################################################################
+
+# Attempt to set APP_HOME
+
+# Resolve links: $0 may be a link
+app_path=$0
+
+# Need this for daisy-chained symlinks.
+while
+    APP_HOME=\${app_path%"\${app_path##*/}"}  # leaves a trailing /; empty if no leading path
+    [ -h "$app_path" ]
+do
+    ls=$( ls -ld "$app_path" )
+    link=\${ls#*' -> '}
+    case $link in             #(
+      /*)   app_path=$link ;; #(
+      *)    app_path=$APP_HOME$link ;;
+    esac
+done
+
+APP_HOME=$( cd "\${APP_HOME:-./}" && pwd -P ) || exit
+
+APP_NAME="Gradle"
+APP_BASE_NAME=\${0##*/}
+
+# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+
+# Use the maximum available, or set MAX_FD != -1 to use that value.
+MAX_FD=maximum
+
+warn () {
+    echo "$*"
+} >&2
+
+die () {
+    echo
+    echo "$*"
+    echo
+    exit 1
+} >&2
+
+# OS specific support (must be 'true' or 'false').
+cygwin=false
+msys=false
+darwin=false
+nonstop=false
+case "$( uname )" in                #(
+  CYGWIN* )         cygwin=true  ;; #(
+  Darwin* )         darwin=true  ;; #(
+  MSYS* | MINGW* )  msys=true    ;; #(
+  NONSTOP* )        nonstop=true ;;
+esac
+
+CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+
+
+# Determine the Java command to use to start the JVM.
+if [ -n "$JAVA_HOME" ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+        # IBM's JDK on AIX uses strange locations for the executables
+        JAVACMD=$JAVA_HOME/jre/sh/java
+    else
+        JAVACMD=$JAVA_HOME/bin/java
+    fi
+    if [ ! -x "$JAVACMD" ] ; then
+        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+    fi
+else
+    JAVACMD=java
+    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+fi
+
+# Increase the maximum file descriptors if we can.
+if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
+    case $MAX_FD in #(
+      max*)
+        MAX_FD=$( ulimit -H -n ) ||
+            warn "Could not query maximum file descriptor limit"
+    esac
+    case $MAX_FD in  #(
+      '' | soft) :;; #(
+      *)
+        ulimit -n "$MAX_FD" ||
+            warn "Could not set maximum file descriptor limit to $MAX_FD"
+    esac
+fi
+
+# Collect all arguments for the java command, stacking in reverse order:
+#   * args from the command line
+#   * the main class name
+#   * -classpath
+#   * -D...appname settings
+#   * --module-path (only if needed)
+#   * DEFAULT_JVM_OPTS, JAVA_OPTS, and GRADLE_OPTS environment variables.
+
+# For Cygwin or MSYS, switch paths to Windows format before running java
+if "$cygwin" || "$msys" ; then
+    APP_HOME=$( cygpath --path --mixed "$APP_HOME" )
+    CLASSPATH=$( cygpath --path --mixed "$CLASSPATH" )
+
+    JAVACMD=$( cygpath --unix "$JAVACMD" )
+
+    # Now convert the arguments - kludge to limit ourselves to /bin/sh
+    for arg do
+        if
+            case $arg in                                #(
+              -*)   false ;;                            # don't mess with options #(
+              /?*)  t=\${arg#/} t=/\${t%%/*}              # looks like a POSIX filepath
+                    [ -e "$t" ] ;;                      #(
+              *)    false ;;
+            esac
+        then
+            arg=$( cygpath --path --ignore --mixed "$arg" )
+        fi
+        # Roll the args list around exactly as many times as the number of
+        # args, so each arg winds up back in the position where it started, but
+        # possibly modified.
+        #
+        # NB: a \`for\` loop captures its iteration list before it begins, so
+        # changing the positional parameters here affects neither the number of
+        # iterations, nor the values presented in \`arg\`.
+        shift                   # remove old arg
+        set -- "$@" "$arg"      # push replacement arg
+    done
+fi
+
+# Collect all arguments for the java command;
+#   * $DEFAULT_JVM_OPTS, $JAVA_OPTS, and $GRADLE_OPTS can contain fragments of
+#     shell script including quotes and variable substitutions, so put them in
+#     double quotes to make sure that they get re-expanded; and
+#   * put everything else in single quotes, so that it's not re-expanded.
+
+set -- \\
+        "-Dorg.gradle.appname=$APP_BASE_NAME" \\
+        -classpath "$CLASSPATH" \\
+        org.gradle.wrapper.GradleWrapperMain \\
+        "$@"
+
+# Use "xargs" to parse quoted args.
+#
+# With -n1 it outputs one arg per line, with the quotes and backslashes removed.
+#
+# In Bash we could simply go:
+#
+#   readarray ARGS < <( xargs -n1 <<<"$var" ) &&
+#   set -- "\${ARGS[@]}" "$@"
+#
+# but POSIX shell has neither arrays nor command substitution, so instead we
+# post-process each arg (as a line of input to sed) to backslash-escape any
+# character that might be a shell metacharacter, then use eval to reverse
+# that process (while maintaining the separation between arguments), and wrap
+# the whole thing up as a single "set" statement.
+#
+# This will of course break if any of these variables contains a newline or
+# an unmatched quote.
+#
+
+eval "set -- $(
+        printf '%s\\n' "$DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS" |
+        xargs -n1 |
+        sed ' s~[^-[:alnum:]+,./:=@_]~\\\\&~g; ' |
+        tr '\\n' ' '
+    )" '"$@"'
+
+exec "$JAVACMD" "$@"
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 21`] = `
+"@rem
+@rem Copyright 2015 the original author or authors.
+@rem
+@rem Licensed under the Apache License, Version 2.0 (the "License");
+@rem you may not use this file except in compliance with the License.
+@rem You may obtain a copy of the License at
+@rem
+@rem      https://www.apache.org/licenses/LICENSE-2.0
+@rem
+@rem Unless required by applicable law or agreed to in writing, software
+@rem distributed under the License is distributed on an "AS IS" BASIS,
+@rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+@rem See the License for the specific language governing permissions and
+@rem limitations under the License.
+@rem
+
+@if "%DEBUG%" == "" @echo off
+@rem ##########################################################################
+@rem
+@rem  Gradle startup script for Windows
+@rem
+@rem ##########################################################################
+
+@rem Set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
+
+set DIRNAME=%~dp0
+if "%DIRNAME%" == "" set DIRNAME=.
+set APP_BASE_NAME=%~n0
+set APP_HOME=%DIRNAME%
+
+@rem Resolve any "." and ".." in APP_HOME to make it shorter.
+for %%i in ("%APP_HOME%") do set APP_HOME=%%~fi
+
+@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
+
+@rem Find java.exe
+if defined JAVA_HOME goto findJavaFromJavaHome
+
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if "%ERRORLEVEL%" == "0" goto execute
+
+echo.
+echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
+
+goto fail
+
+:findJavaFromJavaHome
+set JAVA_HOME=%JAVA_HOME:"=%
+set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+
+if exist "%JAVA_EXE%" goto execute
+
+echo.
+echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
+
+goto fail
+
+:execute
+@rem Setup the command line
+
+set CLASSPATH=%APP_HOME%\\gradle\\wrapper\\gradle-wrapper.jar
+
+
+@rem Execute Gradle
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %*
+
+:end
+@rem End local scope for the variables with windows NT shell
+if "%ERRORLEVEL%"=="0" goto mainEnd
+
+:fail
+rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
+rem the _cmd.exe /c_ return code!
+if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
+exit /b 1
+
+:mainEnd
+if "%OS%"=="Windows_NT" endlocal
+
+:omega
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 22`] = `
+"package helloworld;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+/**
+ * Handler for requests to Lambda function.
+ */
+public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("X-Custom-Header", "application/json");
+
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
+                .withHeaders(headers);
+        try {
+            final String pageContents = this.getPageContents("https://checkip.amazonaws.com");
+            String output = String.format("{ \\"message\\": \\"hello world\\", \\"location\\": \\"%s\\" }", pageContents);
+
+            return response
+                    .withStatusCode(200)
+                    .withBody(output);
+        } catch (IOException e) {
+            return response
+                    .withBody("{}")
+                    .withStatusCode(500);
+        }
+    }
+
+    private String getPageContents(String address) throws IOException{
+        URL url = new URL(address);
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
+    }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 23`] = `
+"package helloworld;
+
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
+public class AppTest {
+  @Test
+  public void successfulResponse() {
+    App app = new App();
+    APIGatewayProxyResponseEvent result = app.handleRequest(null, null);
+    assertEquals(200, result.getStatusCode().intValue());
+    assertEquals("application/json", result.getHeaders().get("Content-Type"));
+    String content = result.getBody();
+    assertNotNull(content);
+    assertTrue(content.contains("\\"message\\""));
+    assertTrue(content.contains("\\"hello world\\""));
+    assertTrue(content.contains("\\"location\\""));
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 24`] = `
+"
+## This Project
+
+This project is an AWS Serverless Application Model (SAM) project. A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
+serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
+applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
+After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
+project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) application URL is available under the output for your workflow.
+
+### Architecture overview
+
+![Architecture diagram](https://dehz9bo9d1ho5.cloudfront.net/SAM_arch.png)
+
+## Connections and permissions
+
+Configure your AWS account connection from the **AWS accounts** tab in your Amazon CodeCatalyst space. Add AWS IAM roles to
+the account extension to authorize project workflows to access AWS account resources.
+
+The SAM application requires the following IAM roles to build and deploy the application:
+
+### IAM role trust policy
+
+\`\`\`
+{
+"Version": "2012-10-17",
+"Statement": [
+    {
+        "Sid": "CodeCatalyst",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "codecatalyst-runner.amazonaws.com",
+                "codecatalyst.amazonaws.com"
+            ]
+        },
+        "Action": "sts:AssumeRole"
+    }
+]
+}
+\`\`\`
+
+### Deploy role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:TagRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "cloudformation:*",
+                "lambda:*",
+                "apigateway:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+_Note: You must update the policy if you add more resources.
+
+### Build role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+## Project resources
+
+After being successfully created, this project deploys the following AWS resources:
+
+- AWS Lambda function(s) - A resource that invokes your code on a high-availability compute infrastructure without provisioning or managing servers. For
+  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+- Amazon API Gateway - A resource that creates, publishes, maintains, monitors, and secures REST, HTTP, and WebSocket APIs at any scale. For
+  more information on API Gateway, see the
+  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+- IAM role(s) -  A resource that secures controlled access to AWS resources such as the AWS Lambda function(s). For more information on IAM, see the
+  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+The deployment status can be viewed in the project's workflow.
+
+This blueprint creates the following Amazon CodeCatalyst resources:
+
+- Source repository named \`gradle-src-repo-name\` - A Git repository to store, version, and manage the following project assets:
+  - \`gradle-test-fn-name\` - Source code and supporting files for the Lambda function of the application, \`gradle-test-fn-name\` contains the following:
+    - \`HelloWorldFunction/src/main\` - Code for the AWS Lambda function of the application
+    - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
+    - \`HelloWorldFunction/src/test\` - Tests for the AWS Lambda function's code
+  - \`template.yaml\` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles.
+  - \`devfile.yaml\` - A devfile that defines Dev Environments or development environments that have been built for the cloud.
+
+  For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Workflows defined in \`.codecatalyst/workflows/build-and-release.yaml\`
+
+  A workflow is an automated procedure that defines how to build, test, and deploy the serverless application. For more information, see the _Build,
+  test, and deploy with workflows_ section of the **Amazon CodeCatalyst User Guide**.
+
+- Environment(s) - An abstraction of infrastructure resources that deploy applications. You can use environments can be used to organize deployment actions into a production or non-production environment.
+
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
+  Environment operation in Amazon CodeCatalyst.
+
+  For more information on creating Dev Environments, see the _Working with Dev Environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+
+## Using the SAM CLI to build and test locally
+
+You can use the SAM Command Line Interface (CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your AWS Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches AWS Lambda. It can also emulate your application's build environment and API.
+To work on the sample code generated, clone your project's repository to your local computer. For more information, see the _Cloning a source repository_ section in the Amazon CodeCatalyst User Guide.
+
+To use the SAM CLI, install following tools into your workspace.
+
+  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+  * Install [Python 3](https://www.python.org/downloads/)
+ * Install [Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and [Gradle](https://gradle.org/install/)
+
+To build your application locally, run the following command in your shell:
+
+\`\`\`
+    sam build
+\`\`\`
+
+  The SAM CLI installs dependencies defined in the HelloWorldFunction/build.gradle file of the AWS Lambda function, creates a deployment package, and saves it in the \`.aws-sam/build\` folder.
+  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
+  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
+
+\`\`\`
+  sam local invoke <functionName> --event <functionName>/events/event.json
+\`\`\`
+
+For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
+The SAM CLI can also emulate your application's API. Run the \`sam local start-api\` command to run the API locally. The default port is 3000.
+
+\`\`\`
+  sam local start-api
+  curl http://localhost:3000/
+\`\`\`
+
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
+The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
+
+\`\`\`yaml
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+\`\`\`
+
+
+## Running tests
+Tests are defined in the \`HelloWorldFunction/src/test\` folder in this project.
+\`\`\`
+$ cd HelloWorldFunction
+$ gradle test
+\`\`\`
+    
+
+## Adding a resource to your serverless application
+The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
+
+## Deploying your serverless application
+The application is deployed through Amazon CodeCatalyst using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` branch of the source repository.
+Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Working with triggers_ section in the  Amazon CodeCatalyst User Guide.
+The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`default_environment\` using the \`sam-stack-\` AWS Cloudformation stack.
+For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
+
+If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
+\`\`\`
+  cd .aws-sam/build/
+  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
+  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+\`\`\`
+
+## Additional Resources
+See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 25`] = `
+"Transform: AWS::Serverless-2016-10-31
+Description: lambdas
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  gradle-test-fn-nameFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: gradle-test-fn-name/HelloWorldFunction
+      Runtime: java11
+      Handler: helloworld.App::handleRequest
+      Description: gradle-test-fn-name
+      Events:
+          gradle-test-fn-name:
+             Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+             Properties:
+                Path: /gradle-test-fn-name
+                Method: get
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+
+Outputs:
+# ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+# Find out more about other implicit resources you can reference within SAM
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  gradle-test-fn-nameApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/gradle-test-fn-name/"
+  gradle-test-fn-nameFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt gradle-test-fn-nameFunction.Arn
+  gradle-test-fn-nameFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt gradle-test-fn-nameFunctionRole.Arn"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 26`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Node.js 14",
+  "code": {
+    "sourceRepositoryName": "ServerlessAppRepo",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
+  "outdir": "synth/01.snapshot.node14.json/proposed-bundle"
+}"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 27`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "sam build"
+  ],
+  "info": "This runner builds the Serverless Application Model (SAM) Project."
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 28`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "for directory in \\"$REPOSITORY_DIR\\"/* ; do",
+    "  if [ -d \\"$directory/hello-world/tests\\" ]; then",
+    "    TESTS_DIR=$directory",
+    "  fi",
+    "done",
+    "echo $TESTS_DIR",
+    "cd $TESTS_DIR/hello-world",
+    "npm install",
+    "npm run test"
+  ],
+  "info": "This runner installs the dependencies, and executes the tests inside the hello-world directory."
+}"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 29`] = `
+"#!/usr/bin/env bash
+
+WORKING_DIR=SamFirstEndpoint/hello-world/
+npm install --prefix $WORKING_DIR
+npm --prefix $WORKING_DIR run coverage
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 30`] = `
+"Name: build-and-release
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Compute:
+  Type: Lambda
+  Fleet: Linux.x86-64.Large
+Actions:
+  build_for_default_environment:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+      Artifacts:
+        - Name: build_result
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: . ./.codecatalyst/scripts/run-tests.sh
+        - Run: sam build --template-file template.yaml
+        - Run: cd .aws-sam/build/
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+  deploy_to_default_environment:
+    Identifier: aws/cfn-deploy@v1
+    Inputs:
+      Artifacts:
+        - build_result
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+    Configuration:
+      Parameters:
+        region: us-west-2
+        name: sam-stack-
+        template: .aws-sam/build/packaged.yaml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 31`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ExternalDependencies">
+        <plugin id="Docker" />
+        <plugin id="JavaScript" />
+        <plugin id="JavaScriptDebugger" />
+        <plugin id="aws.toolkit" />
+        <plugin id="NodeJS" />
+        <plugin id="org.jetbrains.plugins.yaml" />
+    </component>
+</project>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 32`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="all tests coverage" type="js.build_tools.npm">
+        <package-json value="$PROJECT_DIR$/SamFirstEndpoint/hello-world/package.json" />
+        <command value="run" />
+        <scripts>
+            <script value="coverage" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+        <method v="2">
+            <option name="NpmBeforeRunTask" enabled="true">
+                <package-json value="$PROJECT_DIR$/SamFirstEndpoint/hello-world/package.json" />
+                <command value="run" />
+                <scripts>
+                    <script value="test" />
+                </scripts>
+                <node-interpreter value="project" />
+                <envs />
+            </option>
+        </method>
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 33`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam build" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam build" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 34`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam local invoke" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 35`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam start local api" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local start-api" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 36`] = `
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 37`] = `
+"{
+    "recommendations": [
+        "redhat.vscode-yaml",
+        "AmazonWebServices.aws-toolkit-vscode"
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 38`] = `
+"{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "name": "Launch local sam API",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "\${workspaceFolder}/SamFirstEndpoint/hello-world",
+            "preLaunchTask": "sam: start api"
+        },
+        {
+            "name": "Debug current test file",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "\${workspaceRoot}/SamFirstEndpoint/hello-world/node_modules/.bin/mocha",
+                "--inspect-brk",
+                "\${relativeFile}",
+            ],
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Debug all test files",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "\${workspaceRoot}/SamFirstEndpoint/hello-world/node_modules/.bin/mocha",
+                "\${workspaceRoot}/SamFirstEndpoint/hello-world/tests/**/*"
+            ],
+            "console": "integratedTerminal",
+        },
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 39`] = `
+"{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "install",
+            "group": "build",
+            "label": "npm: install",
+            "detail": "npm install",
+            "options": {
+                "cwd": "\${workspaceFolder}/SamFirstEndpoint/hello-world"
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "group": "test",
+            "label": "npm: test",
+            "detail": "npm test",
+            "options": {
+                "cwd": "\${workspaceFolder}/SamFirstEndpoint/hello-world"
+            }
+        },
+        {
+            "type": "shell",
+            "command": "sam build",
+            "label": "sam: build",
+            "detail": "sam build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json",
+            "label": "sam: invoke",
+            "detail": "sam invoke",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local start-api",
+            "label": "sam: start api",
+            "detail": "sam start api",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Running on"
+                }
+              }
+        }
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 40`] = `
+"schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:3.0
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
+        template.yaml
+      workingDir: $PROJECT_SOURCE
+      component: aws-runtime
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 41`] = `
+"
+## This Project
+
+This project is an AWS Serverless Application Model (SAM) project. A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
+serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
+applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
+After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
+project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) application URL is available under the output for your workflow.
+
+### Architecture overview
+
+![Architecture diagram](https://dehz9bo9d1ho5.cloudfront.net/SAM_arch.png)
+
+## Connections and permissions
+
+Configure your AWS account connection from the **AWS accounts** tab in your Amazon CodeCatalyst space. Add AWS IAM roles to
+the account extension to authorize project workflows to access AWS account resources.
+
+The SAM application requires the following IAM roles to build and deploy the application:
+
+### IAM role trust policy
+
+\`\`\`
+{
+"Version": "2012-10-17",
+"Statement": [
+    {
+        "Sid": "CodeCatalyst",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "codecatalyst-runner.amazonaws.com",
+                "codecatalyst.amazonaws.com"
+            ]
+        },
+        "Action": "sts:AssumeRole"
+    }
+]
+}
+\`\`\`
+
+### Deploy role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:TagRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "cloudformation:*",
+                "lambda:*",
+                "apigateway:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+_Note: You must update the policy if you add more resources.
+
+### Build role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+## Project resources
+
+After being successfully created, this project deploys the following AWS resources:
+
+- AWS Lambda function(s) - A resource that invokes your code on a high-availability compute infrastructure without provisioning or managing servers. For
+  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+- Amazon API Gateway - A resource that creates, publishes, maintains, monitors, and secures REST, HTTP, and WebSocket APIs at any scale. For
+  more information on API Gateway, see the
+  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+- IAM role(s) -  A resource that secures controlled access to AWS resources such as the AWS Lambda function(s). For more information on IAM, see the
+  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+The deployment status can be viewed in the project's workflow.
+
+This blueprint creates the following Amazon CodeCatalyst resources:
+
+- Source repository named \`ServerlessAppRepo\` - A Git repository to store, version, and manage the following project assets:
+  - \`SamFirstEndpoint\` - Source code and supporting files for the Lambda function of the application, \`SamFirstEndpoint\` contains the following:
+    - \`hello-world\` - Code for the AWS Lambda function of the application
+    - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
+    - \`hello-world/tests\` - Tests for the AWS Lambda function's code
+  - \`template.yaml\` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles.
+  - \`devfile.yaml\` - A devfile that defines Dev Environments or development environments that have been built for the cloud.
+
+  For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Workflows defined in \`.codecatalyst/workflows/build-and-release.yaml\`
+
+  A workflow is an automated procedure that defines how to build, test, and deploy the serverless application. For more information, see the _Build,
+  test, and deploy with workflows_ section of the **Amazon CodeCatalyst User Guide**.
+
+- Environment(s) - An abstraction of infrastructure resources that deploy applications. You can use environments can be used to organize deployment actions into a production or non-production environment.
+
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
+  Environment operation in Amazon CodeCatalyst.
+
+  For more information on creating Dev Environments, see the _Working with Dev Environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+
+## Using the SAM CLI to build and test locally
+
+You can use the SAM Command Line Interface (CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your AWS Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches AWS Lambda. It can also emulate your application's build environment and API.
+To work on the sample code generated, clone your project's repository to your local computer. For more information, see the _Cloning a source repository_ section in the Amazon CodeCatalyst User Guide.
+
+To use the SAM CLI, install following tools into your workspace.
+
+  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+  * Install [Python 3](https://www.python.org/downloads/)
+ * Install [Node.js 14 and npm](https://nodejs.org/en/download/releases/)
+
+To build your application locally, run the following command in your shell:
+
+\`\`\`
+    sam build
+\`\`\`
+
+  The SAM CLI installs dependencies defined in the hello-world//package.json file of the AWS Lambda function, creates a deployment package, and saves it in the \`.aws-sam/build\` folder.
+  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
+  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
+
+\`\`\`
+  sam local invoke <functionName> --event <functionName>/events/event.json
+\`\`\`
+
+For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
+The SAM CLI can also emulate your application's API. Run the \`sam local start-api\` command to run the API locally. The default port is 3000.
+
+\`\`\`
+  sam local start-api
+  curl http://localhost:3000/
+\`\`\`
+
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
+The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
+
+\`\`\`yaml
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+\`\`\`
+
+
+## Running tests
+Tests are defined in the \`hello-world/tests\` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
+\`\`\`
+$ cd hello-world
+$ npm install
+$ npm run test
+\`\`\`
+
+
+## Adding a resource to your serverless application
+The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
+
+## Deploying your serverless application
+The application is deployed through Amazon CodeCatalyst using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` branch of the source repository.
+Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Working with triggers_ section in the  Amazon CodeCatalyst User Guide.
+The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`default_environment\` using the \`sam-stack-\` AWS Cloudformation stack.
+For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
+
+If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
+\`\`\`
+  cd .aws-sam/build/
+  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
+  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+\`\`\`
+
+## Additional Resources
+See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 42`] = `
+"{
+  "body": "{\\"message\\": \\"hello world\\"}",
+  "resource": "/{proxy+}",
+  "path": "/path/to/resource",
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "queryStringParameters": {
+    "foo": "bar"
+  },
+  "pathParameters": {
+    "proxy": "/path/to/resource"
+  },
+  "stageVariables": {
+    "baz": "qux"
+  },
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, sdch",
+    "Accept-Language": "en-US,en;q=0.8",
+    "Cache-Control": "max-age=0",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Custom User Agent String",
+    "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+    "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "requestTime": "09/Apr/2015:12:34:56 +0000",
+    "requestTimeEpoch": 1428582896000,
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "accessKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "path": "/prod/path/to/resource",
+    "resourcePath": "/{proxy+}",
+    "httpMethod": "POST",
+    "apiId": "1234567890",
+    "protocol": "HTTP/1.1"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 43`] = `
+"node_modules
+.aws-sam"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 44`] = `
+"module.exports = {
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
+      sourceType: "module" 
+    },
+    extends: [
+      "plugin:@typescript-eslint/recommended", // recommended rules from the @typescript-eslint/eslint-plugin
+      "plugin:prettier/recommended" // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    ],
+    rules: {
+      // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+      // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    }
+  };"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 45`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 46`] = `
+"module.exports = {
+    semi: true,
+    trailingComma: "all",
+    singleQuote: true,
+    printWidth: 120,
+    tabWidth: 4
+  };"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 47`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+
+/**
+ *
+ * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+ * @param {Object} event - API Gateway Lambda Proxy Input Format
+ *
+ * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+ * @returns {Object} object - API Gateway Lambda Proxy Output Format
+ *
+ */
+
+export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    let response: APIGatewayProxyResult;
+    try {
+        response = {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'hello world',
+            }),
+        };
+    } catch (err: unknown) {
+        console.log(err);
+        response = {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: err instanceof Error ? err.message : 'some error happened',
+            }),
+        };
+    }
+
+    return response;
+};
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 48`] = `
+"/*
+ * For a detailed explanation regarding each configuration property and type check, visit:
+ * https://jestjs.io/docs/configuration
+ */
+
+export default {
+    transform: {
+        '^.+\\\\.ts?$': 'esbuild-jest',
+    },
+    clearMocks: true,
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    coverageProvider: 'v8',
+    testMatch: ['**/tests/unit/*.test.ts'],
+};
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 49`] = `
+"{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "hello world sample for NodeJS",
+  "main": "app.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.14.14"
+  },
+  "scripts": {
+    "unit": "jest",
+    "lint": "eslint '*.ts' --quiet --fix",
+    "compile": "tsc",
+    "test": "npm run compile && npm run unit",
+    "coverage": "nyc --reporter clover --reporter text npm test"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.92",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "esbuild-jest": "^0.5.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.2.0",
+    "mocha": "^9.1.4",
+    "mocha-junit-reporter": "^2.0.2",
+    "nyc": "^15.1.0",
+    "ts-mocha": "^10.0.0"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 50`] = `
+"import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { lambdaHandler } from '../../app';
+
+describe('Unit test for app handler', function () {
+    it('verifies successful response', async () => {
+        const event: APIGatewayProxyEvent = {
+            httpMethod: 'get',
+            body: '',
+            headers: {},
+            isBase64Encoded: false,
+            multiValueHeaders: {},
+            multiValueQueryStringParameters: {},
+            path: '/hello',
+            pathParameters: {},
+            queryStringParameters: {},
+            requestContext: {
+                accountId: '123456789012',
+                apiId: '1234',
+                authorizer: {},
+                httpMethod: 'get',
+                identity: {
+                    accessKey: '',
+                    accountId: '',
+                    apiKey: '',
+                    apiKeyId: '',
+                    caller: '',
+                    clientCert: {
+                        clientCertPem: '',
+                        issuerDN: '',
+                        serialNumber: '',
+                        subjectDN: '',
+                        validity: { notAfter: '', notBefore: '' },
+                    },
+                    cognitoAuthenticationProvider: '',
+                    cognitoAuthenticationType: '',
+                    cognitoIdentityId: '',
+                    cognitoIdentityPoolId: '',
+                    principalOrgId: '',
+                    sourceIp: '',
+                    user: '',
+                    userAgent: '',
+                    userArn: '',
+                },
+                path: '/hello',
+                protocol: 'HTTP/1.1',
+                requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
+                requestTimeEpoch: 1428582896000,
+                resourceId: '123456',
+                resourcePath: '/hello',
+                stage: 'dev',
+            },
+            resource: '',
+            stageVariables: {},
+        };
+        const result: APIGatewayProxyResult = await lambdaHandler(event);
+
+        expect(result.statusCode).toEqual(200);
+        expect(result.body).toEqual(
+            JSON.stringify({
+                message: 'hello world',
+            }),
+        );
+    });
+});
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 51`] = `
+"{
+    "compilerOptions": {
+      "target": "es2020",
+      "strict": true,
+      "preserveConstEnums": true,
+      "noEmit": true,
+      "sourceMap": false,
+      "module":"es2015",
+      "moduleResolution":"node",
+      "esModuleInterop": true, 
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,  
+    },
+    "exclude": ["node_modules", "**/*.test.ts"]
+  }"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 52`] = `
+"Transform: AWS::Serverless-2016-10-31
+Description: lambdas
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  SamFirstEndpointFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamFirstEndpoint/hello-world/
+      Runtime: nodejs14.x
+      Handler: app.lambdaHandler
+      Description: SamFirstEndpoint
+      Events:
+          SamFirstEndpoint:
+             Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+             Properties:
+                Path: /SamFirstEndpoint
+                Method: get
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
+        EntryPoints: 
+        - app.ts
+
+Outputs:
+# ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+# Find out more about other implicit resources you can reference within SAM
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  SamFirstEndpointApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/SamFirstEndpoint/"
+  SamFirstEndpointFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt SamFirstEndpointFunction.Arn
+  SamFirstEndpointFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 53`] = `
+"{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Python 3.9",
+  "code": {
+    "sourceRepositoryName": "ServerlessAppRepo",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-",
+  "outdir": "synth/01.snapshot.python39.json/proposed-bundle"
+}"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 54`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "sam build"
+  ],
+  "info": "This runner builds the Serverless Application Model (SAM) Project."
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 55`] = `
+"{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \\"$directory/.cloud9/runners\\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "for directory in \\"$REPOSITORY_DIR\\"/* ; do",
+    "  if [ -d \\"$directory/tests\\" ]; then",
+    "    TESTS_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $TESTS_DIR",
+    "pip install -r tests/requirements.txt",
+    "python3 -m pytest tests/unit -v"
+  ],
+  "info": "This runner installs the dependencies, and executes the unit tests inside the tests directory."
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 56`] = `
+"#!/bin/bash
+
+VENV="venv"
+
+test -d $VENV || python3 -m venv $VENV || return
+$VENV/bin/pip install -r SamFirstEndpoint/tests/requirements.txt
+$VENV/bin/pip install -r SamFirstEndpoint/hello_world/requirements.txt
+. $VENV/bin/activate
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 57`] = `
+"#!/bin/bash
+
+echo "Running unit tests..."
+PYTHONPATH=SamFirstEndpoint pytest --junitxml=test_results.xml --cov-report xml:test_coverage.xml --cov=. SamFirstEndpoint/tests/unit/
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 58`] = `
+"Name: build-and-release
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Compute:
+  Type: EC2
+  Fleet: Linux.x86-64.Large
+Actions:
+  build_for_default_environment:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+      Artifacts:
+        - Name: build_result
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: . ./.codecatalyst/scripts/bootstrap.sh
+        - Run: . ./.codecatalyst/scripts/run-tests.sh
+        - Run: sam build --template-file template.yaml --use-container --build-image public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
+        - Run: cd .aws-sam/build/
+        - Run: sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+  deploy_to_default_environment:
+    Identifier: aws/cfn-deploy@v1
+    Inputs:
+      Artifacts:
+        - build_result
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: " "
+          Role: " "
+    Configuration:
+      Parameters:
+        region: us-west-2
+        name: sam-stack-
+        template: .aws-sam/build/packaged.yaml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 59`] = `
+"[run]
+omit = SamFirstEndpoint/tests/integration/*
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 60`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ExternalDependencies">
+        <plugin id="Docker" />
+        <plugin id="Python" />
+        <plugin id="aws.toolkit" />
+        <plugin id="org.jetbrains.plugins.yaml" />
+    </component>
+</project>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 61`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="application integration tests" type="tests" factoryName="Unittests">
+        <module name="ServerlessAppRepo" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="PARENT_ENVS" value="true" />
+        <option name="SDK_HOME" value="/usr/local/bin/python3.8" />
+        <option name="WORKING_DIRECTORY" value="" />
+        <option name="IS_MODULE_SDK" value="false" />
+        <option name="ADD_CONTENT_ROOTS" value="true" />
+        <option name="ADD_SOURCE_ROOTS" value="true" />
+        <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+        <option name="_new_pattern" value="&quot;&quot;" />
+        <option name="_new_additionalArguments" value="&quot;&quot;" />
+        <option name="_new_target" value="&quot;$PROJECT_DIR$/SamFirstEndpoint/tests/integration&quot;" />
+        <option name="_new_targetType" value="&quot;PATH&quot;" />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 62`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="application unit tests" type="tests" factoryName="Unittests">
+        <module name="ServerlessAppRepo" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="PARENT_ENVS" value="true" />
+        <option name="SDK_HOME" value="/usr/local/bin/python3.8" />
+        <option name="WORKING_DIRECTORY" value="" />
+        <option name="IS_MODULE_SDK" value="false" />
+        <option name="ADD_CONTENT_ROOTS" value="true" />
+        <option name="ADD_SOURCE_ROOTS" value="true" />
+        <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+        <option name="_new_pattern" value="&quot;&quot;" />
+        <option name="_new_additionalArguments" value="&quot;&quot;" />
+        <option name="_new_target" value="&quot;$PROJECT_DIR$/SamFirstEndpoint/tests/unit&quot;" />
+        <option name="_new_targetType" value="&quot;PATH&quot;" />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 63`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam build" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam build" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 64`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam local invoke" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 65`] = `
+"<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="sam start local api" type="ShConfigurationType">
+        <option name="SCRIPT_TEXT" value="sam local start-api" />
+        <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+        <option name="SCRIPT_PATH" value="" />
+        <option name="SCRIPT_OPTIONS" value="" />
+        <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+        <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+        <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+        <option name="INTERPRETER_PATH" value="" />
+        <option name="INTERPRETER_OPTIONS" value="" />
+        <option name="EXECUTE_IN_TERMINAL" value="false" />
+        <option name="EXECUTE_SCRIPT_FILE" value="false" />
+        <envs />
+        <method v="2" />
+    </configuration>
+</component>
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 66`] = `
+"[never_update] @amazon-codecatalyst/blueprints.sam-serverless-application
+# Internal merge strategy: neverUpdate
+*
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 67`] = `
+"{
+    "recommendations": [
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "AmazonWebServices.aws-toolkit-vscode"
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 68`] = `
+"{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch local sam API",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "\${workspaceFolder}/SamFirstEndpoint/hello_world",
+            "preLaunchTask": "sam: start api"
+        },
+        {
+            "name": "Debug current test file",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "\${file}"
+            ]
+        },
+        {
+            "name": "Debug all test files",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest"
+        }
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 69`] = `
+"{
+    "python.testing.pytestArgs": [
+        "python"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.defaultInterpreterPath": "python"
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 70`] = `
+"{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "python: install",
+            "detail": "python install requirements",
+            "type": "shell",
+            "command": "pip install -r hello_world/requirements.txt && pip install -r tests/requirements.txt",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "\${workspaceFolder}/SamFirstEndpoint"
+            }
+        },
+        {
+            "label": "python: run unit tests",
+            "detail": "python run unit tests",
+            "type": "shell",
+            "command": "pytest tests/unit -v",
+            "group": "test",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "\${workspaceFolder}/SamFirstEndpoint"
+            }
+        },
+        {
+            "label": "python: run integration tests",
+            "detail": "python run integration tests",
+            "type": "shell",
+            "command": "pytest tests/integration -v",
+            "group": "test",
+            "problemMatcher": [],
+            "options": {
+                "env": {
+                    "AWS_SAM_STACK_NAME": "<stack-name>"
+                },
+                "cwd": "\${workspaceFolder}/SamFirstEndpoint"
+            },
+        },
+        {
+            "type": "shell",
+            "command": "sam build",
+            "label": "sam: build",
+            "detail": "sam build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local invoke SamFirstEndpointFunction --event SamFirstEndpoint/events/event.json",
+            "label": "sam: invoke",
+            "detail": "sam invoke",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "sam local start-api",
+            "label": "sam: start api",
+            "detail": "sam start api",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "Running on"
+                }
+            }
+        }
+    ]
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 71`] = `
+"schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags:
+    - aws
+    - a12
+  projectType: aws
+components:
+  - name: aws-runtime
+    container:
+      image: public.ecr.aws/aws-mde/universal-image:3.0
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
+events:
+  postStart:
+    - bootstrap-and-build
+commands:
+  - id: bootstrap-and-build
+    exec:
+      commandLine: . ./.codecatalyst/scripts/bootstrap.sh && .
+        ./.codecatalyst/scripts/run-tests.sh && sam build --template-file
+        template.yaml --use-container --build-image
+        public.ecr.aws/sam/build-python3.9:$(sam --version | sed "s/.* //")
+      workingDir: $PROJECT_SOURCE
+      component: aws-runtime
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 72`] = `
+"
+## This Project
+
+This project is an AWS Serverless Application Model (SAM) project. A serverless application is a combination of AWS Lambda functions, event sources, and other resources that work together to perform tasks. A
+serverless application can also include additional resources such as APIs, databases, and event source mappings. For more information on serverless
+applications, see the [AWS Serverless Application Model (SAM) Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+The project uses an Amazon CodeCatalyst environment to deploy a SAM application with AWS Lambda and Amazon API Gateway to an Amazon CloudFront URL.
+After you create your project, you can view the repository, source code, and continuous integration and continuous delivery (CI/CD) workflow for your
+project. After your workflow runs successfully, your deployed [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) application URL is available under the output for your workflow.
+
+### Architecture overview
+
+![Architecture diagram](https://dehz9bo9d1ho5.cloudfront.net/SAM_arch.png)
+
+## Connections and permissions
+
+Configure your AWS account connection from the **AWS accounts** tab in your Amazon CodeCatalyst space. Add AWS IAM roles to
+the account extension to authorize project workflows to access AWS account resources.
+
+The SAM application requires the following IAM roles to build and deploy the application:
+
+### IAM role trust policy
+
+\`\`\`
+{
+"Version": "2012-10-17",
+"Statement": [
+    {
+        "Sid": "CodeCatalyst",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "codecatalyst-runner.amazonaws.com",
+                "codecatalyst.amazonaws.com"
+            ]
+        },
+        "Action": "sts:AssumeRole"
+    }
+]
+}
+\`\`\`
+
+### Deploy role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:TagRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "cloudformation:*",
+                "lambda:*",
+                "apigateway:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+_Note: You must update the policy if you add more resources.
+
+### Build role policy
+
+Create a role based on the trust policy above, and add the following inline policy:
+
+\`\`\`
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+\`\`\`
+
+## Project resources
+
+After being successfully created, this project deploys the following AWS resources:
+
+- AWS Lambda function(s) - A resource that invokes your code on a high-availability compute infrastructure without provisioning or managing servers. For
+  more information on AWS Lambda, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+
+- Amazon API Gateway - A resource that creates, publishes, maintains, monitors, and secures REST, HTTP, and WebSocket APIs at any scale. For
+  more information on API Gateway, see the
+  [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
+
+- IAM role(s) -  A resource that secures controlled access to AWS resources such as the AWS Lambda function(s). For more information on IAM, see the
+  [AWS IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+The deployment status can be viewed in the project's workflow.
+
+This blueprint creates the following Amazon CodeCatalyst resources:
+
+- Source repository named \`ServerlessAppRepo\` - A Git repository to store, version, and manage the following project assets:
+  - \`SamFirstEndpoint\` - Source code and supporting files for the Lambda function of the application, \`SamFirstEndpoint\` contains the following:
+    - \`hello_world\` - Code for the AWS Lambda function of the application
+    - \`events\` - Invocation events that you can use to invoke the AWS Lambda function
+    - \`tests\` - Tests for the AWS Lambda function's code
+  - \`template.yaml\` - The template that defines the application's AWS resources, including AWS Lambda functions, Amazon API Gateways, and IAM roles.
+  - \`devfile.yaml\` - A devfile that defines Dev Environments or development environments that have been built for the cloud.
+
+  For more information on source repositories, see the _Working with source repositories_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Workflows defined in \`.codecatalyst/workflows/build-and-release.yaml\`
+
+  A workflow is an automated procedure that defines how to build, test, and deploy the serverless application. For more information, see the _Build,
+  test, and deploy with workflows_ section of the **Amazon CodeCatalyst User Guide**.
+
+- Environment(s) - An abstraction of infrastructure resources that deploy applications. You can use environments can be used to organize deployment actions into a production or non-production environment.
+
+  For more information on environments, see the _Organizing deployments using environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+- Dev Environment - A cloud-based development environment. A Dev Environment must be manually created with the generated devfile using the Create Dev
+  Environment operation in Amazon CodeCatalyst.
+
+  For more information on creating Dev Environments, see the _Working with Dev Environments_ section in the **Amazon CodeCatalyst User Guide**.
+
+
+## Using the SAM CLI to build and test locally
+
+You can use the SAM Command Line Interface (CLI) to build and test your application locally. The SAM CLI is an extension of the AWS CLI that can emulate your AWS Lambda functions, application build environment, and API. It uses Docker to run your functions in an Amazon Linux environment that matches AWS Lambda. It can also emulate your application's build environment and API.
+To work on the sample code generated, clone your project's repository to your local computer. For more information, see the _Cloning a source repository_ section in the Amazon CodeCatalyst User Guide.
+
+To use the SAM CLI, install following tools into your workspace.
+
+  * Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  * Install [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  * Install [Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+  * Install [Python3.9](https://www.python.org/downloads/)
+
+To build your application locally, run the following command in your shell:
+
+\`\`\`
+    sam build
+\`\`\`
+
+  The SAM CLI installs dependencies defined in the hello_world//requirements.txt file of the AWS Lambda function, creates a deployment package, and saves it in the \`.aws-sam/build\` folder.
+  For more information on sam build, see the [Sam Build Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html).
+  Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the \`events\` folder in each function's folder in this project.
+
+\`\`\`
+  sam local invoke <functionName> --event <functionName>/events/event.json
+\`\`\`
+
+For more information on sam local invoke, see the [Sam Invoke Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html).
+The SAM CLI can also emulate your application's API. Run the \`sam local start-api\` command to run the API locally. The default port is 3000.
+
+\`\`\`
+  sam local start-api
+  curl http://localhost:3000/
+\`\`\`
+
+For more information on sam local start-api, see the [Sam Local Invoke Start-Api Command Reference Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html).
+The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The \`Events\` property on each function's definition includes the route and method for each path.
+
+\`\`\`yaml
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+\`\`\`
+
+
+## Running tests
+Tests are defined in the \`tests\` folder in this project. Use PIP to install the test dependencies and run tests.
+\`\`\`
+$ pip install -r tests/requirements.txt
+
+# unit test
+$ python -m pytest tests/unit -v
+
+# integration test, requires deploying the stack first.
+# Create the environment variable AWS_SAM_STACK_NAME with the name of the stack to test
+$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
+\`\`\`
+
+
+## Adding a resource to your serverless application
+The application template uses SAM to define application resources. AWS SAM is an extension of AWS CloudFormation that uses a different syntax to configure common serverless application resources such as functions, triggers, and APIs. For resources not included in the [SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), use the standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
+
+## Deploying your serverless application
+The application is deployed through Amazon CodeCatalyst using the workflow defined in \`.codecatalyst/workflows/build-and-release.yaml\`. The workflow is triggered by pushes to the \`main\` branch of the source repository.
+Triggers can be code pushes to a source repository branch or a pull request being created, merged, closed, or revised. For more information on adding or configuring workflow triggers, see the _Working with triggers_ section in the  Amazon CodeCatalyst User Guide.
+The workflow builds your application, stores the build artifacts in a generated Amazon S3 bucket, and deploys your application to your project environment \`default_environment\` using the \`sam-stack-\` AWS Cloudformation stack.
+For more information on deploying using workflows and organizing deployments by environment, see the _Deploying using CodeCatalyst workflows_ section in the Amazon CodeCatalyst User Guide.
+
+If you still want to deploy without using CI/CD workflows, you can follow these instructions after building the application:
+\`\`\`
+  cd .aws-sam/build/
+  sam package --output-template-file packaged.yaml --resolve-s3 --template-file template.yaml --region <aws-region>
+  sam deploy --template-file /projects/ServerlessAppRepo/.aws-sam/build/packaged.yaml --stack-name sam-api-blueprints-test --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+\`\`\`
+
+## Additional Resources
+See the Amazon CodeCatalyst User Guide for additional information on using the features and resources of Amazon CodeCatalyst.
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 73`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 74`] = `
+"{
+  "body": "{\\"message\\": \\"hello world\\"}",
+  "resource": "/hello",
+  "path": "/hello",
+  "httpMethod": "GET",
+  "isBase64Encoded": false,
+  "queryStringParameters": {
+    "foo": "bar"
+  },
+  "pathParameters": {
+    "proxy": "/path/to/resource"
+  },
+  "stageVariables": {
+    "baz": "qux"
+  },
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, sdch",
+    "Accept-Language": "en-US,en;q=0.8",
+    "Cache-Control": "max-age=0",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Custom User Agent String",
+    "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+    "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "requestTime": "09/Apr/2015:12:34:56 +0000",
+    "requestTimeEpoch": 1428582896000,
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "accessKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "path": "/prod/hello",
+    "resourcePath": "/hello",
+    "httpMethod": "POST",
+    "apiId": "1234567890",
+    "protocol": "HTTP/1.1"
+  }
+}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 75`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 76`] = `
+"import json
+
+# import requests
+
+
+def lambda_handler(event, context):
+    """Sample pure Lambda function
+
+    Parameters
+    ----------
+    event: dict, required
+        API Gateway Lambda Proxy Input Format
+
+        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+
+    context: object, required
+        Lambda Context runtime methods and attributes
+
+        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
+
+    Returns
+    ------
+    API Gateway Lambda Proxy Output Format: dict
+
+        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+    """
+
+    # try:
+    #     ip = requests.get("http://checkip.amazonaws.com/")
+    # except requests.RequestException as e:
+    #     # Send some context about this error to Lambda Logs
+    #     print(e)
+
+    #     raise e
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "message": "hello world",
+            # "location": ip.text.replace("\\n", "")
+        }),
+    }
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 77`] = `"requests"`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 78`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 79`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 80`] = `
+"import os
+
+import boto3
+import pytest
+import requests
+
+"""
+Make sure env variable AWS_SAM_STACK_NAME exists with the name of the stack we are going to test. 
+"""
+
+
+class TestApiGateway:
+
+    @pytest.fixture()
+    def api_gateway_url(self):
+        """ Get the API Gateway URL from Cloudformation Stack outputs """
+        stack_name = os.environ.get("AWS_SAM_STACK_NAME")
+
+        if stack_name is None:
+            raise ValueError('Please set the AWS_SAM_STACK_NAME environment variable to the name of your stack')
+
+        client = boto3.client("cloudformation")
+
+        try:
+            response = client.describe_stacks(StackName=stack_name)
+        except Exception as e:
+            raise Exception(
+                f"Cannot find stack {stack_name} \\n" f'Please make sure a stack with the name "{stack_name}" exists'
+            ) from e
+
+        stacks = response["Stacks"]
+        stack_outputs = stacks[0]["Outputs"]
+        api_outputs = [output for output in stack_outputs if output["OutputKey"] == "HelloWorldApi"]
+
+        if not api_outputs:
+            raise KeyError(f"HelloWorldAPI not found in stack {stack_name}")
+
+        return api_outputs[0]["OutputValue"]  # Extract url from stack outputs
+
+    def test_api_gateway(self, api_gateway_url):
+        """ Call the API Gateway endpoint and check the response """
+        response = requests.get(api_gateway_url)
+
+        assert response.status_code == 200
+        assert response.json() == {"message": "hello world"}
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 81`] = `
+"pytest
+pytest-cov
+pytest-mock
+boto3
+requests
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 82`] = `""`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 83`] = `
+"import json
+
+import pytest
+
+from hello_world import app
+
+
+@pytest.fixture()
+def apigw_event():
+    """ Generates API GW Event"""
+
+    return {
+        "body": '{ "test": "body"}',
+        "resource": "/{proxy+}",
+        "requestContext": {
+            "resourceId": "123456",
+            "apiId": "1234567890",
+            "resourcePath": "/{proxy+}",
+            "httpMethod": "POST",
+            "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+            "accountId": "123456789012",
+            "identity": {
+                "apiKey": "",
+                "userArn": "",
+                "cognitoAuthenticationType": "",
+                "caller": "",
+                "userAgent": "Custom User Agent String",
+                "user": "",
+                "cognitoIdentityPoolId": "",
+                "cognitoIdentityId": "",
+                "cognitoAuthenticationProvider": "",
+                "sourceIp": "127.0.0.1",
+                "accountId": "",
+            },
+            "stage": "prod",
+        },
+        "queryStringParameters": {"foo": "bar"},
+        "headers": {
+            "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+            "Accept-Language": "en-US,en;q=0.8",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+            "CloudFront-Viewer-Country": "US",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Upgrade-Insecure-Requests": "1",
+            "X-Forwarded-Port": "443",
+            "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+            "X-Forwarded-Proto": "https",
+            "X-Amz-Cf-Id": "aaaaaaaaaae3VYQb9jd-nvCd-de396Uhbp027Y2JvkCPNLmGJHqlaA==",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "Cache-Control": "max-age=0",
+            "User-Agent": "Custom User Agent String",
+            "CloudFront-Forwarded-Proto": "https",
+            "Accept-Encoding": "gzip, deflate, sdch",
+        },
+        "pathParameters": {"proxy": "/examplepath"},
+        "httpMethod": "POST",
+        "stageVariables": {"baz": "qux"},
+        "path": "/examplepath",
+    }
+
+
+def test_lambda_handler(apigw_event):
+
+    ret = app.lambda_handler(apigw_event, "")
+    data = json.loads(ret["body"])
+
+    assert ret["statusCode"] == 200
+    assert "message" in ret["body"]
+    assert data["message"] == "hello world"
+"
+`;
+
+exports[`Blueprint snapshots Blueprint snapshots - Test 84`] = `
+"Transform: AWS::Serverless-2016-10-31
+Description: lambdas
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  SamFirstEndpointFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamFirstEndpoint/hello_world/
+      Runtime: python3.9
+      Handler: app.lambda_handler
+      Description: SamFirstEndpoint
+      Events:
+          SamFirstEndpoint:
+             Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+             Properties:
+                Path: /SamFirstEndpoint
+                Method: get
+Outputs:
+# ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+# Find out more about other implicit resources you can reference within SAM
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  SamFirstEndpointApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://\${ServerlessRestApi}.execute-api.\${AWS::Region}.amazonaws.com/Prod/SamFirstEndpoint/"
+  SamFirstEndpointFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt SamFirstEndpointFunction.Arn
+  SamFirstEndpointFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt SamFirstEndpointFunctionRole.Arn"
+`;

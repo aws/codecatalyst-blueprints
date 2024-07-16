@@ -1,0 +1,12 @@
+{
+  "script": [
+    "for directory in /projects/* ; do",
+    "  if [ -d \"$directory/.cloud9/runners\" ]; then",
+    "    REPOSITORY_DIR=$directory",
+    "  fi",
+    "done",
+    "cd $REPOSITORY_DIR",
+    "sam build"
+  ],
+  "info": "This runner builds the Serverless Application Model (SAM) Project."
+}

@@ -1,0 +1,15 @@
+{
+  "environment": {
+    "name": "default_environment",
+    "environmentType": "PRODUCTION"
+  },
+  "runtime": "Java 11 Gradle",
+  "code": {
+    "sourceRepositoryName": "ServerlessAppRepo",
+    "cloudFormationStackName": "sam-stack-"
+  },
+  "lambda": {
+    "functionName": "SamFirstEndpoint"
+  },
+  "cleanupWorkflowTemplateBucketName": "tmp-cleanup-workflow-"
+}
