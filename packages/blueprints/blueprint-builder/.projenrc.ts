@@ -26,7 +26,7 @@ const blueprint = new ProjenBlueprint({
   description: 'This blueprint creates a project which you can use to build and publish a custom blueprint to your space.',
   /* The "name" in package.json. In form @amazon-codecatalyst/:organization.:name */
   packageName: '@amazon-codecatalyst/blueprints.blueprint-builder',
-  publishingOrganization: 'private-blueprints-demo',
+  publishingOrganization: 'blueprints',
   /* Build dependencies for this module. */
   devDeps: ['ts-node'],
   /* Add release management to this project. */
