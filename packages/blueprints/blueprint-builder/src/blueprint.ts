@@ -26,17 +26,13 @@ export interface Options extends ParentOptions {
   description?: string;
 
   /**
-   * Homepage url for your new blueprint.
-   * @validationRegex .*
-   */
-  homepage?: string;
-
-  /**
    * Who is the author of the blueprint?
    * @validationRegex /^[a-zA-Z0-9_-\s]+$/
    * @validationMessage Must contain only upper and lowercase letters, numbers and underscores, spaces, dashes
    */
   authorName: string;
+
+  homepage: string;
 
   /**
    * @collapsed true
@@ -103,6 +99,7 @@ export class Blueprint extends ParentBlueprint {
         ...defaults.advancedSettings,
         license: defaults.advancedSettings.license as any,
       },
+      homepage: 'https://codecatalyst.aws/',
     };
     const userSelectedOptions = Object.assign(typeCheck, options_);
 
@@ -138,6 +135,9 @@ export class Blueprint extends ParentBlueprint {
       space: this.context.spaceName || 'unknown',
       packageName: options.advancedSettings.blueprintPackageName,
       dashname: dashName,
+      homepage: options.homepage,
+      projectName: this.context.project.name || 'unknown',
+      spaceName: this.context.spaceName || 'unknown',
     });
 
     /**

@@ -20,6 +20,7 @@ import { Options } from './blueprint';
  * @param options
  */
 export function buildBlueprintPackage(
+  this: any,
   blueprint: Blueprint,
   repository: SourceRepository,
   options: {
@@ -27,6 +28,9 @@ export function buildBlueprintPackage(
     packageName: string;
     dashname: string;
     bpOptions: Options;
+    homepage: string;
+    projectName: string;
+    spaceName: string;
   },
 ) {
   repository.copyStaticFiles({
@@ -34,7 +38,15 @@ export function buildBlueprintPackage(
   });
 
   const newBlueprintOptions: ProjenBlueprintOptions = {
-    homepage: options.bpOptions.homepage,
+    homepage: options.homepage.concat(
+      '/spaces/',
+      options.space,
+      '/projects/',
+      options.projectName,
+      '/source-repositories/',
+      options.dashname,
+      '/view',
+    ),
     authorName: options.bpOptions.authorName,
     publishingOrganization: options.space,
     packageName: options.packageName,
