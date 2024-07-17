@@ -20,7 +20,6 @@ import { Options } from './blueprint';
  * @param options
  */
 export function buildBlueprintPackage(
-  this: any,
   blueprint: Blueprint,
   repository: SourceRepository,
   options: {
