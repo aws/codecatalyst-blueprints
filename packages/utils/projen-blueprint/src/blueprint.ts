@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { typescript, javascript } from 'projen';
 import { generateTestSnapshotInfraFiles } from './test-snapshot';
-// import { hostname } from 'os';
 
 export interface BlueprintSnapshotConfiguration {
   /**
