@@ -12,7 +12,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amazon-codecatalyst/blueprint-component.dev-environments@*, @amazon-codecatalyst/blueprint-component.dev-environments@^0.3.147, @amazon-codecatalyst/blueprint-component.dev-environments@workspace:packages/components/dev-environments":
+"@amazon-codecatalyst/blueprint-component.dev-environments@*, @amazon-codecatalyst/blueprint-component.dev-environments@workspace:packages/components/dev-environments":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.dev-environments@workspace:packages/components/dev-environments"
   dependencies:
@@ -39,7 +39,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.environments@*, @amazon-codecatalyst/blueprint-component.environments@^0.3.147, @amazon-codecatalyst/blueprint-component.environments@^0.3.82, @amazon-codecatalyst/blueprint-component.environments@^0.3.88, @amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/environments":
+"@amazon-codecatalyst/blueprint-component.environments@*, @amazon-codecatalyst/blueprint-component.environments@^0.3.82, @amazon-codecatalyst/blueprint-component.environments@^0.3.88, @amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/environments":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.environments@workspace:packages/components/environments"
   dependencies:
@@ -63,7 +63,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.issues@*, @amazon-codecatalyst/blueprint-component.issues@^0.3.147, @amazon-codecatalyst/blueprint-component.issues@^0.3.88, @amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues":
+"@amazon-codecatalyst/blueprint-component.issues@*, @amazon-codecatalyst/blueprint-component.issues@^0.3.88, @amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.issues@workspace:packages/components/issues"
   dependencies:
@@ -119,7 +119,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.source-repositories@*, @amazon-codecatalyst/blueprint-component.source-repositories@^0.3.147, @amazon-codecatalyst/blueprint-component.source-repositories@^0.3.82, @amazon-codecatalyst/blueprint-component.source-repositories@^0.3.88, @amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories":
+"@amazon-codecatalyst/blueprint-component.source-repositories@*, @amazon-codecatalyst/blueprint-component.source-repositories@^0.3.82, @amazon-codecatalyst/blueprint-component.source-repositories@^0.3.88, @amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.source-repositories@workspace:packages/components/source-repositories"
   dependencies:
@@ -152,7 +152,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-component.workflows@*, @amazon-codecatalyst/blueprint-component.workflows@^0.3.147, @amazon-codecatalyst/blueprint-component.workflows@^0.3.82, @amazon-codecatalyst/blueprint-component.workflows@^0.3.88, @amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/workflows":
+"@amazon-codecatalyst/blueprint-component.workflows@*, @amazon-codecatalyst/blueprint-component.workflows@^0.3.82, @amazon-codecatalyst/blueprint-component.workflows@^0.3.88, @amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/workflows":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-component.workflows@workspace:packages/components/workflows"
   dependencies:
@@ -182,7 +182,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-util.cli@*, @amazon-codecatalyst/blueprint-util.cli@0.3.147, @amazon-codecatalyst/blueprint-util.cli@^0.3.147, @amazon-codecatalyst/blueprint-util.cli@^0.3.82, @amazon-codecatalyst/blueprint-util.cli@^0.3.88, @amazon-codecatalyst/blueprint-util.cli@workspace:packages/utils/blueprint-cli":
+"@amazon-codecatalyst/blueprint-util.cli@*, @amazon-codecatalyst/blueprint-util.cli@^0.3.82, @amazon-codecatalyst/blueprint-util.cli@^0.3.88, @amazon-codecatalyst/blueprint-util.cli@workspace:packages/utils/blueprint-cli":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-util.cli@workspace:packages/utils/blueprint-cli"
   dependencies:
@@ -252,26 +252,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprint-util.projen-blueprint@*, @amazon-codecatalyst/blueprint-util.projen-blueprint@^0.3.147, @amazon-codecatalyst/blueprint-util.projen-blueprint@^0.3.82, @amazon-codecatalyst/blueprint-util.projen-blueprint@^0.3.88, @amazon-codecatalyst/blueprint-util.projen-blueprint@workspace:packages/utils/projen-blueprint":
+"@amazon-codecatalyst/blueprint-util.projen-blueprint@*, @amazon-codecatalyst/blueprint-util.projen-blueprint@^0.3.82, @amazon-codecatalyst/blueprint-util.projen-blueprint@^0.3.88, @amazon-codecatalyst/blueprint-util.projen-blueprint@workspace:packages/utils/projen-blueprint":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprint-util.projen-blueprint@workspace:packages/utils/projen-blueprint"
   dependencies:
-    "@amazon-codecatalyst/blueprint-util.cli": 0.3.147
+    "@amazon-codecatalyst/blueprint-util.cli": "*"
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     eslint: ^8
-    eslint-import-resolver-node: ^0.3.7
-    eslint-import-resolver-typescript: ^3.5.5
-    eslint-plugin-import: ^2.27.5
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
     npm-check-updates: ^16
     projen: 0.71.112
     standard-version: ^9
     ts-node: ^10
     typescript: ^4.x
   peerDependencies:
-    "@amazon-codecatalyst/blueprint-util.cli": ^0.3.147
-    projen: ^0.71.112
+    "@amazon-codecatalyst/blueprint-util.cli": "*"
+    projen: "*"
   languageName: unknown
   linkType: soft
 
@@ -279,23 +279,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.blueprint-builder@workspace:packages/blueprints/blueprint-builder"
   dependencies:
-    "@amazon-codecatalyst/blueprint-component.dev-environments": ^0.3.147
-    "@amazon-codecatalyst/blueprint-component.environments": ^0.3.147
-    "@amazon-codecatalyst/blueprint-component.issues": ^0.3.147
-    "@amazon-codecatalyst/blueprint-component.source-repositories": ^0.3.147
-    "@amazon-codecatalyst/blueprint-component.workflows": ^0.3.147
-    "@amazon-codecatalyst/blueprint-util.cli": ^0.3.147
-    "@amazon-codecatalyst/blueprint-util.projen-blueprint": ^0.3.147
-    "@amazon-codecatalyst/blueprints.blueprint": ^0.3.147
+    "@amazon-codecatalyst/blueprint-component.dev-environments": "*"
+    "@amazon-codecatalyst/blueprint-component.environments": "*"
+    "@amazon-codecatalyst/blueprint-component.issues": "*"
+    "@amazon-codecatalyst/blueprint-component.source-repositories": "*"
+    "@amazon-codecatalyst/blueprint-component.workflows": "*"
+    "@amazon-codecatalyst/blueprint-util.cli": "*"
+    "@amazon-codecatalyst/blueprint-util.projen-blueprint": "*"
+    "@amazon-codecatalyst/blueprints.blueprint": "*"
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     camelcase: 1.x
     decamelize: 5.0.x
     eslint: ^8
-    eslint-import-resolver-node: ^0.3.7
-    eslint-import-resolver-typescript: ^3.5.5
-    eslint-plugin-import: ^2.27.5
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
     npm-check-updates: ^16
     projen: 0.71.112
     standard-version: ^9
@@ -304,7 +304,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@amazon-codecatalyst/blueprints.blueprint@*, @amazon-codecatalyst/blueprints.blueprint@^0.3.147, @amazon-codecatalyst/blueprints.blueprint@^0.3.82, @amazon-codecatalyst/blueprints.blueprint@^0.3.88, @amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint":
+"@amazon-codecatalyst/blueprints.blueprint@*, @amazon-codecatalyst/blueprints.blueprint@^0.3.82, @amazon-codecatalyst/blueprints.blueprint@^0.3.88, @amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint":
   version: 0.0.0-use.local
   resolution: "@amazon-codecatalyst/blueprints.blueprint@workspace:packages/blueprints/blueprint"
   dependencies:
