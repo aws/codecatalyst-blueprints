@@ -27,6 +27,9 @@ export function buildBlueprintPackage(
     packageName: string;
     dashname: string;
     bpOptions: Options;
+    homepage: string;
+    projectName: string;
+    spaceName: string;
   },
 ) {
   repository.copyStaticFiles({
@@ -34,6 +37,15 @@ export function buildBlueprintPackage(
   });
 
   const newBlueprintOptions: ProjenBlueprintOptions = {
+    homepage: options.homepage.concat(
+      '/spaces/',
+      options.space,
+      '/projects/',
+      options.projectName,
+      '/source-repositories/',
+      options.dashname,
+      '/view',
+    ),
     authorName: options.bpOptions.authorName,
     publishingOrganization: options.space,
     packageName: options.packageName,
@@ -72,7 +84,6 @@ export function buildBlueprintPackage(
       'fast-xml-parser',
     ],
     keywords: [...(options.bpOptions.advancedSettings?.tags || ['<<tag>>'])],
-    homepage: '',
   };
   console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
 
