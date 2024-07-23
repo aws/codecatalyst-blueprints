@@ -32,8 +32,6 @@ export interface Options extends ParentOptions {
    */
   authorName: string;
 
-  homepage: string;
-
   /**
    * @collapsed true
    */
@@ -99,7 +97,6 @@ export class Blueprint extends ParentBlueprint {
         ...defaults.advancedSettings,
         license: defaults.advancedSettings.license as any,
       },
-      homepage: 'https://codecatalyst.aws/',
     };
     const userSelectedOptions = Object.assign(typeCheck, options_);
 
@@ -135,7 +132,6 @@ export class Blueprint extends ParentBlueprint {
       space: this.context.spaceName || 'unknown',
       packageName: options.advancedSettings.blueprintPackageName,
       dashname: dashName,
-      homepage: options.homepage,
       projectName: this.context.project.name || 'unknown',
       spaceName: this.context.spaceName || 'unknown',
     });

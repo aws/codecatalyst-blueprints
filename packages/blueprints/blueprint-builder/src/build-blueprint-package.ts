@@ -27,7 +27,6 @@ export function buildBlueprintPackage(
     packageName: string;
     dashname: string;
     bpOptions: Options;
-    homepage: string;
     projectName: string;
     spaceName: string;
   },
@@ -37,15 +36,10 @@ export function buildBlueprintPackage(
   });
 
   const newBlueprintOptions: ProjenBlueprintOptions = {
-    homepage: options.homepage.concat(
-      '/spaces/',
-      options.space,
-      '/projects/',
-      options.projectName,
-      '/source-repositories/',
-      options.dashname,
-      '/view',
-    ),
+    homepage:
+      options.projectName !== '<<FAKE_PROJECTNAME>>' && options.space !== '<<FAKE_SPACENAME>>'
+        ? `https://codecatalyst.aws/spaces/${options.space}/projects/${options.projectName}/source-repositories/${options.dashname}/view`
+        : 'https://codecatalyst.aws',
     authorName: options.bpOptions.authorName,
     publishingOrganization: options.space,
     packageName: options.packageName,
