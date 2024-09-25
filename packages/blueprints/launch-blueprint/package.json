@@ -70,11 +70,11 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https://codecatalyst.aws/",
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.5.121",
+  "version": "0.5.127",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Launch with CodeCatalyst",

@@ -18,9 +18,7 @@ USAGE_ANALYSIS_TABLE = os.environ.get("USAGE_ANALYSIS_TABLE", "ddb_export")
 USAGE_ANALYSIS_WORKGROUP = os.environ.get(
     "USAGE_ANALYSIS_WORKGROUP", "bedrockchatstack_wg"
 )
-USAGE_ANALYSIS_OUTPUT_LOCATION = os.environ.get(
-    "USAGE_ANALYSIS_OUTPUT_LOCATION", "s3://bedrockchatstack-athena-results"
-)
+USAGE_ANALYSIS_OUTPUT_LOCATION = os.environ.get("USAGE_ANALYSIS_OUTPUT_LOCATION")
 USER_POOL_ID = os.environ.get("USER_POOL_ID", "us-east-1_XXXXXXXXX")
 QUERY_LIMIT = 1000
 

@@ -27,6 +27,8 @@ export function buildBlueprintPackage(
     packageName: string;
     dashname: string;
     bpOptions: Options;
+    projectName: string;
+    spaceName: string;
   },
 ) {
   repository.copyStaticFiles({
@@ -34,6 +36,10 @@ export function buildBlueprintPackage(
   });
 
   const newBlueprintOptions: ProjenBlueprintOptions = {
+    homepage:
+      options.projectName !== '<<FAKE_PROJECTNAME>>' && options.space !== '<<FAKE_SPACENAME>>'
+        ? `https://codecatalyst.aws/spaces/${options.space}/projects/${options.projectName}/source-repositories/${options.dashname}/view`
+        : 'https://codecatalyst.aws',
     authorName: options.bpOptions.authorName,
     publishingOrganization: options.space,
     packageName: options.packageName,
@@ -72,7 +78,6 @@ export function buildBlueprintPackage(
       'fast-xml-parser',
     ],
     keywords: [...(options.bpOptions.advancedSettings?.tags || ['<<tag>>'])],
-    homepage: '',
   };
   console.log('New blueprint options:', JSON.stringify(newBlueprintOptions, null, 2));
 

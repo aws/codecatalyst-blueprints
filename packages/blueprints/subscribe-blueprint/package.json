@@ -68,11 +68,11 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https://codecatalyst.aws/",
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.146",
+  "version": "0.3.152",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "Subscribe to external blueprint",

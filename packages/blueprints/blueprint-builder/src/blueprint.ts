@@ -132,6 +132,8 @@ export class Blueprint extends ParentBlueprint {
       space: this.context.spaceName || 'unknown',
       packageName: options.advancedSettings.blueprintPackageName,
       dashname: dashName,
+      projectName: this.context.project.name || 'unknown',
+      spaceName: this.context.spaceName || 'unknown',
     });
 
     /**

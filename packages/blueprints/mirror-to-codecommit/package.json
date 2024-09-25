@@ -72,7 +72,7 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https://codecatalyst.aws/",
   "version": "0.0.16-preview.0",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",

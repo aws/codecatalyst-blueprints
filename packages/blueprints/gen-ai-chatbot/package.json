@@ -75,11 +75,11 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https://codecatalyst.aws/",
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.4.9",
+  "version": "0.4.15",
   "types": "lib/index.d.ts",
   "publishingSpace": "blueprints",
   "displayName": "LLM Playground",
