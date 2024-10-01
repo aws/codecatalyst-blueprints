@@ -3,7 +3,7 @@ import { WorkflowBuilder, convertToWorkflowEnvironment } from '@amazon-codecatal
 import { Blueprint as ParentBlueprint } from '@amazon-codecatalyst/blueprints.blueprint';
 import { Options } from './blueprint';
 
-const cdkVersion = '2.160.0';
+const cdkVersion = 'latest';
 
 /**
  * Models used by the chatbot
