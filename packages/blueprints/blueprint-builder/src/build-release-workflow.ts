@@ -47,7 +47,7 @@ export function buildReleaseWorkflow(workflow: WorkflowBuilder, options?: { incl
     steps: ["if $IS_RELEASE_COMMIT; then  echo 'This is a release commit, skipping'; else chmod +x release.sh && ./release.sh; fi"],
     container: {
       Registry: 'CODECATALYST',
-      Image: 'CodeCatalystLinux_x86_64:2022_11',
+      Image: 'CodeCatalystLinux_x86_64:2024_03',
     },
   });
 
