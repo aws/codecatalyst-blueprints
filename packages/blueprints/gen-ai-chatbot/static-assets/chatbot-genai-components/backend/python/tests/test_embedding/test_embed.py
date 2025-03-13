@@ -41,7 +41,7 @@ if __name__ == "__main__":
     ```
     cd backend
     docker build -f embedding.Dockerfile -t embedding .
-    docker run -it -v $(pwd)/tests:/src/tests embedding /src/tests/embedding/test_embed.py
+    docker run -it -v $(pwd)/tests:/src/tests embedding /src/tests/test_embedding/test_embed.py
     ```
     """
     unittest.main()
