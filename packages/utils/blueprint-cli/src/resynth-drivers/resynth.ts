@@ -107,11 +107,7 @@ export async function resynthesize(log: pino.BaseLogger, options: ResynthesizeOp
   try {
     // if something already exists at the output location, we remove it.
     log.debug('cleaning up existing code at resynth resolved output location: %s', resolvedLocation);
-    const cleanCommand = `rm -rf ${resolvedLocation}`;
-    cp.execSync(cleanCommand, {
-      stdio: 'inherit',
-      cwd: options.blueprint,
-    });
+    fs.rmSync(path.resolve(options.blueprint, resolvedLocation), { recursive: true, force: true });
 
     const timeStart = Date.now();
     executeResynthesisCommand(log, options.blueprint, options.jobname, {
@@ -220,24 +216,21 @@ const executeResynthesisCommand = (
     envVariables?: { [key: string]: string };
   },
 ) => {
-  cp.execSync(`mkdir -p ${options.outputDirectory}`, {
-    stdio: 'inherit',
-    cwd,
-  });
+  fs.mkdirSync(options.outputDirectory, { recursive: true });
 
-  const command = [
-    `npx ${options.driver.runtime}`,
-    `${options.driver.path}`,
-    `'${JSON.stringify(options.options)}'`,
-    `${options.outputDirectory}`,
-    `${options.entropy}`,
-    `${options.ancestorBundleDirectory}`,
-    `${options.existingBundleDirectory}`,
-    `${options.proposedBundleDirectory}`,
-  ].join(' ');
+  const resynthArgs = [
+    options.driver.runtime,
+    options.driver.path,
+    JSON.stringify(options.options),
+    options.outputDirectory,
+    options.entropy,
+    options.ancestorBundleDirectory,
+    options.existingBundleDirectory,
+    options.proposedBundleDirectory,
+  ];
 
-  logger.debug(`[${jobname}] reynthesis Command: ${command}`);
-  cp.execSync(command, {
+  logger.debug(`[${jobname}] reynthesis Command: npx ${resynthArgs.join(' ')}`);
+  cp.execFileSync('npx', resynthArgs, {
     stdio: 'inherit',
     cwd,
     env: {

@@ -10,6 +10,8 @@ import { walkFiles } from '../walk-files';
 export type StrategyLocations = { [bundlePath: string]: Strategy[] };
 export const LOCAL_STRATEGY_ID = 'local';
 
+const ALLOWED_LOCAL_CMD = /^[a-zA-Z0-9._/\-]+((\s+(%[AOBLP]|\S+))+)?$/;
+
 const getStrategyIds = (strategies: StrategyLocations): { [identifier: string]: Strategy } => {
   const ids: { [id: string]: Strategy } = {};
   for (const strategyList of Object.values(strategies)) {
@@ -43,6 +45,13 @@ export const deserializeStrategies = (existingBundle: string, strategyMatch: Str
         if (!deserializedStrategy.owner) {
           throw new BlueprintSynthesisError({
             message: `Failed to resolve command for local strategy: ${deserializedStrategy.identifier}`,
+            type: BlueprintSynthesisErrorTypes.ValidationError,
+          });
+        }
+
+        if (!ALLOWED_LOCAL_CMD.test(deserializedStrategy.owner)) {
+          throw new BlueprintSynthesisError({
+            message: `Rejected unsafe local merge strategy command: ${deserializedStrategy.owner}`,
             type: BlueprintSynthesisErrorTypes.ValidationError,
           });
         }

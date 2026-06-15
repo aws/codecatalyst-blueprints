@@ -67,11 +67,7 @@ export async function synthesize(log: pino.BaseLogger, options: SynthOptions) {
   try {
     // if something already exists at the synthesis location, we remove it.
     log.debug('cleaning up existing code at synth location: %s', options.outputDirectory);
-    const cleanCommand = `rm -rf ${options.outputDirectory}`;
-    cp.execSync(cleanCommand, {
-      stdio: 'inherit',
-      cwd: options.blueprintPath,
-    });
+    fs.rmSync(path.resolve(options.blueprintPath, options.outputDirectory), { recursive: true, force: true });
 
     const timeStart = Date.now();
     executeSynthesisCommand(log, options.blueprintPath, options.jobname, {
@@ -127,20 +123,18 @@ function executeSynthesisCommand(
     envVariables: { [key: string]: string };
   },
 ) {
-  cp.execSync(`mkdir -p ${options.outputDirectory}`, {
-    stdio: 'inherit',
-    cwd,
-  });
-  const synthCommand = [
-    `npx ${options.driver.runtime}`,
-    `${options.driver.path}`,
-    `'${JSON.stringify(options.options)}'`,
-    `'${options.outputDirectory}'`,
-    `'${options.entropy}'`,
-  ].join(' ');
+  fs.mkdirSync(options.outputDirectory, { recursive: true });
 
-  logger.debug(`[${jobname}] Synthesis Command: ${synthCommand}`);
-  cp.execSync(synthCommand, {
+  const synthArgs = [
+    options.driver.runtime,
+    options.driver.path,
+    JSON.stringify(options.options),
+    options.outputDirectory,
+    options.entropy,
+  ];
+
+  logger.debug(`[${jobname}] Synthesis Command: npx ${synthArgs.join(' ')}`);
+  cp.execFileSync('npx', synthArgs, {
     stdio: 'inherit',
     cwd,
     env: {
