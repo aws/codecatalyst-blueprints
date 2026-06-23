@@ -27,9 +27,9 @@ export async function writeElements(
     const sourceLocation = path.join(folderPathAbs, ExportableResource.SRC);
     fs.mkdirSync(sourceLocation);
     for (const repositoryName of repositories) {
-      const cloneCommand = ['git', 'clone', options.bundle.code[repositoryName].clone].join(' ');
-      logger.debug(`Running: ${cloneCommand}`);
-      cp.execSync(cloneCommand, {
+      const cloneArgs = ['clone', options.bundle.code[repositoryName].clone];
+      logger.debug(`Running: git ${cloneArgs.join(' ')}`);
+      cp.execFileSync('git', cloneArgs, {
         stdio: 'inherit',
         cwd: sourceLocation,
       });

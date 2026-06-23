@@ -261,7 +261,7 @@ export class Blueprint extends ParentBlueprint {
 
     super.synth();
 
-    cp.execSync(`rm -rf ${toDeletePath}`);
+    fs.rmSync(toDeletePath, { recursive: true, force: true });
 
     // update permissions
     const permissionChangeContext: FileTemplateContext = {
@@ -392,12 +392,10 @@ export class Blueprint extends ParentBlueprint {
     //   `${sourceDir}`,
     // ]);
 
-    const assetPath = path.join('static-assets', 'sam-templates', params.runtime, params.gitSrcPath, '{{cookiecutter.project_name}}', '*');
+    const assetDir = path.join('static-assets', 'sam-templates', params.runtime, params.gitSrcPath, '{{cookiecutter.project_name}}');
 
     //TODO: this is a temporary fix to work around SVN failures.  These assets need to be updated.
-    cp.execSync(`cp -R ./${assetPath} ${sourceDir}/`, {
-      cwd: process.cwd(),
-    });
+    fs.cpSync(path.resolve(process.cwd(), assetDir), sourceDir, { recursive: true });
 
     cp.execFileSync('rm', ['-rf', `${sourceDir}/.svn`, `${sourceDir}/.gitignore`, `${sourceDir}/README.md`, `${sourceDir}/template.yaml`]);
 

@@ -1,4 +1,3 @@
-import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as deepmerge from 'deepmerge';
@@ -132,9 +131,7 @@ export const makeDriverFile = async (
 
 export const cleanUpDriver = (log: pino.BaseLogger, file: DriverFile) => {
   log.debug(`Cleaning up driver: ${file.path}`);
-  cp.execSync(`rm ${file.path}`, {
-    stdio: 'inherit',
-  });
+  fs.rmSync(file.path, { force: true });
 };
 
 /**

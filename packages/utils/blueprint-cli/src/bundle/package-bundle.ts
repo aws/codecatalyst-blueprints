@@ -14,13 +14,13 @@ export function packageBundle(
   },
 ) {
   try {
-    let zipCommand = [`zip ${path.basename(outputPathAbs)}`, `-r ${path.basename(folderPathAbs)}`, '-x **/.git/**'].join(' ');
-    logger.debug(zipCommand);
+    const zipArgs = [path.basename(outputPathAbs), '-r', path.basename(folderPathAbs), '-x', '**/.git/**'];
     if (options.encrypt) {
       logger.info('Packing folder. Enter zip password ...');
-      zipCommand = `${zipCommand} -e`;
+      zipArgs.push('-e');
     }
-    cp.execSync(zipCommand, {
+    logger.debug(`zip ${zipArgs.join(' ')}`);
+    cp.execFileSync('zip', zipArgs, {
       stdio: 'inherit',
       cwd: path.dirname(folderPathAbs),
     });
