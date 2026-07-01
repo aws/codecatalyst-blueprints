@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { randomBytes } from 'crypto';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import * as path from 'path';
@@ -47,14 +47,14 @@ function runLocalCommand(
 ): Buffer | undefined {
   createTempDir();
 
-  let cmd: string | undefined;
+  let cmdArgs: string[] | undefined;
   try {
     const commonTempFile = createTempFile(buffers.o);
     const existingTempFile = createTempFile(buffers.a);
     const proposedTempFile = createTempFile(buffers.b);
 
     const cwd = path.dirname(ownershipPath);
-    cmd = formatLocalCommand(
+    cmdArgs = formatLocalCommandArgs(
       owner,
       path.relative(cwd, existingTempFile),
       path.relative(cwd, commonTempFile),
@@ -62,7 +62,8 @@ function runLocalCommand(
       resolvedPath,
     );
 
-    execSync(cmd, {
+    const [executable, ...args] = cmdArgs;
+    execFileSync(executable, args, {
       cwd,
     });
 
@@ -70,8 +71,8 @@ function runLocalCommand(
     return getResolvedFile(existingTempFile);
   } catch (error: unknown) {
     let message = 'Failed to run local merge strategy';
-    if (cmd) {
-      message += `: ${cmd}`;
+    if (cmdArgs) {
+      message += `: ${cmdArgs.join(' ')}`;
     }
 
     throw new Error(`${message}: ${error}`);
@@ -118,12 +119,13 @@ function createTempFile(contents: Buffer): string {
   return tempPath;
 }
 
-function formatLocalCommand(commandPattern: string, aPath: string, oPath: string, bPath: string, resolvedPath: string): string {
+function formatLocalCommandArgs(commandPattern: string, aPath: string, oPath: string, bPath: string, resolvedPath: string): string[] {
   // see: https://git-scm.com/docs/gitattributes#_defining_a_custom_merge_driver
-  return commandPattern
+  const substituted = commandPattern
     .replace(/%O/g, oPath)
     .replace(/%A/g, aPath)
     .replace(/%B/g, bPath)
     .replace(/%P/g, resolvedPath)
     .replace(/%L/g, `${CONFLICT_MARKER_LENGTH}`);
+  return substituted.split(/\s+/).filter(s => s.length > 0);
 }

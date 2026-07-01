@@ -53,7 +53,7 @@ const fsLinkerPlugin = {
   name: 'fs_linker',
   setup(build: any) {
     build.onStart(() => {
-      cp.execSync('rm -rf ./lib/externals');
+      fs.rmSync('./lib/externals', { recursive: true, force: true });
     });
 
     build.onLoad({ filter: /\.(t|j)s/ }, ({ path: filePath }) => {
@@ -73,9 +73,16 @@ const fsLinkerPlugin = {
           const filesSegments = filePath.split('/');
           const rootPkg = findParentPackageDir(filesSegments.slice(0, filesSegments.length - 1).join('/'));
           const pkgName = JSON.parse(fs.readFileSync(`${rootPkg}/package.json`, { encoding: 'utf-8' })).name;
-          cp.execSync(
-            `mkdir -p ./lib/externals/${pkgName} && rsync -a ${rootPkg} ./lib/externals/${pkgName} --include="*/" --exclude="node_modules/**" --prune-empty-dirs`,
-          );
+          const externalsDir = `./lib/externals/${pkgName}`;
+          fs.mkdirSync(externalsDir, { recursive: true });
+          cp.execFileSync('rsync', [
+            '-a',
+            rootPkg,
+            externalsDir,
+            '--include=*/',
+            '--exclude=node_modules/**',
+            '--prune-empty-dirs',
+          ]);
         }
         return {
           contents,
@@ -116,11 +123,9 @@ export const createCache = async (
     resynthCacheFile,
   ];
   cleanup.forEach(file => {
-    if (fs.existsSync(path.join(params.buildDirectory, file))) {
-      cp.execSync(`rm -rf ${file}`, {
-        stdio: 'inherit',
-        cwd: params.buildDirectory,
-      });
+    const filePath = path.join(params.buildDirectory, file);
+    if (fs.existsSync(filePath)) {
+      fs.rmSync(filePath, { recursive: true, force: true });
     }
   });
 
@@ -147,16 +152,10 @@ export const createCache = async (
   }));
 
   // clean up the synth driver
-  cp.execSync(`rm ${synthDriver}`, {
-    stdio: 'inherit',
-    cwd: params.buildDirectory,
-  });
+  fs.rmSync(path.join(params.buildDirectory, synthDriver), { force: true });
 
   // clean up the resynth driver
-  cp.execSync(`rm ${resynthDriver}`, {
-    stdio: 'inherit',
-    cwd: params.buildDirectory,
-  });
+  fs.rmSync(path.join(params.buildDirectory, resynthDriver), { force: true });
 
   return {
     synthDriver: path.join(params.buildDirectory, synthCacheFile),
