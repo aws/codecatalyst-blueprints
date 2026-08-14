@@ -1,6 +1,6 @@
 boto3==1.28.57
 llama-index==0.10.19
-pydantic==2.4.0
+pydantic==2.7.4
 youtube-transcript-api>=0.6.1
 playwright==1.40.0
 requests==2.32.0
@@ -9,7 +9,7 @@ python-ulid==1.1.0
 pyhumps==3.8.0
 anthropic==0.18.1
 anthropic[bedrock]==0.18.1
-langchain-core==0.2.1
+langchain-core==0.3.81
 langdetect==1.0.9
 unstructured>=0.12.6
 unstructured[pdf]>=0.12.6

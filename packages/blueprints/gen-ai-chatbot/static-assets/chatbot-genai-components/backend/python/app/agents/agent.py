@@ -27,7 +27,7 @@ from langchain_core.callbacks import (
 )
 from langchain_core.exceptions import OutputParserException
 from langchain_core.prompts import PromptTemplate
-from langchain_core.pydantic_v1 import root_validator
+from pydantic import model_validator
 from langchain_core.runnables import (
     Runnable,
     RunnableConfig,
@@ -161,11 +161,6 @@ class RunnableAgent(BaseSingleActionAgent):
         self.input_keys_arg = input_keys_arg
         self.return_keys_arg = return_keys_arg
         self.stream_runnable = stream_runnable
-
-    class Config:
-        """Configuration for this pydantic object."""
-
-        arbitrary_types_allowed = True
 
     @property
     def return_values(self) -> list[str]:
@@ -346,7 +341,8 @@ class AgentExecutor(Chain):
         Callable[[list[tuple[AgentAction, str]]], list[tuple[AgentAction, str]]],
     ] = -1
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def validate_runnable_agent(cls, values: dict) -> dict:
         """Convert runnable to agent if passed in."""
         agent = values["agent"]

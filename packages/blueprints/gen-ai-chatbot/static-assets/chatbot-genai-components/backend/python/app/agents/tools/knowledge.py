@@ -7,7 +7,7 @@ from app.vector_search import SearchResult, search_related_docs
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.prompts import PromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 from langchain_core.runnables import Runnable
 
 logger = logging.getLogger(__name__)
@@ -115,7 +115,8 @@ class AnswerWithKnowledgeTool(BaseTool):
     args_schema: Type[BaseModel] = AnswerWithKnowledgeInput
     bot: BotModel
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def initialize_llm_chain(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         if "llm_chain" not in values:
             prompt = PromptTemplate(
