@@ -18,7 +18,7 @@ from langchain_core.callbacks import (
 from langchain_core.load.dump import dumpd
 from langchain_core.memory import BaseMemory
 from langchain_core.outputs import RunInfo
-from langchain_core.pydantic_v1 import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from langchain_core.runnables import (
     RunnableConfig,
     RunnableSerializable,
@@ -84,10 +84,7 @@ class Chain(RunnableSerializable[Dict[str, Any], Dict[str, Any]], ABC):
     You can use these to eg identify a specific instance of a chain with its use case.
     """
 
-    class Config:
-        """Configuration for this pydantic object."""
-
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def get_input_schema(
         self, config: Optional[RunnableConfig] = None
@@ -211,7 +208,8 @@ class Chain(RunnableSerializable[Dict[str, Any], Dict[str, Any]], ABC):
     def _chain_type(self) -> str:
         raise NotImplementedError("Saving not supported for this chain type.")
 
-    @root_validator()
+    @model_validator(mode="before")
+    @classmethod
     def raise_callback_manager_deprecation(cls, values: Dict) -> Dict:
         """Raise deprecation warning if callback_manager is used."""
         if values.get("callback_manager") is not None:
@@ -228,7 +226,8 @@ class Chain(RunnableSerializable[Dict[str, Any], Dict[str, Any]], ABC):
             values["callbacks"] = values.pop("callback_manager", None)
         return values
 
-    @validator("verbose", pre=True, always=True)
+    @field_validator("verbose", mode="before")
+    @classmethod
     def set_verbose(cls, verbose: Optional[bool]) -> bool:
         """Set the chain verbosity."""
         return verbose or False

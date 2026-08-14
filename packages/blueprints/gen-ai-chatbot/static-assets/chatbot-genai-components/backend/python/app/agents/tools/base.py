@@ -6,7 +6,7 @@ from langchain_core.callbacks import (
     AsyncCallbackManagerForToolRun,
     CallbackManagerForToolRun,
 )
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from langchain_core.runnables import RunnableConfig
 from langchain_core.runnables.config import run_in_executor
 from langchain_core.tools import BaseTool as LangChainBaseTool
@@ -20,13 +20,13 @@ class BaseTool(LangChainBaseTool):
             return []
 
         params_and_descriptions = []
-        for name, field in args_schema.__fields__.items():
+        for name, field in args_schema.model_fields.items():
             params_and_descriptions.append(
                 {
                     "name": name,
-                    "description": field.field_info.description,
-                    "type": field.type_,
-                    "is_required": field.required,
+                    "description": field.description,
+                    "type": field.annotation,
+                    "is_required": field.is_required(),
                 }
             )
         return params_and_descriptions

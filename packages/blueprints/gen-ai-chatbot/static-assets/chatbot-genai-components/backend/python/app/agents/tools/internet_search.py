@@ -2,7 +2,7 @@ import json
 
 from app.agents.tools.base import BaseTool, StructuredTool
 from duckduckgo_search import DDGS
-from langchain_core.pydantic_v1 import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class InternetSearchInput(BaseModel):
@@ -14,7 +14,8 @@ class InternetSearchInput(BaseModel):
         description="The time limit for the search. Options are 'd' (day), 'w' (week), 'm' (month), 'y' (year)."
     )
 
-    @root_validator
+    @model_validator(mode="before")
+    @classmethod
     def validate_country(cls, values):
         country = values.get("country")
         if country not in [
