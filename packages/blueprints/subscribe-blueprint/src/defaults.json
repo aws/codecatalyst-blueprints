@@ -1,9 +1,0 @@
-{
-  "repositoryName": "blueprint-subscription",
-  "packages": [
-    "@amazon-codecatalyst/blueprints.sam-serverless-application"
-  ],
-  "advanced": {
-    "npmRegistry": "https://registry.npmjs.org"
-  }
-}

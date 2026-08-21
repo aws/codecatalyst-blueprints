@@ -1,4 +1,0 @@
-first line
-inserted from a
-second line
-third line

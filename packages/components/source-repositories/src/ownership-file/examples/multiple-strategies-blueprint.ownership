@@ -1,8 +1,0 @@
-[never_update] @codecatalyst-blueprint/blueprint
-# Internal merge strategy: neverUpdate
-*
-*.ts
-
-[always_update] @codecatalyst-blueprint/blueprint
-# Internal merge strategy: neverUpdate
-*.java

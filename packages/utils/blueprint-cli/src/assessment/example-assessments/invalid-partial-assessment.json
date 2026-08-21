@@ -1,8 +1,0 @@
-{
-    "schedule": {
-      "scheduleType": "TWICE",
-      "cronSchedule": "0 * * * *"
-    },
-    "timeoutInMinutes": 60,
-    "someKeyThatIsUnsupported": {}
-  }
