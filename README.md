@@ -5,7 +5,7 @@
 
 This repository contains common blueprint components, the base blueprint contructs and several public blueprints. Codecatalyst blueprints are
 available for anyone to develop today. Blueprints are built by a number of teams internally, and this repository only contains the base constructs and
-a small number of blueprints maintained by the core blueprints team.
+a small number of blueprints maintained by the core blueprints team
 
 ## Blueprints
 
