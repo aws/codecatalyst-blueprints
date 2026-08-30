@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Component } from 'projen';
 import { DynamicKVInput } from './dynamic-kv-input';
 import { Blueprint } from '../blueprint';
 
@@ -28,16 +27,11 @@ export type OptionsSchemaDefinition<
 /**
  * This component can be used to define a schema with a given identifier.
  */
-export class OptionsSchema<T extends OptionsSchemaType> extends Component {
+export class OptionsSchema<T extends OptionsSchemaType> {
   constructor(protected readonly blueprint: Blueprint, protected readonly identifier: string, protected readonly schema: T) {
-    super(blueprint);
-  }
-
-  synthesize(): void {
     if (!fs.existsSync(this.blueprint.context.wizardOptionsPath)) {
       fs.mkdirSync(this.blueprint.context.wizardOptionsPath);
     }
-
     fs.writeFileSync(path.join(this.blueprint.context.wizardOptionsPath, this.identifier), JSON.stringify(this.schema));
   }
 }
