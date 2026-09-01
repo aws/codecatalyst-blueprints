@@ -10,7 +10,7 @@ a small number of blueprints maintained by the core blueprints team
 ## Blueprints
 
 Blueprints are code generators used to create and maintain projects in [Amazon CodeCatalyst](https://codecatalyst.aws/). You can build your own
-blueprint today by upgrading to the CodeCatalyst Enterprise tier.
+blueprint today by upgrading to the CodeCatalyst Enterprise tier
 
 ### Building your own blueprint
 
